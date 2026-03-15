@@ -28,6 +28,14 @@ def username_checker():
 def privacy_policy():
     return render_template('privacy_policy.html')
 
+@app.route('/robots.txt')
+def robots_txt():
+    return app.send_static_file('robots.txt')
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    return app.send_static_file('sitemap.xml')
+
 @app.route('/api/check-username')
 def api_check_username():
     username = request.args.get('user')
