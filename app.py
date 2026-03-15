@@ -16,6 +16,10 @@ CORS(app)
 def index():
     return render_template('index.html')
 
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok", "timestamp": time.time()}), 200
+
 @app.route('/username-checker')
 def username_checker():
     return render_template('username_checker.html')
