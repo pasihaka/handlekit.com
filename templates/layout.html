@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="{{ request.url }}">
+    
+    <title>{{ title if title else "ToolHub | Everyday Digital Tools for Developers & Creators" }}</title>
+    <meta name="description" content="{{ description if description else 'Fast, simple, and free online tools. Check usernames, optimize images, format JSON, and more with ToolHub.' }}">
+    
+    <!-- OpenGraph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ title if title else 'ToolHub | Everyday Digital Tools' }}">
+    <meta property="og:description" content="Check usernames, optimize images, and use developer tools in one premium interface.">
+    <meta property="og:image" content="{{ url_for('static', filename='img/og-image.jpg') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="{{ title if title else 'ToolHub | Everyday Digital Tools' }}">
+    <meta property="twitter:description" content="Efficient, Simple, Always Free Tools for Developers and Creators.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" style="text-decoration: none;"><h1>ToolHub</h1></a>
+            <p class="subtitle">Efficient, Simple, Always Free Tools.</p>
+        </header>
+
+        {% block content %}{% endblock %}
+
+        <footer>
+            <p>&copy; 2026 ToolHub. Dedicated to simplifying your workflow. <a href="/privacy-policy" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Privacy Policy</a></p>
+            <div class="ad-slot top-banner" style="margin-top: 2rem;">
+                Advertisement Space
+            </div>
+        </footer>
+    </div>
+
+    <a href="https://buymeacoffee.com/yourhandle" target="_blank" class="coffee-btn">
+        <i data-lucide="coffee"></i>
+        Buy me a coffee
+    </a>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

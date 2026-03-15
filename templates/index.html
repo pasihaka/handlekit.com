@@ -1,0 +1,38 @@
+{% set title = "ToolHub - The Swiss Army Knife of Digital Tools" %}
+{% set description = "Instant online tools for username checking, image optimization, and developer utilities. All in one premium, fast interface." %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="ad-slot top-banner">
+    Featured Placement / Advertisement
+</div>
+
+<div class="hub-grid">
+    <a href="/username-checker" class="tool-card">
+        <i data-lucide="user-check"></i>
+        <h2>Username Checker</h2>
+        <p>Confirm availability on GitHub and Reddit instantly with our robust verification engine.</p>
+        <div class="card-arrow">
+            Try it now <i data-lucide="arrow-right"></i>
+        </div>
+    </a>
+
+    <a href="/image-optimizer" class="tool-card">
+        <i data-lucide="image"></i>
+        <h2>Image Optimizer</h2>
+        <p>Compress and convert images to WebP, PNG, or JPG directly in your browser.</p>
+        <div class="card-arrow">
+            Try it now <i data-lucide="arrow-right"></i>
+        </div>
+    </a>
+
+    <a href="/developer-toolbox" class="tool-card">
+        <i data-lucide="code-2"></i>
+        <h2>Dev Toolbox</h2>
+        <p>Swiss army knife for developers: JSON formatter, Base64, MD5, and more.</p>
+        <div class="card-arrow">
+            Try it now <i data-lucide="arrow-right"></i>
+        </div>
+    </a>
+</div>
+{% endblock %}

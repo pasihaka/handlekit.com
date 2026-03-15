@@ -1,0 +1,126 @@
+{% set title = "GitHub & Reddit Username Checker | ToolHub" %}
+{% set description = "Instantly check if a username is available on GitHub and Reddit. Accurate real-world checks for developers and creators." %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="tool-container" style="max-width: 800px; margin: 0 auto;">
+    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
+        <i data-lucide="user-check" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <h2>Username Availability Checker</h2>
+        <p style="color: var(--text-sub);">Reliable, real-time availability checks for GitHub and Reddit.</p>
+    </div>
+
+    <div class="search-box" style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); display: flex; gap: 1rem; margin-bottom: 2rem;">
+        <input type="text" id="username-input" placeholder="Enter username..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem 1.5rem; color: #fff; font-size: 1.1rem; outline: none;">
+        <button id="search-btn" style="background: var(--accent-gradient); border: none; border-radius: 12px; padding: 0 2rem; color: #fff; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">
+            Check Now
+        </button>
+    </div>
+    
+    <div class="result-grid" id="results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;">
+        <!-- Results will be injected here -->
+    </div>
+</div>
+
+<style>
+    #username-input:focus { border-color: var(--accent-color); box-shadow: 0 0 10px var(--glow-color); }
+    #search-btn:hover { transform: scale(1.05); }
+    .platform-card {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+        cursor: default;
+    }
+    .platform-card.clickable {
+        cursor: pointer;
+    }
+    .platform-card.clickable:hover {
+        background: rgba(255,255,255,0.08);
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+    }
+    .status-badge {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-left: auto;
+    }
+    .status-searching { background: #888; animation: pulse 1.5s infinite; }
+    .status-available { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
+    .status-taken { background: #ff4444; }
+    
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.3; }
+        100% { opacity: 1; }
+    }
+</style>
+
+<script>
+const PLATFORMS = [
+    { name: 'GitHub', id: 'github', signupUrl: 'https://github.com/signup' },
+    { name: 'Reddit', id: 'reddit', signupUrl: 'https://www.reddit.com/register' }
+];
+
+const resultsDiv = document.getElementById('results');
+const input = document.getElementById('username-input');
+const btn = document.getElementById('search-btn');
+
+btn.onclick = async () => {
+    const user = input.value.trim();
+    if (!user) return;
+
+    resultsDiv.innerHTML = '';
+    btn.disabled = true;
+    btn.innerText = 'Checking...';
+
+    PLATFORMS.forEach(p => {
+        const card = document.createElement('a');
+        card.className = 'platform-card';
+        card.id = `card-${p.id}`;
+        card.target = '_blank';
+        card.innerHTML = `
+            <span style="font-weight: 600;">${p.name}</span>
+            <div id="status-${p.id}" class="status-badge status-searching"></div>
+        `;
+        resultsDiv.appendChild(card);
+    });
+
+    for (const p of PLATFORMS) {
+        try {
+            const resp = await fetch(`/api/check-username?user=${user}&platform=${p.id}`);
+            const data = await resp.json();
+            const badge = document.getElementById(`status-${p.id}`);
+            const card = document.getElementById(`card-${p.id}`);
+            
+            badge.className = 'status-badge ' + (data.available ? 'status-available' : 'status-taken');
+            
+            if (data.available && p.signupUrl) {
+                card.href = `${p.signupUrl}?user_login=${user}`;
+                card.classList.add('clickable');
+                card.title = `Register ${user} on ${p.name}`;
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    btn.disabled = false;
+    btn.innerText = 'Check Now';
+};
+
+// Enter key support
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        btn.click();
+    }
+});
+</script>
+{% endblock %}
