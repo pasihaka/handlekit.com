@@ -36,6 +36,10 @@ def robots_txt():
 def sitemap_xml():
     return app.send_static_file('sitemap.xml')
 
+@app.route('/ads.txt')
+def ads_txt():
+    return app.send_static_file('ads.txt')
+
 @app.route('/api/check-username')
 def api_check_username():
     username = request.args.get('user')
