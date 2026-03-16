@@ -10,15 +10,52 @@
         <p style="color: var(--text-sub);">Reliable, real-time availability checks for GitHub and Reddit.</p>
     </div>
 
-    <div class="search-box" style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); display: flex; gap: 1rem; margin-bottom: 2rem;">
-        <input type="text" id="username-input" placeholder="Enter username..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem 1.5rem; color: #fff; font-size: 1.1rem; outline: none;">
-        <button id="search-btn" style="background: var(--accent-gradient); border: none; border-radius: 12px; padding: 0 2rem; color: #fff; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">
+    <div class="search-box mobile-stack" style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); display: flex; gap: 1rem; margin-bottom: 2rem;">
+        <input type="text" id="username-input" placeholder="Enter username..." style="flex: 1; min-width: 0; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem 1.5rem; color: #fff; font-size: 1.1rem; outline: none; width: 100%;">
+        <button id="search-btn" style="background: var(--accent-gradient); border: none; border-radius: 12px; padding: 1rem 2rem; color: #fff; font-weight: 700; cursor: pointer; transition: transform 0.2s ease; white-space: nowrap;">
             Check Now
         </button>
     </div>
     
     <div class="result-grid" id="results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;">
         <!-- Results will be injected here -->
+    </div>
+
+    <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <div class="info-card" style="margin-bottom: 3rem;">
+            <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">The Importance of Brand Consistency</h3>
+            <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
+                In the digital age, your username is your identity. Whether you are a developer building a portfolio on GitHub or a creator engaging with communities on Reddit, having a consistent handle across all platforms is crucial for personal branding. Our Username Availability Checker helps you secure your digital footprint instantly.
+            </p>
+            <p style="color: var(--text-sub); line-height: 1.8;">
+                By using a single, recognizable name, you make it easier for collaborators, employers, and followers to find you. Inconsistent handles can lead to "brand fragmentation," making it harder to build a cohesive online presence.
+            </p>
+        </div>
+
+        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+            <div class="info-card">
+                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Why Check GitHub?</h4>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
+                    GitHub is the heartbeat of the open-source world. For developers, a clean GitHub URL is as valuable as a professional domain. Our tool uses direct internal checks to ensure that even "ghost" accounts—those that appear inactive but are technically reserved—are identified accurately.
+                </p>
+            </div>
+            <div class="info-card">
+                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Why Check Reddit?</h4>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
+                    Reddit is home to over 100,000 active communities. Securing your handle on Reddit is vital for protecting your brand's reputation and ensuring you can represent yourself or your project in relevant subreddits without being confused with an impersonator.
+                </p>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3 style="color: #fff; margin-bottom: 1.5rem; font-size: 1.5rem;">Tips for Choosing a Great Username</h3>
+            <ul style="color: var(--text-sub); line-height: 2; padding-left: 1.5rem; list-style-type: none;">
+                <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Keep it Short:</strong> Shorter handles are easier to remember and type on mobile devices.</li>
+                <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Avoid Numbers:</strong> Adding "123" to a name often makes it look like a bot or an afterthought.</li>
+                <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Think Long-Term:</strong> Choose a name that will still feel professional five or ten years from now.</li>
+                <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Act Fast:</strong> Good handles are taken every second. Once you find an available one, secure it immediately.</li>
+            </ul>
+        </div>
     </div>
 </div>
 
@@ -60,6 +97,11 @@
         0% { opacity: 1; }
         50% { opacity: 0.3; }
         100% { opacity: 1; }
+    }
+    @media (max-width: 768px) {
+        .info-grid { grid-template-columns: 1fr !important; }
+        .search-box { padding: 1.5rem !important; }
+        #search-btn { padding: 1rem !important; }
     }
 </style>
 
