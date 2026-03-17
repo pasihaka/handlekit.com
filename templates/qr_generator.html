@@ -1,0 +1,201 @@
+{% set title = "Professional QR Code Generator | Custom Sizes & High Resolution | HandleKit" %}
+{% set description = "Generate high-quality QR codes with custom pixel sizes. Instant, privacy-first, and high-resolution PNG downloads for professionals. No account required." %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="tool-container" style="max-width: 800px; margin: 0 auto;">
+    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
+        <i data-lucide="qr-code" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <h2>QR Code Generator</h2>
+        <p style="color: var(--text-sub);">Create custom QR codes instantly. No tracking, no expiration.</p>
+    </div>
+
+    <div class="tool-main-layout" style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start;">
+        <div class="input-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem;">
+            <label style="display: block; color: var(--accent-color); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 1rem;">Enter URL or Text</label>
+            <textarea id="qr-text" placeholder="https://handlekit.com" style="width: 100%; height: 120px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; color: #fff; resize: none; outline: none; margin-bottom: 1.5rem; font-size: 1.1rem;"></textarea>
+            
+            <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                <div>
+                    <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Size</label>
+                    <select id="qr-size" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
+                        <option value="200">Small (200x200)</option>
+                        <option value="400" selected>Medium (400x400)</option>
+                        <option value="800">Large (800x800)</option>
+                        <option value="custom">Custom Size...</option>
+                    </select>
+                </div>
+                <div id="custom-size-container" style="display: none;">
+                    <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Width (px)</label>
+                    <input type="number" id="custom-size-input" value="1200" min="100" max="3000" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Correction Level</label>
+                    <select id="qr-correction" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
+                        <option value="L">Low (7%)</option>
+                        <option value="M" selected>Medium (15%)</option>
+                        <option value="Q">Quartile (25%)</option>
+                        <option value="H">High (30%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="generate-btn" style="width: 100%; background: var(--accent-gradient); color: #fff; border: none; padding: 1rem; border-radius: 12px; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">
+                Generate QR Code
+            </button>
+        </div>
+
+        <div class="preview-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; text-align: center;">
+            <div id="qrcode-container" style="background: #fff; padding: 1rem; border-radius: 12px; display: inline-block; margin-bottom: 1.5rem; min-width: 200px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                <p id="qr-placeholder" style="color: #666; font-size: 0.8rem;">Preview will appear here</p>
+            </div>
+            <button id="download-btn" disabled style="width: 100%; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <i data-lucide="download" style="width: 18px;"></i> Download PNG
+            </button>
+        </div>
+    </div>
+
+    <!-- SEO Content Sections -->
+    <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <div class="info-card" style="margin-bottom: 3rem;">
+            <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Why QR Codes are Essential for Modern Business</h3>
+            <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
+                QR (Quick Response) codes have transitioned from a niche technology to a universal bridge between the physical and digital worlds. Whether you are a business owner placing a menu on a table or a creator sharing your portfolio at a networking event, QR codes provide a frictionless way for users to access your content instantly.
+            </p>
+            <p style="color: var(--text-sub); line-height: 1.8;">
+                Our generator creates **Static QR Codes**, meaning the information is encoded directly into the pattern. This makes them permanent—they will never expire, and they don't rely on a middle-man service to function.
+            </p>
+        </div>
+
+        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+            <div class="info-card">
+                <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">Total Privacy</h4>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
+                    Unlike other free generators, HandleKit does not track who scans your code. The generation happens entirely in your browser, ensuring your data never even reaches our server. Privacy is at the core of our toolkit.
+                </p>
+            </div>
+            <div class="info-card">
+                <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">High-Resolution & Custom Sizes</h4>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
+                    Whether you need a small code for a business card or a massive 3000px high-resolution PNG for a billboard, our custom size tool gives you total control over the output dimensions.
+                </p>
+            </div>
+        </div>
+
+        <div class="info-card" style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 15px; border: 1px solid var(--border-color);">
+            <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Static vs. Dynamic QR Codes</h3>
+            <p style="color: var(--text-sub); line-height: 1.8;">
+                **Static QR Codes** (like the ones we generate) embed the target data directly in the code itself. They are best for permanent links like website URLs or contact information. **Dynamic QR Codes** use a redirect service, allowing you to change the destination later. While dynamic codes are useful for tracking, static codes are more reliable, faster, and more private.
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        .tool-main-layout { grid-template-columns: 1fr !important; }
+        .preview-section { order: -1; }
+    }
+    textarea:focus { border-color: var(--accent-color); box-shadow: 0 0 10px var(--glow-color); }
+    #generate-btn:hover { transform: scale(1.02); }
+</style>
+
+<!-- Using qrcode-generator library via CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+
+<script>
+    const generateBtn = document.getElementById('generate-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const qrInput = document.getElementById('qr-text');
+    const qrContainer = document.getElementById('qrcode-container');
+    const qrSize = document.getElementById('qr-size');
+    const customSizeContainer = document.getElementById('custom-size-container');
+    const customSizeInput = document.getElementById('custom-size-input');
+    const qrCorrection = document.getElementById('qr-correction');
+
+    qrSize.onchange = () => {
+        if (qrSize.value === 'custom') {
+            customSizeContainer.style.display = 'block';
+            document.querySelector('.options-grid').style.gridTemplateColumns = '1fr 1fr 1fr';
+        } else {
+            customSizeContainer.style.display = 'none';
+            document.querySelector('.options-grid').style.gridTemplateColumns = '1fr 1fr';
+        }
+    };
+
+    generateBtn.onclick = () => {
+        const text = qrInput.value.trim() || 'https://handlekit.com';
+        let size = qrSize.value === 'custom' ? parseInt(customSizeInput.value) : parseInt(qrSize.value);
+        
+        // Safety bounds
+        if (isNaN(size) || size < 10) size = 400;
+        if (size > 3000) size = 3000;
+
+        const correction = qrCorrection.value;
+
+        // Clear previous
+        qrContainer.innerHTML = '';
+
+        try {
+            const typeNumber = 0; // Auto detect
+            const qr = qrcode(typeNumber, correction);
+            qr.addData(text);
+            qr.make();
+
+            // Create image with exact pixel resolution using Canvas
+            const modules = qr.getModuleCount();
+            const quietZone = 4; // Standard quiet zone for QR codes
+            const totalModules = modules + (quietZone * 2);
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw QR modules
+            const cellSize = size / totalModules;
+            ctx.fillStyle = '#000000';
+            
+            for (let row = 0; row < modules; row++) {
+                for (let col = 0; col < modules; col++) {
+                    if (qr.isDark(row, col)) {
+                        ctx.fillRect(
+                            (col + quietZone) * cellSize,
+                            (row + quietZone) * cellSize,
+                            cellSize + 0.5, // Minor overlap to prevent sub-pixel gaps
+                            cellSize + 0.5
+                        );
+                    }
+                }
+            }
+            
+            const dataUrl = canvas.toDataURL('image/png');
+            qrContainer.innerHTML = `<img src="${dataUrl}" id="generated-qr" style="max-width: 100%; height: auto; border-radius: 4px;" alt="QR Code">`;
+
+            downloadBtn.disabled = false;
+            downloadBtn.style.background = 'var(--accent-gradient)';
+            
+            downloadBtn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `handlekit-qr-${size}x${size}.png`;
+                link.href = dataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+        } catch (e) {
+            console.error(e);
+            qrContainer.innerHTML = '<p style="color: #ff4444; font-size: 0.8rem;">Error generating QR code</p>';
+        }
+    };
+
+    // Auto-generate on load
+    window.onload = () => {
+        generateBtn.click();
+    };
+</script>
+{% endblock %}
