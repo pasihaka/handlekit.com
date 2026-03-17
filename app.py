@@ -120,12 +120,16 @@ def api_optimize_image():
         with open(filepath, 'wb') as f:
             f.write(output.getvalue())
 
-        savings = round((1 - new_size / original_size) * 100, 1) if original_size > 0 else 0
+        if original_size > 0:
+            savings_ratio = 1 - (new_size / original_size)
+            savings = round(float(savings_ratio * 100), 1)
+        else:
+            savings = 0.0
         
         return jsonify({
             "success": True,
             "new_size": new_size,
-            "savings": max(0, savings),
+            "savings": max(0.0, float(savings)),
             "url": f"/static/img/optimized/{filename}"
         })
     except Exception as e:

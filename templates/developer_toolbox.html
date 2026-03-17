@@ -1,5 +1,5 @@
-{% set title = "Developer Toolbox | JSON, Base64, Hasher | ToolHub" %}
-{% set description = "Essential developer tools in one place. Format messy JSON, encode/decode Base64, and generate MD5/SHA256 hashes instantly." %}
+{% set title = "Developer Toolbox | JSON Formatter, Base64, MD5 Hasher | HandleKit" %}
+{% set description = "Professional developer utilities in one place. Format JSON, encode/decode Base64, and generate secure cryptographic hashes with HandleKit." %}
 {% extends "layout.html" %}
 
 {% block content %}
@@ -11,6 +11,7 @@
     </div>
 
     <div class="toolbox-layout" style="display: grid; grid-template-columns: 200px 1fr; gap: 2rem;">
+        <!-- Existing nav and content -->
         <div class="toolbox-nav" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1rem; height: fit-content;">
             <button class="tool-tab active" data-mode="json-format">JSON Formatter</button>
             <button class="tool-tab" data-mode="base64">Base64 Encode/Decode</button>
@@ -44,6 +45,39 @@
                 <div id="hash-results" style="display: flex; flex-direction: column; gap: 1rem;">
                     <!-- Hash values -->
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <div class="info-card" style="margin-bottom: 3rem;">
+            <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">The Ultimate Developer Companion</h3>
+            <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
+                Workflow efficiency is the hallmark of a great developer. Our Developer Toolbox brings together the most essential utilities—JSON formatting, Base64 processing, and Hashing—into a single, high-performance interface. No more jumping between dozens of browser tabs; everything you need is right here.
+            </p>
+            <p style="color: var(--text-sub); line-height: 1.8;">
+                We understand that security and privacy are paramount. That's why our tools process your data securely, and we never store the inputs or outputs of your conversions on our servers.
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 3rem;">
+            <div class="info-card">
+                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">JSON Best Practices</h4>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.9rem;">
+                    Messy, unformatted JSON can make debugging an API response a nightmare. Our formatter instantly cleans your data, making it human-readable. Whether you're working with complex nested objects or large arrays, our tool ensures your syntax is clear and valid.
+                </p>
+            </div>
+            <div class="info-card">
+                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Base64 Essentials</h4>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.9rem;">
+                    Base64 encoding is widely used for embedding images in HTML, passing credentials in headers, or transmitting binary data over text-based protocols. Our encoder/decoder handles character sets flawlessly, ensuring your data integrity remains intact throughout the process.
+                </p>
+            </div>
+            <div class="info-card">
+                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Cryptographic Hashing</h4>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.9rem;">
+                    Verify data integrity and security with MD5 and SHA256 hashing. While MD5 is perfect for quick checksums, SHA256 provides the robust security needed for sensitive information. Generate both instantly to compare and validate your data efficiently.
+                </p>
             </div>
         </div>
     </div>
