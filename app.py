@@ -135,6 +135,10 @@ def api_optimize_image():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route('/qr-generator')
+def qr_generator():
+    return render_template('qr_generator.html')
+
 @app.route('/developer-toolbox')
 def developer_toolbox():
     return render_template('developer_toolbox.html')
