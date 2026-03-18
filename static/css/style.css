@@ -215,15 +215,15 @@ footer {
 
   .toolbox-nav {
     display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
+    flex-wrap: wrap;
     gap: 0.5rem;
-    padding-bottom: 0.5rem !important;
   }
 
   .toolbox-nav .tool-tab {
+    flex: 1 1 auto;
     width: auto !important;
     margin-bottom: 0 !important;
-    flex-shrink: 0;
+    text-align: center;
+    padding: 0.75rem !important;
   }
 }
