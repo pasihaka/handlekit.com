@@ -143,6 +143,10 @@ def api_optimize_image():
 def qr_generator():
     return render_template('qr_generator.html')
 
+@app.route('/password-generator')
+def password_generator():
+    return render_template('password_generator.html')
+
 @app.route('/developer-toolbox')
 def developer_toolbox():
     return render_template('developer_toolbox.html')
