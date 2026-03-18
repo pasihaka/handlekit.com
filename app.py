@@ -28,6 +28,10 @@ def username_checker():
 def privacy_policy():
     return render_template('privacy_policy.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/robots.txt')
 def robots_txt():
     return app.send_static_file('robots.txt')
@@ -122,7 +126,7 @@ def api_optimize_image():
 
         if original_size > 0:
             savings_ratio = 1.0 - (float(new_size) / float(original_size))
-            savings = round(float(savings_ratio * 100.0), 1)
+            savings = int(savings_ratio * 1000) / 10.0
         else:
             savings = 0.0
         
