@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-D0Y7KJPEEK"></script>
     <script>
@@ -10,9 +11,10 @@
 
       gtag('config', 'G-D0Y7KJPEEK');
     </script>
+    {% endif %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="canonical" href="{{ request.url }}">
+    <link rel="canonical" href="{{ request.base_url }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
     
     <title>{{ title if title else "HandleKit | Professional Digital Tools for Developers & Creators" }}</title>
@@ -21,16 +23,19 @@
     <!-- OpenGraph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ title if title else 'HandleKit | Premium Digital Tools' }}">
-    <meta property="og:description" content="Check usernames, optimize images, and use developer tools in one sleek, high-performance interface.">
-    <meta property="og:image" content="{{ url_for('static', filename='img/og-image.jpg') }}">
+    <meta property="og:description" content="{{ description if description else 'Check usernames, optimize images, and use developer tools in one sleek, high-performance interface.' }}">
+    <meta property="og:image" content="{{ url_for('static', filename='img/' + (og_image if og_image else 'og-image.png'), _external=True) }}">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="{{ title if title else 'HandleKit | Premium Digital Tools' }}">
-    <meta property="twitter:description" content="Professional-grade tools for creators and developers. Always fast, always free.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title if title else 'HandleKit | Premium Digital Tools' }}">
+    <meta name="twitter:description" content="{{ description if description else 'Professional-grade tools for creators and developers. Always fast, always free.' }}">
+    <meta name="twitter:image" content="{{ url_for('static', filename='img/' + (og_image if og_image else 'og-image.png'), _external=True) }}">
     
+    {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
     <!-- Google AdSense Auto Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723" crossorigin="anonymous"></script>
+    {% endif %}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
