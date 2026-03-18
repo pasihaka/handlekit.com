@@ -121,8 +121,8 @@ def api_optimize_image():
             f.write(output.getvalue())
 
         if original_size > 0:
-            savings_ratio = 1 - (new_size / original_size)
-            savings = round(float(savings_ratio * 100), 1)
+            savings_ratio = 1.0 - (float(new_size) / float(original_size))
+            savings = round(float(savings_ratio * 100.0), 1)
         else:
             savings = 0.0
         
