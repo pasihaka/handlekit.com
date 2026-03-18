@@ -37,6 +37,8 @@ body::before {
   background-image:
     radial-gradient(at 0% 0%, rgba(58, 123, 213, 0.1) 0px, transparent 50%),
     radial-gradient(at 100% 100%, rgba(0, 210, 255, 0.1) 0px, transparent 50%);
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
 }
 
 .container {
