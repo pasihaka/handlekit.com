@@ -155,6 +155,18 @@ def word_counter():
 def developer_toolbox():
     return render_template('developer_toolbox.html')
 
+@app.route('/text-case-converter')
+def text_case_converter():
+    return render_template('text_case_converter.html')
+
+@app.route('/color-picker')
+def color_picker():
+    return render_template('color_picker.html')
+
+@app.route('/url-encoder')
+def url_encoder():
+    return render_template('url_encoder.html')
+
 @app.route('/api/generate-hashes', methods=['POST'])
 def api_generate_hashes():
     data = request.get_json()
