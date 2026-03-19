@@ -58,11 +58,11 @@
     <!-- Limits Row -->
     <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2rem; align-items: center;">
         <span style="font-size: 0.8rem; color: var(--text-sub); margin-right: 0.4rem;">Quick limits:</span>
-        <button class="wc-limit-btn" onclick="setLimit(300)">300 words</button>
-        <button class="wc-limit-btn" onclick="setLimit(500)">500 words</button>
-        <button class="wc-limit-btn" onclick="setLimit(750)">750 words</button>
-        <button class="wc-limit-btn" onclick="setLimit(1000)">1,000 words</button>
-        <button class="wc-limit-btn" onclick="setLimit(1500)">1,500 words</button>
+        <button class="wc-limit-btn" data-limit="300" onclick="setLimit(300)">300 words</button>
+        <button class="wc-limit-btn" data-limit="500" onclick="setLimit(500)">500 words</button>
+        <button class="wc-limit-btn" data-limit="750" onclick="setLimit(750)">750 words</button>
+        <button class="wc-limit-btn" data-limit="1000" onclick="setLimit(1000)">1,000 words</button>
+        <button class="wc-limit-btn" data-limit="1500" onclick="setLimit(1500)">1,500 words</button>
         <button class="wc-limit-btn" onclick="setLimit(0)" id="limit-off-btn" style="display:none;">Remove limit</button>
     </div>
 
@@ -333,9 +333,9 @@ function setLimit(n) {
     } else {
         document.getElementById('limit-bar-wrap').style.display = 'block';
         document.getElementById('limit-off-btn').style.display = 'inline-block';
-        // Mark active button
-        document.querySelectorAll('.wc-limit-btn').forEach(b => {
-            if (b.textContent.replace(/,/g,'').includes(String(n))) b.classList.add('active');
+        // Mark active button by exact data-limit match
+        document.querySelectorAll('.wc-limit-btn[data-limit]').forEach(b => {
+            if (parseInt(b.dataset.limit) === n) b.classList.add('active');
         });
         analyzeText();
     }
