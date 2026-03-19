@@ -1,0 +1,221 @@
+{% set title = "URL Encoder & Decoder | Free Online Tool | HandleKit" %}
+{% set description = "Encode or decode URLs and URI components instantly online. Supports encodeURIComponent, decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
+{% set og_image = "og-image.png" %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="tool-container" style="max-width: 860px; margin: 0 auto;">
+    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
+        <i data-lucide="link" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">URL Encoder & Decoder</h1>
+        <p style="color: var(--text-sub);">Encode or decode URLs and URI components instantly — no signup, 100% private.</p>
+    </div>
+
+    <!-- Mode Toggle -->
+    <div style="display: flex; gap: 0.6rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <button class="ue-mode-btn active" id="mode-component" onclick="setMode('component')">
+            <i data-lucide="code" style="width:14px;height:14px;"></i> Component (encodeURIComponent)
+        </button>
+        <button class="ue-mode-btn" id="mode-full" onclick="setMode('full')">
+            <i data-lucide="globe" style="width:14px;height:14px;"></i> Full URL (encodeURI)
+        </button>
+    </div>
+
+    <!-- Input -->
+    <div style="position: relative; margin-bottom: 1rem;">
+        <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Input</label>
+        <textarea id="ue-input" placeholder="Paste your URL or text here…"
+            oninput="onInput()"
+            onfocus="this.style.borderColor='var(--accent-color)'"
+            onblur="this.style.borderColor='var(--border-color)'"
+            style="width:100%;min-height:130px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.95rem;font-family:'Outfit',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;">
+        <button class="ue-action-btn" id="btn-encode" onclick="doEncode()">
+            <i data-lucide="arrow-down" style="width:14px;height:14px;"></i> Encode
+        </button>
+        <button class="ue-action-btn" id="btn-decode" onclick="doDecode()">
+            <i data-lucide="arrow-up" style="width:14px;height:14px;"></i> Decode
+        </button>
+        <button onclick="swapInputOutput()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:10px;padding:0.55rem 1rem;color:var(--text-sub);cursor:pointer;font-size:0.85rem;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='var(--border-color)'">
+            <i data-lucide="arrow-up-down" style="width:14px;height:14px;"></i> Swap
+        </button>
+        <button onclick="clearAll()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:10px;padding:0.55rem 1rem;color:var(--text-sub);cursor:pointer;font-size:0.85rem;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='var(--border-color)'">
+            <i data-lucide="x" style="width:14px;height:14px;"></i> Clear
+        </button>
+        <span id="ue-status" style="font-size:0.8rem;color:var(--text-sub);margin-left:auto;"></span>
+    </div>
+
+    <!-- Output -->
+    <div style="position: relative; margin-bottom: 2rem;">
+        <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Output</label>
+        <textarea id="ue-output" readonly placeholder="Result will appear here…"
+            onfocus="this.style.borderColor='var(--accent-color)'"
+            onblur="this.style.borderColor='var(--border-color)'"
+            style="width:100%;min-height:130px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.95rem;font-family:'Outfit',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+        <button id="copy-btn" onclick="copyOutput()" style="position:absolute;bottom:1rem;right:1.2rem;background:var(--accent-color);border:none;border-radius:10px;padding:0.45rem 1.1rem;color:#000;font-weight:700;font-size:0.8rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;">
+            <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy
+        </button>
+    </div>
+
+    <!-- Quick Reference -->
+    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem;">
+        <h2 style="font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Common Encoded Characters</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.5rem;">
+            <div class="ue-ref-row"><span class="ue-ref-char">Space</span><span class="ue-ref-enc">%20</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">&amp;</span><span class="ue-ref-enc">%26</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">=</span><span class="ue-ref-enc">%3D</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">?</span><span class="ue-ref-enc">%3F</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">#</span><span class="ue-ref-enc">%23</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">+</span><span class="ue-ref-enc">%2B</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">/</span><span class="ue-ref-enc">%2F</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">@</span><span class="ue-ref-enc">%40</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">:</span><span class="ue-ref-enc">%3A</span></div>
+            <div class="ue-ref-row"><span class="ue-ref-char">%</span><span class="ue-ref-enc">%25</span></div>
+        </div>
+    </div>
+
+    <!-- SEO Content -->
+    <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is URL Encoding?</h2>
+        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
+            URL encoding (also called percent-encoding) converts characters that are not allowed in a URL into a safe format. Each unsafe character is replaced by a percent sign (%) followed by two hexadecimal digits representing the character's ASCII code. For example, a space becomes <code style="color:var(--accent-color);">%20</code> and an ampersand becomes <code style="color:var(--accent-color);">%26</code>.
+        </p>
+        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 2rem;">
+            This is essential when passing query parameters, form data, or special characters in URLs. Without proper encoding, browsers and servers may misinterpret the data.
+        </p>
+        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">encodeURIComponent vs encodeURI</h3>
+                <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
+                    <li><strong style="color:#fff;">encodeURIComponent</strong> — encodes everything except letters, digits, <code style="color:#aaa;">- _ . ! ~ * ' ( )</code>. Use for query parameter values.</li>
+                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">encodeURI</strong> — preserves URL structure characters like <code style="color:#aaa;">/ ? # &amp; =</code>. Use for a complete URL.</li>
+                </ul>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">When To Use URL Encoding</h3>
+                <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
+                    <li>Passing search terms in query strings</li>
+                    <li>Encoding form POST data</li>
+                    <li>Building API request parameters</li>
+                    <li>Sharing URLs with special characters</li>
+                    <li>Debugging encoded URLs from server logs</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.ue-mode-btn {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    border-radius: 10px; padding: 0.5rem 1rem; color: var(--text-sub);
+    cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif; font-weight: 600;
+    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
+}
+.ue-mode-btn:hover, .ue-mode-btn.active { border-color: var(--accent-color); color: #fff; background: rgba(0,210,255,0.1); }
+.ue-action-btn {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 10px;
+    padding: 0.55rem 1.3rem; color: var(--text-sub); font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s;
+    display: flex; align-items: center; gap: 0.4rem;
+}
+.ue-action-btn:hover { border-color: var(--accent-color); color: #fff; }
+.ue-action-btn.active { background: var(--accent-color); border-color: var(--accent-color); color: #000; }
+.ue-ref-row { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 8px; padding: 0.35rem 0.6rem; }
+.ue-ref-char { font-size: 0.85rem; color: #fff; font-weight: 700; min-width: 30px; }
+.ue-ref-enc { font-size: 0.8rem; color: var(--accent-color); font-family: monospace; font-weight: 600; }
+</style>
+
+<script>
+let encodeMode = 'component'; // 'component' or 'full'
+
+function setMode(mode) {
+    encodeMode = mode;
+    document.querySelectorAll('.ue-mode-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('mode-' + mode).classList.add('active');
+}
+
+function setActiveBtn(id) {
+    document.querySelectorAll('.ue-action-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+function doEncode() {
+    const input = document.getElementById('ue-input').value;
+    if (!input.trim()) return;
+    setActiveBtn('btn-encode');
+    try {
+        const result = encodeMode === 'component' ? encodeURIComponent(input) : encodeURI(input);
+        document.getElementById('ue-output').value = result;
+        if (result === input) {
+            setStatus('URL is already valid — no encoding needed', 'var(--text-sub)');
+        } else {
+            setStatus('Encoded successfully', 'var(--accent-color)');
+        }
+    } catch(e) {
+        setStatus('Encoding error: ' + e.message, '#ff4444');
+    }
+}
+
+function doDecode() {
+    const input = document.getElementById('ue-input').value;
+    if (!input.trim()) return;
+    setActiveBtn('btn-decode');
+    try {
+        const result = encodeMode === 'component' ? decodeURIComponent(input) : decodeURI(input);
+        document.getElementById('ue-output').value = result;
+        setStatus('Decoded successfully', 'var(--accent-color)');
+    } catch(e) {
+        setStatus('Decoding error: invalid URL encoding', '#ff4444');
+    }
+}
+
+function onInput() {
+    if (document.getElementById('ue-output').value) {
+        document.getElementById('ue-output').value = '';
+        setStatus('', '');
+    }
+}
+
+function swapInputOutput() {
+    const inp = document.getElementById('ue-input');
+    const out = document.getElementById('ue-output');
+    const tmp = inp.value;
+    inp.value = out.value;
+    out.value = tmp;
+    setStatus('', '');
+}
+
+function clearAll() {
+    document.getElementById('ue-input').value = '';
+    document.getElementById('ue-output').value = '';
+    setStatus('', '');
+    document.querySelectorAll('.ue-action-btn').forEach(b => b.classList.remove('active'));
+}
+
+function setStatus(msg, color) {
+    const el = document.getElementById('ue-status');
+    el.textContent = msg;
+    el.style.color = color;
+}
+
+function copyOutput() {
+    const output = document.getElementById('ue-output').value;
+    if (!output) return;
+    navigator.clipboard.writeText(output).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
+        btn.style.background = '#00ff88';
+        lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy';
+            btn.style.background = 'var(--accent-color)';
+            lucide.createIcons();
+        }, 2000);
+    });
+}
+</script>
+{% endblock %}

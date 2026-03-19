@@ -1,0 +1,190 @@
+{% set title = "Color Picker & Palette Generator | HEX, RGB, HSL Online | HandleKit" %}
+{% set description = "Pick any color and instantly get its HEX, RGB, HSL and CMYK values. Generate complementary, analogous, triadic and shade palettes. Free, browser-based." %}
+{% set og_image = "og-image.png" %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="tool-container" style="max-width: 860px; margin: 0 auto;">
+    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
+        <i data-lucide="palette" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Color Picker & Palette Generator</h1>
+        <p style="color: var(--text-sub);">Pick a color and instantly get HEX, RGB, HSL and CMYK values — plus a generated palette.</p>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="cp-main" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        <!-- Left: Wheel + Preview -->
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600;">Colour Wheel</label>
+            <div style="width: 140px; height: 140px; border-radius: 50%; overflow: hidden; cursor: pointer; flex-shrink: 0;">
+                <input type="color" id="color-wheel" value="#00d2ff" oninput="onColorChange(this.value)"
+                    style="width: 200%; height: 200%; border: none; background: none; cursor: pointer; padding: 0; outline: none; margin: -25% 0 0 -25%;">
+            </div>
+            <div id="color-preview" style="width: 100%; height: 56px; border-radius: 14px; background: #00d2ff; border: 1px solid rgba(255,255,255,0.1); transition: background 0.15s;"></div>
+            <div id="color-hex-label" style="font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: 1px;">#00D2FF</div>
+        </div>
+
+        <!-- Right: Values -->
+        <div style="display: flex; flex-direction: column; gap: 0.9rem;">
+            <div class="cp-value-card"><div class="cp-value-label">HEX</div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <input id="val-hex" class="cp-value-input" value="#00D2FF" oninput="onHexInput(this.value)" maxlength="7">
+                    <button class="cp-copy-btn" onclick="copyVal('val-hex')"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
+                </div>
+            </div>
+            <div class="cp-value-card"><div class="cp-value-label">RGB</div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <input id="val-rgb" class="cp-value-input" value="rgb(0, 210, 255)" readonly>
+                    <button class="cp-copy-btn" onclick="copyVal('val-rgb')"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
+                </div>
+            </div>
+            <div class="cp-value-card"><div class="cp-value-label">HSL</div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <input id="val-hsl" class="cp-value-input" value="hsl(191, 100%, 50%)" readonly>
+                    <button class="cp-copy-btn" onclick="copyVal('val-hsl')"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
+                </div>
+            </div>
+            <div class="cp-value-card"><div class="cp-value-label">CMYK</div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <input id="val-cmyk" class="cp-value-input" value="cmyk(100%, 18%, 0%, 0%)" readonly>
+                    <button class="cp-copy-btn" onclick="copyVal('val-cmyk')"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Palette -->
+    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+            <h2 style="font-size: 1.1rem; font-weight: 700; color: #fff; margin: 0;">Generated Palette</h2>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="cp-palette-btn active" id="btn-complementary" onclick="setPaletteMode('complementary')">Complementary</button>
+                <button class="cp-palette-btn" id="btn-analogous" onclick="setPaletteMode('analogous')">Analogous</button>
+                <button class="cp-palette-btn" id="btn-triadic" onclick="setPaletteMode('triadic')">Triadic</button>
+                <button class="cp-palette-btn" id="btn-shades" onclick="setPaletteMode('shades')">Shades</button>
+            </div>
+        </div>
+        <div id="palette-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem;"></div>
+    </div>
+
+    <!-- SEO Content -->
+    <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is a Color Picker?</h2>
+        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
+            A color picker lets you select any color and retrieve its values in every common format: HEX (used in HTML/CSS), RGB (screen displays and design tools), HSL (intuitive for developers), and CMYK (standard for print). HandleKit's Color Picker also generates four palette types to help you build harmonious colour schemes instantly — all in your browser, with zero data leaving your device.
+        </p>
+        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Colour Format Guide</h3>
+                <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
+                    <li><strong style="color:#fff;">HEX</strong> — #RRGGBB, used in CSS &amp; HTML</li>
+                    <li><strong style="color:#fff;">RGB</strong> — rgb(R, G, B), values 0–255</li>
+                    <li><strong style="color:#fff;">HSL</strong> — hsl(H°, S%, L%), great for devs</li>
+                    <li><strong style="color:#fff;">CMYK</strong> — for print design &amp; publishing</li>
+                </ul>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Palette Types Explained</h3>
+                <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
+                    <li><strong style="color:#fff;">Complementary</strong> — opposite hues, high contrast</li>
+                    <li><strong style="color:#fff;">Analogous</strong> — neighbouring hues, harmonious</li>
+                    <li><strong style="color:#fff;">Triadic</strong> — three equally-spaced hues, vibrant</li>
+                    <li><strong style="color:#fff;">Shades</strong> — light to dark variants of your colour</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.cp-value-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.9rem 1.1rem; transition: border-color 0.2s; }
+.cp-value-card:hover { border-color: rgba(0,210,255,0.4); }
+.cp-value-label { font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; margin-bottom: 0.4rem; }
+.cp-value-input { flex: 1; background: transparent; border: none; color: #fff; font-size: 0.9rem; font-family: 'Outfit', monospace; font-weight: 600; outline: none; width: 100%; min-width: 0; }
+.cp-copy-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 7px; padding: 0.3rem 0.5rem; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; transition: all 0.2s; flex-shrink: 0; }
+.cp-copy-btn:hover { border-color: var(--accent-color); color: var(--accent-color); }
+.cp-copy-btn.copied { border-color: #00ff88; color: #00ff88; }
+.cp-palette-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.35rem 0.75rem; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.cp-palette-btn:hover, .cp-palette-btn.active { border-color: var(--accent-color); color: #fff; background: rgba(0,210,255,0.1); }
+.cp-swatch { border-radius: 12px; aspect-ratio: 1; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px; overflow: hidden; }
+.cp-swatch:hover { transform: scale(1.07); border-color: rgba(255,255,255,0.5); }
+.cp-swatch-label { font-size: 0.55rem; font-weight: 700; color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(0,0,0,0.8); letter-spacing: 0.3px; }
+@media (max-width: 640px) { .cp-main { grid-template-columns: 1fr !important; } }
+</style>
+
+<script>
+let currentHex = '#00d2ff';
+let paletteMode = 'complementary';
+
+function hexToRgb(hex) {
+    return { r: parseInt(hex.slice(1,3),16), g: parseInt(hex.slice(3,5),16), b: parseInt(hex.slice(5,7),16) };
+}
+function rgbToHex(r,g,b) { return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join(''); }
+function rgbToHsl(r,g,b) {
+    r/=255; g/=255; b/=255;
+    const max=Math.max(r,g,b), min=Math.min(r,g,b), d=max-min;
+    let h=0, s=0, l=(max+min)/2;
+    if(d!==0){ s=l>0.5?d/(2-max-min):d/(max+min);
+        switch(max){ case r:h=((g-b)/d+(g<b?6:0))/6;break; case g:h=((b-r)/d+2)/6;break; case b:h=((r-g)/d+4)/6;break; }
+    }
+    return {h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)};
+}
+function hslToRgb(h,s,l) {
+    s/=100; l/=100;
+    const k=n=>(n+h/30)%12, a=s*Math.min(l,1-l);
+    const f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));
+    return {r:Math.round(f(0)*255),g:Math.round(f(8)*255),b:Math.round(f(4)*255)};
+}
+function hslToHex(h,s,l){const{r,g,b}=hslToRgb(h,s,l);return rgbToHex(r,g,b);}
+function rgbToCmyk(r,g,b){
+    r/=255;g/=255;b/=255;
+    const k=1-Math.max(r,g,b);
+    if(k===1)return{c:0,m:0,y:0,k:100};
+    return{c:Math.round(((1-r-k)/(1-k))*100),m:Math.round(((1-g-k)/(1-k))*100),y:Math.round(((1-b-k)/(1-k))*100),k:Math.round(k*100)};
+}
+
+function genPalette(hex, mode) {
+    const {r,g,b}=hexToRgb(hex), {h,s,l}=rgbToHsl(r,g,b);
+    if(mode==='complementary') return [hslToHex((h+150)%360,s,l),hslToHex((h+165)%360,s,l),hex,hslToHex((h+195)%360,s,l),hslToHex((h+210)%360,s,l)];
+    if(mode==='analogous') return [hslToHex((h-40+360)%360,s,l),hslToHex((h-20+360)%360,s,l),hex,hslToHex((h+20)%360,s,l),hslToHex((h+40)%360,s,l)];
+    if(mode==='triadic') return [hslToHex((h-60+360)%360,s,l),hex,hslToHex((h+120)%360,s,l),hslToHex((h+180)%360,s,l),hslToHex((h+240)%360,s,l)];
+    return [hslToHex(h,s,Math.min(l+30,95)),hslToHex(h,s,Math.min(l+15,95)),hex,hslToHex(h,s,Math.max(l-15,5)),hslToHex(h,s,Math.max(l-30,5))];
+}
+
+function onColorChange(hex) {
+    currentHex = hex;
+    const {r,g,b}=hexToRgb(hex), {h,s,l}=rgbToHsl(r,g,b), {c,m,y,k}=rgbToCmyk(r,g,b);
+    document.getElementById('color-preview').style.background=hex;
+    document.getElementById('color-hex-label').textContent=hex.toUpperCase();
+    document.getElementById('val-hex').value=hex.toUpperCase();
+    document.getElementById('val-rgb').value=`rgb(${r}, ${g}, ${b})`;
+    document.getElementById('val-hsl').value=`hsl(${h}, ${s}%, ${l}%)`;
+    document.getElementById('val-cmyk').value=`cmyk(${c}%, ${m}%, ${y}%, ${k}%)`;
+    renderPalette();
+}
+function onHexInput(val){if(/^#[0-9a-fA-F]{6}$/.test(val)){document.getElementById('color-wheel').value=val;onColorChange(val);}}
+function renderPalette(){
+    const colors=genPalette(currentHex,paletteMode);
+    document.getElementById('palette-grid').innerHTML=colors.map(c=>`
+        <div class="cp-swatch" style="background:${c}" onclick="selectSwatch('${c}')" title="${c.toUpperCase()}">
+            <span class="cp-swatch-label">${c.toUpperCase()}</span>
+        </div>`).join('');
+}
+function selectSwatch(hex){document.getElementById('color-wheel').value=hex;onColorChange(hex);}
+function setPaletteMode(mode){
+    paletteMode=mode;
+    document.querySelectorAll('.cp-palette-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('btn-'+mode).classList.add('active');
+    renderPalette();
+}
+function copyVal(id){
+    const val=document.getElementById(id).value;
+    navigator.clipboard.writeText(val).then(()=>{
+        const btn=document.getElementById(id).parentElement.querySelector('.cp-copy-btn');
+        btn.classList.add('copied');
+        setTimeout(()=>btn.classList.remove('copied'),1800);
+    });
+}
+onColorChange('#00d2ff');
+</script>
+{% endblock %}
