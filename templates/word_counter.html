@@ -1,0 +1,344 @@
+{% set title = "Free Online Word Counter | Character & Reading Time | HandleKit" %}
+{% set description = "Count words, characters, sentences, and paragraphs instantly. Get estimated reading time and keyword density. Free, fast, and works entirely in your browser." %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="tool-container" style="max-width: 900px; margin: 0 auto;">
+    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
+        <i data-lucide="file-text" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Free Online Word Counter</h1>
+        <p style="color: var(--text-sub);">Instant word, character, sentence & paragraph counts — with reading time and keyword density.</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="wc-stats-grid" id="stats-grid">
+        <div class="wc-stat-card" id="stat-words">
+            <div class="wc-stat-value" id="val-words">0</div>
+            <div class="wc-stat-label">Words</div>
+        </div>
+        <div class="wc-stat-card" id="stat-chars">
+            <div class="wc-stat-value" id="val-chars">0</div>
+            <div class="wc-stat-label">Characters</div>
+        </div>
+        <div class="wc-stat-card">
+            <div class="wc-stat-value" id="val-chars-nospace">0</div>
+            <div class="wc-stat-label">Chars (no spaces)</div>
+        </div>
+        <div class="wc-stat-card">
+            <div class="wc-stat-value" id="val-sentences">0</div>
+            <div class="wc-stat-label">Sentences</div>
+        </div>
+        <div class="wc-stat-card">
+            <div class="wc-stat-value" id="val-paragraphs">0</div>
+            <div class="wc-stat-label">Paragraphs</div>
+        </div>
+        <div class="wc-stat-card wc-stat-highlight">
+            <div class="wc-stat-value" id="val-read-time">0 sec</div>
+            <div class="wc-stat-label">Reading Time</div>
+        </div>
+    </div>
+
+    <!-- Textarea -->
+    <div style="position: relative; margin-bottom: 1rem;">
+        <textarea
+            id="wc-input"
+            placeholder="Paste or type your text here to get an instant word count, character count, reading time, and more…"
+            style="width: 100%; min-height: 280px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: #fff; font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
+            oninput="analyzeText()"
+            onfocus="this.style.borderColor='var(--accent-color)'"
+            onblur="this.style.borderColor='var(--border-color)'"
+        ></textarea>
+        <button onclick="clearText()" id="clear-btn"
+            title="Clear text"
+            style="position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.4rem 0.8rem; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s; opacity: 0;">
+            <i data-lucide="x" style="width: 13px; height: 13px;"></i> Clear
+        </button>
+    </div>
+
+    <!-- Limits Row -->
+    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2rem; align-items: center;">
+        <span style="font-size: 0.8rem; color: var(--text-sub); margin-right: 0.4rem;">Quick limits:</span>
+        <button class="wc-limit-btn" onclick="setLimit(300)">300 words</button>
+        <button class="wc-limit-btn" onclick="setLimit(500)">500 words</button>
+        <button class="wc-limit-btn" onclick="setLimit(750)">750 words</button>
+        <button class="wc-limit-btn" onclick="setLimit(1000)">1,000 words</button>
+        <button class="wc-limit-btn" onclick="setLimit(1500)">1,500 words</button>
+        <button class="wc-limit-btn" onclick="setLimit(0)" id="limit-off-btn" style="display:none;">Remove limit</button>
+    </div>
+
+    <!-- Limit Indicator (hidden until a limit is set) -->
+    <div id="limit-bar-wrap" style="display:none; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+            <span style="font-size: 0.8rem; color: var(--text-sub);" id="limit-label">0 / 300 words</span>
+            <span style="font-size: 0.8rem; font-weight: 700;" id="limit-status">—</span>
+        </div>
+        <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+            <div id="limit-bar" style="height: 100%; width: 0%; border-radius: 3px; transition: all 0.3s; background: var(--accent-color);"></div>
+        </div>
+    </div>
+
+    <!-- Keyword Density -->
+    <div id="keyword-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem 2rem; margin-bottom: 1.5rem; display: none;">
+        <h3 style="font-size: 1rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.25rem;">Top Keywords</h3>
+        <div id="keyword-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+    </div>
+
+    <!-- SEO Content -->
+    <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <div class="info-card" style="margin-bottom: 3rem;">
+            <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Why Use a Word Counter?</h2>
+            <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
+                Whether you're writing a blog post, an academic essay, a social media caption, or a product description, knowing
+                your word and character count is essential. Many platforms have strict limits — Twitter's 280-character cap,
+                Google Ads' 30-character headlines, LinkedIn's 700-word article limit — and exceeding them costs you visibility.
+            </p>
+            <p style="color: var(--text-sub); line-height: 1.8;">
+                Our word counter goes beyond a simple count. It gives you <strong>reading time estimates</strong> (based on the
+                average adult reading speed of 238 words per minute), <strong>sentence and paragraph counts</strong> to gauge
+                structural quality, and a <strong>keyword density breakdown</strong> so you can keep your writing SEO-friendly
+                without over-optimizing.
+            </p>
+        </div>
+
+        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+            <div class="info-card">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Ideal Word Counts by Content Type</h3>
+                <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
+                    <li><strong style="color: #fff;">Blog post:</strong> 1,500 – 2,500 words</li>
+                    <li><strong style="color: #fff;">SEO article:</strong> 1,000 – 2,000 words</li>
+                    <li><strong style="color: #fff;">Academic essay:</strong> varies by assignment</li>
+                    <li><strong style="color: #fff;">Product description:</strong> 150 – 300 words</li>
+                    <li><strong style="color: #fff;">Email newsletter:</strong> 200 – 500 words</li>
+                    <li><strong style="color: #fff;">Social media post:</strong> 40 – 80 words</li>
+                    <li><strong style="color: #fff;">Cover letter:</strong> 250 – 400 words</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Character Limits to Know</h3>
+                <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
+                    <li><strong style="color: #fff;">Twitter / X:</strong> 280 characters</li>
+                    <li><strong style="color: #fff;">Instagram caption:</strong> 2,200 characters</li>
+                    <li><strong style="color: #fff;">Facebook post:</strong> 63,206 characters</li>
+                    <li><strong style="color: #fff;">Google title tag:</strong> ~60 characters</li>
+                    <li><strong style="color: #fff;">Meta description:</strong> ~160 characters</li>
+                    <li><strong style="color: #fff;">YouTube title:</strong> 100 characters</li>
+                    <li><strong style="color: #fff;">TikTok caption:</strong> 2,200 characters</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="info-card" style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 15px; border: 1px solid var(--border-color);">
+            <h3 style="color: #fff; margin-bottom: 1.5rem; font-size: 1.5rem;">How Does Our Word Counter Work?</h3>
+            <ul style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.9rem;">
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span><strong style="color: #fff;">100% private.</strong> Your text never leaves your browser — everything is computed on your device with JavaScript.</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span><strong style="color: #fff;">Instant analysis.</strong> Stats update in real-time as you type or paste — no buttons to click.</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span><strong style="color: #fff;">Smart word counting.</strong> Words are counted by splitting on whitespace, ignoring empty tokens — consistent with word processors like MS Word.</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span><strong style="color: #fff;">Keyword density.</strong> Common stop words (the, a, is…) are filtered out so you see only your meaningful keywords.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+    .wc-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .wc-stat-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem 1rem;
+        text-align: center;
+        transition: border-color 0.2s, transform 0.2s;
+    }
+    .wc-stat-card:hover { border-color: var(--accent-color); transform: translateY(-2px); }
+    .wc-stat-highlight { border-color: rgba(0,210,255,0.3); background: rgba(0,210,255,0.05); }
+    .wc-stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.1;
+        margin-bottom: 0.3rem;
+        transition: color 0.2s;
+    }
+    .wc-stat-highlight .wc-stat-value { color: var(--accent-color); }
+    .wc-stat-label { font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+
+    .wc-limit-btn {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.35rem 0.75rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: 'Outfit', sans-serif;
+        transition: all 0.2s;
+    }
+    .wc-limit-btn:hover, .wc-limit-btn.active {
+        border-color: var(--accent-color);
+        color: #fff;
+        background: rgba(0,210,255,0.1);
+    }
+
+    .kw-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    .kw-word { font-size: 0.9rem; color: #fff; font-weight: 600; min-width: 100px; }
+    .kw-bar-bg { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+    .kw-bar-fill { height: 100%; background: var(--accent-gradient); border-radius: 3px; transition: width 0.4s ease; }
+    .kw-count { font-size: 0.8rem; color: var(--text-sub); min-width: 50px; text-align: right; }
+
+    @media (max-width: 600px) {
+        .wc-stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .wc-stat-value { font-size: 1.5rem; }
+    }
+    @media (max-width: 380px) {
+        .wc-stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+</style>
+
+<script>
+// Stop words to filter out of keyword density
+const STOP_WORDS = new Set([
+    'the','a','an','and','or','but','in','on','at','to','for','of','with','by',
+    'from','up','about','into','through','during','is','are','was','were','be',
+    'been','being','have','has','had','do','does','did','will','would','could',
+    'should','may','might','shall','can','this','that','these','those','i','you',
+    'he','she','it','we','they','my','your','his','her','its','our','their',
+    'what','which','who','whom','when','where','why','how','not','no','nor',
+    'so','yet','both','either','neither','as','if','than','then','just','because',
+    'while','although','though','even','also','too','very','here','there','its',
+    'more','much','most','some','any','all','each','every','both','few','more',
+    'such','own','same','other'
+]);
+
+let currentLimit = 0;
+let activeBtn = null;
+
+function analyzeText() {
+    const text = document.getElementById('wc-input').value;
+
+    // Words
+    const words = text.trim() === '' ? [] : text.trim().split(/\s+/).filter(w => w.length > 0);
+    const wordCount = words.length;
+
+    // Characters
+    const charCount = text.length;
+    const charNoSpace = text.replace(/\s/g, '').length;
+
+    // Sentences (split on . ! ? followed by space or end)
+    const sentenceCount = text.trim() === '' ? 0 : (text.match(/[^.!?]*[.!?]+/g) || []).filter(s => s.trim().length > 0).length || (text.trim().length > 0 ? 1 : 0);
+
+    // Paragraphs (split on double newline or more)
+    const paragraphCount = text.trim() === '' ? 0 : text.trim().split(/\n\s*\n+/).filter(p => p.trim().length > 0).length || (text.trim().length > 0 ? 1 : 0);
+
+    // Reading time (238 wpm average)
+    const readingSec = Math.round((wordCount / 238) * 60);
+    let readingDisplay;
+    if (wordCount === 0) {
+        readingDisplay = '0 sec';
+    } else if (readingSec < 60) {
+        readingDisplay = readingSec + ' sec';
+    } else {
+        const mins = Math.floor(readingSec / 60);
+        const secs = readingSec % 60;
+        readingDisplay = secs > 0 ? `${mins}m ${secs}s` : `${mins} min`;
+    }
+
+    // Update stats
+    document.getElementById('val-words').textContent = wordCount.toLocaleString();
+    document.getElementById('val-chars').textContent = charCount.toLocaleString();
+    document.getElementById('val-chars-nospace').textContent = charNoSpace.toLocaleString();
+    document.getElementById('val-sentences').textContent = sentenceCount.toLocaleString();
+    document.getElementById('val-paragraphs').textContent = paragraphCount.toLocaleString();
+    document.getElementById('val-read-time').textContent = readingDisplay;
+
+    // Limit bar
+    if (currentLimit > 0) {
+        const pct = Math.min((wordCount / currentLimit) * 100, 100);
+        const over = wordCount > currentLimit;
+        document.getElementById('limit-bar').style.width = pct + '%';
+        document.getElementById('limit-bar').style.background = over ? '#ff4444' : (pct > 85 ? '#ffcc00' : 'var(--accent-color)');
+        document.getElementById('limit-label').textContent = `${wordCount.toLocaleString()} / ${currentLimit.toLocaleString()} words`;
+        document.getElementById('limit-status').textContent = over ? `${wordCount - currentLimit} over` : `${currentLimit - wordCount} remaining`;
+        document.getElementById('limit-status').style.color = over ? '#ff4444' : (pct > 85 ? '#ffcc00' : 'var(--accent-color)');
+    }
+
+    // Clear button visibility
+    document.getElementById('clear-btn').style.opacity = text.length > 0 ? '1' : '0';
+
+    // Keyword density
+    updateKeywords(words);
+}
+
+function updateKeywords(words) {
+    const section = document.getElementById('keyword-section');
+    if (words.length < 5) { section.style.display = 'none'; return; }
+
+    // Count
+    const freq = {};
+    words.forEach(w => {
+        const clean = w.toLowerCase().replace(/[^a-z0-9']/g, '');
+        if (clean.length > 2 && !STOP_WORDS.has(clean)) {
+            freq[clean] = (freq[clean] || 0) + 1;
+        }
+    });
+
+    const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8);
+    if (sorted.length === 0) { section.style.display = 'none'; return; }
+
+    section.style.display = 'block';
+    const maxCount = sorted[0][1];
+    const list = document.getElementById('keyword-list');
+    list.innerHTML = sorted.map(([word, count]) => {
+        const pct = Math.round((count / words.length) * 100 * 10) / 10;
+        const barW = Math.round((count / maxCount) * 100);
+        return `<div class="kw-row">
+            <span class="kw-word">${word}</span>
+            <div class="kw-bar-bg"><div class="kw-bar-fill" style="width:${barW}%"></div></div>
+            <span class="kw-count">${count}× &nbsp;(${pct}%)</span>
+        </div>`;
+    }).join('');
+}
+
+function clearText() {
+    document.getElementById('wc-input').value = '';
+    analyzeText();
+}
+
+function setLimit(n) {
+    currentLimit = n;
+    document.querySelectorAll('.wc-limit-btn').forEach(b => b.classList.remove('active'));
+    if (n === 0) {
+        document.getElementById('limit-bar-wrap').style.display = 'none';
+        document.getElementById('limit-off-btn').style.display = 'none';
+    } else {
+        document.getElementById('limit-bar-wrap').style.display = 'block';
+        document.getElementById('limit-off-btn').style.display = 'inline-block';
+        // Mark active button
+        document.querySelectorAll('.wc-limit-btn').forEach(b => {
+            if (b.textContent.replace(/,/g,'').includes(String(n))) b.classList.add('active');
+        });
+        analyzeText();
+    }
+}
+</script>
+{% endblock %}
