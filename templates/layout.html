@@ -215,19 +215,8 @@ footer {
 }
     </style>
 
-    <!-- GTM: async by nature, no render-blocking -->
-    {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D0Y7KJPEEK"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-D0Y7KJPEEK');
-    </script>
-    {% endif %}
-
-    <!-- PERF: Lucide deferred — does not block first paint (~930 ms saved on mobile) -->
-    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <!-- PERF: Lucide deferred — does not block first paint. onload fires createIcons() reliably. -->
+    <script src="https://unpkg.com/lucide@latest" defer id="lucide-script"></script>
 </head>
 <body>
     <div class="bg-gradient"></div>
@@ -237,7 +226,9 @@ footer {
             <p class="subtitle">Efficient, Simple, Always Free Tools.</p>
         </header>
 
+        <main>
         {% block content %}{% endblock %}
+        </main>
 
         <footer>
             <p>&copy; 2026 HandleKit. Dedicated to simplifying your workflow. <a href="/privacy-policy" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Privacy Policy</a><a href="/about" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">About</a></p>
@@ -275,10 +266,39 @@ footer {
     </script>
     {% endif %}
 
-    <!-- Init Lucide icons after defer resolves -->
+    <!-- PERF: GTM lazy-loaded after first user interaction — removes 150 KiB from critical path -->
+    {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.lucide) lucide.createIcons();
+    (function() {
+        var gtmLoaded = false;
+        function loadGTM() {
+            if (gtmLoaded) return;
+            gtmLoaded = true;
+            // Load the GTM script
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-D0Y7KJPEEK';
+            document.head.appendChild(s);
+            // Init dataLayer after script loads
+            s.onload = function() {
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-D0Y7KJPEEK');
+            };
+        }
+        ['scroll', 'click', 'touchstart', 'keydown'].forEach(function(evt) {
+            window.addEventListener(evt, loadGTM, { once: true, passive: true });
+        });
+        setTimeout(loadGTM, 5000);
+    })();
+    </script>
+    {% endif %}
+
+    <!-- Init Lucide icons: script is deferred, so onload is the reliable trigger -->
+    <script>
+        document.getElementById('lucide-script').addEventListener('load', function() {
+            lucide.createIcons();
         });
     </script>
 </body>
