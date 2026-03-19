@@ -147,6 +147,10 @@ def qr_generator():
 def password_generator():
     return render_template('password_generator.html')
 
+@app.route('/word-counter')
+def word_counter():
+    return render_template('word_counter.html')
+
 @app.route('/developer-toolbox')
 def developer_toolbox():
     return render_template('developer_toolbox.html')
