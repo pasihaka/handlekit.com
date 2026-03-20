@@ -233,7 +233,12 @@ footer {
         </main>
 
         <footer>
-            <p>&copy; 2026 HandleKit. Dedicated to simplifying your workflow. <a href="/privacy-policy" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Privacy Policy</a><a href="/about" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">About</a></p>
+            <p>&copy; 2026 HandleKit. Dedicated to simplifying your workflow. 
+                <a href="/privacy-policy" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Privacy Policy</a>
+                <a href="/terms-of-service" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Terms of Service</a>
+                <a href="/about" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">About</a>
+                <a href="/contact" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Contact</a>
+            </p>
             <div class="ad-slot top-banner" style="margin-top: 2rem;">
                 Advertisement Space
             </div>
@@ -245,27 +250,9 @@ footer {
         Buy me a coffee
     </a>
 
-    <!-- PERF: AdSense lazy-loaded after first user interaction (scroll/click/touch/key).
-         Removes 318 KiB from initial load. 5s fallback ensures ads appear for idle users. -->
+    <!-- AdSense Script - Standard loading to ensure reviewer bots find the code -->
     {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
-    <script>
-    (function() {
-        var adsLoaded = false;
-        function loadAds() {
-            if (adsLoaded) return;
-            adsLoaded = true;
-            var s = document.createElement('script');
-            s.async = true;
-            s.crossOrigin = 'anonymous';
-            s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723';
-            document.head.appendChild(s);
-        }
-        ['scroll', 'click', 'touchstart', 'keydown'].forEach(function(evt) {
-            window.addEventListener(evt, loadAds, { once: true, passive: true });
-        });
-        setTimeout(loadAds, 5000);
-    })();
-    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723" crossorigin="anonymous"></script>
     {% endif %}
 
     <!-- PERF: GTM lazy-loaded after first user interaction — removes 150 KiB from critical path -->
@@ -296,6 +283,29 @@ footer {
     })();
     </script>
     {% endif %}
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--accent-color); padding: 1.5rem; z-index: 9999; box-shadow: 0 -10px 30px rgba(0,0,0,0.5);">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+            <p style="color: var(--text-main); font-size: 0.95rem; margin: 0; flex: 1; min-width: 250px;">
+                We use cookies to personalize content and ads, and to analyze our traffic. By clicking "Accept", you consent to our use of cookies. Read our <a href="/privacy-policy" style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a>.
+            </p>
+            <div style="display: flex; gap: 1rem;">
+                <button id="cookie-accept" style="background: var(--accent-gradient); border: none; border-radius: 8px; padding: 0.75rem 2rem; color: #fff; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">Accept</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('cookie_consent')) {
+                document.getElementById('cookie-consent').style.display = 'block';
+            }
+            document.getElementById('cookie-accept').addEventListener('click', function() {
+                localStorage.setItem('cookie_consent', 'true');
+                document.getElementById('cookie-consent').style.display = 'none';
+            });
+        });
+    </script>
 
     <!-- Init Lucide icons: script is deferred, so onload is the reliable trigger -->
     <script>
