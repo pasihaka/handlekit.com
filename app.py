@@ -52,24 +52,123 @@ def api_check_username():
     if not username or not platform:
         return jsonify({"error": "Missing params"}), 400
 
-    # Real world check for GitHub using the internal signup check endpoint
-    # This is more reliable as it accounts for flagged/reserved accounts
-    available = True
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+    }
+
+    available = None  # None = uncertain
     try:
         if platform == 'github':
-            # This endpoint returns 200 for available, non-200 (like 403) for taken/reserved
             r = requests.get(f"https://github.com/signup_check/username?value={username}", timeout=5)
             available = (r.status_code == 200)
+
         elif platform == 'reddit':
-            # Reddit's official availability endpoint
-            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
-            r = requests.get(f"https://www.reddit.com/api/username_available.json?user={username}", headers=headers, timeout=5)
-            # Returns true/false JSON
+            r = requests.get(f"https://www.reddit.com/api/username_available.json?user={username}",
+                             headers=headers, timeout=5)
             available = r.json() if r.status_code == 200 else False
-        else:
-            available = False
+
+        elif platform == 'gitlab':
+            r = requests.get(f"https://gitlab.com/{username}", headers=headers, timeout=6)
+            available = (r.status_code == 404)
+
+        elif platform == 'hackernews':
+            r = requests.get(f"https://hacker-news.firebaseio.com/v0/user/{username}.json", timeout=5)
+            available = (r.json() is None)
+
+        elif platform == 'npm':
+            r = requests.get(f"https://registry.npmjs.org/-/user/org.couchdb.user:{username}",
+                             headers=headers, timeout=5)
+            available = (r.status_code == 404)
+
+        elif platform == 'devto':
+            r = requests.get(f"https://dev.to/api/users/by_username?url={username}",
+                             headers=headers, timeout=5)
+            available = (r.status_code == 404)
+
+        elif platform == 'twitter':
+            # Use Twitter's signup username check API — same approach as GitHub
+            r = requests.get(
+                f'https://api.twitter.com/i/users/username_available.json?username={username}',
+                headers=headers, timeout=6
+            )
+            if r.status_code == 200:
+                try:
+                    data = r.json()
+                    reason = data.get('reason', '')
+                    if data.get('valid') and reason == 'available':
+                        available = True
+                    else:
+                        available = False  # taken, too long, banned word — all not available
+                except Exception:
+                    available = None
+            else:
+                available = None
+
+        elif platform == 'instagram':
+            # Instagram rate-limits all server-side requests (HTTP 429) regardless of cookies.
+            # Cannot be checked without a residential proxy or authenticated session.
+            available = None
+
+        elif platform == 'tiktok':
+            # TikTok embeds user data as JSON in the page — check for uniqueId presence
+            r = requests.get(f"https://www.tiktok.com/@{username}", headers=headers, timeout=8)
+            if r.status_code == 404:
+                available = True
+            elif r.status_code == 200:
+                content = r.text.lower()
+                search_term = f'"uniqueid":"{username.lower()}"'
+                search_term2 = f'"uniqueid": "{username.lower()}"'
+                if search_term in content or search_term2 in content:
+                    available = False  # username found in page data → taken
+                elif '__universal_data_for_rehydration__' in content:
+                    available = True   # page data loaded but username not found → likely available
+                else:
+                    available = None   # could not parse page data
+
+        elif platform == 'youtube':
+            # YouTube shows a cookie consent wall to EU users/bots without cookies.
+            # Pass the SOCS bypass cookie to skip it and reach the actual page.
+            yt_cookies = {
+                'SOCS': 'CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjYwMzE4LjA3X3AwGgJmaSACGgYIgJzyzQY',
+                'VISITOR_INFO1_LIVE': 'TOwB_epDIbg'
+            }
+            r = requests.get(f"https://www.youtube.com/@{username}", headers=headers,
+                             cookies=yt_cookies, timeout=8, allow_redirects=True)
+            # If we still landed on the consent domain, mark uncertain
+            if 'consent.youtube.com' in r.url:
+                available = None
+            elif r.status_code == 404:
+                available = True
+            elif r.status_code == 200:
+                content = r.text.lower()
+                handle_marker  = f'"canonicalbaseurl":"/@{username.lower()}"'
+                handle_marker2 = f'"vanityurl":"@{username.lower()}"'
+                redirected_away = f'@{username.lower()}' not in r.url.lower()
+                if handle_marker in content or handle_marker2 in content:
+                    available = False  # channel metadata found → taken
+                elif 'ytinitialdata' in content and redirected_away:
+                    available = True   # redirected to homepage → handle not registered
+                elif 'ytinitialdata' in content:
+                    available = None   # ambiguous
+                else:
+                    available = None   # consent wall or bot block
+
+        elif platform == 'pinterest':
+            r = requests.get(f"https://www.pinterest.com/{username}/", headers=headers, timeout=6)
+            if r.status_code == 404:
+                available = True
+            elif r.status_code == 200:
+                available = False
+
+        elif platform == 'twitch':
+            r = requests.get(f"https://www.twitch.tv/{username}", headers=headers, timeout=6)
+            if r.status_code == 404:
+                available = True
+            elif r.status_code == 200:
+                available = False
+
     except:
-        available = False
+        available = None  # timeout or connection error → uncertain
 
     return jsonify({"platform": platform, "available": available})
 
@@ -151,9 +250,6 @@ def password_generator():
 def word_counter():
     return render_template('word_counter.html')
 
-@app.route('/developer-toolbox')
-def developer_toolbox():
-    return render_template('developer_toolbox.html')
 
 @app.route('/text-case-converter')
 def text_case_converter():
@@ -166,6 +262,22 @@ def color_picker():
 @app.route('/url-encoder')
 def url_encoder():
     return render_template('url_encoder.html')
+
+@app.route('/json-formatter')
+def json_formatter():
+    return render_template('json_formatter.html')
+
+@app.route('/unit-converter')
+def unit_converter():
+    return render_template('unit_converter.html')
+
+@app.route('/base64-encoder')
+def base64_encoder():
+    return render_template('base64_encoder.html')
+
+@app.route('/hash-generator')
+def hash_generator():
+    return render_template('hash_generator.html')
 
 @app.route('/api/generate-hashes', methods=['POST'])
 def api_generate_hashes():
@@ -181,6 +293,7 @@ def api_generate_hashes():
         "md5": md5_hash,
         "sha256": sha256_hash
     })
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
