@@ -19,12 +19,6 @@
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://handlekit.com/developer-toolbox</loc>
-        <lastmod>2026-03-15</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
         <loc>https://handlekit.com/qr-generator</loc>
         <lastmod>2026-03-17</lastmod>
         <changefreq>monthly</changefreq>
@@ -63,6 +57,30 @@
     <url>
         <loc>https://handlekit.com/url-encoder</loc>
         <lastmod>2026-03-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://handlekit.com/json-formatter</loc>
+        <lastmod>2026-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://handlekit.com/unit-converter</loc>
+        <lastmod>2026-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://handlekit.com/base64-encoder</loc>
+        <lastmod>2026-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://handlekit.com/hash-generator</loc>
+        <lastmod>2026-03-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
