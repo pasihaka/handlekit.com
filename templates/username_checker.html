@@ -1,5 +1,5 @@
-{% set title = "Username Availability Checker | GitHub & Reddit | HandleKit" %}
-{% set description = "Check username availability on GitHub and Reddit instantly. Ensure brand consistency across platforms with HandleKit's accurate verification engine." %}
+{% set title = "Username Availability Checker | GitHub, Reddit, X, TikTok & More | HandleKit" %}
+{% set description = "Check username availability across GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube instantly. Free, real-time, no sign-up required." %}
 {% extends "layout.html" %}
 
 {% block content %}
@@ -7,7 +7,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="user-check" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Free Username Availability Checker</h1>
-        <p style="color: var(--text-sub);">Reliable, real-time availability checks for GitHub and Reddit.</p>
+        <p style="color: var(--text-sub);">Check availability across GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube simultaneously — results update live as they arrive.</p>
     </div>
 
     <div class="search-box mobile-stack" style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); display: flex; gap: 1rem; margin-bottom: 2rem;">
@@ -25,25 +25,19 @@
         <div class="info-card" style="margin-bottom: 3rem;">
             <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">The Importance of Brand Consistency</h3>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-                In the digital age, your username is your identity. Whether you are a developer building a portfolio on GitHub or a creator engaging with communities on Reddit, having a consistent handle across all platforms is crucial for personal branding. Our Username Availability Checker helps you secure your digital footprint instantly.
+                In the digital age, your username is your identity. Checking 6 major platforms at once means you can quickly find a name that's available everywhere — and secure it before someone else does.
             </p>
             <p style="color: var(--text-sub); line-height: 1.8;">
-                By using a single, recognizable name, you make it easier for collaborators, employers, and followers to find you. Inconsistent handles can lead to "brand fragmentation," making it harder to build a cohesive online presence.
+                Our checker covers the platforms that matter most: GitHub and Reddit for communities, Twitter/X for public conversation, TikTok and YouTube for creators, and Instagram with a direct link to verify. One search, six platforms, instant results.
             </p>
         </div>
 
-        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
-            <div class="info-card">
-                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Why Check GitHub?</h4>
-                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
-                    GitHub is the heartbeat of the open-source world. For developers, a clean GitHub URL is as valuable as a professional domain. Our tool uses direct internal checks to ensure that even "ghost" accounts—those that appear inactive but are technically reserved—are identified accurately.
-                </p>
-            </div>
-            <div class="info-card">
-                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Why Check Reddit?</h4>
-                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
-                    Reddit is home to over 100,000 active communities. Securing your handle on Reddit is vital for protecting your brand's reputation and ensuring you can represent yourself or your project in relevant subreddits without being confused with an impersonator.
-                </p>
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; font-weight: 700;">Legend</h3>
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-badge status-available" style="display:inline-block;"></span><span style="color:var(--text-sub);font-size:0.9rem;">Available</span></div>
+                <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-badge status-taken" style="display:inline-block;"></span><span style="color:var(--text-sub);font-size:0.9rem;">Not Available</span></div>
+                <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-badge status-uncertain" style="display:inline-block;"></span><span style="color:var(--text-sub);font-size:0.9rem;">Uncertain — click to check manually</span></div>
             </div>
         </div>
 
@@ -66,7 +60,7 @@
         background: rgba(255,255,255,0.03);
         border: 1px solid var(--border-color);
         border-radius: 15px;
-        padding: 1.25rem;
+        padding: 1rem 1.25rem;
         display: flex;
         align-items: center;
         gap: 0.75rem;
@@ -75,31 +69,34 @@
         color: inherit;
         cursor: default;
     }
-    .platform-card.clickable {
-        cursor: pointer;
-    }
+    .platform-card.clickable { cursor: pointer; }
     .platform-card.clickable:hover {
-        background: rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.07);
         border-color: var(--accent-color);
         transform: translateY(-2px);
     }
+    .platform-card.uncertain-clickable { cursor: pointer; }
+    .platform-card.uncertain-clickable:hover {
+        background: rgba(255, 185, 35, 0.07);
+        border-color: #FFB923;
+        transform: translateY(-2px);
+    }
+    .plat-badge {
+        width: 36px; height: 36px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; font-size: 0.65rem; font-weight: 800;
+        letter-spacing: -0.5px;
+    }
     .status-badge {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-left: auto;
+        width: 10px; height: 10px;
+        border-radius: 50%; margin-left: auto; flex-shrink: 0;
     }
-    .status-searching { background: #888; animation: pulse 1.5s infinite; }
+    .status-searching { background: #555; animation: pulse 1.5s infinite; }
     .status-available { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
-    .status-taken { background: #ff4444; }
-    
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.3; }
-        100% { opacity: 1; }
-    }
+    .status-taken     { background: #ff4444; box-shadow: 0 0 6px #ff444460; }
+    .status-uncertain { background: #FFB923; box-shadow: 0 0 8px #FFB92380; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
     @media (max-width: 768px) {
-        .info-grid { grid-template-columns: 1fr !important; }
         .search-box { padding: 1.5rem !important; }
         #search-btn { padding: 1rem !important; }
     }
@@ -107,62 +104,77 @@
 
 <script>
 const PLATFORMS = [
-    { name: 'GitHub', id: 'github', signupUrl: 'https://github.com/signup' },
-    { name: 'Reddit', id: 'reddit', signupUrl: 'https://www.reddit.com/register' }
+    { name: 'GitHub',      id: 'github',    color: '#58a6ff', bg: '#161b22', label: 'GH', profileUrl: 'https://github.com/', signupUrl: 'https://github.com/signup' },
+    { name: 'Reddit',      id: 'reddit',    color: '#FF4500', bg: '#1a1a1b', label: 'Re', profileUrl: 'https://reddit.com/user/', signupUrl: 'https://www.reddit.com/register' },
+    { name: 'Twitter / X', id: 'twitter',   color: '#e7e9ea', bg: '#15202b', label: 'X',  profileUrl: 'https://x.com/', signupUrl: 'https://x.com/i/flow/signup' },
+    { name: 'Instagram',   id: 'instagram', color: '#E1306C', bg: '#1a1010', label: 'Ig', profileUrl: 'https://instagram.com/', signupUrl: 'https://www.instagram.com/' },
+    { name: 'TikTok',      id: 'tiktok',    color: '#ff0050', bg: '#0a0a0a', label: 'Tk', profileUrl: 'https://tiktok.com/@', signupUrl: 'https://tiktok.com/signup' },
+    { name: 'YouTube',     id: 'youtube',   color: '#FF0000', bg: '#0f0f0f', label: 'YT', profileUrl: 'https://youtube.com/@', signupUrl: 'https://www.youtube.com/create_channel' },
 ];
 
 const resultsDiv = document.getElementById('results');
-const input = document.getElementById('username-input');
-const btn = document.getElementById('search-btn');
+const input      = document.getElementById('username-input');
+const btn        = document.getElementById('search-btn');
 
-btn.onclick = async () => {
+btn.onclick = () => checkAll();
+input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAll(); });
+
+async function checkAll() {
     const user = input.value.trim();
     if (!user) return;
 
     resultsDiv.innerHTML = '';
     btn.disabled = true;
-    btn.innerText = 'Checking...';
+    btn.innerText = 'Checking…';
 
+    // Create all cards immediately in loading state
     PLATFORMS.forEach(p => {
-        const card = document.createElement('a');
+        const card = document.createElement('div');
         card.className = 'platform-card';
         card.id = `card-${p.id}`;
-        card.target = '_blank';
         card.innerHTML = `
-            <span style="font-weight: 600;">${p.name}</span>
+            <div class="plat-badge" style="background:${p.bg};border:1px solid ${p.color}50;color:${p.color};">${p.label}</div>
+            <span style="font-weight:600;font-size:0.88rem;flex:1;">${p.name}</span>
             <div id="status-${p.id}" class="status-badge status-searching"></div>
         `;
         resultsDiv.appendChild(card);
     });
 
-    for (const p of PLATFORMS) {
-        try {
-            const resp = await fetch(`/api/check-username?user=${user}&platform=${p.id}`);
-            const data = await resp.json();
-            const badge = document.getElementById(`status-${p.id}`);
-            const card = document.getElementById(`card-${p.id}`);
-            
-            badge.className = 'status-badge ' + (data.available ? 'status-available' : 'status-taken');
-            
-            if (data.available && p.signupUrl) {
-                card.href = `${p.signupUrl}?user_login=${user}`;
-                card.classList.add('clickable');
-                card.title = `Register ${user} on ${p.name}`;
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
+    // Kick off all requests in parallel
+    const promises = PLATFORMS.map(p =>
+        fetch(`/api/check-username?user=${encodeURIComponent(user)}&platform=${p.id}`)
+            .then(r => r.json())
+            .then(data => updateCard(p, user, data.available))
+            .catch(() => updateCard(p, user, null))
+    );
 
+    await Promise.allSettled(promises);
     btn.disabled = false;
     btn.innerText = 'Check Now';
-};
+}
 
-// Enter key support
-input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        btn.click();
+function updateCard(p, user, available) {
+    const badge = document.getElementById(`status-${p.id}`);
+    const card  = document.getElementById(`card-${p.id}`);
+    if (!badge || !card) return;
+
+    if (available === true) {
+        badge.className = 'status-badge status-available';
+        card.classList.add('clickable');
+        card.title = `${user} appears available on ${p.name} — click to register`;
+        card.style.cursor = 'pointer';
+        card.onclick = () => window.open(p.signupUrl, '_blank');
+    } else if (available === false) {
+        badge.className = 'status-badge status-taken';
+        card.title = `${user} is not available on ${p.name}`;
+    } else {
+        // null = uncertain
+        badge.className = 'status-badge status-uncertain';
+        card.classList.add('uncertain-clickable');
+        card.title = `Could not verify — click to check ${p.name} manually`;
+        card.style.cursor = 'pointer';
+        card.onclick = () => window.open(p.profileUrl + user, '_blank');
     }
-});
+}
 </script>
 {% endblock %}
