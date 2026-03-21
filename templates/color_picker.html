@@ -163,12 +163,22 @@ function onColorChange(hex) {
     renderPalette();
 }
 function onHexInput(val){if(/^#[0-9a-fA-F]{6}$/.test(val)){document.getElementById('color-wheel').value=val;onColorChange(val);}}
+function getContrastYIQ(hex){
+    hex = hex.replace("#", "");
+    const r = parseInt(hex.slice(0,2),16), g = parseInt(hex.slice(2,4),16), b = parseInt(hex.slice(4,6),16);
+    const yiq = ((r*299)+(g*587)+(b*114))/1000;
+    return (yiq >= 128) ? '#000000' : '#ffffff';
+}
+
 function renderPalette(){
     const colors=genPalette(currentHex,paletteMode);
-    document.getElementById('palette-grid').innerHTML=colors.map(c=>`
+    document.getElementById('palette-grid').innerHTML=colors.map(c=>{
+        const textColor = getContrastYIQ(c);
+        return `
         <div class="cp-swatch" style="background:${c}" onclick="selectSwatch('${c}')" title="${c.toUpperCase()}">
-            <span class="cp-swatch-label">${c.toUpperCase()}</span>
-        </div>`).join('');
+            <span class="cp-swatch-label" style="color:${textColor}; text-shadow:none;">${c.toUpperCase()}</span>
+        </div>`;
+    }).join('');
 }
 function selectSwatch(hex){document.getElementById('color-wheel').value=hex;onColorChange(hex);}
 function setPaletteMode(mode){
