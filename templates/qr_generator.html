@@ -19,7 +19,7 @@
             <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; align-items: end;">
                 <div>
                     <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Size</label>
-                    <select id="qr-size" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
+                    <select id="qr-size" aria-label="QR Code Size" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
                         <option value="200">Small (200x200)</option>
                         <option value="400" selected>Medium (400x400)</option>
                         <option value="800">Large (800x800)</option>
@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Correction Level</label>
-                    <select id="qr-correction" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
+                    <select id="qr-correction" aria-label="Error Correction Level" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
                         <option value="L">Low (7%)</option>
                         <option value="M" selected>Medium (15%)</option>
                         <option value="Q">Quartile (25%)</option>
@@ -47,7 +47,7 @@
         </div>
 
         <div class="preview-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; text-align: center;">
-            <div id="qrcode-container" style="background: #fff; padding: 1rem; border-radius: 12px; display: inline-block; margin-bottom: 1.5rem; min-width: 200px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <div id="qrcode-container" style="background: #fff; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto;">
                 <p id="qr-placeholder" style="color: #666; font-size: 0.8rem;">Preview will appear here</p>
             </div>
             <button id="download-btn" disabled style="width: 100%; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
@@ -59,7 +59,7 @@
     <!-- SEO Content Sections -->
     <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div class="info-card" style="margin-bottom: 3rem;">
-            <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Why QR Codes are Essential for Modern Business</h3>
+            <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Why QR Codes are Essential for Modern Business</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
                 QR (Quick Response) codes have transitioned from a niche technology to a universal bridge between the physical and digital worlds. Whether you are a business owner placing a menu on a table or a creator sharing your portfolio at a networking event, QR codes provide a frictionless way for users to access your content instantly.
             </p>
@@ -70,13 +70,13 @@
 
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
             <div class="info-card">
-                <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">Total Privacy</h4>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.5rem; font-size: 1.1rem;">Total Privacy</h3>
                 <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
                     Unlike other free generators, HandleKit does not track who scans your code. The generation happens entirely in your browser, ensuring your data never even reaches our server. Privacy is at the core of our toolkit.
                 </p>
             </div>
             <div class="info-card">
-                <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">High-Resolution & Custom Sizes</h4>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.5rem; font-size: 1.1rem;">High-Resolution & Custom Sizes</h3>
                 <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
                     Whether you need a small code for a business card or a massive 3000px high-resolution PNG for a billboard, our custom size tool gives you total control over the output dimensions.
                 </p>
@@ -84,7 +84,7 @@
         </div>
 
         <div class="info-card" style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 15px; border: 1px solid var(--border-color);">
-            <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Static vs. Dynamic QR Codes</h3>
+            <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Static vs. Dynamic QR Codes</h2>
             <p style="color: var(--text-sub); line-height: 1.8;">
                 <strong>Static QR Codes</strong> (like the ones we generate) embed the target data directly in the code itself. They are best for permanent links like website URLs or contact information. <strong>Dynamic QR Codes</strong> use a redirect service, allowing you to change the destination later. While dynamic codes are useful for tracking, static codes are more reliable, faster, and more private.
             </p>
@@ -102,7 +102,7 @@
 </style>
 
 <!-- Using qrcode-generator library via CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" defer></script>
 
 <script>
     const generateBtn = document.getElementById('generate-btn');
@@ -175,7 +175,7 @@
             }
             
             const dataUrl = canvas.toDataURL('image/png');
-            qrContainer.innerHTML = `<img src="${dataUrl}" id="generated-qr" style="max-width: 100%; height: auto; border-radius: 4px;" alt="QR Code">`;
+            qrContainer.innerHTML = `<img src="${dataUrl}" id="generated-qr" width="${size}" height="${size}" style="max-width: 100%; height: auto; border-radius: 4px;" alt="QR Code">`;
 
             downloadBtn.disabled = false;
             downloadBtn.style.background = 'var(--accent-gradient)';
