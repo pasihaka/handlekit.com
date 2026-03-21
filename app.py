@@ -259,6 +259,10 @@ def qr_generator():
 def password_generator():
     return render_template('password_generator.html')
 
+@app.route('/100-worst-passwords')
+def worst_passwords():
+    return render_template('worst_passwords.html')
+
 @app.route('/word-counter')
 def word_counter():
     return render_template('word_counter.html')
