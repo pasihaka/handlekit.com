@@ -24,6 +24,10 @@ def health():
 def username_checker():
     return render_template('username_checker.html')
 
+@app.route('/username-rules')
+def username_rules():
+    return render_template('username_rules.html')
+
 @app.route('/privacy-policy')
 def privacy_policy():
     return render_template('privacy_policy.html')
