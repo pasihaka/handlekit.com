@@ -77,118 +77,208 @@
             <em>*These rules are based on publicly available platform guidelines and may change over time.</em>
         </div>
 
-        <h2 style="color: #fff; margin-bottom: 1rem;">Instagram Username Rules</h2>
-        <ul style="color: var(--text-sub); padding-left: 1.5rem; margin-bottom: 2.5rem; line-height: 1.8;">
-            <li style="margin-bottom: 0.5rem;"><strong>Characters Allowed:</strong> Only letters, numbers, periods (.), and underscores (_).</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Length:</strong> Maximum of 30 characters.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>No Spaces:</strong> Spaces are not permitted.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Uniqueness:</strong> Must be unique and not currently in use.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Case Insensitivity:</strong> Capitalization doesn't matter (Username is the same as username).</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Changing Usernames:</strong> You can change your username at any time, but it changes your profile URL.</li>
-            <li><strong>Limitations:</strong> Avoid using excessive periods or underscores, as they make accounts harder to search.</li>
-        </ul>
+        <style>
+            .rules-accordion { background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; transition: all 0.3s ease; }
+            .rules-accordion:hover { border-color: var(--accent-color); background: rgba(255,255,255,0.04); }
+            .rules-accordion > summary { padding: 1.2rem 1.5rem; color: #fff; font-weight: 600; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; list-style: none; user-select: none; }
+            .rules-accordion > summary::-webkit-details-marker { display: none; }
+            .rules-accordion[open] > summary { border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .rules-accordion[open] > summary .accordion-icon { transform: rotate(180deg); color: var(--accent-color); }
+            .rules-accordion-content { padding: 1.5rem; color: var(--text-sub); line-height: 1.8; }
+            .rules-accordion-content h3 { color: #fff; margin-bottom: 0.5rem; font-size: 1.1rem; margin-top: 1.5rem; }
+            .rules-accordion-content h3:first-child { margin-top: 0; }
+            .rules-accordion-content ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+            .rules-accordion-content li { margin-bottom: 0.5rem; }
+            .rules-accordion-content p { margin-bottom: 1rem; }
+            .rules-accordion-content p:last-child, .rules-accordion-content ul:last-child { margin-bottom: 0; }
+            
+            .info-box { border-left: 3px solid var(--accent-color); padding-left: 1rem; margin-top: 1.5rem; background: rgba(0, 210, 255, 0.05); padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; }
+        </style>
 
-        <h2 style="color: #fff; margin-bottom: 1rem;">TikTok Username Rules</h2>
-        <ul style="color: var(--text-sub); padding-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8;">
-            <li style="margin-bottom: 0.5rem;"><strong>Allowed Characters:</strong> Letters, numbers, underscores (_), and periods (.).</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Restrictions:</strong> No spaces or special symbols. Usernames cannot end with a period.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Length:</strong> Between 2 and 24 characters.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Frequency:</strong> You can change your username once every 30 days.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Verification:</strong> If you are verified, changing your username may result in losing verification.</li>
-            <li><strong>Inactive Accounts:</strong> TikTok may reclaim or reset usernames for accounts that have been inactive for over 180 days.</li>
-        </ul>
-        <div style="color: var(--text-sub); border-left: 3px solid var(--accent-color); padding-left: 1rem; margin-bottom: 2.5rem; background: rgba(0, 210, 255, 0.05); padding: 1rem 1.5rem; border-radius: 0 8px 8px 0;">
-            <strong style="color: #fff;">Note on Nicknames:</strong> Your "Name" (nickname) displayed on your profile is different from your username (@username). Nicknames can be up to 30 characters, can be changed once every 7 days, and can contain spaces.
-        </div>
+        <h2 style="color: #fff; margin-bottom: 1.5rem; margin-top: 2rem; font-size: 1.5rem;">Platform-Specific Rules</h2>
 
-        <h2 style="color: #fff; margin-bottom: 1rem;">X (Twitter) Username Rules</h2>
-        <p style="color: var(--text-sub); margin-bottom: 1.5rem;">
-            X (formerly Twitter) usernames (handles) must be 4–15 characters long, contain only alphanumeric characters (A-Z, 0-9) and underscores (_), and cannot include spaces or special characters. Usernames must be unique, cannot impersonate others, and cannot violate X’s safety policies.
-        </p>
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="instagram" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    Instagram Username Rules
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <ul>
+                    <li><strong>Characters Allowed:</strong> Only letters, numbers, periods (.), and underscores (_).</li>
+                    <li><strong>Length:</strong> Maximum of 30 characters.</li>
+                    <li><strong>No Spaces:</strong> Spaces are not permitted.</li>
+                    <li><strong>Uniqueness:</strong> Must be unique and not currently in use.</li>
+                    <li><strong>Case Insensitivity:</strong> Capitalization doesn't matter (Username is the same as username).</li>
+                    <li><strong>Changing Usernames:</strong> You can change your username at any time, but it changes your profile URL.</li>
+                    <li><strong>Limitations:</strong> Avoid using excessive periods or underscores, as they make accounts harder to search.</li>
+                </ul>
+            </div>
+        </details>
 
-        <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.1rem;">Core Rules</h3>
-        <ul style="color: var(--text-sub); padding-left: 1.5rem; margin-bottom: 2rem; line-height: 1.8;">
-            <li style="margin-bottom: 0.5rem;"><strong>Length:</strong> Maximum 15 characters.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Characters:</strong> Letters, numbers, and underscores (_) only.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Spaces:</strong> No spaces are allowed.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Uniqueness:</strong> Must not already be in use.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Restrictions:</strong> Usernames cannot contain "admin" or "twitter" (unless for official accounts).</li>
-            <li><strong>Impersonation & Policy:</strong> You cannot impersonate individuals or brands. Using a username to engage in harassment or hateful conduct is prohibited.</li>
-        </ul>
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="video" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    TikTok Username Rules
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <ul>
+                    <li><strong>Allowed Characters:</strong> Letters, numbers, underscores (_), and periods (.).</li>
+                    <li><strong>Restrictions:</strong> No spaces or special symbols. Usernames cannot end with a period.</li>
+                    <li><strong>Length:</strong> Between 2 and 24 characters.</li>
+                    <li><strong>Frequency:</strong> You can change your username once every 30 days.</li>
+                    <li><strong>Verification:</strong> If you are verified, changing your username may result in losing verification.</li>
+                    <li><strong>Inactive Accounts:</strong> TikTok may reclaim or reset usernames for accounts that have been inactive for over 180 days.</li>
+                </ul>
+                <div class="info-box">
+                    <strong style="color: #fff;">Note on Nicknames:</strong> Your "Name" (nickname) displayed on your profile is different from your username (@username). Nicknames can be up to 30 characters, can be changed once every 7 days, and can contain spaces.
+                </div>
+            </div>
+        </details>
 
-        <h3 style="color: #fff; margin-bottom: 1rem; font-size: 1.1rem;">Key Considerations</h3>
-        <ul style="color: var(--text-sub); padding-left: 1.5rem; margin-bottom: 2.5rem; line-height: 1.8;">
-            <li style="margin-bottom: 0.5rem;"><strong>Availability:</strong> If a desired username is taken, it is likely not available. X does not release inactive usernames except in cases of trademark infringement.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Changing Usernames:</strong> You can change your username in settings. Once changed, your old username is immediately available to the public.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Reclaiming Usernames:</strong> X reserves the right to reclaim usernames, particularly for trademark violations, as they are considered the property of the platform.</li>
-            <li><strong>Buying/Selling:</strong> Attempting to sell, buy, or trade usernames is strictly prohibited.</li>
-        </ul>
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="twitter" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    X (Twitter) Username Rules
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <p>X (formerly Twitter) usernames (handles) must be 4–15 characters long, contain only alphanumeric characters (A-Z, 0-9) and underscores (_), and cannot include spaces or special characters. Usernames must be unique, cannot impersonate others, and cannot violate X’s safety policies.</p>
+                
+                <h3>Core Rules</h3>
+                <ul>
+                    <li><strong>Length:</strong> Maximum 15 characters.</li>
+                    <li><strong>Characters:</strong> Letters, numbers, and underscores (_) only.</li>
+                    <li><strong>Spaces:</strong> No spaces are allowed.</li>
+                    <li><strong>Uniqueness:</strong> Must not already be in use.</li>
+                    <li><strong>Restrictions:</strong> Usernames cannot contain "admin" or "twitter" (unless for official accounts).</li>
+                    <li><strong>Impersonation & Policy:</strong> You cannot impersonate individuals or brands. Using a username to engage in harassment or hateful conduct is prohibited.</li>
+                </ul>
 
-        <h2 style="color: #fff; margin-bottom: 1rem;">YouTube Username Rules</h2>
-        <p style="color: var(--text-sub); margin-bottom: 1.5rem;">
-            YouTube uses handles (formatted like @username) that are tied directly to your channel URL. Standard alphabet handles must be between 3 and 30 characters long. They can include alphabet letters, numbers, underscores (_), hyphens (-), periods (.), and Latin middle dots (·).
-        </p>
-        <p style="color: var(--text-sub); margin-bottom: 2.5rem;">
-            Handles cannot begin or end with punctuation, cannot be formatted to look like a URL or a phone number, and must follow YouTube's Community Guidelines. Length limits vary slightly for non-Latin scripts (e.g., Hangul handles can be 1-10 characters).
-        </p>
+                <h3>Key Considerations</h3>
+                <ul>
+                    <li><strong>Availability:</strong> If a desired username is taken, it is likely not available. X does not release inactive usernames except in cases of trademark infringement.</li>
+                    <li><strong>Changing Usernames:</strong> You can change your username in settings. Once changed, your old username is immediately available to the public.</li>
+                    <li><strong>Reclaiming Usernames:</strong> X reserves the right to reclaim usernames, particularly for trademark violations, as they are considered the property of the platform.</li>
+                    <li><strong>Buying/Selling:</strong> Attempting to sell, buy, or trade usernames is strictly prohibited.</li>
+                </ul>
+            </div>
+        </details>
 
-        <h2 style="color: #fff; margin-bottom: 1rem;">Reddit Username Rules</h2>
-        <ul style="color: var(--text-sub); padding-left: 1.5rem; margin-bottom: 2rem; line-height: 1.8;">
-            <li style="margin-bottom: 0.5rem;"><strong>Length:</strong> 3 to 20 characters.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Characters:</strong> Letters, numbers, dashes (-), and underscores (_).</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Permanence:</strong> Once you create an account and finalize the username, it cannot be changed. The only way to change your username is to create a new account.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>Uniqueness:</strong> Usernames cannot be reused by anyone, ever, even if the account is deleted.</li>
-            <li style="margin-bottom: 0.5rem;"><strong>No Impersonation:</strong> You cannot use a username to impersonate, threaten, or harass others.</li>
-            <li><strong>Automatic Selection:</strong> If you do not choose a username during sign-up, Reddit may assign a random one.</li>
-        </ul>
-        <div style="color: var(--text-sub); border-left: 3px solid var(--accent-color); padding-left: 1rem; margin-bottom: 2.5rem; background: rgba(0, 210, 255, 0.05); padding: 1rem 1.5rem; border-radius: 0 8px 8px 0;">
-            <strong style="color: #fff;">Display Names vs. Usernames:</strong> Your <strong style="color: #fff;">Username</strong> (the u/ name used for logging in and appearing in URLs) is permanent. Your <strong style="color: #fff;">Display Name</strong> is an editable name shown on your profile page that can be changed.
-        </div>
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="youtube" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    YouTube Username Rules
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <p>YouTube uses handles (formatted like @username) that are tied directly to your channel URL. Standard alphabet handles must be between 3 and 30 characters long. They can include alphabet letters, numbers, underscores (_), hyphens (-), periods (.), and Latin middle dots (·).</p>
+                <p>Handles cannot begin or end with punctuation, cannot be formatted to look like a URL or a phone number, and must follow YouTube's Community Guidelines. Length limits vary slightly for non-Latin scripts (e.g., Hangul handles can be 1-10 characters).</p>
+            </div>
+        </details>
 
-        <h2 style="color: #fff; margin-bottom: 1rem;">GitHub Username Rules</h2>
-        <p style="color: var(--text-sub); margin-bottom: 1.5rem;">
-            Usernames for user accounts on GitHub can only contain alphanumeric characters and dashes ( - ).
-        </p>
-        <p style="color: var(--text-sub); margin-bottom: 2.5rem;">
-            They can be up to 39 characters long. You cannot have multiple consecutive dashes, and the username cannot begin or end with a dash. Since GitHub is a professional developer platform, a clean variation of your real name or brand is highly recommended.
-        </p>
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="message-square" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    Reddit Username Rules
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <ul>
+                    <li><strong>Length:</strong> 3 to 20 characters.</li>
+                    <li><strong>Characters:</strong> Letters, numbers, dashes (-), and underscores (_).</li>
+                    <li><strong>Permanence:</strong> Once you create an account and finalize the username, it cannot be changed. The only way to change your username is to create a new account.</li>
+                    <li><strong>Uniqueness:</strong> Usernames cannot be reused by anyone, ever, even if the account is deleted.</li>
+                    <li><strong>No Impersonation:</strong> You cannot use a username to impersonate, threaten, or harass others.</li>
+                    <li><strong>Automatic Selection:</strong> If you do not choose a username during sign-up, Reddit may assign a random one.</li>
+                </ul>
+                <div class="info-box">
+                    <strong style="color: #fff;">Display Names vs. Usernames:</strong> Your <strong style="color: #fff;">Username</strong> (the u/ name used for logging in and appearing in URLs) is permanent. Your <strong style="color: #fff;">Display Name</strong> is an editable name shown on your profile page that can be changed.
+                </div>
+            </div>
+        </details>
 
-        <h2 style="color: #fff; margin-bottom: 1rem;">Common Username Issues</h2>
-        
-        <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.2rem;">Why is my username taken but no account exists?</h3>
-        <p style="color: var(--text-sub); margin-bottom: 1.5rem;">
-            Some platforms reserve usernames even after accounts are deleted or inactive.
-        </p>
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="github" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    GitHub Username Rules
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <p>Usernames for user accounts on GitHub can only contain alphanumeric characters and dashes ( - ).</p>
+                <p>They can be up to 39 characters long. You cannot have multiple consecutive dashes, and the username cannot begin or end with a dash. Since GitHub is a professional developer platform, a clean variation of your real name or brand is highly recommended.</p>
+            </div>
+        </details>
 
-        <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.2rem;">Why does one platform accept my username but another does not?</h3>
-        <p style="color: var(--text-sub); margin-bottom: 2.5rem;">
-            Each platform has different rules for length and allowed characters, so a valid username on one platform may not be valid on another.
-        </p>
+        <h2 style="color: #fff; margin-bottom: 1.5rem; margin-top: 3rem; font-size: 1.5rem;">Common Questions & Tips</h2>
 
-        <h2 style="color: #fff; margin-bottom: 1rem;">Tips for Choosing a Good Username</h2>
-        <ul style="list-style: none; padding-left: 0; margin-bottom: 2.5rem; line-height: 2;">
-            <li style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-sub);"><i data-lucide="check-circle" style="color: var(--accent-color); width: 16px; height: 16px;"></i> Keep it short and easy to remember</li>
-            <li style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-sub);"><i data-lucide="check-circle" style="color: var(--accent-color); width: 16px; height: 16px;"></i> Avoid complex symbols</li>
-            <li style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-sub);"><i data-lucide="check-circle" style="color: var(--accent-color); width: 16px; height: 16px;"></i> Stay consistent across platforms</li>
-            <li style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-sub);"><i data-lucide="check-circle" style="color: var(--accent-color); width: 16px; height: 16px;"></i> Check availability before committing</li>
-        </ul>
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="alert-circle" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    Common Username Issues
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <h3>Why is my username taken but no account exists?</h3>
+                <p>Some platforms reserve usernames even after accounts are deleted or inactive.</p>
 
-        <h2 style="color: #fff; margin-bottom: 1rem; margin-top: 3rem;">Frequently Asked Questions</h2>
-        
-        <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.2rem;">Can two people have the same username on different platforms?</h3>
-        <p style="color: var(--text-sub); margin-bottom: 1.5rem;">
-            Yes, usernames are unique per platform, not across all platforms. Securing a name on one platform doesn't reserve it on others.
-        </p>
+                <h3>Why does one platform accept my username but another does not?</h3>
+                <p>Each platform has different rules for length and allowed characters, so a valid username on one platform may not be valid on another.</p>
+            </div>
+        </details>
 
-        <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.2rem;">What is the best way to find an available username?</h3>
-        <p style="color: var(--text-sub); margin-bottom: 1.5rem;">
-            The fastest way is to check multiple platforms at once using a username availability tool.
-        </p>
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="help-circle" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    Frequently Asked Questions
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <h3>Can two people have the same username on different platforms?</h3>
+                <p>Yes, usernames are unique per platform, not across all platforms. Securing a name on one platform doesn't reserve it on others.</p>
 
-        <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.2rem;">Can I buy a username from someone else if it's taken?</h3>
-        <p style="color: var(--text-sub); margin-bottom: 2.5rem;">
-            While an unofficial market exists, most platforms (including Instagram and TikTok) strictly prohibit buying and selling usernames in their Terms of Service. Doing so puts the account at high risk of being permanently banned.
-        </p>
+                <h3>What is the best way to find an available username?</h3>
+                <p>The fastest way is to check multiple platforms at once using a username availability tool.</p>
+
+                <h3>Can I buy a username from someone else if it's taken?</h3>
+                <p>While an unofficial market exists, most platforms (including Instagram and TikTok) strictly prohibit buying and selling usernames in their Terms of Service. Doing so puts the account at high risk of being permanently banned.</p>
+            </div>
+        </details>
+
+        <details class="rules-accordion">
+            <summary>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="lightbulb" style="color: var(--accent-color); width: 20px; height: 20px;"></i>
+                    Tips for Choosing a Good Username
+                </div>
+                <i data-lucide="chevron-down" class="accordion-icon" style="transition: transform 0.3s;"></i>
+            </summary>
+            <div class="rules-accordion-content">
+                <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-sub); margin-bottom: 0.75rem;"><i data-lucide="check-circle" style="color: var(--accent-color); width: 16px; height: 16px;"></i> Keep it short and easy to remember</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-sub); margin-bottom: 0.75rem;"><i data-lucide="check-circle" style="color: var(--accent-color); width: 16px; height: 16px;"></i> Avoid complex symbols</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-sub); margin-bottom: 0.75rem;"><i data-lucide="check-circle" style="color: var(--accent-color); width: 16px; height: 16px;"></i> Stay consistent across platforms</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-sub); margin-bottom: 0;"><i data-lucide="check-circle" style="color: var(--accent-color); width: 16px; height: 16px;"></i> Check availability before committing</li>
+                </ul>
+            </div>
+        </details>
 
         <!-- Internal Link to Checker -->
         <div style="background: rgba(0, 210, 255, 0.05); border: 1px solid var(--accent-color); border-radius: 12px; padding: 2rem; text-align: center; margin-top: 3rem;">
