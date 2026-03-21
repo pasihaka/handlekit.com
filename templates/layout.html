@@ -29,10 +29,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- PERF: Load fonts synchronously to avoid Cumulative Layout Shift (CLS) on mobile. 
-         Preloading helps grab the CSS early. -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
+    <!-- PERF: Load fonts with display=block to avoid Cumulative Layout Shift (CLS) on mobile. 
+         This hides the text until the font loads (FOIT), rather than swapping and causing layout jitter. -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=block">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=block">
 
     <!-- PERF: style.css fully inlined — eliminates the 160ms render-blocking external request.
          At 4.5 KB it is well within the recommended inline budget (<14 KB).
