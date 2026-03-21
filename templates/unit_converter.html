@@ -41,12 +41,12 @@
         <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: end;" class="uc-convert-row">
             <!-- From -->
             <div>
-                <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">From</label>
+                <label for="uc-from-val" style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">From</label>
                 <input id="uc-from-val" type="number" value="1" oninput="convertFrom()"
                     onfocus="this.style.borderColor='var(--accent-color)'"
                     onblur="this.style.borderColor='var(--border-color)'"
                     style="width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:14px;padding:0.9rem 1rem;color:#fff;font-size:1.2rem;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;box-sizing:border-box;font-weight:600;">
-                <select id="uc-from-unit" onchange="convertFrom()"
+                <select id="uc-from-unit" aria-label="Select unit to convert from" onchange="convertFrom()"
                     style="width:100%;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:0.7rem 1rem;color:#fff;font-size:0.9rem;font-family:'Outfit',sans-serif;outline:none;cursor:pointer;">
                 </select>
             </div>
@@ -63,12 +63,12 @@
 
             <!-- To -->
             <div>
-                <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">To</label>
+                <label for="uc-to-val" style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">To</label>
                 <input id="uc-to-val" type="number" value="" oninput="convertTo()"
                     onfocus="this.style.borderColor='var(--accent-color)'"
                     onblur="this.style.borderColor='var(--border-color)'"
                     style="width:100%;background:rgba(0,210,255,0.05);border:1px solid var(--border-color);border-radius:14px;padding:0.9rem 1rem;color:var(--accent-color);font-size:1.2rem;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;box-sizing:border-box;font-weight:700;">
-                <select id="uc-to-unit" onchange="convertFrom()"
+                <select id="uc-to-unit" aria-label="Select unit to convert to" onchange="convertFrom()"
                     style="width:100%;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:0.7rem 1rem;color:#fff;font-size:0.9rem;font-family:'Outfit',sans-serif;outline:none;cursor:pointer;">
                 </select>
             </div>
