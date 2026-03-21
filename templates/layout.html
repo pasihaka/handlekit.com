@@ -313,7 +313,9 @@ footer {
     <!-- Init Lucide icons: script is deferred, so onload is the reliable trigger -->
     <script>
         document.getElementById('lucide-script').addEventListener('load', function() {
-            lucide.createIcons();
+            requestAnimationFrame(() => {
+                lucide.createIcons();
+            });
         });
     </script>
 </body>
