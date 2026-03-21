@@ -10,6 +10,7 @@ import uuid
 import hashlib
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 CORS(app)
 
 @app.route('/')
@@ -24,7 +25,7 @@ def health():
 def username_checker():
     return render_template('username_checker.html')
 
-@app.route('/username-rules', strict_slashes=False)
+@app.route('/username-rules')
 def username_rules():
     return render_template('username_rules.html')
 
