@@ -20,9 +20,9 @@
         <input type="hidden" id="format-value" value="JPEG">
     </div>
 
-    <div class="upload-zone" id="drop-zone" style="background: var(--card-bg); border: 2px dashed var(--border-color); border-radius: 20px; padding: 4rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+    <div class="upload-zone" id="drop-zone" style="background: var(--card-bg); border: 2px dashed var(--border-color); border-radius: 20px; min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; transition: all 0.3s ease;">
         <i data-lucide="upload-cloud" style="width: 48px; height: 48px; color: var(--text-sub); margin-bottom: 1rem;"></i>
-        <p style="color: var(--text-sub); font-size: 1.1rem;">Drag & drop images or <span style="color: var(--accent-color); font-weight: 600;">browse</span></p>
+        <p style="color: var(--text-sub); font-size: 1.1rem; margin: 0;">Drag & drop images or <span style="color: var(--accent-color); font-weight: 600;">browse</span></p>
         <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
     </div>
 
