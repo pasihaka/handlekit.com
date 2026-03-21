@@ -29,11 +29,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- PERF: Non-blocking Google Fonts — print media trick swaps to 'all' once loaded.
-         No render blocking, no FOIT. -->
+    <!-- PERF: Load fonts synchronously to avoid Cumulative Layout Shift (CLS) on mobile. 
+         Preloading helps grab the CSS early. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
 
     <!-- PERF: style.css fully inlined — eliminates the 160ms render-blocking external request.
          At 4.5 KB it is well within the recommended inline budget (<14 KB).
@@ -217,8 +216,8 @@ footer {
 }
     </style>
 
-    <!-- PERF: Lucide deferred — does not block first paint. onload fires createIcons() reliably. -->
-    <script src="https://unpkg.com/lucide@latest" defer id="lucide-script"></script>
+    <!-- PERF: Pinned Lucide to a specific version to avoid 302 redirects from @latest -->
+    <script src="https://unpkg.com/lucide@0.344.0" defer id="lucide-script"></script>
 </head>
 <body>
     <div class="bg-gradient"></div>
@@ -255,7 +254,7 @@ footer {
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723" crossorigin="anonymous"></script>
     {% endif %}
 
-    <!-- PERF: GTM lazy-loaded after first user interaction — removes 150 KiB from critical path -->
+    <!-- PERF: GTM lazy-loaded after first user interaction / 8 seconds to prevent main-thread blocking -->
     {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
     <script>
     (function() {
@@ -263,23 +262,28 @@ footer {
         function loadGTM() {
             if (gtmLoaded) return;
             gtmLoaded = true;
-            // Load the GTM script
-            var s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-D0Y7KJPEEK';
-            document.head.appendChild(s);
-            // Init dataLayer after script loads
-            s.onload = function() {
+            
+            // Load GTM
+            var gtmScript = document.createElement('script');
+            gtmScript.async = true;
+            gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-D0Y7KJPEEK';
+            document.head.appendChild(gtmScript);
+            
+            gtmScript.onload = function() {
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 gtag('config', 'G-D0Y7KJPEEK');
             };
         }
-        ['scroll', 'click', 'touchstart', 'keydown'].forEach(function(evt) {
+        
+        // Load on any user interaction
+        ['scroll', 'click', 'touchstart', 'keydown', 'mousemove'].forEach(function(evt) {
             window.addEventListener(evt, loadGTM, { once: true, passive: true });
         });
-        setTimeout(loadGTM, 5000);
+        
+        // Fallback: load after 8 seconds if no interaction occurs
+        setTimeout(loadGTM, 8000);
     })();
     </script>
     {% endif %}
