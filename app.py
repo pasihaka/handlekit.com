@@ -72,13 +72,21 @@ def api_check_username():
     available = None  # None = uncertain
     try:
         if platform == 'github':
-            r = requests.get(f"https://github.com/signup_check/username?value={username}", timeout=5)
-            available = (r.status_code == 200)
+            import re
+            if len(username) < 1 or len(username) > 39 or not re.match(r'^[a-zA-Z0-9\-]+$', username) or username.startswith('-') or username.endswith('-') or '--' in username:
+                available = 'invalid'
+            else:
+                r = requests.get(f"https://github.com/signup_check/username?value={username}", timeout=5)
+                available = (r.status_code == 200)
 
         elif platform == 'reddit':
-            r = requests.get(f"https://www.reddit.com/api/username_available.json?user={username}",
-                             headers=headers, timeout=5)
-            available = r.json() if r.status_code == 200 else False
+            import re
+            if len(username) < 3 or len(username) > 20 or not re.match(r'^[a-zA-Z0-9_\-]+$', username):
+                available = 'invalid'
+            else:
+                r = requests.get(f"https://www.reddit.com/api/username_available.json?user={username}",
+                                 headers=headers, timeout=5)
+                available = r.json() if r.status_code == 200 else False
 
         elif platform == 'gitlab':
             r = requests.get(f"https://gitlab.com/{username}", headers=headers, timeout=6)
@@ -99,53 +107,79 @@ def api_check_username():
             available = (r.status_code == 404)
 
         elif platform == 'twitter':
-            # Use Twitter's signup username check API — same approach as GitHub
-            r = requests.get(
-                f'https://api.twitter.com/i/users/username_available.json?username={username}',
-                headers=headers, timeout=6
-            )
-            if r.status_code == 200:
-                try:
-                    data = r.json()
-                    reason = data.get('reason', '')
-                    if data.get('valid') and reason == 'available':
-                        available = True
-                    else:
-                        available = False  # taken, too long, banned word — all not available
-                except Exception:
-                    available = None
+            import re
+            user_lower = username.lower()
+            if len(username) > 15 or not re.match(r'^[a-zA-Z0-9_]+$', username) or 'twitter' in user_lower or 'admin' in user_lower:
+                available = 'invalid'
+            elif len(username) < 4:
+                available = 'unavailable'
             else:
-                available = None
+                # Use Twitter's signup username check API — same approach as GitHub
+                r = requests.get(
+                    f'https://api.twitter.com/i/users/username_available.json?username={username}',
+                    headers=headers, timeout=6
+                )
+                if r.status_code == 200:
+                    try:
+                        data = r.json()
+                        reason = data.get('reason', '')
+                        if data.get('valid') and reason == 'available':
+                            available = True
+                        else:
+                            if reason in ['too_long', 'too_short', 'invalid_characters']:
+                                available = 'invalid'
+                            else:
+                                available = False  # taken
+                    except Exception:
+                        available = None
+                else:
+                    available = None
 
         elif platform == 'instagram':
-            # Instagram rate-limits all server-side requests (HTTP 429) regardless of cookies.
-            # Cannot be checked without a residential proxy or authenticated session.
-            available = None
+            import re
+            if len(username) < 1 or len(username) > 30 or not re.match(r'^[a-zA-Z0-9_\.]+$', username):
+                available = 'invalid'
+            elif username.startswith('.') or username.endswith('.') or '..' in username:
+                available = 'invalid'
+            elif len(username) <= 3:
+                # User request: mark 3 or less as "Unavailable" (Taken)
+                available = 'unavailable'
+            elif username.isdigit():
+                available = 'invalid'
+            else:
+                # Instagram rate-limits all server-side requests (HTTP 429) regardless of cookies.
+                # Cannot be checked without a residential proxy or authenticated session.
+                available = None
 
         elif platform == 'tiktok':
-            # TikTok embeds user data as JSON in the page — check for uniqueId presence
-            r = requests.get(f"https://www.tiktok.com/@{username}", headers=headers, timeout=8)
-            if r.status_code == 404:
-                available = True
-            elif r.status_code == 200:
-                content = r.text.lower()
-                search_term = f'"uniqueid":"{username.lower()}"'
-                search_term2 = f'"uniqueid": "{username.lower()}"'
-                if search_term in content or search_term2 in content:
-                    available = False  # username found in page data → taken
-                elif '__universal_data_for_rehydration__' in content:
-                    available = True   # page data loaded but username not found → likely available
-                else:
-                    available = None   # could not parse page data
+            import re
+            if len(username) < 2 or len(username) > 24 or not re.match(r'^[a-zA-Z0-9_\.]+$', username) or username.endswith('.') or username.isdigit():
+                available = 'invalid'
+            else:
+                # TikTok embeds user data as JSON in the page — check for uniqueId presence
+                r = requests.get(f"https://www.tiktok.com/@{username}", headers=headers, timeout=8)
+                if r.status_code == 404:
+                    available = True
+                elif r.status_code == 200:
+                    content = r.text.lower()
+                    search_term = f'"uniqueid":"{username.lower()}"'
+                    search_term2 = f'"uniqueid": "{username.lower()}"'
+                    if search_term in content or search_term2 in content:
+                        available = False  # username found in page data → taken
+                    elif '__universal_data_for_rehydration__' in content:
+                        available = True   # page data loaded but username not found → likely available
+                    else:
+                        available = None   # could not parse page data
 
         elif platform == 'youtube':
+            yt_username = username.replace('\u00B7', '.')
             # YouTube shows a cookie consent wall to EU users/bots without cookies.
             # Pass the SOCS bypass cookie to skip it and reach the actual page.
             yt_cookies = {
                 'SOCS': 'CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjYwMzE4LjA3X3AwGgJmaSACGgYIgJzyzQY',
                 'VISITOR_INFO1_LIVE': 'TOwB_epDIbg'
             }
-            r = requests.get(f"https://www.youtube.com/@{username}", headers=headers,
+            r = requests.get(f"https://www.youtube.com/@{yt_username}", headers=headers,
                              cookies=yt_cookies, timeout=8, allow_redirects=True)
             # If we still landed on the consent domain, mark uncertain
             if 'consent.youtube.com' in r.url:
@@ -154,9 +188,9 @@ def api_check_username():
                 available = True
             elif r.status_code == 200:
                 content = r.text.lower()
-                handle_marker  = f'"canonicalbaseurl":"/@{username.lower()}"'
-                handle_marker2 = f'"vanityurl":"@{username.lower()}"'
-                redirected_away = f'@{username.lower()}' not in r.url.lower()
+                handle_marker  = f'"canonicalbaseurl":"/@{yt_username.lower()}"'
+                handle_marker2 = f'"vanityurl":"@{yt_username.lower()}"'
+                redirected_away = f'@{yt_username.lower()}' not in r.url.lower()
                 if handle_marker in content or handle_marker2 in content:
                     available = False  # channel metadata found → taken
                 elif 'ytinitialdata' in content and redirected_away:
@@ -165,6 +199,12 @@ def api_check_username():
                     available = None   # ambiguous
                 else:
                     available = None   # consent wall or bot block
+
+            # Only reject if we think it's available, otherwise respect the taken status of legacy handles
+            if available is True:
+                import re
+                if len(username) < 3 or len(username) > 30 or not re.match(r'^[a-zA-Z0-9_\-\.\u00B7]+$', username) or not username[0].isalnum() or not username[-1].isalnum():
+                    available = 'invalid'
 
         elif platform == 'pinterest':
             r = requests.get(f"https://www.pinterest.com/{username}/", headers=headers, timeout=6)
