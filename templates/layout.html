@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="{{ request.base_url }}">
-    <link rel="icon" type="image/png" sizes="612x612" href="{{ url_for('static', filename='img/logo_transparent.png') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo_transparent.png') }}">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/logo_transparent.png') }}">
+    <link rel="icon" type="image/webp" href="{{ url_for('static', filename='img/logo_transparent.webp') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo_transparent.webp') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/logo_transparent_small.png') }}">
 
     <title>{{ title if title else "HandleKit | Professional Digital Tools for Developers &amp; Creators" }}</title>
     <meta name="description" content="{{ description if description else 'Fast, simple, and premium online tools. Check username availability, optimize images with AI, and use essential developer utilities with HandleKit.' }}">
@@ -60,6 +60,15 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  /* Stabilize font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Reserve space for Lucide icons before they load */
+i[data-lucide] {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
 }
 .bg-gradient {
   position: fixed;
@@ -221,14 +230,14 @@ footer {
 <body>
     <div class="bg-gradient"></div>
     <div class="container">
-        <header style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin-bottom: 4rem;">
+        <header style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin-bottom: 4rem; min-height: 180px;">
             <a href="/" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 0.5rem; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-                <div style="background: rgba(255, 255, 255, 0.03); padding: 0.6rem; border-radius: 14px; border: 1px solid var(--accent-color); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--glow-color);">
-                    <img src="{{ url_for('static', filename='img/logo_transparent.png') }}" alt="HandleKit Logo" style="width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(201, 28, 35, 0.3));">
+                <div style="background: rgba(255, 255, 255, 0.03); padding: 0.6rem; border-radius: 14px; border: 1px solid var(--accent-color); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--glow-color); width: 52px; height: 52px;">
+                    <img src="{{ url_for('static', filename='img/logo_transparent.webp') }}" alt="HandleKit Logo" width="36" height="36" style="width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(201, 28, 35, 0.3));">
                 </div>
                 <h2 style="font-size: 2.8rem; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0; letter-spacing: -1px; padding-bottom: 5px;">HandleKit</h2>
             </a>
-            <p class="subtitle" style="margin-top: 0.25rem;">Efficient, Simple, Always Free Tools.</p>
+            <p class="subtitle" style="margin-top: 0.25rem; min-height: 1.5rem;">Efficient, Simple, Always Free Tools.</p>
         </header>
 
         <main>
