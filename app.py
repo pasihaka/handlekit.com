@@ -112,7 +112,7 @@ def api_check_username():
             if len(username) > 15 or not re.match(r'^[a-zA-Z0-9_]+$', username) or 'twitter' in user_lower or 'admin' in user_lower:
                 available = 'invalid'
             elif len(username) < 4:
-                available = 'unavailable'
+                available = 'taken_or_invalid'
             else:
                 # Use Twitter's signup username check API — same approach as GitHub
                 r = requests.get(
@@ -128,6 +128,8 @@ def api_check_username():
                         else:
                             if reason in ['too_long', 'too_short', 'invalid_characters']:
                                 available = 'invalid'
+                            elif reason == 'is_banned_word':
+                                available = 'taken_or_invalid'
                             else:
                                 available = False  # taken
                     except Exception:
@@ -143,7 +145,7 @@ def api_check_username():
                 available = 'invalid'
             elif len(username) <= 3:
                 # User request: mark 3 or less as "Unavailable" (Taken)
-                available = 'unavailable'
+                available = 'taken_or_invalid'
             elif username.isdigit():
                 available = 'invalid'
             else:
@@ -203,8 +205,22 @@ def api_check_username():
             # Only reject if we think it's available, otherwise respect the taken status of legacy handles
             if available is True:
                 import re
+                alphanum = re.sub(r'[^a-zA-Z0-9]', '', username.lower())
+                alphanum_len = len(alphanum)
+                
+                # Smart squatter traps
+                common_squats = {
+                    'abcdef', 'bcdefg', 'cdefgh', 'defghi', 'efghij',
+                    'qwerty', 'asdfgh', 'zxcvbn', 'qazwsx', 'yt1234', 'admin1', 'test12', 'system',
+                    '123456', '234567', '345678', '456789', '567890', '098765', '987654', '876543',
+                    '123123', '012345'
+                }
+                is_repeating = len(set(alphanum)) <= 2 and alphanum_len > 0
+                
                 if len(username) < 3 or len(username) > 30 or not re.match(r'^[a-zA-Z0-9_\-\.\u00B7]+$', username) or not username[0].isalnum() or not username[-1].isalnum():
                     available = 'invalid'
+                elif alphanum_len <= 5 or alphanum in common_squats or is_repeating:
+                    available = 'taken_or_invalid'
 
         elif platform == 'pinterest':
             r = requests.get(f"https://www.pinterest.com/{username}/", headers=headers, timeout=6)
@@ -306,6 +322,10 @@ def worst_passwords():
 @app.route('/word-counter')
 def word_counter():
     return render_template('word_counter.html')
+
+@app.route('/words-to-pages')
+def words_to_pages():
+    return render_template('words_to_pages.html')
 
 
 @app.route('/text-case-converter')
