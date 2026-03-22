@@ -37,13 +37,13 @@
                         <td style="padding: 1rem; color: #fff; font-weight: 500;"><div style="display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;"><i data-lucide="instagram" style="width: 16px; height: 16px; flex-shrink: 0;"></i>Instagram</div></td>
                         <td style="padding: 1rem;">1–30</td>
                         <td style="padding: 1rem;">letters, numbers, [ . _ ]</td>
-                        <td style="padding: 1rem;">No spaces allowed</td>
+                        <td style="padding: 1rem;">Cannot start/end with dot, no consecutive dots. Must contain a letter.</td>
                     </tr>
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <td style="padding: 1rem; color: #fff; font-weight: 500;"><div style="display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;"><i data-lucide="video" style="width: 16px; height: 16px; flex-shrink: 0;"></i>TikTok</div></td>
                         <td style="padding: 1rem;">2–24</td>
                         <td style="padding: 1rem;">letters, numbers, [ . _ ]</td>
-                        <td style="padding: 1rem;">Cannot end with period</td>
+                        <td style="padding: 1rem;">Cannot end with period. Cannot be only numbers.</td>
                     </tr>
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <td style="padding: 1rem; color: #fff; font-weight: 500;"><div style="display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;"><i data-lucide="twitter" style="width: 16px; height: 16px; flex-shrink: 0;"></i>X (Twitter)</div></td>
@@ -55,19 +55,19 @@
                         <td style="padding: 1rem; color: #fff; font-weight: 500;"><div style="display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;"><i data-lucide="youtube" style="width: 16px; height: 16px; flex-shrink: 0;"></i>YouTube</div></td>
                         <td style="padding: 1rem;">3–30</td>
                         <td style="padding: 1rem;">letters, numbers, [ _ - . · ]</td>
-                        <td style="padding: 1rem;">Cannot mirror URLs/phones</td>
+                        <td style="padding: 1rem;">Cannot mirror URLs/phones, or start/end with symbols.</td>
                     </tr>
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <td style="padding: 1rem; color: #fff; font-weight: 500;"><div style="display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;"><i data-lucide="github" style="width: 16px; height: 16px; flex-shrink: 0;"></i>GitHub</div></td>
                         <td style="padding: 1rem;">1–39</td>
                         <td style="padding: 1rem;">alphanumeric, hyphens</td>
-                        <td style="padding: 1rem;">No consecutive hyphens</td>
+                        <td style="padding: 1rem;">Cannot start/end with hyphen. No consecutive hyphens.</td>
                     </tr>
                     <tr>
                         <td style="padding: 1rem; color: #fff; font-weight: 500;"><div style="display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;"><i data-lucide="message-square" style="width: 16px; height: 16px; flex-shrink: 0;"></i>Reddit</div></td>
                         <td style="padding: 1rem;">3–20</td>
                         <td style="padding: 1rem;">letters, numbers, hyphens, underscores</td>
-                        <td style="padding: 1rem;">Cannot begin/end with hyphen</td>
+                        <td style="padding: 1rem;">Permanent once set</td>
                     </tr>
                 </tbody>
             </table>
@@ -108,7 +108,9 @@
             <div class="rules-accordion-content">
                 <ul>
                     <li><strong>Characters Allowed:</strong> Only letters, numbers, periods (.), and underscores (_).</li>
-                    <li><strong>Length:</strong> Maximum of 30 characters.</li>
+                    <li><strong>Dot Rules:</strong> Cannot start or end with a dot, and cannot have consecutive dots (..).</li>
+                    <li><strong>Numbers:</strong> Cannot consist entirely of numbers (purely numeric names are typically not accepted).</li>
+                    <li><strong>Length:</strong> Maximum of 30 characters. Typically, names of 1–3 characters are already taken.</li>
                     <li><strong>No Spaces:</strong> Spaces are not permitted.</li>
                     <li><strong>Uniqueness:</strong> Must be unique and not currently in use.</li>
                     <li><strong>Case Insensitivity:</strong> Capitalization doesn't matter (Username is the same as username).</li>
@@ -129,7 +131,7 @@
             <div class="rules-accordion-content">
                 <ul>
                     <li><strong>Allowed Characters:</strong> Letters, numbers, underscores (_), and periods (.).</li>
-                    <li><strong>Restrictions:</strong> No spaces or special symbols. Usernames cannot end with a period.</li>
+                    <li><strong>Restrictions:</strong> No spaces or special symbols. Usernames cannot end with a period and cannot consist entirely of numbers.</li>
                     <li><strong>Length:</strong> Between 2 and 24 characters.</li>
                     <li><strong>Frequency:</strong> You can change your username once every 30 days.</li>
                     <li><strong>Verification:</strong> If you are verified, changing your username may result in losing verification.</li>
@@ -154,7 +156,7 @@
                 
                 <h3>Core Rules</h3>
                 <ul>
-                    <li><strong>Length:</strong> Maximum 15 characters.</li>
+                    <li><strong>Length:</strong> Between 4 and 15 characters.</li>
                     <li><strong>Characters:</strong> Letters, numbers, and underscores (_) only.</li>
                     <li><strong>Spaces:</strong> No spaces are allowed.</li>
                     <li><strong>Uniqueness:</strong> Must not already be in use.</li>
@@ -198,7 +200,7 @@
                 <ul>
                     <li><strong>Length:</strong> 3 to 20 characters.</li>
                     <li><strong>Characters:</strong> Letters, numbers, dashes (-), and underscores (_).</li>
-                    <li><strong>Permanence:</strong> Once you create an account and finalize the username, it cannot be changed. The only way to change your username is to create a new account.</li>
+                    <li><strong>Permanence:</strong> Once you create an account and finalize the username, it cannot be changed. However, accounts created via Google or Apple can change their auto-assigned username within 30 days.</li>
                     <li><strong>Uniqueness:</strong> Usernames cannot be reused by anyone, ever, even if the account is deleted.</li>
                     <li><strong>No Impersonation:</strong> You cannot use a username to impersonate, threaten, or harass others.</li>
                     <li><strong>Automatic Selection:</strong> If you do not choose a username during sign-up, Reddit may assign a random one.</li>
