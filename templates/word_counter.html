@@ -36,6 +36,10 @@
             <div class="wc-stat-value" id="val-read-time">0 sec</div>
             <div class="wc-stat-label">Reading Time</div>
         </div>
+        <div class="wc-stat-card" style="border-color: rgba(255, 170, 0, 0.3); background: rgba(255, 170, 0, 0.05);">
+            <div class="wc-stat-value" id="val-speaking" style="color: #ffaa00;">0 sec</div>
+            <div class="wc-stat-label">Speaking Time</div>
+        </div>
     </div>
 
     <!-- Textarea -->
@@ -81,6 +85,16 @@
     <div id="keyword-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem 2rem; margin-bottom: 1.5rem; display: none;">
         <h3 style="font-size: 1rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.25rem;">Top Keywords</h3>
         <div id="keyword-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+    </div>
+
+    <!-- Link to Words to Pages -->
+    <div style="background: rgba(255, 170, 0, 0.05); border: 1px solid rgba(255, 170, 0, 0.3); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <i data-lucide="clock" style="color: #ffaa00; width: 24px; height: 24px;"></i>
+            <div style="color: var(--text-sub);">
+                <strong style="color: #fff;">Writing a speech or essay?</strong> Try our dedicated <a href="/words-to-pages" style="color: #ffaa00; text-decoration: underline;">Words to Pages & Time Converter</a>.
+            </div>
+        </div>
     </div>
 
     <!-- SEO Content -->
@@ -154,7 +168,7 @@
 <style>
     .wc-stats-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 1rem;
         margin-bottom: 1.5rem;
     }
@@ -263,6 +277,19 @@ function analyzeText() {
         readingDisplay = secs > 0 ? `${mins}m ${secs}s` : `${mins} min`;
     }
 
+    // Speaking time (130 wpm average)
+    const speakingSec = Math.round((wordCount / 130) * 60);
+    let speakingDisplay;
+    if (wordCount === 0) {
+        speakingDisplay = '0 sec';
+    } else if (speakingSec < 60) {
+        speakingDisplay = speakingSec + ' sec';
+    } else {
+        const mins = Math.floor(speakingSec / 60);
+        const secs = speakingSec % 60;
+        speakingDisplay = secs > 0 ? `${mins}m ${secs}s` : `${mins} min`;
+    }
+
     // Update stats
     document.getElementById('val-words').textContent = wordCount.toLocaleString();
     document.getElementById('val-chars').textContent = charCount.toLocaleString();
@@ -270,6 +297,7 @@ function analyzeText() {
     document.getElementById('val-sentences').textContent = sentenceCount.toLocaleString();
     document.getElementById('val-paragraphs').textContent = paragraphCount.toLocaleString();
     document.getElementById('val-read-time').textContent = readingDisplay;
+    document.getElementById('val-speaking').textContent = speakingDisplay;
 
     // Limit bar
     if (currentLimit > 0) {
