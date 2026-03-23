@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_cors import CORS
 import os
 import requests
@@ -337,6 +337,12 @@ def qr_generator():
 @app.route('/password-generator')
 def password_generator():
     return render_template('password_generator.html')
+
+@app.route('/worst-password')
+@app.route('/worst-passwords')
+@app.route('/100-worst-password')
+def worst_passwords_redirect():
+    return redirect(url_for('worst_passwords'), code=301)
 
 @app.route('/100-worst-passwords')
 def worst_passwords():
