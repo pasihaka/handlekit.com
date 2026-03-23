@@ -114,28 +114,20 @@ def api_check_username():
             elif len(username) < 4:
                 available = 'taken_or_invalid'
             else:
-                # Use Twitter's signup username check API — same approach as GitHub
+                # Use Twitter's public OEmbed API — more accurate than the signup check for numeric/legacy handles
                 r = requests.get(
-                    f'https://api.twitter.com/i/users/username_available.json?username={username}',
+                    f'https://publish.twitter.com/oembed?url=https://x.com/{username}',
                     headers=headers, timeout=6
                 )
                 if r.status_code == 200:
-                    try:
-                        data = r.json()
-                        reason = data.get('reason', '')
-                        if data.get('valid') and reason == 'available':
-                            available = True
-                        else:
-                            if reason in ['too_long', 'too_short', 'invalid_characters']:
-                                available = 'invalid'
-                            elif reason == 'is_banned_word':
-                                available = 'taken_or_invalid'
-                            else:
-                                available = False  # taken
-                    except Exception:
-                        available = None
+                    available = False  # Account exists (Taken)
+                elif r.status_code == 404:
+                    if username.isdigit():
+                        available = 'invalid' # Numeric-only names are legacy and cannot be created new
+                    else:
+                        available = True     # Available
                 else:
-                    available = None
+                    available = None         # Rate limit or error
 
         elif platform == 'instagram':
             import re
