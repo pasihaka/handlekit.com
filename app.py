@@ -155,6 +155,9 @@ def api_check_username():
 
         elif platform == 'tiktok':
             import re
+            if len(username) < 2 or len(username) > 24 or not re.match(r'^[a-zA-Z0-9_\.]+$', username) or username.endswith('.') or username.isdigit():
+                available = 'invalid'
+            else:
                 # Use TikTok's public OEmbed API which is much less restricted than profile scraping
                 r = requests.get(f"https://www.tiktok.com/oembed?url=https://www.tiktok.com/@{username}", 
                                  headers=headers, timeout=8)
