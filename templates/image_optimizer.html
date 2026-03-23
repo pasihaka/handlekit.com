@@ -1,4 +1,4 @@
-{% set title = "AI-Powered Image Optimizer & WebP Converter | HandleKit" %}
+﻿{% set title = "AI-Powered Image Optimizer & WebP Converter | HandleKit" %}
 {% set description = "Compress and convert images to WebP, JPEG, and PNG instantly. Professional-grade, browser-based image optimization by HandleKit." %}
 {% extends "layout.html" %}
 
@@ -88,6 +88,39 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I optimize an image?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Choose your output format (JPEG for photos, PNG for graphics with transparency, WebP for the best compression on modern browsers), then drag your image files onto the upload zone or click to browse. Each image is processed automatically and a download link appears, showing you exactly how much file size was saved. You can drop multiple images at once.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which format should I choose, JPEG, PNG, or WebP?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">JPEG</strong> is ideal for photographs and complex images, it achieves great compression with a small quality trade-off. <strong style="color:#fff;">PNG</strong> is lossless and supports transparency, making it the right choice for logos, icons, and screenshots. <strong style="color:#fff;">WebP</strong> is the modern web format that typically beats both JPEG and PNG in file size, use it if your audience is on modern browsers (which is most people in 2026).</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Are my images uploaded to your servers?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The optimization is handled server-side to achieve the best possible compression results, using professional-grade libraries. However, your images are processed securely and deleted automatically after the optimized file is delivered to you. We do not retain, view, or share your images.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why should I optimize images for my website?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Images are typically the largest files on any webpage, and large images are the single biggest cause of slow load times. Google ranks faster pages higher (Core Web Vitals), and research shows that every additional second of load time reduces conversions significantly. Optimizing images to reduce file size, without visible quality loss, is one of the highest-impact improvements you can make to any site.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is there a file size limit?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The tool handles typical web images well, photos straight from a camera or smartphone, screenshots, and graphic files. Very large files (above 30MB) may take longer to process. If you're optimizing large batches of high-resolution images, we recommend doing them a few at a time.</p>
+            </div>
+
         </div>
     </div>
 </div>

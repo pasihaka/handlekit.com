@@ -1,4 +1,4 @@
-{% set title = "Free Online Word Counter | Character & Reading Time | HandleKit" %}
+﻿{% set title = "Free Online Word Counter | Character & Reading Time | HandleKit" %}
 {% set description = "Count words, characters, sentences, and paragraphs instantly. Get estimated reading time and keyword density. Free, fast, and works entirely in your browser." %}
 {% extends "layout.html" %}
 
@@ -7,7 +7,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="file-text" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Free Online Word Counter</h1>
-        <p style="color: var(--text-sub);">Instant word, character, sentence & paragraph counts — with reading time and keyword density.</p>
+        <p style="color: var(--text-sub);">Instant word, character, sentence & paragraph counts, with reading time and keyword density.</p>
     </div>
 
     <!-- Stats Row -->
@@ -103,8 +103,8 @@
             <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Why Use a Word Counter?</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
                 Whether you're writing a blog post, an academic essay, a social media caption, or a product description, knowing
-                your word and character count is essential. Many platforms have strict limits — Twitter's 280-character cap,
-                Google Ads' 30-character headlines, LinkedIn's 700-word article limit — and exceeding them costs you visibility.
+                your word and character count is essential. Many platforms have strict limits, Twitter's 280-character cap,
+                Google Ads' 30-character headlines, LinkedIn's 700-word article limit, and exceeding them costs you visibility.
             </p>
             <p style="color: var(--text-sub); line-height: 1.8;">
                 Our word counter goes beyond a simple count. It gives you <strong>reading time estimates</strong> (based on the
@@ -146,21 +146,54 @@
             <ul style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.9rem;">
                 <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
                     <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
-                    <span><strong style="color: #fff;">100% private.</strong> Your text never leaves your browser — everything is computed on your device with JavaScript.</span>
+                    <span><strong style="color: #fff;">100% private.</strong> Your text never leaves your browser, everything is computed on your device with JavaScript.</span>
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
                     <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
-                    <span><strong style="color: #fff;">Instant analysis.</strong> Stats update in real-time as you type or paste — no buttons to click.</span>
+                    <span><strong style="color: #fff;">Instant analysis.</strong> Stats update in real-time as you type or paste, no buttons to click.</span>
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
                     <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
-                    <span><strong style="color: #fff;">Smart word counting.</strong> Words are counted by splitting on whitespace, ignoring empty tokens — consistent with word processors like MS Word.</span>
+                    <span><strong style="color: #fff;">Smart word counting.</strong> Words are counted by splitting on whitespace, ignoring empty tokens, consistent with word processors like MS Word.</span>
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
                     <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
                     <span><strong style="color: #fff;">Keyword density.</strong> Common stop words (the, a, is…) are filtered out so you see only your meaningful keywords.</span>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I count the words in my text?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Simply paste or type your text into the large input area. All counts, words, characters, sentences, paragraphs, reading time, and speaking time, update automatically as you type. There's no button to press; it's instant. Use the "Quick limits" buttons below the text area if you're writing to a specific word count target.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How is reading time calculated?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Reading time is based on an average adult reading speed of 238 words per minute, a well-established figure from research on silent reading. Speaking time uses 130 words per minute, which is typical for a natural, clear spoken presentation. These are averages; actual times will vary depending on the complexity of the content and the individual reader.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does the word counter match Microsoft Word's count?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes, essentially. We count words by splitting on whitespace and filtering out empty tokens, the same method Word uses. Minor differences can appear with hyphenated words (some tools count "step-by-step" as one word, some as three) or with non-standard punctuation, but for typical prose, the counts will match.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is keyword density and why does it matter?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Keyword density is how often a word appears relative to the total word count. If "optimization" appears 10 times in a 500-word article, its density is 2%. For SEO, having your target keyword appear naturally (roughly 1–2% density) helps search engines understand what the page is about. Much higher than that and it can look like "keyword stuffing" to Google, which can hurt your rankings.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is my text stored or sent anywhere?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. Every calculation happens locally in your browser using JavaScript. Your text never leaves your device. This matters especially if you're counting words in drafts, confidential reports, academic work, or anything you're not ready to share publicly.</p>
+            </div>
+
         </div>
     </div>
 </div>

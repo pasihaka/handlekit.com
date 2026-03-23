@@ -1,4 +1,4 @@
-{% set title = "Username Availability Checker | GitHub, Reddit, X, TikTok & More | HandleKit" %}
+﻿{% set title = "Username Availability Checker | GitHub, Reddit, X, TikTok & More | HandleKit" %}
 {% set description = "Check username availability across GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube instantly. Free, real-time, no sign-up required." %}
 {% extends "layout.html" %}
 
@@ -7,7 +7,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem; min-height: 160px;">
         <i data-lucide="user-check" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h2 style="font-size: 2rem; margin-bottom: 0.5rem; color: #fff;">Free Username Availability Checker</h2>
-        <p style="color: var(--text-sub);">Check availability across GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube simultaneously — results update live as they arrive.</p>
+        <p style="color: var(--text-sub);">Check availability across GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube simultaneously, results update live as they arrive.</p>
     </div>
 
     <div class="search-box mobile-stack" style="background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); display: flex; gap: 1rem; margin-bottom: 2rem;">
@@ -18,7 +18,7 @@
     </div>
     
     <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;">
-        <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-badge status-uncertain" style="display:inline-block;margin:0;"></span><span style="color:var(--text-sub);font-size:0.8rem;">Uncertain — click to check manually</span></div>
+        <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-badge status-uncertain" style="display:inline-block;margin:0;"></span><span style="color:var(--text-sub);font-size:0.8rem;">Uncertain, click to check manually</span></div>
     </div>
     
     <div class="result-grid" id="results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
@@ -54,6 +54,40 @@
                 <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Think Long-Term:</strong> Choose a name that will still feel professional five or ten years from now.</li>
                 <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Act Fast:</strong> Good handles are taken every second. Once you find an available one, secure it immediately.</li>
             </ul>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How does the username checker work?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">When you type a username and hit "Check Now", our server makes a real-time request to each platform's public profile endpoint simultaneously. If the profile exists, the username is marked as Taken. If there's no profile at that address, it's marked as Available. Results arrive as they come in, so you won't have to wait for all platforms to finish before seeing the first ones.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What does "Uncertain" mean?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Occasionally a platform blocks or rate-limits automated requests, especially Instagram, which is notoriously strict. When that happens we can't give you a definitive answer, so we show "Uncertain" with a yellow dot. Clicking the card takes you directly to the platform so you can verify manually. It's rare, but better than showing a wrong result.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is my search history saved anywhere?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. We don't store search history, don't link searches to accounts (we don't even have accounts), and don't sell data. The username you type is only used to perform the live check and is not retained after the request completes.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why should I care about having the same username everywhere?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Consistent usernames make it far easier for people to find you. If someone discovers you on GitHub and wants to follow you on Twitter, they'll naturally try the same handle, and a match builds instant trust. For brands and businesses, a unified handle also protects against impersonators squatting on your name across platforms.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What characters are allowed in usernames?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">It varies per platform. Most allow letters, numbers, and underscores. Twitter/X and TikTok permit underscores; GitHub allows hyphens; YouTube handles accept periods. We have a full breakdown in our <a href="/username-rules" style="color: var(--accent-color); text-decoration: underline;">username rules guide</a>, worth reading before you commit to a name.</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -183,14 +217,14 @@ function updateCard(p, user, available) {
         badge.className = 'status-text status-available-text';
         badge.innerText = 'Available';
         card.classList.add('clickable');
-        card.title = `${user} appears available on ${p.name} — click to register`;
+        card.title = `${user} appears available on ${p.name}, click to register`;
         card.style.cursor = 'pointer';
         card.onclick = () => window.open(p.signupUrl, '_blank');
     } else if (available === false) {
         badge.className = 'status-text status-taken-text';
         badge.innerText = 'Taken';
         card.classList.add('clickable');
-        card.title = `${user} is taken on ${p.name} — click to view profile`;
+        card.title = `${user} is taken on ${p.name}, click to view profile`;
         card.style.cursor = 'pointer';
         card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
     } else if (available === 'invalid') {
@@ -201,7 +235,7 @@ function updateCard(p, user, available) {
         badge.className = 'status-text status-taken-invalid-text';
         badge.innerText = 'Taken/Invalid';
         card.classList.add('clickable');
-        card.title = `${user} is taken or restricted on ${p.name} — click to view profile`;
+        card.title = `${user} is taken or restricted on ${p.name}, click to view profile`;
         card.style.cursor = 'pointer';
         card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
     } else if (available === 'rate_limited') {
@@ -215,7 +249,7 @@ function updateCard(p, user, available) {
         badge.className = 'status-badge status-uncertain';
         badge.innerText = ''; // Clear any text
         card.classList.add('uncertain-clickable');
-        card.title = `Could not verify — click to check ${p.name} manually`;
+        card.title = `Could not verify, click to check ${p.name} manually`;
         card.style.cursor = 'pointer';
         card.onclick = () => window.open(p.profileUrl + user, '_blank');
     }

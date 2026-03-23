@@ -1,4 +1,4 @@
-{% set title = "Text Case Converter | Free Online Text Transformer | HandleKit" %}
+﻿{% set title = "Text Case Converter | Free Online Text Transformer | HandleKit" %}
 {% set description = "Instantly convert text between UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, and kebab-case. Free, fast, and works entirely in your browser." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
@@ -8,7 +8,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="type" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Text Case Converter</h1>
-        <p style="color: var(--text-sub);">Instantly transform your text between 8 different cases — no signup, no limits.</p>
+        <p style="color: var(--text-sub);">Instantly transform your text between 8 different cases, no signup, no limits.</p>
     </div>
 
     <!-- Input -->
@@ -64,7 +64,7 @@
                 A text case converter is a tool that transforms your text into different capitalisation styles instantly. Whether you're a developer naming variables, a writer formatting headlines, or a designer polishing UI copy, having the right case format saves time and prevents errors.
             </p>
             <p style="color: var(--text-sub); line-height: 1.8;">
-                HandleKit's Text Case Converter supports <strong style="color:#fff;">9 conversion modes</strong> — all processed instantly in your browser with zero data sent to any server.
+                HandleKit's Text Case Converter supports <strong style="color:#fff;">9 conversion modes</strong>, all processed instantly in your browser with zero data sent to any server.
             </p>
         </div>
 
@@ -72,14 +72,14 @@
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">When to Use Each Case</h3>
                 <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">UPPERCASE</strong> — warnings, acronyms, headings</li>
-                    <li><strong style="color:#fff;">lowercase</strong> — email addresses, URLs, usernames</li>
-                    <li><strong style="color:#fff;">Title Case</strong> — article titles, headings, names</li>
-                    <li><strong style="color:#fff;">Sentence case</strong> — regular prose, UI labels</li>
-                    <li><strong style="color:#fff;">camelCase</strong> — JavaScript variables, JSON keys</li>
-                    <li><strong style="color:#fff;">PascalCase</strong> — class names, TypeScript types</li>
-                    <li><strong style="color:#fff;">snake_case</strong> — Python variables, database columns</li>
-                    <li><strong style="color:#fff;">kebab-case</strong> — CSS classes, HTML attributes, URLs</li>
+                    <li><strong style="color:#fff;">UPPERCASE</strong>, warnings, acronyms, headings</li>
+                    <li><strong style="color:#fff;">lowercase</strong>, email addresses, URLs, usernames</li>
+                    <li><strong style="color:#fff;">Title Case</strong>, article titles, headings, names</li>
+                    <li><strong style="color:#fff;">Sentence case</strong>, regular prose, UI labels</li>
+                    <li><strong style="color:#fff;">camelCase</strong>, JavaScript variables, JSON keys</li>
+                    <li><strong style="color:#fff;">PascalCase</strong>, class names, TypeScript types</li>
+                    <li><strong style="color:#fff;">snake_case</strong>, Python variables, database columns</li>
+                    <li><strong style="color:#fff;">kebab-case</strong>, CSS classes, HTML attributes, URLs</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -91,7 +91,7 @@
                     </li>
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
                         <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color:#fff;">Instant results.</strong> Conversion happens as you click — no page reloads.</span>
+                        <span><strong style="color:#fff;">Instant results.</strong> Conversion happens as you click, no page reloads.</span>
                     </li>
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
                         <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
@@ -103,6 +103,39 @@
                     </li>
                 </ul>
             </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I convert text to a different case?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Paste your text into the input box at the top, then click any of the case buttons, UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case, or aLtErNaTiNg. The converted text appears instantly in the output box below. Hit "Copy" to put it on your clipboard. The character and word count updates as you type, too.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between camelCase and PascalCase?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">camelCase</strong> starts with a lowercase letter and capitalises the first letter of each subsequent word: <code style="color:var(--accent-color);">myVariableName</code>. <strong style="color:#fff;">PascalCase</strong> (also called UpperCamelCase) capitalises the first letter of every word including the first: <code style="color:var(--accent-color);">MyClassName</code>. In practice: use camelCase for JavaScript variables and functions, PascalCase for classes and React components, TypeScript types and interfaces.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">When should I use snake_case vs kebab-case?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">snake_case</strong> uses underscores as separators: <code style="color:var(--accent-color);">user_profile_data</code>. It's the standard convention in Python (variables, functions, file names) and in SQL column names. <strong style="color:#fff;">kebab-case</strong> uses hyphens: <code style="color:var(--accent-color);">user-profile-data</code>. It's used in CSS class names, HTML attributes, URL slugs, and many command-line tools. JavaScript can't use hyphens in variable names, so never camelCase-vs-kebab in JS code directly, only in strings or CSS.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does Title Case capitalise every word?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Not quite, proper Title Case follows rules about "minor words". Short prepositions (in, on, at, by), conjunctions (and, or, but), and articles (a, an, the) are typically left lowercase unless they're the first or last word of the title. Our converter follows this convention automatically, so "the quick brown fox and the lazy dog" becomes "The Quick Brown Fox and the Lazy Dog".</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is there a limit on how much text I can convert?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No limit at all. The conversion happens locally in your browser using JavaScript, so it scales with your device's performance. You could convert an entire novel if you wanted to, it would still process in under a second on any modern computer.</p>
+            </div>
+
         </div>
     </div>
 </div>

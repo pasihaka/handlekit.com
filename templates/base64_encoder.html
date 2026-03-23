@@ -1,5 +1,5 @@
-{% set title = "Base64 Encoder & Decoder | Free Online Tool | HandleKit" %}
-{% set description = "Encode text or files to Base64 and decode Base64 strings back to plain text instantly. Free, fast, 100% browser-based — no data ever leaves your device." %}
+﻿{% set title = "Base64 Encoder & Decoder | Free Online Tool | HandleKit" %}
+{% set description = "Encode text or files to Base64 and decode Base64 strings back to plain text instantly. Free, fast, 100% browser-based, no data ever leaves your device." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
@@ -8,7 +8,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="binary" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Base64 Encoder & Decoder</h1>
-        <p style="color: var(--text-sub);">Encode or decode Base64 instantly — no signup, 100% private, nothing ever leaves your browser.</p>
+        <p style="color: var(--text-sub);">Encode or decode Base64 instantly, no signup, 100% private, nothing ever leaves your browser.</p>
     </div>
 
     <!-- Mode Toggle -->
@@ -118,8 +118,42 @@
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Base64 vs. Encryption</h3>
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">Base64 is <strong style="color:#fff;">encoding, not encryption</strong>. Anyone can decode it — it provides no security on its own. It is used purely for safe data transport, not for protecting sensitive information.</p>
+                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">Base64 is <strong style="color:#fff;">encoding, not encryption</strong>. Anyone can decode it, it provides no security on its own. It is used purely for safe data transport, not for protecting sensitive information.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I encode text to Base64?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Make sure you're in "Text" mode. Paste or type your text in the input box, then click "Encode to Base64". The encoded string appears in the output, ready to copy. To go the other direction, paste a Base64 string and click "Decode from Base64". The "Swap" button lets you flip the input and output quickly.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I encode a file to Base64?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Switch to "File → Base64" mode using the button at the top, then drag and drop any file onto the upload zone (or click it to browse). The tool reads the file entirely in your browser and outputs the Base64 string instantly. You can copy it or download it as a <code style="color:var(--accent-color);">.txt</code> file. No file size is sent to a server, it all happens locally.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is Base64 a form of encryption?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, and this is a really common misconception. Base64 is pure encoding, it just represents binary data as text. Anyone who sees the encoded string can instantly decode it. It provides zero security. It exists purely to move binary data safely through systems that only handle text, not to protect the data from being read.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why does Base64 output end with "==" sometimes?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Base64 works by grouping 3 bytes of input into 4 characters of output. If the input isn't a multiple of 3 bytes, padding characters (<code style="color:var(--accent-color);">=</code> or <code style="color:var(--accent-color);">==</code>) are added to make the output length a multiple of 4. It's just bookkeeping, the <code style="color:var(--accent-color);">=</code> tells the decoder how many padding bytes to expect when reversing the process.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Where is Base64 used in practice?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You'll run into it constantly in web development: embedding small images directly in HTML or CSS as data URIs, HTTP Basic Authentication headers (credentials are Base64-encoded before sending), JWT token payloads, email attachments (MIME encoding), and transferring binary data through JSON APIs that only accept text strings.</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -181,7 +215,7 @@ function doEncode() {
     try {
         const encoded = btoa(unescape(encodeURIComponent(input)));
         document.getElementById('b64-output').value = encoded;
-        setStatus(`✓ Encoded — ${encoded.length} characters`, 'var(--accent-color)');
+        setStatus(`✓ Encoded, ${encoded.length} characters`, 'var(--accent-color)');
     } catch(e) {
         setStatus('✗ Encoding error: ' + e.message, '#ff4c4c');
     }

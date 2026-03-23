@@ -1,4 +1,4 @@
-{% set title = "URL Encoder & Decoder | Free Online Tool | HandleKit" %}
+﻿{% set title = "URL Encoder & Decoder | Free Online Tool | HandleKit" %}
 {% set description = "Encode or decode URLs and URI components instantly online. Supports encodeURIComponent, decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
@@ -8,7 +8,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="link" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">URL Encoder & Decoder</h1>
-        <p style="color: var(--text-sub);">Encode or decode URLs and URI components instantly — no signup, 100% private.</p>
+        <p style="color: var(--text-sub);">Encode or decode URLs and URI components instantly, no signup, 100% private.</p>
     </div>
 
     <!-- Mode Toggle -->
@@ -90,8 +90,8 @@
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">encodeURIComponent vs encodeURI</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">encodeURIComponent</strong> — encodes everything except letters, digits, <code style="color:#aaa;">- _ . ! ~ * ' ( )</code>. Use for query parameter values.</li>
-                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">encodeURI</strong> — preserves URL structure characters like <code style="color:#aaa;">/ ? # &amp; =</code>. Use for a complete URL.</li>
+                    <li><strong style="color:#fff;">encodeURIComponent</strong>, encodes everything except letters, digits, <code style="color:#aaa;">- _ . ! ~ * ' ( )</code>. Use for query parameter values.</li>
+                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">encodeURI</strong>, preserves URL structure characters like <code style="color:#aaa;">/ ? # &amp; =</code>. Use for a complete URL.</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -104,6 +104,40 @@
                     <li>Debugging encoded URLs from server logs</li>
                 </ul>
             </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I encode a URL?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Paste your URL or text into the input box, make sure "Component" mode is selected for query parameter values (or "Full URL" if you're encoding a complete URL), then click "Encode". The percent-encoded result appears in the output. Hit "Copy" to use it in your code or browser.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between Component and Full URL mode?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">Component mode</strong> (encodeURIComponent) encodes nearly every special character, including <code style="color:var(--accent-color);">/ ? # & =</code>, perfect for encoding a search query or parameter value. <strong style="color:#fff;">Full URL mode</strong> (encodeURI) leaves structural URL characters intact, so slashes and question marks stay as-is. Use Component for values, Full URL for complete addresses.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why does a space become %20 in URLs?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">URLs can only contain a limited set of ASCII characters. Any character outside that set, including spaces, gets "percent-encoded": replaced by a % sign and the character's two-digit hexadecimal code. A space is ASCII character 32, which is 20 in hex, hence %20. Some forms use + to represent spaces in query strings, but %20 is the correct standard.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">When do I need to decode a URL?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Decoding is useful when you receive a URL from a server log, a redirect, or an API response and need to read what the encoded values actually say. For example, a URL like <code style="color:var(--accent-color);">q=hello%20world%21</code> decodes to <code style="color:var(--accent-color);">q=hello world!</code>. Paste any encoded URL here and click "Decode" to make it human-readable again.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does this tool store the URLs I paste?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. Everything happens locally in your browser with JavaScript. We never see or log the URLs you encode or decode. This matters if you're working with URLs that contain sensitive tokens, search terms, or personal data, you can use this tool with confidence.</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -151,7 +185,7 @@ function doEncode() {
         const result = encodeMode === 'component' ? encodeURIComponent(input) : encodeURI(input);
         document.getElementById('ue-output').value = result;
         if (result === input) {
-            setStatus('URL is already valid — no encoding needed', 'var(--text-sub)');
+            setStatus('URL is already valid, no encoding needed', 'var(--text-sub)');
         } else {
             setStatus('Encoded successfully', 'var(--accent-color)');
         }

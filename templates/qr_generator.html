@@ -1,4 +1,4 @@
-{% set title = "Professional QR Code Generator | Custom Sizes & High Resolution | HandleKit" %}
+﻿{% set title = "Professional QR Code Generator | Custom Sizes & High Resolution | HandleKit" %}
 {% set description = "Generate high-quality QR codes with custom pixel sizes. Instant, privacy-first, and high-resolution PNG downloads for professionals. No account required." %}
 {% set og_image = "qr-og-image.png" %}
 {% extends "layout.html" %}
@@ -88,6 +88,39 @@
             <p style="color: var(--text-sub); line-height: 1.8;">
                 <strong>Static QR Codes</strong> (like the ones we generate) embed the target data directly in the code itself. They are best for permanent links like website URLs or contact information. <strong>Dynamic QR Codes</strong> use a redirect service, allowing you to change the destination later. While dynamic codes are useful for tracking, static codes are more reliable, faster, and more private.
             </p>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I create a QR code?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Enter your URL or any text into the input box on the left, the tool starts with a preview automatically. Choose your preferred size (Small for digital use, Medium for most purposes, Large or Custom for print), select an error correction level, and click "Generate QR Code". Once the QR code appears in the preview, the "Download PNG" button activates and you can save the image at your selected resolution.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What size QR code do I need?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">For on-screen use and social media, 400×400 pixels is plenty. For business cards, aim for at least 600px. For A4 printed flyers, use 1000–1200px. For large-format printing (banners, posters, signage), go custom with 2000–3000px. The minimum scannable size in print is roughly 2×2 cm, smaller than that and some phone cameras struggle.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What does "error correction level" mean?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">QR codes have built-in redundancy that lets them be read even when partially damaged or covered. Low (L) can recover from up to 7% damage, Medium (M) handles 15%, Quartile (Q) handles 25%, and High (H) handles 30%. Higher correction makes the QR slightly more complex (denser), but it's a good choice for physical print where the code might get scratched or dirty.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Do these QR codes expire?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, never. HandleKit generates static QR codes, meaning the destination URL is encoded directly into the QR pattern itself. There's no middleware service involved, so there's nothing that can expire, go offline, or disappear. The QR code you download today will still work in ten years, as long as the URL it points to still exists.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Can I encode something other than a URL?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes, absolutely. You can encode any plain text, a phone number, an email address, a Wi-Fi password (formatted as <code style="color:var(--accent-color);">WIFI:T:WPA;S:YourNetwork;P:YourPassword;;</code>), a physical address, or even a short poem. QR codes don't care what the content is; they just encode whatever string you provide.</p>
+            </div>
+
         </div>
     </div>
 </div>

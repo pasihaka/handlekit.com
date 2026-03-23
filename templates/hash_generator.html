@@ -1,5 +1,5 @@
-{% set title = "MD5 & SHA256 Hash Generator | Free Online Tool | HandleKit" %}
-{% set description = "Generate MD5 and SHA256 cryptographic hashes from any text or file instantly. Free, fast, 100% browser-based hash tool — no data ever sent to a server." %}
+﻿{% set title = "MD5 & SHA256 Hash Generator | Free Online Tool | HandleKit" %}
+{% set description = "Generate MD5 and SHA256 cryptographic hashes from any text or file instantly. Free, fast, 100% browser-based hash tool, no data ever sent to a server." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
@@ -8,7 +8,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="fingerprint" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Hash Generator</h1>
-        <p style="color: var(--text-sub);">Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text — instantly, privately, all in your browser.</p>
+        <p style="color: var(--text-sub);">Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text, instantly, privately, all in your browser.</p>
     </div>
 
     <!-- Mode Toggle -->
@@ -81,14 +81,14 @@
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is Cryptographic Hashing?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            A cryptographic hash function takes an input of any size and produces a fixed-size string of characters. Even a tiny change in the input produces a completely different hash — this property is called the <em>avalanche effect</em>.
+            A cryptographic hash function takes an input of any size and produces a fixed-size string of characters. Even a tiny change in the input produces a completely different hash, this property is called the <em>avalanche effect</em>.
         </p>
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">MD5 vs SHA-256</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">MD5</strong> — fast, 128-bit. Good for checksums and file integrity. Not suitable for password storage.</li>
-                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">SHA-256</strong> — industry standard, 256-bit. Used in Bitcoin, SSL certificates, and secure systems.</li>
+                    <li><strong style="color:#fff;">MD5</strong>, fast, 128-bit. Good for checksums and file integrity. Not suitable for password storage.</li>
+                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">SHA-256</strong>, industry standard, 256-bit. Used in Bitcoin, SSL certificates, and secure systems.</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -101,6 +101,39 @@
                     <li>API request signing</li>
                 </ul>
             </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I generate a hash?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Type or paste your text into the input box and click "Generate Hashes". All four hashes, MD5, SHA-1, SHA-256, and SHA-512, appear instantly. You can also enable "Live" mode to hash as you type in real time. To hash a file, switch to "File" mode and drag it onto the upload zone.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which hash algorithm should I use?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">SHA-256</strong> is the right choice for most security-sensitive applications, it's the current industry standard used in SSL certificates, Bitcoin, and code signing. <strong style="color:#fff;">MD5</strong> is fine for non-security purposes like detecting file changes or generating cache keys, but it's been broken for cryptographic use. <strong style="color:#fff;">SHA-512</strong> offers extra robustness for high-security scenarios.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Can I reverse a hash back to the original text?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, that's the whole point of cryptographic hashing. Hash functions are designed to be one-way. You can't go from hash to original text mathematically. What attackers sometimes do is use precomputed "rainbow tables" of common passwords and their hashes, which is why password hashing should always include a random "salt" value added before hashing.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is my text or file sent to your servers?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Never. SHA-1, SHA-256, and SHA-512 are computed using the browser's built-in WebCrypto API. MD5 is implemented in pure JavaScript locally. Everything stays on your device, this tool works fine even if you're offline after the page loads.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I verify a file download with a hash?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Software publishers often publish the expected SHA-256 or MD5 hash of their downloads alongside the file. Switch to "File" mode, drop your downloaded file in, and compare the generated hash to the published one. If they match exactly, the file arrived intact and unmodified. Even a single changed byte would produce a completely different hash.</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -303,7 +336,7 @@ async function hashFile(file) {
     const [sha1, sha256, sha512] = await Promise.all([
         shaFile('SHA-1', buffer), shaFile('SHA-256', buffer), shaFile('SHA-512', buffer)
     ]);
-    const md5val = text ? md5(text) : '(binary file — MD5 requires text)';
+    const md5val = text ? md5(text) : '(binary file, MD5 requires text)';
     renderHashes([
         { label: 'MD5', value: md5val },
         { label: 'SHA-1', value: sha1 },

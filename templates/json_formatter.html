@@ -1,4 +1,4 @@
-{% set title = "JSON Formatter & Validator | Free Online Tool | HandleKit" %}
+﻿{% set title = "JSON Formatter & Validator | Free Online Tool | HandleKit" %}
 {% set description = "Format, validate and minify JSON instantly online. Syntax highlighting, error detection, collapsible tree view, and one-click copy. Free, fast, 100% browser-based." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
@@ -8,7 +8,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="braces" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">JSON Formatter & Validator</h1>
-        <p style="color: var(--text-sub);">Format, validate, and minify JSON instantly — no signup, 100% private.</p>
+        <p style="color: var(--text-sub);">Format, validate, and minify JSON instantly, no signup, 100% private.</p>
     </div>
 
     <!-- Action Buttons Row -->
@@ -91,8 +91,8 @@
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Format vs. Minify</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">Format / Prettify</strong> — adds indentation and line breaks for human readability. Use during development and debugging.</li>
-                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">Minify</strong> — removes all whitespace to reduce file size. Use for production APIs and storage.</li>
+                    <li><strong style="color:#fff;">Format / Prettify</strong>, adds indentation and line breaks for human readability. Use during development and debugging.</li>
+                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">Minify</strong>, removes all whitespace to reduce file size. Use for production APIs and storage.</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -105,6 +105,40 @@
                     <li>Browser localStorage data</li>
                 </ul>
             </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
+        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I format JSON with this tool?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Paste your raw JSON into the left input box, then click "Format / Prettify". The formatted, human-readable version will appear instantly in the right panel. You can choose between 2-space, 4-space, or tab indentation using the buttons above the editor. Hit "Copy" to grab the result.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why would I need to minify JSON?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">When you send JSON over a network, in an API response, for example, whitespace is wasted bandwidth. Minifying strips out all the spaces and newlines, reducing file size by 20–50% on average. It makes no difference to the data itself; it's still perfectly valid JSON. Use "Format" for debugging, and "Minify" for production.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is it safe to paste sensitive JSON here?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes. All formatting, validation, and minification happens entirely within your browser using JavaScript. Your data is never sent to any server. Even sensitive JSON like API responses with tokens or user data never leaves your device.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What does the error message mean when my JSON is invalid?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The most common culprits are trailing commas (not allowed in JSON, use a linter), single quotes instead of double quotes around strings, missing quotes around keys, or an unclosed bracket/brace. The error message usually tells you the approximate position of the problem. If it says "Unexpected character", look closely at whatever character comes right before where the error points.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is JSON used for?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">JSON (JavaScript Object Notation) is the de facto standard for data exchange on the web. You'll find it in REST API responses, configuration files (package.json, tsconfig.json), browser localStorage, NoSQL databases like MongoDB and Firestore, and as the backbone of almost every modern web app's communication layer. If you're working with any web technology, you'll encounter JSON daily.</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -188,7 +222,7 @@ function doFormat() {
         const parsed = JSON.parse(input);
         const formatted = JSON.stringify(parsed, null, getIndent());
         document.getElementById('jf-output').value = formatted;
-        setStatus('✓ Valid JSON — formatted successfully', 'var(--accent-color)');
+        setStatus('✓ Valid JSON, formatted successfully', 'var(--accent-color)');
         updateStats(parsed);
         showStats();
     } catch(e) {
@@ -207,7 +241,7 @@ function doMinify() {
         const minified = JSON.stringify(parsed);
         document.getElementById('jf-output').value = minified;
         const saved = input.length - minified.length;
-        setStatus(`✓ Minified — saved ${saved} characters`, 'var(--accent-color)');
+        setStatus(`✓ Minified, saved ${saved} characters`, 'var(--accent-color)');
         updateStats(parsed);
         showStats();
     } catch(e) {

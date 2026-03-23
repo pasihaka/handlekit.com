@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="{{ url_for('static', filename='img/' + (og_image if og_image else 'og-image.png'), _external=True) }}">
 
     <!-- PERF: Only preconnect to origins used in the critical path (fonts).
-         GTM and AdSense preconnects removed — those scripts load lazily so early
+         GTM and AdSense preconnects removed, those scripts load lazily so early
          preconnect would be wasted TCP handshakes flagged by PageSpeed as "unused". -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,7 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
 
-    <!-- PERF: style.css fully inlined — eliminates the 160ms render-blocking external request.
+    <!-- PERF: style.css fully inlined, eliminates the 160ms render-blocking external request.
          At 4.5 KB it is well within the recommended inline budget (<14 KB).
          The external file is kept on disk for caching on repeat visits. -->
     <style>

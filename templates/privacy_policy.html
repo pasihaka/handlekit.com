@@ -1,4 +1,4 @@
-{% set title = "Privacy Policy | HandleKit" %}
+﻿{% set title = "Privacy Policy | HandleKit" %}
 {% set description = "Privacy policy for HandleKit. We prioritize your privacy and do not collect personal data from our utility tools." %}
 {% extends "layout.html" %}
 
@@ -6,23 +6,43 @@
 <div class="tool-content" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 3rem; max-width: 800px; margin: 0 auto; line-height: 1.6;">
     <h2 style="margin-bottom: 2rem; color: var(--accent-color);">Privacy Policy</h2>
     
-    <p style="color: var(--text-sub); margin-bottom: 2rem;">Last updated: March 15, 2026</p>
+    <p style="color: var(--text-sub); margin-bottom: 2rem;">Last updated: March 23, 2026</p>
+
+    <p style="margin-bottom: 1.5rem;">HandleKit is built on a simple belief: your data is yours. This policy explains honestly and plainly what information we collect, how we use it, and what choices you have. We've written this to be readable, not to obscure anything in legal jargon.</p>
 
     <h3 style="margin-top: 2rem; margin-bottom: 1rem;">1. Information We Collect</h3>
-    <p>HandleKit is designed to be a "Privacy First" platform. We do not require account registration, and we do not store the data you process through our tools (like your JSON, hashes, or images) on our servers after the session is complete.</p>
+    <p style="margin-bottom: 1rem;">HandleKit is a "Privacy First" platform. The vast majority of tools, Password Generator, Word Counter, Text Case Converter, JSON Formatter, URL Encoder, Base64 Encoder, Hash Generator, Color Picker, and Unit Converter, run entirely within your browser using JavaScript. Any data you enter into these tools (text, passwords, JSON, URLs, etc.) is processed locally on your device and <strong>is never transmitted to our servers</strong>.</p>
+    <p style="margin-bottom: 1rem;">For tools that involve server interaction (Username Checker, Image Optimizer, QR Generator), only the minimum necessary data is sent to perform the requested function. For example, the Username Checker sends the username string to check availability on social platforms; the Image Optimizer receives your image file to compress it. This data is used solely to perform the requested function and is not stored or logged in a personally identifiable way after the request is completed.</p>
 
     <h3 style="margin-top: 2rem; margin-bottom: 1rem;">2. Cookies and Advertisements</h3>
-    <p>We use third-party advertising companies (such as Google AdSense) to serve ads when you visit our website. These companies may use cookies to serve ads based on your prior visits to this or other websites.</p>
-    <p>Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to our site and/or other sites on the Internet.</p>
+    <p style="margin-bottom: 1rem;">We use third-party advertising companies, including Google AdSense, to display ads when you visit our website. These companies may use cookies and similar tracking technologies (such as web beacons and pixel tags) to serve advertisements based on your browsing history on this and other websites.</p>
+    <p style="margin-bottom: 1rem;">Google's advertising cookies (<code style="background: rgba(255,255,255,0.08); padding: 0.1rem 0.4rem; border-radius: 4px;">DSID</code>, <code style="background: rgba(255,255,255,0.08); padding: 0.1rem 0.4rem; border-radius: 4px;">IDE</code>) enable personalised ad targeting based on browsing behaviour. You can opt out of personalised advertising at any time by visiting <a href="https://adssettings.google.com" style="color: var(--accent-color);" target="_blank" rel="noopener">Google's Ad Settings</a>, or by using the <a href="https://optout.networkadvertising.org" style="color: var(--accent-color);" target="_blank" rel="noopener">NAI opt-out tool</a>. You may also use browser extensions that block advertising cookies entirely. Our site does not share personal data with advertisers beyond what is necessary for ad serving.</p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">3. External Links</h3>
-    <p>Our site may link to external sites (like GitHub or Reddit) that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">3. Analytics</h3>
+    <p style="margin-bottom: 1rem;">We may use basic, privacy-respecting analytics to understand which tools are most popular and how users navigate the site (for example, which pages are visited most often or where users exit). This helps us improve HandleKit and prioritise new features. Any analytics service we use is configured to anonymise IP addresses and not to share raw data with third parties beyond what is necessary for aggregate, non-personally-identifiable reporting.</p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">4. Your Consent</h3>
-    <p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">4. Data Retention</h3>
+    <p style="margin-bottom: 1rem;">We do not maintain a persistent database of user activity, tool inputs, or search queries. Server-side operations, such as image optimization, generate temporary files that are automatically deleted within minutes of the optimized file being delivered to you. We do not retain logs of individual requests in a form that could be used to identify a specific person.</p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">5. Contact Us</h3>
-    <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:contacthandlekit@gmail.com" style="color: var(--accent-color);">contacthandlekit@gmail.com</a>.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">5. External Links</h3>
+    <p style="margin-bottom: 1rem;">Some HandleKit tools link to, or check availability on, external services (including GitHub, Reddit, Twitter/X, Instagram, TikTok, and YouTube). These are third-party services with their own independent privacy policies and data practices. HandleKit has no control over their content or practices. We encourage you to review the privacy policy of any third-party service you visit through links on our site. Our linking to a service does not imply endorsement of its privacy practices.</p>
+
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">6. Your Rights (GDPR &amp; CCPA)</h3>
+    <p style="margin-bottom: 1rem;">If you are located in the European Economic Area (EEA) or the United Kingdom, you have rights under the General Data Protection Regulation (GDPR), including the right to access, rectify, erase, restrict processing of, and object to the processing of your personal data. You also have the right to data portability.</p>
+    <p style="margin-bottom: 1rem;">Because HandleKit is designed to collect minimal personal data, and most tools process data purely locally on your device, there is typically very little data to exercise these rights against. However, if you have any requests or questions, please contact us using the details below.</p>
+    <p style="margin-bottom: 1rem;">California residents have similar rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information is collected and the right to request deletion. We do not sell personal information.</p>
+
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">7. Children's Privacy</h3>
+    <p style="margin-bottom: 1rem;">HandleKit is not directed at children under 13 years of age, and we do not knowingly collect personal information from children. If you believe a child has provided personal information to us, please contact us and we will take steps to delete it promptly.</p>
+
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">8. Changes to This Policy</h3>
+    <p style="margin-bottom: 1rem;">We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. When we make significant changes, we will update the "Last updated" date at the top of this page. We encourage you to review this page periodically. Your continued use of HandleKit after any changes constitutes your acceptance of the revised policy.</p>
+
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">9. Your Consent</h3>
+    <p style="margin-bottom: 1rem;">By using our website, you consent to this Privacy Policy and agree to its terms.</p>
+
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">10. Contact Us</h3>
+    <p>If you have any questions about this Privacy Policy, wish to exercise your data rights, or have a concern about how your information is handled, please contact us at <a href="mailto:contacthandlekit@gmail.com" style="color: var(--accent-color);">contacthandlekit@gmail.com</a>. We aim to respond within 5 business days.</p>
     
     <div style="margin-top: 3rem; text-align: center;">
         <a href="/" class="btn" style="text-decoration: none; color: var(--accent-color); font-weight: 800;">← Back to Home</a>
