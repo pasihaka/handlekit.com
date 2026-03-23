@@ -66,18 +66,7 @@ def api_check_username():
         return jsonify({"error": "Missing params"}), 400
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Sec-CH-UA': '"Chromium";v="146", "Not-A.Brand";v="24", "Google Chrome";v="146"',
-        'Sec-CH-UA-Mobile': '?0',
-        'Sec-CH-UA-Platform': '"Windows"',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Sec-Fetch-User': '?1',
-        'Upgrade-Insecure-Requests': '1',
-        'Accept-Encoding': 'gzip, deflate'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
     }
 
     available = None  # None = uncertain
@@ -166,35 +155,27 @@ def api_check_username():
 
         elif platform == 'tiktok':
             import re
-            if len(username) < 2 or len(username) > 24 or not re.match(r'^[a-zA-Z0-9_\.]+$', username) or username.endswith('.') or username.isdigit():
-                available = 'invalid'
-            else:
-                # TikTok embeds user data as JSON in the page — check for uniqueId presence
-                # Use a session to handle potential cookie requirements
-                s = requests.Session()
-                r = s.get(f"https://www.tiktok.com/@{username}", headers=headers, timeout=8)
-                if r.status_code == 404:
-                    available = True
-                elif r.status_code == 200:
-                    content = r.text.lower()
-                    search_term = f'"uniqueid":"{username.lower()}"'
-                    search_term2 = f'"uniqueid": "{username.lower()}"'
-                    if search_term in content or search_term2 in content:
-                        available = False  # username found in page data → taken
-                    elif '__universal_data_for_rehydration__' in content:
-                        available = True   # page data loaded but username not found → likely available
+                # Use TikTok's public OEmbed API which is much less restricted than profile scraping
+                r = requests.get(f"https://www.tiktok.com/oembed?url=https://www.tiktok.com/@{username}", 
+                                 headers=headers, timeout=8)
+                
+                if r.status_code == 200:
+                    data = r.json()
+                    if "author_name" in data:
+                        available = False  # Account found
                     else:
-                        print(f"[TikTok DEBUG] Markers not found for {username}. Snippet: {content[:200]}")
-                        if "slardar" in content or "slardarwaf" in content:
-                            available = "rate_limited" 
-                        else:
-                            available = None   # could not parse page data
+                        available = None   # Ambiguous response
+                elif r.status_code == 400 or r.status_code == 404:
+                    available = True    # Account not found (OEmbed returns 400 for non-existent users)
+                elif r.status_code == 401:
+                    available = False   # Private/Restricted but exists
                 else:
-                    print(f"[TikTok DEBUG] Unexpected status {r.status_code} for {username}")
-                    if r.status_code == 429:
-                        available = "rate_limited"
+                    content = r.text.lower()
+                    print(f"[TikTok DEBUG] OEmbed status {r.status_code} for {username}. Snippet: {content[:200]}")
+                    if "slardar" in content or "slardarwaf" in content or r.status_code == 429:
+                        available = "rate_limited" 
                     else:
-                        available = None   # unexpected status code (e.g. 403)
+                        available = None
 
         elif platform == 'youtube':
             yt_username = username.replace('\u00B7', '.')
