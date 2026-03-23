@@ -47,24 +47,26 @@ body {
 
 header {
   text-align: center;
-  margin-bottom: 4rem;
-  padding-top: 2rem;
+  margin-bottom: 5rem;
+  padding-top: 3rem;
+  min-height: 280px;
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: 800;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
-  letter-spacing: -1px;
+  margin-bottom: 1.5rem;
+  letter-spacing: -2px;
 }
 
 .subtitle {
   color: var(--text-sub);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .hub-grid {
