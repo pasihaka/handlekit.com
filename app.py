@@ -171,7 +171,11 @@ def api_check_username():
                     elif '__universal_data_for_rehydration__' in content:
                         available = True   # page data loaded but username not found → likely available
                     else:
+                        print(f"[TikTok DEBUG] Markers not found for {username}. Snippet: {content[:200]}")
                         available = None   # could not parse page data
+                else:
+                    print(f"[TikTok DEBUG] Unexpected status {r.status_code} for {username}")
+                    available = None   # unexpected status code (e.g. 403, 429)
 
         elif platform == 'youtube':
             yt_username = username.replace('\u00B7', '.')
@@ -236,10 +240,20 @@ def api_check_username():
             elif r.status_code == 200:
                 available = False
 
-    except:
+    except Exception as e:
+        print(f"[TikTok ERROR] {str(e)}")
         available = None  # timeout or connection error → uncertain
 
-    return jsonify({"platform": platform, "available": available})
+    # Add diagnostic info to the response if uncertain
+    response_data = {"platform": platform, "available": available}
+    if available is None and platform == 'tiktok':
+        try:
+            # We already have r from the scope above if it didn't except
+            response_data["debug_status"] = r.status_code
+        except:
+            response_data["debug_status"] = "exception"
+            
+    return jsonify(response_data)
 
 @app.route('/image-optimizer')
 def image_optimizer():
