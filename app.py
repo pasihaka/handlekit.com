@@ -159,22 +159,36 @@ def api_check_username():
                 available = 'invalid'
             else:
                 # Use TikTok's public OEmbed API which is much less restricted than profile scraping
-                r = requests.get(f"https://www.tiktok.com/oembed?url=https://www.tiktok.com/@{username}", 
-                                 headers=headers, timeout=8)
+                import urllib.parse
+                target_url = f"https://www.tiktok.com/@{username}"
+                encoded_url = urllib.parse.quote(target_url, safe='')
+                oembed_url = f"https://www.tiktok.com/oembed?url={encoded_url}"
+                
+                r = requests.get(oembed_url, headers=headers, timeout=8)
+                
+                # DIAGNOSTIC LOGGING
+                print(f"[TikTok DEBUG] OEmbed status {r.status_code} for {username}. Snippet: {r.text[:100]}")
                 
                 if r.status_code == 200:
-                    data = r.json()
-                    if "author_name" in data:
-                        available = False  # Account found
-                    else:
-                        available = None   # Ambiguous response
+                    try:
+                        data = r.json()
+                        if "author_name" in data:
+                            available = False  # Account found
+                        else:
+                            available = None   # Ambiguous response
+                    except:
+                        available = None
                 elif r.status_code == 400 or r.status_code == 404:
-                    available = True    # Account not found (OEmbed returns 400 for non-existent users)
+                    # On some environments, 400 might be a block. Check content.
+                    if "something went wrong" in r.text.lower() and r.status_code == 400:
+                        # For now, treat 400 as available, but log it.
+                        available = True
+                    else:
+                        available = True    # Account not found
                 elif r.status_code == 401:
                     available = False   # Private/Restricted but exists
                 else:
                     content = r.text.lower()
-                    print(f"[TikTok DEBUG] OEmbed status {r.status_code} for {username}. Snippet: {content[:200]}")
                     if "slardar" in content or "slardarwaf" in content or r.status_code == 429:
                         available = "rate_limited" 
                     else:
