@@ -66,7 +66,14 @@ def api_check_username():
         return jsonify({"error": "Missing params"}), 400
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1'
     }
 
     available = None  # None = uncertain
@@ -172,10 +179,16 @@ def api_check_username():
                         available = True   # page data loaded but username not found → likely available
                     else:
                         print(f"[TikTok DEBUG] Markers not found for {username}. Snippet: {content[:200]}")
-                        available = None   # could not parse page data
+                        if "slardar" in content or "slardarwaf" in content:
+                            available = "rate_limited" 
+                        else:
+                            available = None   # could not parse page data
                 else:
                     print(f"[TikTok DEBUG] Unexpected status {r.status_code} for {username}")
-                    available = None   # unexpected status code (e.g. 403, 429)
+                    if r.status_code == 429:
+                        available = "rate_limited"
+                    else:
+                        available = None   # unexpected status code (e.g. 403)
 
         elif platform == 'youtube':
             yt_username = username.replace('\u00B7', '.')
