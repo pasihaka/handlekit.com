@@ -172,17 +172,28 @@ def api_check_username():
                 elif r.status_code in (400, 404):
                     # Ambiguous: TikTok returns 400 for BOTH non-existent accounts AND accounts
                     # that exist but have no public content yet (e.g. newly registered, private).
-                    # Fall back: scrape the profile page and check for "uniqueid" in the HTML —
-                    # TikTok embeds this in the page JSON only when the account actually exists.
+                    # Fall back: scrape the profile page and check for "uniqueId" in the HTML.
+                    #
+                    # NOTE: Cloud/datacenter IPs (e.g. Render) get bot-blocked by TikTok's
+                    # profile page — the response is a short challenge page with no user data.
+                    # We detect bot-blocking by checking for TikTok CDN assets that only appear
+                    # in a genuine full-page response. Without them, return Uncertain (not Available).
                     try:
                         profile_headers = {**headers,
                                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                                            'Accept-Language': 'en-US,en;q=0.9'}
                         rp = requests.get(target_url, headers=profile_headers, timeout=8, allow_redirects=True)
-                        if '"uniqueId"' in rp.text or '"uniqueid"' in rp.text.lower():
+                        body = rp.text
+                        # A genuine TikTok page contains CDN references and is large (>50 KB).
+                        # A bot-block/challenge page is small and has no CDN content.
+                        is_real_page = ('tiktokcdn' in body or 'tiktok.com/embed.js' in body
+                                        or 'TIKTOK_SSR_DATA' in body or len(body) > 50000)
+                        if '"uniqueId"' in body or '"uniqueid"' in body.lower():
                             available = False  # Account data found in page → Taken
+                        elif is_real_page:
+                            available = True   # Real TikTok page, no account data → Available
                         else:
-                            available = True   # No account data → Available
+                            available = None   # Bot-blocked or challenge page → Uncertain
                     except Exception:
                         available = None  # Fallback scrape failed → Uncertain
                 elif r.status_code == 429 or 'slardar' in r.text.lower():
