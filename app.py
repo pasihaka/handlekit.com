@@ -157,51 +157,38 @@ def api_check_username():
             if len(username) < 2 or len(username) > 24 or not re.match(r'^[a-zA-Z0-9_\.]+$', username) or username.endswith('.') or username.isdigit():
                 available = 'invalid'
             else:
-                # Use TikTok's public OEmbed API which is much less restricted than profile scraping
+                # Step 1: Try TikTok's public OEmbed API — returns 200 + author_name for accounts with public content
                 import urllib.parse
                 target_url = f"https://www.tiktok.com/@{username.lower()}"
                 encoded_url = urllib.parse.quote(target_url, safe='')
                 oembed_url = f"https://www.tiktok.com/oembed?url={encoded_url}"
 
-                def parse_tiktok_response(resp):
-                    """Return True=Available, False=Taken, None=Uncertain, 'rate_limited', 'invalid'."""
-                    if resp.status_code == 200:
-                        # Fast path: check raw text first (handles partial/truncated JSON too)
-                        if '"author_name"' in resp.text:
-                            return False  # Account found → Taken
-                        try:
-                            data = resp.json()
-                            if "author_name" in data:
-                                return False
-                        except Exception:
-                            pass
-                        return None  # 200 but no author_name — ambiguous
-                    elif resp.status_code in (400, 404):
-                        content = resp.text.lower()
-                        if "something went wrong" in content and resp.status_code == 400:
-                            return True  # Account not found (TikTok rejects nonexistent handles this way)
-                        return True  # Account not found
-                    elif resp.status_code == 401:
-                        return False  # Private/restricted but exists
-                    else:
-                        content = resp.text.lower()
-                        if "slardar" in content or "slardarwaf" in content or resp.status_code == 429:
-                            return "rate_limited"
-                        return None
-
                 r = requests.get(oembed_url, headers=headers, timeout=8)
-                available = parse_tiktok_response(r)
 
-                # Retry once on uncertain/rate-limited to reduce false Uncertain results
-                if available is None or available == "rate_limited":
-                    time.sleep(0.5)
-                    r2 = requests.get(oembed_url, headers=headers, timeout=8)
-                    retry_result = parse_tiktok_response(r2)
-                    # Only override if the retry gave a definitive answer
-                    if retry_result is not None and retry_result != "rate_limited":
-                        available = retry_result
-                    else:
-                        available = None
+                if r.status_code == 200 and ('"author_name"' in r.text):
+                    available = False  # Account found and has public content → Taken
+                elif r.status_code == 401:
+                    available = False  # Private/restricted but exists → Taken
+                elif r.status_code in (400, 404):
+                    # Ambiguous: TikTok returns 400 for BOTH non-existent accounts AND accounts
+                    # that exist but have no public content yet (e.g. newly registered, private).
+                    # Fall back: scrape the profile page and check for "uniqueid" in the HTML —
+                    # TikTok embeds this in the page JSON only when the account actually exists.
+                    try:
+                        profile_headers = {**headers,
+                                           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                                           'Accept-Language': 'en-US,en;q=0.9'}
+                        rp = requests.get(target_url, headers=profile_headers, timeout=8, allow_redirects=True)
+                        if '"uniqueId"' in rp.text or '"uniqueid"' in rp.text.lower():
+                            available = False  # Account data found in page → Taken
+                        else:
+                            available = True   # No account data → Available
+                    except Exception:
+                        available = None  # Fallback scrape failed → Uncertain
+                elif r.status_code == 429 or 'slardar' in r.text.lower():
+                    available = None  # Rate limited → Uncertain
+                else:
+                    available = None  # Unknown response → Uncertain
 
         elif platform == 'youtube':
             yt_username = username.replace('\u00B7', '.')
