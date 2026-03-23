@@ -85,6 +85,12 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://handlekit.com/privacy-policy</loc>
+        <lastmod>2026-03-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
         <loc>https://handlekit.com/terms-of-service</loc>
         <lastmod>2026-03-20</lastmod>
         <changefreq>monthly</changefreq>
