@@ -160,7 +160,7 @@ def api_check_username():
             else:
                 # Use TikTok's public OEmbed API which is much less restricted than profile scraping
                 import urllib.parse
-                target_url = f"https://www.tiktok.com/@{username}"
+                target_url = f"https://www.tiktok.com/@{username.lower()}"
                 encoded_url = urllib.parse.quote(target_url, safe='')
                 oembed_url = f"https://www.tiktok.com/oembed?url={encoded_url}"
                 
