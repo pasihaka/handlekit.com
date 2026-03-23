@@ -283,30 +283,6 @@ def api_check_username():
             response_data["debug_status"] = "exception"
             
     return jsonify(response_data)
-# TEMPORARY DEBUG ENDPOINT - REMOVE LATER
-@app.route('/api/debug-tiktok')
-def debug_tiktok():
-    username = request.args.get('user', 'abc_def')
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9'
-    }
-    target_url = f"https://www.tiktok.com/@{username.lower()}"
-    try:
-        r = requests.get(target_url, headers=headers, timeout=10)
-        body = r.text
-        return jsonify({
-            "status": r.status_code,
-            "url": r.url,
-            "length": len(body),
-            "has_uniqueid": '"uniqueId"' in body or '"uniqueid"' in body.lower(),
-            "has_webapp_user": 'webapp.user-detail' in body,
-            "has_ssr_data": 'TIKTOK_SSR_DATA' in body,
-            "snippet": body[:1000]
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)})
 
 
 @app.route('/image-optimizer')
