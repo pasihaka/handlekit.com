@@ -1,10 +1,54 @@
-{% set title = "HandleKit - Professional-Grade Digital Tool Hub" %}
-{% set description = "Instant online tools for username checking, smart image optimization, and developer utilities. Experience a premium, high-speed interface for your daily workflow." %}
+{% set title = "Free Online Tools for Developers & Creators | HandleKit" %}
+{% set description = "HandleKit offers free, instant online tools: username availability checker, password generator, image optimizer, QR generator, word counter, and 10+ developer utilities. No sign-up needed." %}
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="ad-slot top-banner">
-    Featured Placement / Advertisement
+
+<!-- Hero intro -->
+<div style="text-align: center; max-width: 680px; margin: 0 auto 3.5rem;">
+    <h1 style="font-size: 2.6rem; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 1.25rem; letter-spacing: -0.5px;">
+        Every Tool You Need.<br>
+        <span style="background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">No Sign-Up. Always Free.</span>
+    </h1>
+    <p style="color: var(--text-sub); font-size: 1.1rem; line-height: 1.75; max-width: 560px; margin: 0 auto;">
+        HandleKit is a collection of sharp, fast, privacy-first utilities — from checking <a href="/username-checker" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">username availability</a> across every major social platform, to <a href="/password-generator" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">generating secure passwords</a>, optimizing images, and a dozen developer tools you'll reach for every day.
+    </p>
+</div>
+
+<!-- Featured tools row -->
+<div style="margin-bottom: 1rem;">
+    <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin-bottom: 1rem;">⭐ Most Popular</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 3rem;">
+
+    <a href="/username-checker" class="tool-card featured-card">
+        <i data-lucide="user-check" style="color: #58a6ff;"></i>
+        <h2 style="color: #58a6ff;">Username Checker</h2>
+        <p>Check availability on GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube simultaneously — results arrive live as they come in.</p>
+        <div class="card-arrow" style="color: #58a6ff;">Check a username <i data-lucide="arrow-right"></i></div>
+    </a>
+
+    <a href="/password-generator" class="tool-card featured-card">
+        <i data-lucide="lock" style="color: #00cc66;"></i>
+        <h2 style="color: #00cc66;">Password Generator</h2>
+        <p>Generate cryptographically secure random passwords or memorable passphrases. Runs entirely in your browser — nothing is ever sent to a server.</p>
+        <div class="card-arrow" style="color: #00cc66;">Generate a password <i data-lucide="arrow-right"></i></div>
+    </a>
+
+    <a href="/100-worst-passwords" class="tool-card featured-card">
+        <i data-lucide="shield-alert" style="color: #ff4444;"></i>
+        <h2 style="color: #ff4444;">100 Worst Passwords</h2>
+        <p>Is your password on the list hackers check first? See the globally ranked top 100 most common passwords of 2026 and how fast each can be cracked.</p>
+        <div class="card-arrow" style="color: #ff4444;">Check the list <i data-lucide="arrow-right"></i></div>
+    </a>
+
+</div>
+
+<!-- All tools section -->
+<div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+    <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin: 0;">All Tools</p>
+    <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+    <span style="font-size: 0.72rem; color: var(--text-sub); font-weight: 700;">12 tools</span>
 </div>
 
 <div class="hub-grid">
@@ -12,109 +56,95 @@
         <i data-lucide="user-check"></i>
         <h2>Username Checker</h2>
         <p>Check username availability on GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube instantly.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/image-optimizer" class="tool-card">
         <i data-lucide="image"></i>
         <h2>Image Optimizer</h2>
         <p>Compress and convert images to WebP, PNG, or JPG directly in your browser.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
-
 
     <a href="/qr-generator" class="tool-card">
         <i data-lucide="qr-code"></i>
         <h2>QR Generator</h2>
         <p>Create professional, permanent QR codes for URLs and text instantly.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/password-generator" class="tool-card">
         <i data-lucide="lock"></i>
         <h2>Password Generator</h2>
         <p>Generate strong, secure, random passwords with custom length and character options.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/word-counter" class="tool-card">
         <i data-lucide="file-text"></i>
         <h2>Word Counter</h2>
         <p>Count words, characters, sentences and paragraphs. Includes reading time and keyword density.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/text-case-converter" class="tool-card">
         <i data-lucide="type"></i>
         <h2>Text Case Converter</h2>
         <p>Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, and more instantly.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/color-picker" class="tool-card">
         <i data-lucide="palette"></i>
         <h2>Color Picker</h2>
         <p>Pick any color and get its HEX, RGB, HSL and CMYK values. Generate beautiful palettes instantly.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/url-encoder" class="tool-card">
         <i data-lucide="link"></i>
         <h2>URL Encoder / Decoder</h2>
         <p>Encode and decode URLs and URI components instantly. Essential for developers and API work.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/json-formatter" class="tool-card">
         <i data-lucide="braces"></i>
         <h2>JSON Formatter</h2>
         <p>Format, validate and minify JSON instantly. Syntax stats, error detection, and one-click copy.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/unit-converter" class="tool-card">
         <i data-lucide="ruler"></i>
         <h2>Unit Converter</h2>
         <p>Convert length, weight, temperature, area, volume, speed and data units instantly and accurately.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/base64-encoder" class="tool-card">
         <i data-lucide="binary"></i>
         <h2>Base64 Encoder</h2>
         <p>Encode text or files to Base64 and decode Base64 strings back to plain text instantly.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/hash-generator" class="tool-card">
         <i data-lucide="fingerprint"></i>
         <h2>Hash Generator</h2>
         <p>Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text or any file instantly.</p>
-        <div class="card-arrow">
-            Try it now <i data-lucide="arrow-right"></i>
-        </div>
+        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 </div>
+
+<style>
+    .featured-card {
+        border-color: rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.04);
+    }
+    .featured-card:hover {
+        background: rgba(255,255,255,0.07);
+        transform: translateY(-10px);
+    }
+</style>
 {% endblock %}

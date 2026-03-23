@@ -249,12 +249,30 @@ footer {
         </main>
 
         <footer>
-            <p>&copy; 2026 HandleKit. Dedicated to simplifying your workflow. 
-                <a href="/privacy-policy" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Privacy Policy</a>
-                <a href="/terms-of-service" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Terms of Service</a>
-                <a href="/about" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">About</a>
-                <a href="/contact" style="color: var(--text-sub); margin-left: 1rem; font-size: 0.8rem;">Contact</a>
-            </p>
+            <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 2rem 4rem; margin-bottom: 2rem;">
+                <!-- Resources column -->
+                <div>
+                    <p style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; color: var(--text-sub); margin-bottom: 0.75rem;">Resources</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                        <a href="/username-rules" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Username Rules by Platform</a>
+                        <a href="/100-worst-passwords" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">100 Worst Passwords (2026)</a>
+                        <a href="/words-to-pages" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Words to Pages Calculator</a>
+                    </div>
+                </div>
+                <!-- Legal / site column -->
+                <div>
+                    <p style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; color: var(--text-sub); margin-bottom: 0.75rem;">Company</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                        <a href="/about" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">About</a>
+                        <a href="/contact" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Contact</a>
+                        <a href="/privacy-policy" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Privacy Policy</a>
+                        <a href="/terms-of-service" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+            <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <p style="color: var(--text-sub); font-size: 0.8rem;">&copy; 2026 HandleKit. Dedicated to simplifying your workflow.</p>
+            </div>
             <div class="ad-slot top-banner" style="margin-top: 2rem;">
                 Advertisement Space
             </div>
