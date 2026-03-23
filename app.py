@@ -84,9 +84,16 @@ def api_check_username():
             if len(username) < 3 or len(username) > 20 or not re.match(r'^[a-zA-Z0-9_\-]+$', username):
                 available = 'invalid'
             else:
+                reddit_headers = {**headers, 'Accept': 'application/json'}
                 r = requests.get(f"https://www.reddit.com/api/username_available.json?user={username}",
-                                 headers=headers, timeout=5)
-                available = r.json() if r.status_code == 200 else False
+                                 headers=reddit_headers, timeout=6)
+                # On first check Reddit sometimes returns 429 or 5xx due to cold-start / burst.
+                # Retry once with a short backoff before giving up.
+                if r.status_code != 200:
+                    time.sleep(0.8)
+                    r = requests.get(f"https://www.reddit.com/api/username_available.json?user={username}",
+                                     headers=reddit_headers, timeout=6)
+                available = r.json() if r.status_code == 200 else None
 
         elif platform == 'gitlab':
             r = requests.get(f"https://gitlab.com/{username}", headers=headers, timeout=6)
@@ -155,34 +162,44 @@ def api_check_username():
                 target_url = f"https://www.tiktok.com/@{username.lower()}"
                 encoded_url = urllib.parse.quote(target_url, safe='')
                 oembed_url = f"https://www.tiktok.com/oembed?url={encoded_url}"
-                
-                r = requests.get(oembed_url, headers=headers, timeout=8)
-                
-                # DIAGNOSTIC LOGGING
-                print(f"[TikTok DEBUG] OEmbed status {r.status_code} for {username}. Snippet: {r.text[:100]}")
-                
-                if r.status_code == 200:
-                    try:
-                        data = r.json()
-                        if "author_name" in data:
-                            available = False  # Account found
-                        else:
-                            available = None   # Ambiguous response
-                    except:
-                        available = None
-                elif r.status_code == 400 or r.status_code == 404:
-                    # On some environments, 400 might be a block. Check content.
-                    if "something went wrong" in r.text.lower() and r.status_code == 400:
-                        # For now, treat 400 as available, but log it.
-                        available = True
+
+                def parse_tiktok_response(resp):
+                    """Return True=Available, False=Taken, None=Uncertain, 'rate_limited', 'invalid'."""
+                    if resp.status_code == 200:
+                        # Fast path: check raw text first (handles partial/truncated JSON too)
+                        if '"author_name"' in resp.text:
+                            return False  # Account found → Taken
+                        try:
+                            data = resp.json()
+                            if "author_name" in data:
+                                return False
+                        except Exception:
+                            pass
+                        return None  # 200 but no author_name — ambiguous
+                    elif resp.status_code in (400, 404):
+                        content = resp.text.lower()
+                        if "something went wrong" in content and resp.status_code == 400:
+                            return True  # Account not found (TikTok rejects nonexistent handles this way)
+                        return True  # Account not found
+                    elif resp.status_code == 401:
+                        return False  # Private/restricted but exists
                     else:
-                        available = True    # Account not found
-                elif r.status_code == 401:
-                    available = False   # Private/Restricted but exists
-                else:
-                    content = r.text.lower()
-                    if "slardar" in content or "slardarwaf" in content or r.status_code == 429:
-                        available = "rate_limited" 
+                        content = resp.text.lower()
+                        if "slardar" in content or "slardarwaf" in content or resp.status_code == 429:
+                            return "rate_limited"
+                        return None
+
+                r = requests.get(oembed_url, headers=headers, timeout=8)
+                available = parse_tiktok_response(r)
+
+                # Retry once on uncertain/rate-limited to reduce false Uncertain results
+                if available is None or available == "rate_limited":
+                    time.sleep(0.5)
+                    r2 = requests.get(oembed_url, headers=headers, timeout=8)
+                    retry_result = parse_tiktok_response(r2)
+                    # Only override if the retry gave a definitive answer
+                    if retry_result is not None and retry_result != "rate_limited":
+                        available = retry_result
                     else:
                         available = None
 
@@ -402,4 +419,4 @@ def api_generate_hashes():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000, threaded=True)
