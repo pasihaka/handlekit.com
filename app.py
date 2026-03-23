@@ -176,22 +176,27 @@ def api_check_username():
                     #
                     # NOTE: Cloud/datacenter IPs (e.g. Render) get bot-blocked by TikTok's
                     # profile page — the response is a short challenge page with no user data.
-                    # We detect bot-blocking by checking for TikTok CDN assets that only appear
-                    # in a genuine full-page response. Without them, return Uncertain (not Available).
+                    # We detect bot-blocking by checking for specific TikTok webapp markers.
                     try:
                         profile_headers = {**headers,
                                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                                            'Accept-Language': 'en-US,en;q=0.9'}
                         rp = requests.get(target_url, headers=profile_headers, timeout=8, allow_redirects=True)
                         body = rp.text
-                        # A genuine TikTok page contains CDN references and is large (>50 KB).
-                        # A bot-block/challenge page is small and has no CDN content.
-                        is_real_page = ('tiktokcdn' in body or 'tiktok.com/embed.js' in body
-                                        or 'TIKTOK_SSR_DATA' in body or len(body) > 50000)
+                        # A genuine TikTok profile page contains specific markers.
+                        # 'webapp.user-detail' or 'userInfo' are usually present in the initial state JSON.
+                        is_real_page = ('webapp.user-detail' in body or 'userInfo' in body 
+                                        or 'TIKTOK_SSR_DATA' in body or len(body) > 60000)
+                        
                         if '"uniqueId"' in body or '"uniqueid"' in body.lower():
                             available = False  # Account data found in page → Taken
                         elif is_real_page:
-                            available = True   # Real TikTok page, no account data → Available
+                            # It's a real page but uniqueId is missing? This is rare.
+                            # Check for "couldn't find this account" which is a clear 404 signal.
+                            if "couldn't find this account" in body.lower() or "page not found" in body.lower():
+                                available = True
+                            else:
+                                available = None  # Ambiguous/blocked
                         else:
                             available = None   # Bot-blocked or challenge page → Uncertain
                     except Exception:
@@ -278,6 +283,31 @@ def api_check_username():
             response_data["debug_status"] = "exception"
             
     return jsonify(response_data)
+# TEMPORARY DEBUG ENDPOINT - REMOVE LATER
+@app.route('/api/debug-tiktok')
+def debug_tiktok():
+    username = request.args.get('user', 'abc_def')
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9'
+    }
+    target_url = f"https://www.tiktok.com/@{username.lower()}"
+    try:
+        r = requests.get(target_url, headers=headers, timeout=10)
+        body = r.text
+        return jsonify({
+            "status": r.status_code,
+            "url": r.url,
+            "length": len(body),
+            "has_uniqueid": '"uniqueId"' in body or '"uniqueid"' in body.lower(),
+            "has_webapp_user": 'webapp.user-detail' in body,
+            "has_ssr_data": 'TIKTOK_SSR_DATA' in body,
+            "snippet": body[:1000]
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
 
 @app.route('/image-optimizer')
 def image_optimizer():
