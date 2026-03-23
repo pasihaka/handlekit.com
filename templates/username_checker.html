@@ -112,6 +112,7 @@
     .status-taken-text     { color: #ff4444; background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.2); }
     .status-invalid-text   { color: #b280ff; background: rgba(178, 128, 255, 0.1); border: 1px solid rgba(178, 128, 255, 0.2); }
     .status-taken-invalid-text { color: #ffaa00; background: rgba(255, 170, 0, 0.1); border: 1px solid rgba(255, 170, 0, 0.2); }
+    .status-limited-text { color: #ff8800; background: rgba(255, 136, 0, 0.1); border: 1px solid rgba(255, 136, 0, 0.2); }
     
     /* Uncertain Badge */
     .status-uncertain { background: #FFB923; box-shadow: 0 0 8px #FFB92380; }
@@ -201,6 +202,12 @@ function updateCard(p, user, available) {
         badge.innerText = 'Taken/Invalid';
         card.classList.add('clickable');
         card.title = `${user} is taken or restricted on ${p.name} — click to view profile`;
+        card.style.cursor = 'pointer';
+        card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
+    } else if (available === 'rate_limited') {
+        badge.className = 'status-text status-limited-text';
+        badge.innerText = 'Limited';
+        card.title = `Access to ${p.name} is temporarily restricted or blocked by security. Click to check manually.`;
         card.style.cursor = 'pointer';
         card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
     } else {
