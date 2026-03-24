@@ -1,5 +1,5 @@
-{% set title = "Color Picker & Palette Generator | HEX, RGB, HSL Online | HandleKit" %}
-{% set description = "Pick any color and instantly get its HEX, RGB, HSL and CMYK values. Generate complementary, analogous, triadic and shade palettes. Free, browser-based." %}
+{% set title = "Advanced Color Picker & Palette Pro | HEX, RGB, HSL, CMYK | HandleKit" %}
+{% set description = "A professional-grade color picker with a screen-wide EyeDropper, custom selection wheel, and instant palette generation. Get HEX, RGB, HSL, and CMYK values for any design project. FAST, FREE, and PRIVATE." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
@@ -11,15 +11,15 @@
 <div class="tool-container" style="max-width: 860px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="palette" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Color Picker & Palette Generator</h1>
-        <p style="color: var(--text-sub);">Pick a color and instantly get HEX, RGB, HSL and CMYK values, plus a generated palette.</p>
+        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -0.5px;">Advanced Color Picker & Palette Pro</h1>
+        <p style="color: var(--text-sub);">Design with precision. Use our professional <strong style="color: var(--accent-color);">EyeDropper</strong> to pick screen colors, generate harmonious palettes, and extract codes instantly.</p>
     </div>
 
     <!-- Main Grid -->
     <div class="cp-main" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
         <!-- Left: Wheel + Preview -->
         <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600;">Colour Wheel</label>
+            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600;">Color Wheel</label>
             <div id="picker-container" style="display: flex; justify-content: center; align-items: center; width: 100%; max-width: 250px; min-height: 280px; padding: 5px; margin: 0 auto;"></div>
             <div style="width: 100%; display: flex; gap: 0.75rem; align-items: center;">
                 <div id="color-preview" style="flex-grow: 1; height: 56px; border-radius: 14px; background: #00d2ff; border: 1px solid rgba(255,255,255,0.1); transition: background 0.15s;"></div>
@@ -62,7 +62,7 @@
     <!-- Palette -->
     <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; margin-bottom: 2rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
-            <h2 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin: 0;">Generated Palette</h2>
+            <h2 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin: 0;">Palette Pro Designer</h2>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                 <button class="cp-palette-btn active" id="btn-complementary" onclick="setPaletteMode('complementary')">Complementary</button>
                 <button class="cp-palette-btn" id="btn-analogous" onclick="setPaletteMode('analogous')">Analogous</button>
@@ -77,16 +77,16 @@
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is a Color Picker?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            A color picker lets you select any color and retrieve its values in every common format: HEX (used in HTML/CSS), RGB (screen displays and design tools), HSL (intuitive for developers), and CMYK (standard for print). HandleKit's Color Picker also generates four palette types to help you build harmonious colour schemes instantly, all in your browser, with zero data leaving your device.
+            Whether you're a web developer, graphic designer, or digital artist, a reliable color picker is an essential part of your workflow. It allows you to translate visual inspiration into precise technical data. At HandleKit, we've built a <strong>pro-grade tool</strong> that goes beyond the basics. With our integrated <strong>EyeDropper</strong>, you can sample pixels from anywhere on your monitor, while our custom-engineered wheel gives you tactile control over hue and saturation. Everything happens locally in your browser, ensuring your creative process remains fast, private, and secure.
         </p>
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Colour Format Guide</h3>
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Color Format Guide</h3>
                 <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color: var(--text-main);">HEX</strong>, #RRGGBB, used in CSS &amp; HTML</li>
-                    <li><strong style="color: var(--text-main);">RGB</strong>, rgb(R, G, B), values 0–255</li>
-                    <li><strong style="color: var(--text-main);">HSL</strong>, hsl(H°, S%, L%), great for devs</li>
-                    <li><strong style="color: var(--text-main);">CMYK</strong>, for print design &amp; publishing</li>
+                    <li><strong style="color: var(--text-main);">HEX</strong>, #RRGGBB, the web standard for CSS</li>
+                    <li><strong style="color: var(--text-main);">RGB</strong>, used for screens and digital light</li>
+                    <li><strong style="color: var(--text-main);">HSL</strong>, intuitive control over saturation/lightness</li>
+                    <li><strong style="color: var(--text-main);">CMYK</strong>, the professional choice for print</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -107,28 +107,28 @@
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I pick a colour and get its values?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Click the colour wheel on the left to open your browser's native colour picker. As you select a colour, the HEX, RGB, HSL, and CMYK values update instantly. You can also type a HEX code directly into the HEX field and press Enter to jump straight to that colour. Click any copy button to copy that specific format to your clipboard.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I pick a color and get its values?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Use our responsive <strong>Color Wheel</strong> to dial in a specific hue, or use the <strong>Pipette icon (EyeDropper)</strong> to sample any pixel directly from your display. The values for HEX, RGB, HSL, and CMYK will sync in real-time. Pro tip: you can also type a specific HEX code into the input field to jump directly to a known color. Use the copy icons to grab any format instantly.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What colour format should I use in CSS?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">HEX</strong> (#RRGGBB) is the most common for simple colours, clean, concise, and universally supported. <strong style="color: var(--text-main);">RGB</strong> is useful when you need to manipulate individual channels in code or use transparency (rgba()). <strong style="color: var(--text-main);">HSL</strong> is increasingly popular for theming because it's intuitive: you can bump the lightness or saturation value and know exactly what will change. CMYK is for print design, not web.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which color format should I use in my code?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">HEX</strong> is the industry standard for CSS—it's concise and reliable. However, many modern developers prefer <strong style="color: var(--text-main);">HSL</strong> because it makes adjusting lightness or saturation intuitive. Use <strong style="color: var(--text-main);">RGB</strong> if you need to add transparency (opacity) to your elements. CMYK is reserved specifically for physical print projects.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I generate a colour palette?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Pick your base colour using the colour wheel. Below the value display, you'll find the Generated Palette section with four mode buttons: Complementary, Analogous, Triadic, and Shades. Switch between them to see different harmonious palette options based on colour theory. Click any swatch in the palette to make it your new base colour.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I generate a color palette?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Pick your base color using the wheel or EyeDropper. Below the value display, the Generated Palette shows four expert modes: Complementary, Analogous, Triadic, and Shades. Switch between them to see different harmonious combinations. <strong>Click any swatch</strong> in the palette to instantly copy its HEX value to your clipboard with a visual confirmation.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between complementary and analogous palettes?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">Complementary</strong> colours sit opposite each other on the colour wheel, they create high-contrast combinations that pop. Think blue and orange. <strong style="color: var(--text-main);">Analogous</strong> colours sit next to each other, giving a more harmonious, cohesive feel, like a green-teal-blue gradient. Complementary for emphasis, analogous for elegance.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between complementary and analogous?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">Complementary</strong> colors are high-contrast opposites on the wheel, perfect for making elements (like buttons) stand out. <strong style="color: var(--text-main);">Analogous</strong> colors sit side-by-side, creating a smooth, harmonious look that feels natural and professional. Use complementary for "pop" and analogous for "blend."</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does the colour picker store my picks?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No data is stored anywhere. All colour calculations happen entirely in your browser. Nothing is sent to a server. If you close the tab, your picks are gone, so copy the values you need before navigating away.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does the Color Picker or EyeDropper store my data?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No data is stored or transmitted. The <strong>EyeDropper tool</strong> uses your browser's native capabilities to pick pixels, and all color calculations happen entirely in your local session. Nothing is sent to our servers. If you close the tab, your picks are gone, so copy the values you need before navigating away.</p>
             </div>
 
         </div>
