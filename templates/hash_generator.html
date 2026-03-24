@@ -29,7 +29,7 @@
                 oninput="onTextInput()"
                 onfocus="this.style.borderColor='var(--accent-color)'"
                 onblur="this.style.borderColor='var(--border-color)'"
-                style="width:100%;min-height:130px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.95rem;font-family:'Outfit',sans-serif;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+                style="width:100%;min-height:130px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.95rem;font-family:'Outfit',sans-serif;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
         </div>
         <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;">
             <button onclick="hashText()" class="hg-action-btn" id="btn-hash">
@@ -79,7 +79,7 @@
 
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is Cryptographic Hashing?</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is Cryptographic Hashing?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
             A cryptographic hash function takes an input of any size and produces a fixed-size string of characters. Even a tiny change in the input produces a completely different hash, this property is called the <em>avalanche effect</em>.
         </p>
@@ -87,8 +87,8 @@
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">MD5 vs SHA-256</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">MD5</strong>, fast, 128-bit. Good for checksums and file integrity. Not suitable for password storage.</li>
-                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">SHA-256</strong>, industry standard, 256-bit. Used in Bitcoin, SSL certificates, and secure systems.</li>
+                    <li><strong style="color: var(--text-main);">MD5</strong>, fast, 128-bit. Good for checksums and file integrity. Not suitable for password storage.</li>
+                    <li style="margin-top:0.5rem;"><strong style="color: var(--text-main);">SHA-256</strong>, industry standard, 256-bit. Used in Bitcoin, SSL certificates, and secure systems.</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -106,7 +106,7 @@
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -116,7 +116,7 @@
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which hash algorithm should I use?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">SHA-256</strong> is the right choice for most security-sensitive applications, it's the current industry standard used in SSL certificates, Bitcoin, and code signing. <strong style="color:#fff;">MD5</strong> is fine for non-security purposes like detecting file changes or generating cache keys, but it's been broken for cryptographic use. <strong style="color:#fff;">SHA-512</strong> offers extra robustness for high-security scenarios.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">SHA-256</strong> is the right choice for most security-sensitive applications, it's the current industry standard used in SSL certificates, Bitcoin, and code signing. <strong style="color: var(--text-main);">MD5</strong> is fine for non-security purposes like detecting file changes or generating cache keys, but it's been broken for cryptographic use. <strong style="color: var(--text-main);">SHA-512</strong> offers extra robustness for high-security scenarios.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -140,12 +140,12 @@
 
 <style>
 .hg-mode-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    background: var(--input-bg); border: 1px solid var(--border-color);
     border-radius: 10px; padding: 0.5rem 1rem; color: var(--text-sub);
     cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif; font-weight: 600;
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
 }
-.hg-mode-btn:hover, .hg-mode-btn.active { border-color: var(--accent-color); color: #fff; background: rgba(0,210,255,0.1); }
+.hg-mode-btn:hover, .hg-mode-btn.active { border-color: var(--accent-color); color: var(--text-main); background: rgba(0,210,255,0.1); }
 .hg-action-btn {
     background: var(--accent-color); border: none; border-radius: 10px;
     padding: 0.55rem 1.3rem; color: #000; font-weight: 700; font-size: 0.9rem;
@@ -154,12 +154,12 @@
 }
 .hg-action-btn:hover { opacity: 0.85; }
 .hg-util-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    background: var(--input-bg); border: 1px solid var(--border-color);
     border-radius: 10px; padding: 0.55rem 1rem; color: var(--text-sub);
     cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif;
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
 }
-.hg-util-btn:hover { border-color: var(--accent-color); color: #fff; }
+.hg-util-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
 .hg-hash-row {
     background: var(--card-bg); border: 1px solid var(--border-color);
     border-radius: 16px; padding: 1rem 1.25rem;
@@ -184,7 +184,7 @@
     background: rgba(255,255,255,0.04); border-radius: 12px; padding: 0.75rem 1rem;
     display: flex; justify-content: space-between; align-items: center;
 }
-.hg-algo-name { font-weight: 700; color: #fff; font-size: 0.9rem; }
+.hg-algo-name { font-weight: 700; color: var(--text-main); font-size: 0.9rem; }
 .hg-algo-bits { font-size: 0.78rem; color: var(--text-sub); }
 </style>
 

@@ -50,7 +50,7 @@
                 oninput="onInput()"
                 onfocus="this.style.borderColor='var(--accent-color)'"
                 onblur="this.style.borderColor='var(--border-color)'"
-                style="width:100%;min-height:400px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.88rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;tab-size:2;"></textarea>
+                style="width:100%;min-height:400px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.88rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;tab-size:2;"></textarea>
             <div id="jf-input-info" style="position:absolute;bottom:1rem;left:1.5rem;font-size:0.75rem;color:var(--text-sub);pointer-events:none;"></div>
         </div>
 
@@ -61,7 +61,7 @@
                 <textarea id="jf-output" readonly placeholder="Formatted JSON will appear here…"
                     onfocus="this.style.borderColor='var(--accent-color)'"
                     onblur="this.style.borderColor='var(--border-color)'"
-                    style="width:100%;min-height:400px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.88rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+                    style="width:100%;min-height:400px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.88rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
                 <button id="copy-btn" onclick="copyOutput()" style="position:absolute;bottom:1rem;right:1.2rem;background:var(--accent-color);border:none;border-radius:10px;padding:0.45rem 1.1rem;color:#000;font-weight:700;font-size:0.8rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;">
                     <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy
                 </button>
@@ -80,7 +80,7 @@
 
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is JSON?</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is JSON?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
             JSON (JavaScript Object Notation) is a lightweight data-interchange format that is easy for humans to read and write, and easy for machines to parse and generate. It is widely used for APIs, configuration files, and data storage.
         </p>
@@ -91,8 +91,8 @@
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Format vs. Minify</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">Format / Prettify</strong>, adds indentation and line breaks for human readability. Use during development and debugging.</li>
-                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">Minify</strong>, removes all whitespace to reduce file size. Use for production APIs and storage.</li>
+                    <li><strong style="color: var(--text-main);">Format / Prettify</strong>, adds indentation and line breaks for human readability. Use during development and debugging.</li>
+                    <li style="margin-top:0.5rem;"><strong style="color: var(--text-main);">Minify</strong>, removes all whitespace to reduce file size. Use for production APIs and storage.</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -110,7 +110,7 @@
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
 
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
@@ -145,20 +145,20 @@
 
 <style>
 .jf-action-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    background: var(--input-bg); border: 1px solid var(--border-color);
     border-radius: 10px; padding: 0.55rem 1.2rem; color: var(--text-sub);
     cursor: pointer; font-size: 0.88rem; font-family: 'Outfit', sans-serif; font-weight: 600;
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
 }
-.jf-action-btn:hover { border-color: var(--accent-color); color: #fff; }
+.jf-action-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
 .jf-action-btn.active { background: var(--accent-color); border-color: var(--accent-color); color: #000; }
 .jf-util-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    background: var(--input-bg); border: 1px solid var(--border-color);
     border-radius: 10px; padding: 0.55rem 1rem; color: var(--text-sub);
     cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif;
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
 }
-.jf-util-btn:hover { border-color: var(--accent-color); color: #fff; }
+.jf-util-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
 .jf-indent-btn {
     background: rgba(255,255,255,0.04); border: 1px solid var(--border-color);
     border-radius: 8px; padding: 0.3rem 0.8rem; color: var(--text-sub);

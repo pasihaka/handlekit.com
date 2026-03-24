@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Early theme initialization to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme || systemTheme);
+        })();
+    </script>
     <link rel="canonical" href="{{ request.base_url }}">
     <link rel="icon" type="image/webp" href="{{ url_for('static', filename='img/logo_transparent.webp') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo_transparent.webp') }}">
@@ -44,8 +52,23 @@
   --accent-gradient: linear-gradient(135deg, #da252c 0%, #7d0a10 100%);
   --text-main: #e6e6e6;
   --text-sub: #a0a0a0;
+  --text-on-accent: #ffffff;
   --border-color: rgba(255, 255, 255, 0.06);
   --glow-color: rgba(201, 28, 35, 0.15);
+  --input-bg: rgba(255, 255, 255, 0.05);
+}
+
+/* Light Mode Overrides with Higher Specificity */
+html[data-theme='light'],
+html[data-theme='light'] :root {
+  --bg-color: #FFF2EB;
+  --card-bg: rgba(255, 220, 220, 0.82);
+  --text-main: #2D1B1B;
+  --text-sub: #6B4E4E;
+  --text-on-accent: #ffffff;
+  --border-color: rgba(255, 214, 186, 0.7);
+  --glow-color: rgba(201, 28, 35, 0.08);
+  --input-bg: rgba(0, 0, 0, 0.03);
 }
 * {
   margin: 0;
@@ -226,6 +249,37 @@ footer {
     padding: 0.75rem !important;
   }
 }
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  color: var(--accent-color);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(10deg);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 20px var(--glow-color);
+}
+[data-theme='light'] .moon-icon,
+[data-theme='dark'] .sun-icon {
+  display: none;
+}
     </style>
 
     <!-- PERF: Pinned Lucide to a specific version to avoid redirects -->
@@ -284,6 +338,11 @@ footer {
         Buy me a coffee
     </a>
 
+    <button onclick="toggleTheme()" class="theme-toggle" aria-label="Toggle dark/light mode">
+        <i data-lucide="sun" class="sun-icon"></i>
+        <i data-lucide="moon" class="moon-icon"></i>
+    </button>
+
     <!-- AdSense Script - Standard loading to ensure reviewer bots find the code -->
     {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723" crossorigin="anonymous"></script>
@@ -330,7 +389,7 @@ footer {
                 We use cookies to personalize content and ads, and to analyze our traffic. By clicking "Accept", you consent to our use of cookies. Read our <a href="/privacy-policy" style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a>.
             </p>
             <div style="display: flex; gap: 1rem;">
-                <button id="cookie-accept" style="background: var(--accent-gradient); border: none; border-radius: 8px; padding: 0.75rem 2rem; color: #fff; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">Accept</button>
+                <button id="cookie-accept" style="background: var(--accent-gradient); border: none; border-radius: 8px; padding: 0.75rem 2rem; color: var(--text-on-accent); font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">Accept</button>
             </div>
         </div>
     </div>
@@ -346,8 +405,26 @@ footer {
         });
     </script>
 
-    <!-- Init Lucide icons: script is deferred, so onload is the reliable trigger -->
+    <!-- Init Lucide icons and Theme logic -->
     <script>
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                applyTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+
         document.getElementById('lucide-script').addEventListener('load', function() {
             requestAnimationFrame(() => {
                 lucide.createIcons();

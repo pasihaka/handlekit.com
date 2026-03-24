@@ -28,7 +28,7 @@
             oninput="onInput()"
             onfocus="this.style.borderColor='var(--accent-color)'"
             onblur="this.style.borderColor='var(--border-color)'"
-            style="width:100%;min-height:130px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.95rem;font-family:'Outfit',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+            style="width:100%;min-height:130px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.95rem;font-family:'Outfit',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
     </div>
 
     <!-- Action Buttons -->
@@ -39,10 +39,10 @@
         <button class="ue-action-btn" id="btn-decode" onclick="doDecode()">
             <i data-lucide="arrow-up" style="width:14px;height:14px;"></i> Decode
         </button>
-        <button onclick="swapInputOutput()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:10px;padding:0.55rem 1rem;color:var(--text-sub);cursor:pointer;font-size:0.85rem;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='var(--border-color)'">
+        <button onclick="swapInputOutput()" style="background: var(--input-bg);border:1px solid var(--border-color);border-radius:10px;padding:0.55rem 1rem;color:var(--text-sub);cursor:pointer;font-size:0.85rem;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='var(--border-color)'">
             <i data-lucide="arrow-up-down" style="width:14px;height:14px;"></i> Swap
         </button>
-        <button onclick="clearAll()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:10px;padding:0.55rem 1rem;color:var(--text-sub);cursor:pointer;font-size:0.85rem;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='var(--border-color)'">
+        <button onclick="clearAll()" style="background: var(--input-bg);border:1px solid var(--border-color);border-radius:10px;padding:0.55rem 1rem;color:var(--text-sub);cursor:pointer;font-size:0.85rem;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='var(--border-color)'">
             <i data-lucide="x" style="width:14px;height:14px;"></i> Clear
         </button>
         <span id="ue-status" style="font-size:0.8rem;color:var(--text-sub);margin-left:auto;"></span>
@@ -54,7 +54,7 @@
         <textarea id="ue-output" readonly placeholder="Result will appear here…"
             onfocus="this.style.borderColor='var(--accent-color)'"
             onblur="this.style.borderColor='var(--border-color)'"
-            style="width:100%;min-height:130px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.95rem;font-family:'Outfit',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+            style="width:100%;min-height:130px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.95rem;font-family:'Outfit',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
         <button id="copy-btn" onclick="copyOutput()" style="position:absolute;bottom:1rem;right:1.2rem;background:var(--accent-color);border:none;border-radius:10px;padding:0.45rem 1.1rem;color:#000;font-weight:700;font-size:0.8rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;">
             <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy
         </button>
@@ -79,7 +79,7 @@
 
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is URL Encoding?</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is URL Encoding?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
             URL encoding (also called percent-encoding) converts characters that are not allowed in a URL into a safe format. Each unsafe character is replaced by a percent sign (%) followed by two hexadecimal digits representing the character's ASCII code. For example, a space becomes <code style="color:var(--accent-color);">%20</code> and an ampersand becomes <code style="color:var(--accent-color);">%26</code>.
         </p>
@@ -90,8 +90,8 @@
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">encodeURIComponent vs encodeURI</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">encodeURIComponent</strong>, encodes everything except letters, digits, <code style="color:#aaa;">- _ . ! ~ * ' ( )</code>. Use for query parameter values.</li>
-                    <li style="margin-top:0.5rem;"><strong style="color:#fff;">encodeURI</strong>, preserves URL structure characters like <code style="color:#aaa;">/ ? # &amp; =</code>. Use for a complete URL.</li>
+                    <li><strong style="color: var(--text-main);">encodeURIComponent</strong>, encodes everything except letters, digits, <code style="color:#aaa;">- _ . ! ~ * ' ( )</code>. Use for query parameter values.</li>
+                    <li style="margin-top:0.5rem;"><strong style="color: var(--text-main);">encodeURI</strong>, preserves URL structure characters like <code style="color:#aaa;">/ ? # &amp; =</code>. Use for a complete URL.</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -109,7 +109,7 @@
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
 
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
@@ -120,7 +120,7 @@
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between Component and Full URL mode?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">Component mode</strong> (encodeURIComponent) encodes nearly every special character, including <code style="color:var(--accent-color);">/ ? # & =</code>, perfect for encoding a search query or parameter value. <strong style="color:#fff;">Full URL mode</strong> (encodeURI) leaves structural URL characters intact, so slashes and question marks stay as-is. Use Component for values, Full URL for complete addresses.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">Component mode</strong> (encodeURIComponent) encodes nearly every special character, including <code style="color:var(--accent-color);">/ ? # & =</code>, perfect for encoding a search query or parameter value. <strong style="color: var(--text-main);">Full URL mode</strong> (encodeURI) leaves structural URL characters intact, so slashes and question marks stay as-is. Use Component for values, Full URL for complete addresses.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -144,22 +144,22 @@
 
 <style>
 .ue-mode-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    background: var(--input-bg); border: 1px solid var(--border-color);
     border-radius: 10px; padding: 0.5rem 1rem; color: var(--text-sub);
     cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif; font-weight: 600;
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
 }
-.ue-mode-btn:hover, .ue-mode-btn.active { border-color: var(--accent-color); color: #fff; background: rgba(0,210,255,0.1); }
+.ue-mode-btn:hover, .ue-mode-btn.active { border-color: var(--accent-color); color: var(--text-main); background: rgba(0,210,255,0.1); }
 .ue-action-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 10px;
+    background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px;
     padding: 0.55rem 1.3rem; color: var(--text-sub); font-weight: 700; font-size: 0.9rem;
     cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s;
     display: flex; align-items: center; gap: 0.4rem;
 }
-.ue-action-btn:hover { border-color: var(--accent-color); color: #fff; }
+.ue-action-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
 .ue-action-btn.active { background: var(--accent-color); border-color: var(--accent-color); color: #000; }
 .ue-ref-row { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 8px; padding: 0.35rem 0.6rem; }
-.ue-ref-char { font-size: 0.85rem; color: #fff; font-weight: 700; min-width: 30px; }
+.ue-ref-char { font-size: 0.85rem; color: var(--text-main); font-weight: 700; min-width: 30px; }
 .ue-ref-enc { font-size: 0.8rem; color: var(--accent-color); font-family: monospace; font-weight: 600; }
 </style>
 

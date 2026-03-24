@@ -45,9 +45,9 @@
                 <input id="uc-from-val" type="number" value="1" oninput="convertFrom()"
                     onfocus="this.style.borderColor='var(--accent-color)'"
                     onblur="this.style.borderColor='var(--border-color)'"
-                    style="width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:14px;padding:0.9rem 1rem;color:#fff;font-size:1.2rem;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;box-sizing:border-box;font-weight:600;">
+                    style="width:100%;background: var(--input-bg);border:1px solid var(--border-color);border-radius:14px;padding:0.9rem 1rem;color: var(--text-main);font-size:1.2rem;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;box-sizing:border-box;font-weight:600;">
                 <select id="uc-from-unit" aria-label="Select unit to convert from" onchange="convertFrom()"
-                    style="width:100%;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:0.7rem 1rem;color:#fff;font-size:0.9rem;font-family:'Outfit',sans-serif;outline:none;cursor:pointer;">
+                    style="width:100%;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:0.7rem 1rem;color: var(--text-main);font-size:0.9rem;font-family:'Outfit',sans-serif;outline:none;cursor:pointer;">
                 </select>
             </div>
 
@@ -69,7 +69,7 @@
                     onblur="this.style.borderColor='var(--border-color)'"
                     style="width:100%;background:rgba(0,210,255,0.05);border:1px solid var(--border-color);border-radius:14px;padding:0.9rem 1rem;color:var(--accent-color);font-size:1.2rem;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;box-sizing:border-box;font-weight:700;">
                 <select id="uc-to-unit" aria-label="Select unit to convert to" onchange="convertFrom()"
-                    style="width:100%;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:0.7rem 1rem;color:#fff;font-size:0.9rem;font-family:'Outfit',sans-serif;outline:none;cursor:pointer;">
+                    style="width:100%;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:0.7rem 1rem;color: var(--text-main);font-size:0.9rem;font-family:'Outfit',sans-serif;outline:none;cursor:pointer;">
                 </select>
             </div>
         </div>
@@ -86,7 +86,7 @@
 
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">About Unit Conversion</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">About Unit Conversion</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
             Unit conversion is the process of expressing a measurement in different units while keeping its value equivalent. Whether you're working in science, engineering, cooking, or everyday life, converting between systems like metric and imperial is a constant need.
         </p>
@@ -111,7 +111,7 @@
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -145,12 +145,12 @@
 
 <style>
 .uc-tab {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    background: var(--input-bg); border: 1px solid var(--border-color);
     border-radius: 10px; padding: 0.5rem 1rem; color: var(--text-sub);
     cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif; font-weight: 600;
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
 }
-.uc-tab:hover { border-color: var(--accent-color); color: #fff; }
+.uc-tab:hover { border-color: var(--accent-color); color: var(--text-main); }
 .uc-tab.active { background: var(--accent-color); border-color: var(--accent-color); color: #000; font-weight: 700; }
 
 .uc-ref-item {
@@ -384,7 +384,7 @@ function updateLabel(fromVal, fromName, toVal, toName) {
     const fSym  = fromU ? fromU.sym : '';
     const tSym  = toU ? toU.sym : '';
     document.getElementById('uc-result-label').innerHTML =
-        `<strong style="color:#fff">${formatResult(fromVal)} ${fSym}</strong> <span style="color:var(--text-sub)">= </span><strong style="color:var(--accent-color)">${formatResult(toVal)} ${tSym}</strong>`;
+        `<strong style="color: var(--text-main)">${formatResult(fromVal)} ${fSym}</strong> <span style="color:var(--text-sub)">= </span><strong style="color:var(--accent-color)">${formatResult(toVal)} ${tSym}</strong>`;
 }
 
 function swapUnits() {

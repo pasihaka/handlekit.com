@@ -1,4 +1,4 @@
-﻿{% set title = "Free Online Word Counter | Character & Reading Time | HandleKit" %}
+{% set title = "Free Online Word Counter | Character & Reading Time | HandleKit" %}
 {% set description = "Count words, characters, sentences, and paragraphs instantly. Get estimated reading time and keyword density. Free, fast, and works entirely in your browser." %}
 {% extends "layout.html" %}
 
@@ -47,14 +47,14 @@
         <textarea
             id="wc-input"
             placeholder="Paste or type your text here to get an instant word count, character count, reading time, and more…"
-            style="width: 100%; min-height: 280px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: #fff; font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
+            style="width: 100%; min-height: 280px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: var(--text-main); font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
             oninput="analyzeText()"
             onfocus="this.style.borderColor='var(--accent-color)'"
             onblur="this.style.borderColor='var(--border-color)'"
         ></textarea>
         <button onclick="clearText()" id="clear-btn"
             title="Clear text"
-            style="position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.4rem 0.8rem; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s; opacity: 0;">
+            style="position: absolute; top: 1rem; right: 1rem; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.4rem 0.8rem; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s; opacity: 0;">
             <i data-lucide="x" style="width: 13px; height: 13px;"></i> Clear
         </button>
     </div>
@@ -76,7 +76,7 @@
             <span style="font-size: 0.8rem; color: var(--text-sub);" id="limit-label">0 / 300 words</span>
             <span style="font-size: 0.8rem; font-weight: 700;" id="limit-status">—</span>
         </div>
-        <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+        <div style="height: 6px; background: var(--border-color); border-radius: 3px; overflow: hidden;">
             <div id="limit-bar" style="height: 100%; width: 0%; border-radius: 3px; transition: all 0.3s; background: var(--accent-color);"></div>
         </div>
     </div>
@@ -92,7 +92,7 @@
         <div style="display: flex; align-items: center; gap: 1rem;">
             <i data-lucide="clock" style="color: #ffaa00; width: 24px; height: 24px;"></i>
             <div style="color: var(--text-sub);">
-                <strong style="color: #fff;">Writing a speech or essay?</strong> Try our dedicated <a href="/words-to-pages" style="color: #ffaa00; text-decoration: underline;">Words to Pages & Time Converter</a>.
+                <strong style="color: var(--text-main);">Writing a speech or essay?</strong> Try our dedicated <a href="/words-to-pages" style="color: #ffaa00; text-decoration: underline;">Words to Pages & Time Converter</a>.
             </div>
         </div>
     </div>
@@ -100,7 +100,7 @@
     <!-- SEO Content -->
     <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div class="info-card" style="margin-bottom: 3rem;">
-            <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Why Use a Word Counter?</h2>
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">Why Use a Word Counter?</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
                 Whether you're writing a blog post, an academic essay, a social media caption, or a product description, knowing
                 your word and character count is essential. Many platforms have strict limits, Twitter's 280-character cap,
@@ -118,47 +118,47 @@
             <div class="info-card">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Ideal Word Counts by Content Type</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color: #fff;">Blog post:</strong> 1,500 – 2,500 words</li>
-                    <li><strong style="color: #fff;">SEO article:</strong> 1,000 – 2,000 words</li>
-                    <li><strong style="color: #fff;">Academic essay:</strong> varies by assignment</li>
-                    <li><strong style="color: #fff;">Product description:</strong> 150 – 300 words</li>
-                    <li><strong style="color: #fff;">Email newsletter:</strong> 200 – 500 words</li>
-                    <li><strong style="color: #fff;">Social media post:</strong> 40 – 80 words</li>
-                    <li><strong style="color: #fff;">Cover letter:</strong> 250 – 400 words</li>
+                    <li><strong style="color: var(--text-main);">Blog post:</strong> 1,500 – 2,500 words</li>
+                    <li><strong style="color: var(--text-main);">SEO article:</strong> 1,000 – 2,000 words</li>
+                    <li><strong style="color: var(--text-main);">Academic essay:</strong> varies by assignment</li>
+                    <li><strong style="color: var(--text-main);">Product description:</strong> 150 – 300 words</li>
+                    <li><strong style="color: var(--text-main);">Email newsletter:</strong> 200 – 500 words</li>
+                    <li><strong style="color: var(--text-main);">Social media post:</strong> 40 – 80 words</li>
+                    <li><strong style="color: var(--text-main);">Cover letter:</strong> 250 – 400 words</li>
                 </ul>
             </div>
             <div class="info-card">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Character Limits to Know</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color: #fff;">Twitter / X:</strong> 280 characters</li>
-                    <li><strong style="color: #fff;">Instagram caption:</strong> 2,200 characters</li>
-                    <li><strong style="color: #fff;">Facebook post:</strong> 63,206 characters</li>
-                    <li><strong style="color: #fff;">Google title tag:</strong> ~60 characters</li>
-                    <li><strong style="color: #fff;">Meta description:</strong> ~160 characters</li>
-                    <li><strong style="color: #fff;">YouTube title:</strong> 100 characters</li>
-                    <li><strong style="color: #fff;">TikTok caption:</strong> 2,200 characters</li>
+                    <li><strong style="color: var(--text-main);">Twitter / X:</strong> 280 characters</li>
+                    <li><strong style="color: var(--text-main);">Instagram caption:</strong> 2,200 characters</li>
+                    <li><strong style="color: var(--text-main);">Facebook post:</strong> 63,206 characters</li>
+                    <li><strong style="color: var(--text-main);">Google title tag:</strong> ~60 characters</li>
+                    <li><strong style="color: var(--text-main);">Meta description:</strong> ~160 characters</li>
+                    <li><strong style="color: var(--text-main);">YouTube title:</strong> 100 characters</li>
+                    <li><strong style="color: var(--text-main);">TikTok caption:</strong> 2,200 characters</li>
                 </ul>
             </div>
         </div>
 
         <div class="info-card" style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 15px; border: 1px solid var(--border-color);">
-            <h3 style="color: #fff; margin-bottom: 1.5rem; font-size: 1.5rem;">How Does Our Word Counter Work?</h3>
+            <h3 style="color: var(--text-main); margin-bottom: 1.5rem; font-size: 1.5rem;">How Does Our Word Counter Work?</h3>
             <ul style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.9rem;">
                 <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
                     <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
-                    <span><strong style="color: #fff;">100% private.</strong> Your text never leaves your browser, everything is computed on your device with JavaScript.</span>
+                    <span><strong style="color: var(--text-main);">100% private.</strong> Your text never leaves your browser, everything is computed on your device with JavaScript.</span>
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
                     <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
-                    <span><strong style="color: #fff;">Instant analysis.</strong> Stats update in real-time as you type or paste, no buttons to click.</span>
+                    <span><strong style="color: var(--text-main);">Instant analysis.</strong> Stats update in real-time as you type or paste, no buttons to click.</span>
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
                     <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
-                    <span><strong style="color: #fff;">Smart word counting.</strong> Words are counted by splitting on whitespace, ignoring empty tokens, consistent with word processors like MS Word.</span>
+                    <span><strong style="color: var(--text-main);">Smart word counting.</strong> Words are counted by splitting on whitespace, ignoring empty tokens, consistent with word processors like MS Word.</span>
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
                     <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
-                    <span><strong style="color: #fff;">Keyword density.</strong> Common stop words (the, a, is…) are filtered out so you see only your meaningful keywords.</span>
+                    <span><strong style="color: var(--text-main);">Keyword density.</strong> Common stop words (the, a, is…) are filtered out so you see only your meaningful keywords.</span>
                 </li>
             </ul>
         </div>
@@ -166,7 +166,7 @@
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -218,7 +218,7 @@
     .wc-stat-value {
         font-size: 2rem;
         font-weight: 800;
-        color: #fff;
+        color: var(--text-main);
         line-height: 1.1;
         margin-bottom: 0.3rem;
         transition: color 0.2s;
@@ -227,7 +227,7 @@
     .wc-stat-label { font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
 
     .wc-limit-btn {
-        background: rgba(255,255,255,0.05);
+        background: var(--input-bg);
         border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 0.35rem 0.75rem;
@@ -239,7 +239,7 @@
     }
     .wc-limit-btn:hover, .wc-limit-btn.active {
         border-color: var(--accent-color);
-        color: #fff;
+        color: var(--text-main);
         background: rgba(0,210,255,0.1);
     }
 
@@ -248,8 +248,8 @@
         align-items: center;
         gap: 0.75rem;
     }
-    .kw-word { font-size: 0.9rem; color: #fff; font-weight: 600; min-width: 100px; }
-    .kw-bar-bg { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+    .kw-word { font-size: 0.9rem; color: var(--text-main); font-weight: 600; min-width: 100px; }
+    .kw-bar-bg { flex: 1; height: 6px; background: var(--border-color); border-radius: 3px; overflow: hidden; }
     .kw-bar-fill { height: 100%; background: var(--accent-gradient); border-radius: 3px; transition: width 0.4s ease; }
     .kw-count { font-size: 0.8rem; color: var(--text-sub); min-width: 50px; text-align: right; }
 

@@ -30,7 +30,7 @@
                 oninput="onInput()"
                 onfocus="this.style.borderColor='var(--accent-color)'"
                 onblur="this.style.borderColor='var(--border-color)'"
-                style="width:100%;min-height:150px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.92rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+                style="width:100%;min-height:150px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.92rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
         </div>
 
         <!-- Action Buttons -->
@@ -56,7 +56,7 @@
             <textarea id="b64-output" readonly placeholder="Result will appear here…"
                 onfocus="this.style.borderColor='var(--accent-color)'"
                 onblur="this.style.borderColor='var(--border-color)'"
-                style="width:100%;min-height:150px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.92rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+                style="width:100%;min-height:150px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.92rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
             <button id="copy-btn" onclick="copyOutput()" style="position:absolute;bottom:1rem;right:1.2rem;background:var(--accent-color);border:none;border-radius:10px;padding:0.45rem 1.1rem;color:#000;font-weight:700;font-size:0.8rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;">
                 <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy
             </button>
@@ -79,7 +79,7 @@
         <div id="file-result" style="display:none;">
             <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Base64 Output</label>
             <textarea id="file-output" readonly
-                style="width:100%;min-height:150px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color:#fff;font-size:0.82rem;font-family:'Courier New',monospace;resize:vertical;outline:none;box-sizing:border-box;line-height:1.7;"></textarea>
+                style="width:100%;min-height:150px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.82rem;font-family:'Courier New',monospace;resize:vertical;outline:none;box-sizing:border-box;line-height:1.7;"></textarea>
             <div style="display:flex;gap:0.75rem;margin-top:0.75rem;flex-wrap:wrap;">
                 <button onclick="copyFileOutput()" class="b64-action-btn" id="file-copy-btn">
                     <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy Base64
@@ -107,7 +107,7 @@
 
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is Base64?</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is Base64?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
             Base64 is a binary-to-text encoding scheme that represents binary data using a set of 64 printable ASCII characters. It is commonly used when binary data needs to be transmitted or stored in systems that only support text, such as email, HTML, or JSON.
         </p>
@@ -118,14 +118,14 @@
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Base64 vs. Encryption</h3>
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">Base64 is <strong style="color:#fff;">encoding, not encryption</strong>. Anyone can decode it, it provides no security on its own. It is used purely for safe data transport, not for protecting sensitive information.</p>
+                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">Base64 is <strong style="color: var(--text-main);">encoding, not encryption</strong>. Anyone can decode it, it provides no security on its own. It is used purely for safe data transport, not for protecting sensitive information.</p>
             </div>
         </div>
     </div>
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
 
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
@@ -160,26 +160,26 @@
 
 <style>
 .b64-mode-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    background: var(--input-bg); border: 1px solid var(--border-color);
     border-radius: 10px; padding: 0.5rem 1rem; color: var(--text-sub);
     cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif; font-weight: 600;
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
 }
-.b64-mode-btn:hover, .b64-mode-btn.active { border-color: var(--accent-color); color: #fff; background: rgba(0,210,255,0.1); }
+.b64-mode-btn:hover, .b64-mode-btn.active { border-color: var(--accent-color); color: var(--text-main); background: rgba(0,210,255,0.1); }
 .b64-action-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 10px;
+    background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px;
     padding: 0.55rem 1.3rem; color: var(--text-sub); font-weight: 700; font-size: 0.9rem;
     cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s;
     display: flex; align-items: center; gap: 0.4rem;
 }
-.b64-action-btn:hover { border-color: var(--accent-color); color: #fff; }
+.b64-action-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
 .b64-util-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+    background: var(--input-bg); border: 1px solid var(--border-color);
     border-radius: 10px; padding: 0.55rem 1rem; color: var(--text-sub);
     cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif;
     transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
 }
-.b64-util-btn:hover { border-color: var(--accent-color); color: #fff; }
+.b64-util-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
 .b64-use-item {
     background: rgba(255,255,255,0.03); border-radius: 10px; padding: 0.5rem 0.9rem;
     font-size: 0.82rem; color: var(--text-sub);

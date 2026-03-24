@@ -21,7 +21,7 @@
                     style="width: 200%; height: 200%; border: none; background: none; cursor: pointer; padding: 0; outline: none; margin: -25% 0 0 -25%;">
             </div>
             <div id="color-preview" style="width: 100%; height: 56px; border-radius: 14px; background: #00d2ff; border: 1px solid rgba(255,255,255,0.1); transition: background 0.15s;"></div>
-            <div id="color-hex-label" style="font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: 1px;">#00D2FF</div>
+            <div id="color-hex-label" style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); letter-spacing: 1px;">#00D2FF</div>
         </div>
 
         <!-- Right: Values -->
@@ -56,7 +56,7 @@
     <!-- Palette -->
     <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; margin-bottom: 2rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
-            <h2 style="font-size: 1.1rem; font-weight: 700; color: #fff; margin: 0;">Generated Palette</h2>
+            <h2 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin: 0;">Generated Palette</h2>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                 <button class="cp-palette-btn active" id="btn-complementary" onclick="setPaletteMode('complementary')">Complementary</button>
                 <button class="cp-palette-btn" id="btn-analogous" onclick="setPaletteMode('analogous')">Analogous</button>
@@ -69,7 +69,7 @@
 
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is a Color Picker?</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is a Color Picker?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
             A color picker lets you select any color and retrieve its values in every common format: HEX (used in HTML/CSS), RGB (screen displays and design tools), HSL (intuitive for developers), and CMYK (standard for print). HandleKit's Color Picker also generates four palette types to help you build harmonious colour schemes instantly, all in your browser, with zero data leaving your device.
         </p>
@@ -77,19 +77,19 @@
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Colour Format Guide</h3>
                 <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">HEX</strong>, #RRGGBB, used in CSS &amp; HTML</li>
-                    <li><strong style="color:#fff;">RGB</strong>, rgb(R, G, B), values 0–255</li>
-                    <li><strong style="color:#fff;">HSL</strong>, hsl(H°, S%, L%), great for devs</li>
-                    <li><strong style="color:#fff;">CMYK</strong>, for print design &amp; publishing</li>
+                    <li><strong style="color: var(--text-main);">HEX</strong>, #RRGGBB, used in CSS &amp; HTML</li>
+                    <li><strong style="color: var(--text-main);">RGB</strong>, rgb(R, G, B), values 0–255</li>
+                    <li><strong style="color: var(--text-main);">HSL</strong>, hsl(H°, S%, L%), great for devs</li>
+                    <li><strong style="color: var(--text-main);">CMYK</strong>, for print design &amp; publishing</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Palette Types Explained</h3>
                 <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">Complementary</strong>, opposite hues, high contrast</li>
-                    <li><strong style="color:#fff;">Analogous</strong>, neighbouring hues, harmonious</li>
-                    <li><strong style="color:#fff;">Triadic</strong>, three equally-spaced hues, vibrant</li>
-                    <li><strong style="color:#fff;">Shades</strong>, light to dark variants of your colour</li>
+                    <li><strong style="color: var(--text-main);">Complementary</strong>, opposite hues, high contrast</li>
+                    <li><strong style="color: var(--text-main);">Analogous</strong>, neighbouring hues, harmonious</li>
+                    <li><strong style="color: var(--text-main);">Triadic</strong>, three equally-spaced hues, vibrant</li>
+                    <li><strong style="color: var(--text-main);">Shades</strong>, light to dark variants of your colour</li>
                 </ul>
             </div>
         </div>
@@ -97,7 +97,7 @@
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -107,7 +107,7 @@
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What colour format should I use in CSS?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">HEX</strong> (#RRGGBB) is the most common for simple colours, clean, concise, and universally supported. <strong style="color:#fff;">RGB</strong> is useful when you need to manipulate individual channels in code or use transparency (rgba()). <strong style="color:#fff;">HSL</strong> is increasingly popular for theming because it's intuitive: you can bump the lightness or saturation value and know exactly what will change. CMYK is for print design, not web.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">HEX</strong> (#RRGGBB) is the most common for simple colours, clean, concise, and universally supported. <strong style="color: var(--text-main);">RGB</strong> is useful when you need to manipulate individual channels in code or use transparency (rgba()). <strong style="color: var(--text-main);">HSL</strong> is increasingly popular for theming because it's intuitive: you can bump the lightness or saturation value and know exactly what will change. CMYK is for print design, not web.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -117,7 +117,7 @@
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between complementary and analogous palettes?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">Complementary</strong> colours sit opposite each other on the colour wheel, they create high-contrast combinations that pop. Think blue and orange. <strong style="color:#fff;">Analogous</strong> colours sit next to each other, giving a more harmonious, cohesive feel, like a green-teal-blue gradient. Complementary for emphasis, analogous for elegance.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">Complementary</strong> colours sit opposite each other on the colour wheel, they create high-contrast combinations that pop. Think blue and orange. <strong style="color: var(--text-main);">Analogous</strong> colours sit next to each other, giving a more harmonious, cohesive feel, like a green-teal-blue gradient. Complementary for emphasis, analogous for elegance.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -133,12 +133,12 @@
 .cp-value-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.9rem 1.1rem; transition: border-color 0.2s; }
 .cp-value-card:hover { border-color: rgba(0,210,255,0.4); }
 .cp-value-label { font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; margin-bottom: 0.4rem; }
-.cp-value-input { flex: 1; background: transparent; border: none; color: #fff; font-size: 0.9rem; font-family: 'Outfit', monospace; font-weight: 600; outline: none; width: 100%; min-width: 0; }
+.cp-value-input { flex: 1; background: transparent; border: none; color: var(--text-main); font-size: 0.9rem; font-family: 'Outfit', monospace; font-weight: 600; outline: none; width: 100%; min-width: 0; }
 .cp-copy-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 7px; padding: 0.3rem 0.5rem; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; transition: all 0.2s; flex-shrink: 0; }
 .cp-copy-btn:hover { border-color: var(--accent-color); color: var(--accent-color); }
 .cp-copy-btn.copied { border-color: #00ff88; color: #00ff88; }
-.cp-palette-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.35rem 0.75rem; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
-.cp-palette-btn:hover, .cp-palette-btn.active { border-color: var(--accent-color); color: #fff; background: rgba(0,210,255,0.1); }
+.cp-palette-btn { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.35rem 0.75rem; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.cp-palette-btn:hover, .cp-palette-btn.active { border-color: var(--accent-color); color: var(--text-main); background: rgba(0,210,255,0.1); }
 .cp-swatch { border-radius: 12px; aspect-ratio: 1; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px; overflow: hidden; }
 .cp-swatch:hover { transform: scale(1.07); border-color: rgba(255,255,255,0.5); }
 .cp-swatch-label { font-size: 0.55rem; font-weight: 700; color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(0,0,0,0.8); letter-spacing: 0.3px; }

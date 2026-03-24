@@ -13,7 +13,7 @@
     <!-- Input Box -->
     <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; text-align: center;">
         <label for="word-input" style="display: block; color: var(--text-sub); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Enter Word Count</label>
-        <input type="number" id="word-input" placeholder="e.g. 1000" min="0" oninput="calculatePages()" style="width: 100%; max-width: 400px; background: rgba(255,255,255,0.05); border: 2px solid var(--accent-color); border-radius: 12px; padding: 1rem 1.5rem; color: #fff; font-size: 2.5rem; font-weight: 800; text-align: center; outline: none; box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);">
+        <input type="number" id="word-input" placeholder="e.g. 1000" min="0" oninput="calculatePages()" style="width: 100%; max-width: 400px; background: var(--input-bg); border: 2px solid var(--accent-color); border-radius: 12px; padding: 1rem 1.5rem; color: var(--text-main); font-size: 2.5rem; font-weight: 800; text-align: center; outline: none; box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);">
     </div>
 
     <!-- Results Grid -->
@@ -45,7 +45,7 @@
         <div style="display: flex; align-items: center; gap: 1rem;">
             <i data-lucide="file-text" style="color: var(--accent-color); width: 24px; height: 24px;"></i>
             <div style="color: var(--text-sub);">
-                <strong style="color: #fff;">Need to count words from a text?</strong> Use our full <a href="/word-counter" style="color: var(--accent-color); text-decoration: underline;">Text Analyzer & Word Counter</a> tool.
+                <strong style="color: var(--text-main);">Need to count words from a text?</strong> Use our full <a href="/word-counter" style="color: var(--accent-color); text-decoration: underline;">Text Analyzer & Word Counter</a> tool.
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@
     <!-- SEO Content -->
     <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div class="info-card" style="margin-bottom: 3rem;">
-            <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">How Many Pages is 1000 Words?</h2>
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">How Many Pages is 1000 Words?</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
                 The exact number of pages depends heavily on the font family, font size, margins, and spacing. However, the standard academic and publishing rule of thumb is:
             </p>
@@ -73,20 +73,20 @@
                     The average adult speaks at roughly <strong>130 words per minute</strong> in a presentation setting. Rushing causes you to stumble, so pacing is key!
                 </p>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem; margin-top: 1rem;">
-                    <li><strong style="color: #fff;">1 minute speech:</strong> ~130 words</li>
-                    <li><strong style="color: #fff;">3 minute speech:</strong> ~390 words</li>
-                    <li><strong style="color: #fff;">5 minute speech:</strong> ~650 words</li>
-                    <li><strong style="color: #fff;">10 minute speech:</strong> ~1300 words</li>
+                    <li><strong style="color: var(--text-main);">1 minute speech:</strong> ~130 words</li>
+                    <li><strong style="color: var(--text-main);">3 minute speech:</strong> ~390 words</li>
+                    <li><strong style="color: var(--text-main);">5 minute speech:</strong> ~650 words</li>
+                    <li><strong style="color: var(--text-main);">10 minute speech:</strong> ~1300 words</li>
                 </ul>
             </div>
             <div class="info-card">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Common Word Count Targets</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color: #fff;">High School Essay:</strong> 1,000 - 1,500 words</li>
-                    <li><strong style="color: #fff;">College Term Paper:</strong> 2,000 - 3,000 words</li>
-                    <li><strong style="color: #fff;">Short Story:</strong> 3,000 - 7,000 words</li>
-                    <li><strong style="color: #fff;">Novella:</strong> 10,000 - 40,000 words</li>
-                    <li><strong style="color: #fff;">Novel:</strong> 70,000 - 120,000 words</li>
+                    <li><strong style="color: var(--text-main);">High School Essay:</strong> 1,000 - 1,500 words</li>
+                    <li><strong style="color: var(--text-main);">College Term Paper:</strong> 2,000 - 3,000 words</li>
+                    <li><strong style="color: var(--text-main);">Short Story:</strong> 3,000 - 7,000 words</li>
+                    <li><strong style="color: var(--text-main);">Novella:</strong> 10,000 - 40,000 words</li>
+                    <li><strong style="color: var(--text-main);">Novel:</strong> 70,000 - 120,000 words</li>
                 </ul>
             </div>
         </div>
@@ -115,7 +115,7 @@
         line-height: 1;
         margin-bottom: 1rem;
     }
-    .wtp-stat-label { font-size: 1rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+    .wtp-stat-label { font-size: 1rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
     
     /* Remove arrows from number input */
     input[type=number]::-webkit-inner-spin-button, 

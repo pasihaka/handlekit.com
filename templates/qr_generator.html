@@ -14,12 +14,12 @@
     <div class="tool-main-layout" style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start;">
         <div class="input-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem;">
             <label style="display: block; color: var(--accent-color); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 1rem;">Enter URL or Text</label>
-            <textarea id="qr-text" placeholder="https://handlekit.com" style="width: 100%; height: 120px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; color: #fff; resize: none; outline: none; margin-bottom: 1.5rem; font-size: 1.1rem;"></textarea>
+            <textarea id="qr-text" placeholder="https://handlekit.com" style="width: 100%; height: 120px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; color: var(--text-main); resize: none; outline: none; margin-bottom: 1.5rem; font-size: 1.1rem;"></textarea>
             
             <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; align-items: end;">
                 <div>
                     <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Size</label>
-                    <select id="qr-size" aria-label="QR Code Size" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
+                    <select id="qr-size" aria-label="QR Code Size" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
                         <option value="200">Small (200x200)</option>
                         <option value="400" selected>Medium (400x400)</option>
                         <option value="800">Large (800x800)</option>
@@ -28,11 +28,11 @@
                 </div>
                 <div id="custom-size-container" style="display: none;">
                     <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Width (px)</label>
-                    <input type="number" id="custom-size-input" value="1200" min="100" max="3000" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
+                    <input type="number" id="custom-size-input" value="1200" min="100" max="3000" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
                 </div>
                 <div>
                     <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Correction Level</label>
-                    <select id="qr-correction" aria-label="Error Correction Level" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.75rem; border-radius: 10px; outline: none;">
+                    <select id="qr-correction" aria-label="Error Correction Level" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
                         <option value="L">Low (7%)</option>
                         <option value="M" selected>Medium (15%)</option>
                         <option value="Q">Quartile (25%)</option>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <button id="generate-btn" style="width: 100%; background: var(--accent-gradient); color: #fff; border: none; padding: 1rem; border-radius: 12px; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">
+            <button id="generate-btn" style="width: 100%; background: var(--accent-gradient); color: var(--text-on-accent); border: none; padding: 1rem; border-radius: 12px; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">
                 Generate QR Code
             </button>
         </div>
@@ -50,7 +50,7 @@
             <div id="qrcode-container" style="background: #fff; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto;">
                 <p id="qr-placeholder" style="color: #666; font-size: 0.8rem;">Preview will appear here</p>
             </div>
-            <button id="download-btn" disabled style="width: 100%; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+            <button id="download-btn" disabled style="width: 100%; background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                 <i data-lucide="download" style="width: 18px;"></i> Download PNG
             </button>
         </div>
@@ -59,7 +59,7 @@
     <!-- SEO Content Sections -->
     <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div class="info-card" style="margin-bottom: 3rem;">
-            <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Why QR Codes are Essential for Modern Business</h2>
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">Why QR Codes are Essential for Modern Business</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
                 QR (Quick Response) codes have transitioned from a niche technology to a universal bridge between the physical and digital worlds. Whether you are a business owner placing a menu on a table or a creator sharing your portfolio at a networking event, QR codes provide a frictionless way for users to access your content instantly.
             </p>
@@ -84,7 +84,7 @@
         </div>
 
         <div class="info-card" style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 15px; border: 1px solid var(--border-color);">
-            <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">Static vs. Dynamic QR Codes</h2>
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">Static vs. Dynamic QR Codes</h2>
             <p style="color: var(--text-sub); line-height: 1.8;">
                 <strong>Static QR Codes</strong> (like the ones we generate) embed the target data directly in the code itself. They are best for permanent links like website URLs or contact information. <strong>Dynamic QR Codes</strong> use a redirect service, allowing you to change the destination later. While dynamic codes are useful for tracking, static codes are more reliable, faster, and more private.
             </p>
@@ -93,7 +93,7 @@
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">

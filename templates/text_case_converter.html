@@ -19,7 +19,7 @@
             oninput="syncOutput()"
             onfocus="this.style.borderColor='var(--accent-color)'"
             onblur="this.style.borderColor='var(--border-color)'"
-            style="width: 100%; min-height: 160px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: #fff; font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
+            style="width: 100%; min-height: 160px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: var(--text-main); font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
         ></textarea>
         <div style="position: absolute; bottom: 1rem; right: 1.2rem; display: flex; gap: 0.5rem; align-items: center;">
             <span id="tc-char-count" style="font-size: 0.75rem; color: var(--text-sub);">0 chars · 0 words</span>
@@ -49,7 +49,7 @@
             placeholder="Converted text will appear here…"
             onfocus="this.style.borderColor='var(--accent-color)'"
             onblur="this.style.borderColor='var(--border-color)'"
-            style="width: 100%; min-height: 160px; background: rgba(0,210,255,0.04); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: #fff; font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
+            style="width: 100%; min-height: 160px; background: rgba(0,210,255,0.04); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: var(--text-main); font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
         ></textarea>
         <button id="copy-btn" onclick="copyOutput()" style="position: absolute; bottom: 1rem; right: 1.2rem; background: var(--accent-color); border: none; border-radius: 10px; padding: 0.45rem 1.1rem; color: #000; font-weight: 700; font-size: 0.8rem; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;">
             <i data-lucide="copy" style="width: 14px; height: 14px;"></i> Copy
@@ -59,12 +59,12 @@
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div style="margin-bottom: 3rem;">
-            <h2 style="color: #fff; margin-bottom: 1rem; font-size: 1.5rem;">What Is a Text Case Converter?</h2>
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is a Text Case Converter?</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
                 A text case converter is a tool that transforms your text into different capitalisation styles instantly. Whether you're a developer naming variables, a writer formatting headlines, or a designer polishing UI copy, having the right case format saves time and prevents errors.
             </p>
             <p style="color: var(--text-sub); line-height: 1.8;">
-                HandleKit's Text Case Converter supports <strong style="color:#fff;">9 conversion modes</strong>, all processed instantly in your browser with zero data sent to any server.
+                HandleKit's Text Case Converter supports <strong style="color: var(--text-main);">9 conversion modes</strong>, all processed instantly in your browser with zero data sent to any server.
             </p>
         </div>
 
@@ -72,14 +72,14 @@
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">When to Use Each Case</h3>
                 <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color:#fff;">UPPERCASE</strong>, warnings, acronyms, headings</li>
-                    <li><strong style="color:#fff;">lowercase</strong>, email addresses, URLs, usernames</li>
-                    <li><strong style="color:#fff;">Title Case</strong>, article titles, headings, names</li>
-                    <li><strong style="color:#fff;">Sentence case</strong>, regular prose, UI labels</li>
-                    <li><strong style="color:#fff;">camelCase</strong>, JavaScript variables, JSON keys</li>
-                    <li><strong style="color:#fff;">PascalCase</strong>, class names, TypeScript types</li>
-                    <li><strong style="color:#fff;">snake_case</strong>, Python variables, database columns</li>
-                    <li><strong style="color:#fff;">kebab-case</strong>, CSS classes, HTML attributes, URLs</li>
+                    <li><strong style="color: var(--text-main);">UPPERCASE</strong>, warnings, acronyms, headings</li>
+                    <li><strong style="color: var(--text-main);">lowercase</strong>, email addresses, URLs, usernames</li>
+                    <li><strong style="color: var(--text-main);">Title Case</strong>, article titles, headings, names</li>
+                    <li><strong style="color: var(--text-main);">Sentence case</strong>, regular prose, UI labels</li>
+                    <li><strong style="color: var(--text-main);">camelCase</strong>, JavaScript variables, JSON keys</li>
+                    <li><strong style="color: var(--text-main);">PascalCase</strong>, class names, TypeScript types</li>
+                    <li><strong style="color: var(--text-main);">snake_case</strong>, Python variables, database columns</li>
+                    <li><strong style="color: var(--text-main);">kebab-case</strong>, CSS classes, HTML attributes, URLs</li>
                 </ul>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -87,19 +87,19 @@
                 <ul style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.9rem;">
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
                         <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color:#fff;">100% private.</strong> Your text never leaves your browser.</span>
+                        <span><strong style="color: var(--text-main);">100% private.</strong> Your text never leaves your browser.</span>
                     </li>
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
                         <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color:#fff;">Instant results.</strong> Conversion happens as you click, no page reloads.</span>
+                        <span><strong style="color: var(--text-main);">Instant results.</strong> Conversion happens as you click, no page reloads.</span>
                     </li>
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
                         <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color:#fff;">No limits.</strong> Convert text of any length, unlimited times.</span>
+                        <span><strong style="color: var(--text-main);">No limits.</strong> Convert text of any length, unlimited times.</span>
                     </li>
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
                         <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color:#fff;">Smart detection.</strong> camelCase and snake_case properly strip punctuation.</span>
+                        <span><strong style="color: var(--text-main);">Smart detection.</strong> camelCase and snake_case properly strip punctuation.</span>
                     </li>
                 </ul>
             </div>
@@ -108,7 +108,7 @@
 
     <!-- FAQ Section -->
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: #fff; margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -118,12 +118,12 @@
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between camelCase and PascalCase?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">camelCase</strong> starts with a lowercase letter and capitalises the first letter of each subsequent word: <code style="color:var(--accent-color);">myVariableName</code>. <strong style="color:#fff;">PascalCase</strong> (also called UpperCamelCase) capitalises the first letter of every word including the first: <code style="color:var(--accent-color);">MyClassName</code>. In practice: use camelCase for JavaScript variables and functions, PascalCase for classes and React components, TypeScript types and interfaces.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">camelCase</strong> starts with a lowercase letter and capitalises the first letter of each subsequent word: <code style="color:var(--accent-color);">myVariableName</code>. <strong style="color: var(--text-main);">PascalCase</strong> (also called UpperCamelCase) capitalises the first letter of every word including the first: <code style="color:var(--accent-color);">MyClassName</code>. In practice: use camelCase for JavaScript variables and functions, PascalCase for classes and React components, TypeScript types and interfaces.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">When should I use snake_case vs kebab-case?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color:#fff;">snake_case</strong> uses underscores as separators: <code style="color:var(--accent-color);">user_profile_data</code>. It's the standard convention in Python (variables, functions, file names) and in SQL column names. <strong style="color:#fff;">kebab-case</strong> uses hyphens: <code style="color:var(--accent-color);">user-profile-data</code>. It's used in CSS class names, HTML attributes, URL slugs, and many command-line tools. JavaScript can't use hyphens in variable names, so never camelCase-vs-kebab in JS code directly, only in strings or CSS.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">snake_case</strong> uses underscores as separators: <code style="color:var(--accent-color);">user_profile_data</code>. It's the standard convention in Python (variables, functions, file names) and in SQL column names. <strong style="color: var(--text-main);">kebab-case</strong> uses hyphens: <code style="color:var(--accent-color);">user-profile-data</code>. It's used in CSS class names, HTML attributes, URL slugs, and many command-line tools. JavaScript can't use hyphens in variable names, so never camelCase-vs-kebab in JS code directly, only in strings or CSS.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -142,7 +142,7 @@
 
 <style>
 .tc-btn {
-    background: rgba(255,255,255,0.05);
+    background: var(--input-bg);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 0.5rem 1rem;
@@ -155,7 +155,7 @@
 }
 .tc-btn:hover, .tc-btn.active {
     border-color: var(--accent-color);
-    color: #fff;
+    color: var(--text-main);
     background: rgba(0,210,255,0.1);
     transform: translateY(-1px);
 }
