@@ -239,6 +239,8 @@ footer {
   .container { padding: 1rem; }
   .hub-grid  { grid-template-columns: 1fr; }
   .mobile-stack { flex-direction: column !important; width: 100%; }
+  .coffee-btn span { display: none; }
+  .coffee-btn { padding: 0.8rem !important; aspect-ratio: 1; bottom: 1.5rem; right: 1.5rem; }
   .toolbox-layout { grid-template-columns: 1fr !important; }
   .toolbox-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .toolbox-nav .tool-tab {
@@ -284,6 +286,7 @@ footer {
 
     <!-- PERF: Pinned Lucide to a specific version to avoid redirects -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js" defer id="lucide-script"></script>
+    {% block head_extra %}{% endblock %}
 </head>
 <body>
     <div class="bg-gradient"></div>
@@ -335,7 +338,7 @@ footer {
 
     <a href="https://buymeacoffee.com/pasimql5" target="_blank" class="coffee-btn">
         <i data-lucide="coffee"></i>
-        Buy me a coffee
+        <span>Buy me a coffee</span>
     </a>
 
     <button onclick="toggleTheme()" class="theme-toggle" aria-label="Toggle dark/light mode">
