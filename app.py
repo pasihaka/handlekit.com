@@ -386,6 +386,10 @@ def text_case_converter():
 def color_picker():
     return render_template('color_picker.html')
 
+@app.route('/jnd-test')
+def jnd_test():
+    return render_template('jnd_test.html')
+
 @app.route('/url-encoder')
 def url_encoder():
     return render_template('url_encoder.html')
