@@ -8,6 +8,7 @@ from PIL import Image
 import io
 import uuid
 import hashlib
+import json
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -432,6 +433,115 @@ def api_generate_hashes():
         "md5": md5_hash,
         "sha256": sha256_hash
     })
+
+@app.route('/api/jnd/submit', methods=['POST'])
+def api_jnd_submit():
+    data = request.get_json()
+    if not data or 'score' not in data:
+        return jsonify({"success": False, "error": "Missing data"}), 400
+    
+    data_dir = 'data'
+    os.makedirs(data_dir, exist_ok=True)
+    file_path = os.path.join(data_dir, 'jnd_quest_global.json')
+    
+    try:
+        results = []
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                results = json.load(f)
+        
+        results.append({
+            "nickname": data.get('nickname', 'Anonymous'),
+            "score": int(data['score']),
+            "level": int(data.get('level', 1)),
+            "difficulty": data.get('difficulty', 'pro'),
+            "timestamp": time.time()
+        })
+        
+        with open(file_path, 'w') as f:
+            json.dump(results, f)
+            
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/jnd/stats', methods=['GET'])
+def api_jnd_stats():
+    difficulty = request.args.get('difficulty', 'standard')
+    file_path = 'data/jnd_quest_global.json'
+    if not os.path.exists(file_path):
+        return jsonify({"buckets": [], "total": 0, "percentiles": {}})
+    
+    try:
+        with open(file_path, 'r') as f:
+            all_results = json.load(f)
+        
+        # Filter by difficulty
+        results = [r for r in all_results if r.get('difficulty') == difficulty]
+        
+        if not results:
+            return jsonify({"buckets": [], "total": 0, "percentiles": {}, "difficulty": difficulty})
+            
+        scores = sorted([r['score'] for r in results])
+        total = len(scores)
+        
+        # Percentiles (0th, 25th, 50th, 75th, 100th)
+        percentiles = {
+            "0": scores[0],
+            "25": scores[int(total * 0.25)],
+            "50": scores[int(total * 0.50)],
+            "75": scores[int(total * 0.75)],
+            "100": scores[-1]
+        }
+        
+        max_score = scores[-1]
+        bucket_size = max(50, (max_score // 15) + 1)
+        
+        buckets = {}
+        for s in scores:
+            b_idx = (s // bucket_size) * bucket_size
+            buckets[b_idx] = buckets.get(b_idx, 0) + 1
+            
+        final_buckets = []
+        num_buckets = (max_score // bucket_size) + 1
+        for i in range(num_buckets):
+            b_min = i * bucket_size
+            final_buckets.append({
+                "min": b_min,
+                "max": b_min + bucket_size,
+                "count": buckets.get(b_min, 0)
+            })
+        
+        return jsonify({
+            "buckets": final_buckets,
+            "total": total,
+            "max_score": max_score,
+            "bucket_size": bucket_size,
+            "percentiles": percentiles,
+            "difficulty": difficulty
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/jnd/leaderboard', methods=['GET'])
+def api_jnd_leaderboard():
+    difficulty = request.args.get('difficulty', 'standard')
+    file_path = 'data/jnd_quest_global.json'
+    if not os.path.exists(file_path):
+        return jsonify([])
+    
+    try:
+        with open(file_path, 'r') as f:
+            all_results = json.load(f)
+        
+        # Filter by difficulty
+        results = [r for r in all_results if r.get('difficulty') == difficulty]
+        
+        # Sort by score desc, then level desc
+        sorted_results = sorted(results, key=lambda x: (x['score'], x['level']), reverse=True)
+        return jsonify(sorted_results[:10])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
