@@ -1,48 +1,72 @@
-﻿{% set title = "Privacy Policy | HandleKit" %}
+{% set title = "Privacy Policy | HandleKit" %}
 {% set description = "Privacy policy for HandleKit. We prioritize your privacy and do not collect personal data from our utility tools." %}
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="tool-content" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 3rem; max-width: 800px; margin: 0 auto; line-height: 1.6;">
-    <h2 style="margin-bottom: 2rem; color: var(--accent-color);">Privacy Policy</h2>
+<div class="tool-content info-card-premium" style="padding: 3rem; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+    <h2 style="margin-bottom: 2rem; color: var(--text-main);">Privacy Policy</h2>
     
-    <p style="color: var(--text-sub); margin-bottom: 2rem;">Last updated: March 23, 2026</p>
+    <p style="color: var(--text-sub); margin-bottom: 2rem; font-size: 0.9rem;">Last updated: March 25, 2026</p>
 
-    <p style="margin-bottom: 1.5rem;">HandleKit is built on a simple belief: your data is yours. This policy explains honestly and plainly what information we collect, how we use it, and what choices you have. We've written this to be readable, not to obscure anything in legal jargon.</p>
+    <p style="margin-bottom: 1.5rem; color: var(--text-sub);">
+        The principle behind our work at <strong style="color: var(--accent-color);">HandleKit</strong> is quite simple: <strong style="color: var(--text-main);">your data belongs to you</strong>. In this policy, we're being clear and transparent about what information we're collecting, what we're doing with it, and what options are available to you. We're trying to write this in <strong style="color: var(--text-main);">plain English</strong> instead of hiding behind legalese.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">1. Information We Collect</h3>
-    <p style="margin-bottom: 1rem;">HandleKit is a "Privacy First" platform. The vast majority of tools, Password Generator, Word Counter, Text Case Converter, JSON Formatter, URL Encoder, Base64 Encoder, Hash Generator, Color Picker, and Unit Converter, run entirely within your browser using JavaScript. Any data you enter into these tools (text, passwords, JSON, URLs, etc.) is processed locally on your device and <strong>is never transmitted to our servers</strong>.</p>
-    <p style="margin-bottom: 1rem;">For tools that involve server interaction (Username Checker, Image Optimizer, QR Generator), only the minimum necessary data is sent to perform the requested function. For example, the Username Checker sends the username string to check availability on social platforms; the Image Optimizer receives your image file to compress it. This data is used solely to perform the requested function and is not stored or logged in a personally identifiable way after the request is completed.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">1. Information We Collect</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        At HandleKit, we follow a <strong style="color: var(--text-main);">"Privacy First"</strong> philosophy. Most of our tools, including Password Generator, Word Counter, Text Case Converter, JSON Formatter, URL Encoder, Base64 Encoder, Hash Generator, Color Picker, and Unit Converter, <strong style="color: var(--accent-color);">run directly in your browser</strong> using JavaScript. Therefore, any information that you type into these tools stays local to your computer and <strong>does not get sent to our servers</strong>.
+    </p>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        For tools that do send information to our servers, like <strong style="color: var(--text-main);">Username Checker, Image Optimizer, and QR Generator</strong>, we only send what's necessary to get the task done. We use this information only to perform the requested function and then <strong style="color: var(--accent-color);">discard it immediately</strong>.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">2. Cookies and Advertisements</h3>
-    <p style="margin-bottom: 1rem;">We use third-party advertising companies, including Google AdSense, to display ads when you visit our website. These companies may use cookies and similar tracking technologies (such as web beacons and pixel tags) to serve advertisements based on your browsing history on this and other websites.</p>
-    <p style="margin-bottom: 1rem;">Google's advertising cookies (<code style="background: rgba(255,255,255,0.08); padding: 0.1rem 0.4rem; border-radius: 4px;">DSID</code>, <code style="background: rgba(255,255,255,0.08); padding: 0.1rem 0.4rem; border-radius: 4px;">IDE</code>) enable personalised ad targeting based on browsing behaviour. You can opt out of personalised advertising at any time by visiting <a href="https://adssettings.google.com" style="color: var(--accent-color);" target="_blank" rel="noopener">Google's Ad Settings</a>, or by using the <a href="https://optout.networkadvertising.org" style="color: var(--accent-color);" target="_blank" rel="noopener">NAI opt-out tool</a>. You may also use browser extensions that block advertising cookies entirely. Our site does not share personal data with advertisers beyond what is necessary for ad serving.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">2. Cookies and Advertisements</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        We use third-party advertising companies, including <strong style="color: var(--text-main);">Google AdSense</strong>, to serve advertisements when you visit our website. These companies may use cookies and tracking technologies (like web beacons) to collect information about your online activities over time and across different websites.
+    </p>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        Google's advertising cookies (<code style="background: rgba(255,255,255,0.08); padding: 0.1rem 0.4rem; border-radius: 4px;">DSID</code>, <code style="background: rgba(255,255,255,0.08); padding: 0.1rem 0.4rem; border-radius: 4px;">IDE</code>) allow for <strong style="color: var(--text-main);">personalized ad targeting</strong>. You can opt-out at any time via <a href="https://adssettings.google.com" style="color: var(--accent-color);" target="_blank" rel="noopener">Google's Ad Settings</a> or the <a href="https://optout.networkadvertising.org" style="color: var(--accent-color);" target="_blank" rel="noopener">NAI Opt-Out Page</a>. We do not share your personal information with advertisers.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">3. Analytics</h3>
-    <p style="margin-bottom: 1rem;">We may use basic, privacy-respecting analytics to understand which tools are most popular and how users navigate the site (for example, which pages are visited most often or where users exit). This helps us improve HandleKit and prioritise new features. Any analytics service we use is configured to anonymise IP addresses and not to share raw data with third parties beyond what is necessary for aggregate, non-personally-identifiable reporting.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">3. Analytics</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        We may use minimal <strong style="color: var(--text-main);">non-personalizable analytics</strong> to understand which tools are popular and how users interact with the site. This allows us to improve HandleKit and prioritize development. Our analytics service will <strong style="color: var(--accent-color);">not share your IP address</strong> or data with third parties for identifiable reporting.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">4. Data Retention</h3>
-    <p style="margin-bottom: 1rem;">We do not maintain a persistent database of user activity, tool inputs, or search queries. Server-side operations, such as image optimization, generate temporary files that are automatically deleted within minutes of the optimized file being delivered to you. We do not retain logs of individual requests in a form that could be used to identify a specific person.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">4. Data Retention</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        We <strong style="color: var(--text-main);">do not retain a database</strong> of your activity, tool inputs, or search queries. Server-side operations (like image compression) create temporary files that are <strong style="color: var(--accent-color);">deleted within minutes</strong> after the optimized file is delivered to you.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">5. External Links</h3>
-    <p style="margin-bottom: 1rem;">Some HandleKit tools link to, or check availability on, external services (including GitHub, Reddit, Twitter/X, Instagram, TikTok, and YouTube). These are third-party services with their own independent privacy policies and data practices. HandleKit has no control over their content or practices. We encourage you to review the privacy policy of any third-party service you visit through links on our site. Our linking to a service does not imply endorsement of its privacy practices.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">5. External Links</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        We may provide links to external services (GitHub, Reddit, Twitter/X, Instagram, TikTok, YouTube). These services have their own <strong style="color: var(--text-main);">independent privacy policies</strong>. HandleKit has no influence over their data handling practices, and we suggest reviewing their policies directly.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">6. Your Rights (GDPR &amp; CCPA)</h3>
-    <p style="margin-bottom: 1rem;">If you are located in the European Economic Area (EEA) or the United Kingdom, you have rights under the General Data Protection Regulation (GDPR), including the right to access, rectify, erase, restrict processing of, and object to the processing of your personal data. You also have the right to data portability.</p>
-    <p style="margin-bottom: 1rem;">Because HandleKit is designed to collect minimal personal data, and most tools process data purely locally on your device, there is typically very little data to exercise these rights against. However, if you have any requests or questions, please contact us using the details below.</p>
-    <p style="margin-bottom: 1rem;">California residents have similar rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information is collected and the right to request deletion. We do not sell personal information.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">6. Your Rights (GDPR &amp; CCPA)</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        If you are in the EEA or UK, you have rights under <strong style="color: var(--text-main);">GDPR</strong>, including access, rectification, and erasure. As we collect minimal data and most tools work locally, there is limited data to which these rights apply. California residents have similar rights under the <strong style="color: var(--text-main);">CCPA</strong>; we do not sell personal information.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">7. Children's Privacy</h3>
-    <p style="margin-bottom: 1rem;">HandleKit is not directed at children under 13 years of age, and we do not knowingly collect personal information from children. If you believe a child has provided personal information to us, please contact us and we will take steps to delete it promptly.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">7. Children's Privacy</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        We are not directed towards children under 13. We do not knowingly collect personal information from children. If you believe a child has provided data, please contact us and we will <strong style="color: var(--accent-color);">delete it immediately</strong>.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">8. Changes to This Policy</h3>
-    <p style="margin-bottom: 1rem;">We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. When we make significant changes, we will update the "Last updated" date at the top of this page. We encourage you to review this page periodically. Your continued use of HandleKit after any changes constitutes your acceptance of the revised policy.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">8. Changes to This Policy</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        We may change our Privacy Policy over time. If significant changes occur, we will update the <strong style="color: var(--text-main);">"Last updated"</strong> date. Your continued use of HandleKit constitutes acceptance of the changed policy.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">9. Your Consent</h3>
-    <p style="margin-bottom: 1rem;">By using our website, you consent to this Privacy Policy and agree to its terms.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">9. Your Consent</h3>
+    <p style="margin-bottom: 1rem; color: var(--text-sub);">
+        By using our website, you <strong style="color: var(--text-main);">consent to our Privacy Policy</strong> and agree to be bound by its terms.
+    </p>
 
-    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">10. Contact Us</h3>
-    <p>If you have any questions about this Privacy Policy, wish to exercise your data rights, or have a concern about how your information is handled, please contact us at <a href="mailto:contacthandlekit@gmail.com" style="color: var(--accent-color);">contacthandlekit@gmail.com</a>. We aim to respond within 5 business days.</p>
+    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-color);">10. Contact Us</h3>
+    <p style="color: var(--text-sub);">
+        If you have any queries, please contact us at <a href="mailto:contacthandlekit@gmail.com" style="color: var(--accent-color); font-weight: 600;">contacthandlekit@gmail.com</a>. We respond within <strong style="color: var(--text-main);">5 business days</strong>.
+    </p>
     
     <div style="margin-top: 3rem; text-align: center;">
         <a href="/" class="btn" style="text-decoration: none; color: var(--accent-color); font-weight: 800;">← Back to Home</a>

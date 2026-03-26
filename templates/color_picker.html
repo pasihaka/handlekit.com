@@ -1,5 +1,5 @@
 {% set title = "Advanced Color Picker & Palette Pro | HEX, RGB, HSL, CMYK | HandleKit" %}
-{% set description = "A professional-grade color picker with a screen-wide EyeDropper, custom selection wheel, and instant palette generation. Get HEX, RGB, HSL, and CMYK values for any design project. FAST, FREE, and PRIVATE." %}
+{% set description = "An indispensable tool in your creative arsenal. Turn visual ideas into precise technical data with our professional color picker, screen-wide Eyedropper, and tactile selection wheel. Free and private." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
@@ -12,7 +12,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="palette" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -0.5px;">Advanced Color Picker & Palette Pro</h1>
-        <p style="color: var(--text-sub);">Design with precision. Use our professional <strong style="color: var(--accent-color);">EyeDropper</strong> to pick screen colors, generate harmonious palettes, and extract codes instantly.</p>
+        <p style="color: var(--text-sub);">Create with precision. Our professional <strong>EyeDropper</strong> lets you select screen colors, create beautiful color palettes, and get codes in a snap.</p>
     </div>
 
     <!-- Main Grid -->
@@ -72,12 +72,25 @@
         </div>
         <div id="palette-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem;"></div>
     </div>
+    
+    <!-- Vision JND Test Magnet -->
+    <div style="background: rgba(0, 210, 255, 0.05); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 15px rgba(0, 210, 255, 0.2);">
+                <i data-lucide="eye" style="color: #fff; width: 22px; height: 22px;"></i>
+            </div>
+            <div style="color: var(--text-sub); font-size: 0.95rem;">
+                <strong style="color: var(--text-main);">Scientific Accuracy:</strong> Find your perceptual color threshold using our <a href="/jnd-test" style="color: var(--accent-color); text-decoration: underline; font-weight: 700;">Vision Lab Diagnostic</a>.
+            </div>
+        </div>
+        <a href="/jnd-test" style="background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); color: #fff; text-decoration: none; padding: 0.7rem 1.5rem; border-radius: 8px; font-weight: 800; font-size: 0.85rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Test Your Vision</a>
+    </div>
 
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is a Color Picker?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            Whether you're a web developer, graphic designer, or digital artist, a reliable color picker is an essential part of your workflow. It allows you to translate visual inspiration into precise technical data. At HandleKit, we've built a <strong>pro-grade tool</strong> that goes beyond the basics. With our integrated <strong>EyeDropper</strong>, you can sample pixels from anywhere on your monitor, while our custom-engineered wheel gives you tactile control over hue and saturation. Everything happens locally in your browser, ensuring your creative process remains fast, private, and secure.
+            Whatever your field of expertise, whether you're a web developer, a graphic designer, or a digital artist, a good color picker is an indispensable tool in your creative arsenal. It helps you turn your visual ideas into technical data. At HandleKit, we've created a <strong>professional-grade color picker</strong> that does much more than just get the job done. With our integrated <strong>Eyedropper</strong>, you can select pixels from anywhere on your monitor, and with our very own <strong>color wheel</strong>, you'll have control over hues and saturations in a very tactile way. All of this happens locally in your browser, so you're always in control of your creative workflow.
         </p>
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -107,28 +120,28 @@
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I pick a color and get its values?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Use our responsive <strong>Color Wheel</strong> to dial in a specific hue, or use the <strong>Pipette icon (EyeDropper)</strong> to sample any pixel directly from your display. The values for HEX, RGB, HSL, and CMYK will sync in real-time. Pro tip: you can also type a specific HEX code into the input field to jump directly to a known color. Use the copy icons to grab any format instantly.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I choose a color and get its values?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can use our dynamic <strong>Color Wheel</strong> to fine-tune your chosen color. Alternatively, use the <strong>Pipette icon (Eyedropper)</strong> to pick any color directly from your screen. HEX, RGB, HSL, and CMYK color codes will update in real-time. Pro tip: You can also type in your known HEX code in the box to jump to your known color. Use the copy icon to get any format instantly.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which color format should I use in my code?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">HEX</strong> is the industry standard for CSS—it's concise and reliable. However, many modern developers prefer <strong style="color: var(--text-main);">HSL</strong> because it makes adjusting lightness or saturation intuitive. Use <strong style="color: var(--text-main);">RGB</strong> if you need to add transparency (opacity) to your elements. CMYK is reserved specifically for physical print projects.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What color format should I use in my code?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>HEX</strong> is currently an industry standard for CSS, and it is a very efficient and safe choice. Nevertheless, many developers, especially those working with newer versions of the technology, prefer to use <strong>HSL</strong>, which is very convenient for adjusting lightness or saturation. <strong>RGB</strong> is usually chosen if you want to add an opacity attribute to your elements. CMYK is reserved for print projects only.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I generate a color palette?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Pick your base color using the wheel or EyeDropper. Below the value display, the Generated Palette shows four expert modes: Complementary, Analogous, Triadic, and Shades. Switch between them to see different harmonious combinations. <strong>Click any swatch</strong> in the palette to instantly copy its HEX value to your clipboard with a visual confirmation.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Select your starting color from the wheel or by using the <strong>Eyedropper tool</strong>. The "Palette Pro Designer" section below the "Value" display offers four expert modes: "Complementary," "Analogous," "Triadic," and "Shades." Try switching between these modes to find a variety of harmonious palettes. Clicking on a color in the palette will copy the HEX code for that color to your clipboard with a visual confirmation.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between complementary and analogous?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">Complementary</strong> colors are high-contrast opposites on the wheel, perfect for making elements (like buttons) stand out. <strong style="color: var(--text-main);">Analogous</strong> colors sit side-by-side, creating a smooth, harmonious look that feels natural and professional. Use complementary for "pop" and analogous for "blend."</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between 'complementary' and 'analogous'?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>Complementary</strong> colors are opposite each other on the wheel and have high contrast, making them great for making items stand out, like buttons. <strong>Analogous</strong> colors are next to each other on the wheel and look great together for a natural and professional look. Complementary is for "pop," and analogous is for "blend."</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does the Color Picker or EyeDropper store my data?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No data is stored or transmitted. The <strong>EyeDropper tool</strong> uses your browser's native capabilities to pick pixels, and all color calculations happen entirely in your local session. Nothing is sent to our servers. If you close the tab, your picks are gone, so copy the values you need before navigating away.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does the Color Picker or Eyedropper store my data?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No data is stored or transmitted. <strong>Eyedropper</strong> leverages your browser's native functionality to sample pixels. All calculations occur locally in your session. We do not transmit any data to our servers. Closing your tab will delete your selections. Copy your selections before leaving the page.</p>
             </div>
 
         </div>
@@ -136,11 +149,11 @@
 </div>
 
 <style>
-.cp-value-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.9rem 1.1rem; transition: border-color 0.2s; }
+.cp-value-card { background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.9rem 1.1rem; transition: border-color 0.2s; }
 .cp-value-card:hover { border-color: rgba(0,210,255,0.4); }
 .cp-value-label { font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; margin-bottom: 0.4rem; }
 .cp-value-input { flex: 1; background: transparent; border: none; color: var(--text-main); font-size: 0.9rem; font-family: 'Outfit', monospace; font-weight: 600; outline: none; width: 100%; min-width: 0; }
-.cp-copy-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 7px; padding: 0.3rem 0.5rem; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; transition: all 0.2s; flex-shrink: 0; }
+.cp-copy-btn { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 7px; padding: 0.3rem 0.5rem; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; transition: all 0.2s; flex-shrink: 0; }
 .cp-copy-btn:hover { border-color: var(--accent-color); color: var(--accent-color); }
 .cp-copy-btn.copied { border-color: #00ff88; color: #00ff88; }
 .cp-palette-btn { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.35rem 0.75rem; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; font-family: 'Outfit', sans-serif; transition: all 0.2s; }

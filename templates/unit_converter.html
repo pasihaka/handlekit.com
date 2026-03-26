@@ -1,4 +1,4 @@
-﻿{% set title = "Unit Converter | Free Online Tool | HandleKit" %}
+{% set title = "Unit Converter | Free Online Tool | HandleKit" %}
 {% set description = "Convert units of length, weight, temperature, area, volume, speed, and data instantly. Free online unit converter, fast, accurate, 100% browser-based." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
@@ -7,8 +7,8 @@
 <div class="tool-container" style="max-width: 860px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="ruler" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Unit Converter</h1>
-        <p style="color: var(--text-sub);">Instantly convert length, weight, temperature, area, volume, speed, and data, no signup needed.</p>
+        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--text-main);">Unit Converter</h1>
+        <p style="color: var(--text-sub); font-size: 1.1rem;">Instantly convert length, weight, temperature, area, volume, speed, and data, no signup needed.</p>
     </div>
 
     <!-- Category Tabs -->
@@ -42,21 +42,19 @@
             <!-- From -->
             <div>
                 <label for="uc-from-val" style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">From</label>
-                <input id="uc-from-val" type="number" value="1" oninput="convertFrom()"
-                    onfocus="this.style.borderColor='var(--accent-color)'"
-                    onblur="this.style.borderColor='var(--border-color)'"
-                    style="width:100%;background: var(--input-bg);border:1px solid var(--border-color);border-radius:14px;padding:0.9rem 1rem;color: var(--text-main);font-size:1.2rem;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;box-sizing:border-box;font-weight:600;">
-                <select id="uc-from-unit" aria-label="Select unit to convert from" onchange="convertFrom()"
-                    style="width:100%;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:0.7rem 1rem;color: var(--text-main);font-size:0.9rem;font-family:'Outfit',sans-serif;outline:none;cursor:pointer;">
+                <input id="uc-from-val" class="premium-input" type="number" value="1" oninput="convertFrom()"
+                    style="font-size:1.2rem; font-weight:600;">
+                <select id="uc-from-unit" class="premium-input" aria-label="Select unit to convert from" onchange="convertFrom()"
+                    style="margin-top:0.5rem; font-size:0.9rem; padding: 0.7rem 1rem;">
                 </select>
             </div>
 
             <!-- Swap -->
             <div style="display:flex;align-items:center;justify-content:center;padding-bottom:0.3rem;">
                 <button onclick="swapUnits()" title="Swap units"
-                    style="background:rgba(0,210,255,0.1);border:1px solid var(--accent-color);border-radius:50%;width:42px;height:42px;color:var(--accent-color);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;"
-                    onmouseover="this.style.background='var(--accent-color)';this.style.color='#000'"
-                    onmouseout="this.style.background='rgba(0,210,255,0.1)';this.style.color='var(--accent-color)'">
+                    style="background:rgba(201, 28, 35, 0.1);border:1px solid var(--accent-color);border-radius:50%;width:42px;height:42px;color:var(--accent-color);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;"
+                    onmouseover="this.style.background='var(--accent-color)';this.style.color='#fff'"
+                    onmouseout="this.style.background='rgba(201, 28, 35, 0.1)';this.style.color='var(--accent-color)'">
                     <i data-lucide="arrow-left-right" style="width:16px;height:16px;"></i>
                 </button>
             </div>
@@ -64,12 +62,10 @@
             <!-- To -->
             <div>
                 <label for="uc-to-val" style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">To</label>
-                <input id="uc-to-val" type="number" value="" oninput="convertTo()"
-                    onfocus="this.style.borderColor='var(--accent-color)'"
-                    onblur="this.style.borderColor='var(--border-color)'"
-                    style="width:100%;background:rgba(0,210,255,0.05);border:1px solid var(--border-color);border-radius:14px;padding:0.9rem 1rem;color:var(--accent-color);font-size:1.2rem;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;box-sizing:border-box;font-weight:700;">
-                <select id="uc-to-unit" aria-label="Select unit to convert to" onchange="convertFrom()"
-                    style="width:100%;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border-color);border-radius:12px;padding:0.7rem 1rem;color: var(--text-main);font-size:0.9rem;font-family:'Outfit',sans-serif;outline:none;cursor:pointer;">
+                <input id="uc-to-val" class="premium-input" type="number" value="" oninput="convertTo()"
+                    style="background:rgba(201, 28, 35, 0.05); color:var(--accent-color); font-size:1.2rem; font-weight:700;">
+                <select id="uc-to-unit" class="premium-input" aria-label="Select unit to convert to" onchange="convertFrom()"
+                    style="margin-top:0.5rem; font-size:0.9rem; padding: 0.7rem 1rem;">
                 </select>
             </div>
         </div>
@@ -88,16 +84,16 @@
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">About Unit Conversion</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            Unit conversion is the process of expressing a measurement in different units while keeping its value equivalent. Whether you're working in science, engineering, cooking, or everyday life, converting between systems like metric and imperial is a constant need.
+            Unit conversion is a process in which a quantity is expressed in various units while keeping its value constant. Unit conversion is a constant need in various fields such as science, engineering, as well as in daily life.
         </p>
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+            <div class="info-card-premium">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Metric vs. Imperial</h3>
                 <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">
                     Most of the world uses the metric system (metres, kilograms, litres), while the United States primarily uses the imperial system (feet, pounds, gallons). This converter handles both seamlessly.
                 </p>
             </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+            <div class="info-card-premium">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Supported Categories</h3>
                 <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
                     <li>Length (km, mi, ft, in, cm, mm…)</li>
@@ -113,32 +109,30 @@
     <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I convert between units?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Select your category from the tab bar (Length, Weight, Temperature, etc.), then choose your starting unit from the left dropdown and your target unit from the right. Type a value in either box, the other updates instantly. Hit the double-arrow button in the middle to swap the two units if you want to go in the other direction.</p>
+            <div class="info-card-premium">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How do I convert between units?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">To convert between units, first, select a category from the <strong style="color: var(--text-main);">tab bar</strong> at the top of the page. Then, select a unit to convert from on the left-hand dropdown menu and a unit to convert to on the right. Enter a value in <strong style="color: var(--text-main);">either box</strong>, and the other box will be filled in <strong style="color: var(--accent-color);">instantly</strong>. To reverse the conversion, click the double arrow button in the middle.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I convert Celsius to Fahrenheit?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Click the "Temperature" tab, select "Celsius" on the left and "Fahrenheit" on the right, then type your temperature value. The result appears immediately. As a quick mental shortcut: multiply Celsius by 1.8 and add 32. So 20°C = (20 × 1.8) + 32 = 68°F. For Fahrenheit to Celsius, subtract 32 and divide by 1.8.</p>
+            <div class="info-card-premium">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How do I convert Celsius to Fahrenheit?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">To convert from Celsius to Fahrenheit, select <strong style="color: var(--accent-color);">"Temperature"</strong> from the tab bar, then "Celsius" from the left dropdown. The result appears at once. As a mental shortcut, simply multiply the Celsius reading by <strong style="color: var(--text-main);">1.8</strong>, then add <strong style="color: var(--text-main);">32</strong>.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How many pounds are in a kilogram?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">One kilogram equals approximately 2.20462 pounds. To convert the other way, one pound equals about 0.453592 kilograms. Use the Weight tab: set the From unit to Kilograms and the To unit to Pounds, type your value, and get the precise answer instantly. The reference table below also shows all weight unit conversions for your entered value at once.</p>
+            <div class="info-card-premium">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How many pounds are in a kilogram?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">One kilogram is equivalent to about 2.20462 pounds. To convert from kilograms to pounds, one pound is equivalent to about 0.453592 kilograms. You can use the Weight tab. Select 'Kilograms' as the 'From' unit and 'Pounds' as the 'To' unit. Then enter your value. You will immediately get an exact result. Alternatively, you can use the reference table below. This table shows all weight unit conversions of your entered value at once.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What does the reference table at the bottom show?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The table shows your entered value converted to every single unit in the current category simultaneously. It updates in real time as you type. It's handy when you want to compare across multiple units at once, for example, seeing how your measurement compares in miles, yards, feet, inches, and centimetres all at the same time.</p>
+            <div class="info-card-premium">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What does the reference table at the bottom show?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The reference table at the bottom shows your entered value converted to every single unit in the current category simultaneously. This table will change immediately as you enter your value. This table can be helpful if you want to compare your measurement to several units at once. For example, you may want to compare your height in metres, centimetres, inches, yards, and miles all at once. This reference table will display all of those conversions simultaneously.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How accurate are the conversions?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Very accurate, we use the exact official conversion factors (e.g. 1 inch = 0.0254 metres exactly, as defined by international agreement in 1959). For temperature, we apply the precise mathematical formulas. Results are shown to up to 10 significant figures. The only exception is naturally imprecise constants like Mach numbers, which vary with altitude and temperature.</p>
+            <div class="info-card-premium">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How accurate are the conversions?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Our conversions are very accurate. We use exact conversion factors. For example, 1 inch = 0.0254 metres exactly. This was specified by international agreement in 1959. For temperature, we use precise mathematical formulas. Our answers are given to 10 significant figures. Mach numbers are an exception. Mach numbers depend on altitude and temperature. Mach numbers are therefore not precisely known.</p>
             </div>
-
         </div>
     </div>
 </div>

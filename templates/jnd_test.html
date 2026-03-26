@@ -1,0 +1,808 @@
+{% set title = "JND Color Perception Test | Vision Lab | HandleKit" %}
+{% set description = "Take a scientific JND (Just Noticeable Difference) color perception test. Calibrate your visual acuity and find your Delta-E threshold with the HandleKit Vision Lab." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "HandleKit Vision Lab",
+  "url": "{{ request.url }}",
+  "description": "Scientific JND (Just Noticeable Difference) color perception test engine using Oklab Delta-E measurements.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "All"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<style>
+    :root {
+        --lab-bg: #0a0a0a;
+        --glass-bg: rgba(25, 25, 25, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.12);
+        --font-main: 'Inter', system-ui, sans-serif;
+        --font-heading: 'Outfit', sans-serif;
+    }
+
+    /* Page-level adaptive styling */
+    .lab-page-header h1 { 
+        font-family: var(--font-heading);
+        font-weight: 900;
+        color: var(--text-main); 
+        font-size: 2.2rem; 
+        letter-spacing: -0.04em;
+    }
+    .lab-page-header p { color: var(--text-sub); }
+
+    .lab-outer {
+        width: 100%;
+        background: var(--lab-bg);
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        position: relative;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        margin-bottom: 3rem;
+    }
+
+    #lab-controls {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        border-radius: 100px;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 0.6rem 1.8rem;
+        z-index: 100;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        color: #eee;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        pointer-events: none;
+        white-space: nowrap;
+    }
+
+    #lab-stage {
+        height: 600px;
+        position: relative;
+        cursor: crosshair;
+        background: #000;
+        overflow: hidden;
+    }
+
+    @media (max-width: 600px) {
+        #lab-stage { height: 450px; }
+        #lab-controls { gap: 0.8rem; padding: 0.5rem 1.2rem; font-size: 0.75rem; top: 15px; }
+        .lab-page-header h1 { font-size: 1.8rem; }
+    }
+
+
+    #indicator-true {
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background: #fff;
+        box-shadow: 0 0 15px rgba(255,255,255,0.8);
+        display: none;
+        z-index: 60;
+    }
+
+    #indicator-user {
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background: #ff4444;
+        box-shadow: 0 0 15px rgba(255,68,68,0.8);
+        display: none;
+        z-index: 61;
+    }
+
+    #lab-feedback {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        display: none;
+        z-index: 70;
+        pointer-events: none;
+        text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    }
+
+    /* Difficulty Selector Styles */
+    .diff-selector {
+        display: flex;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 4px;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+    }
+    .diff-opt {
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #666;
+        font-size: 0.8rem;
+        font-weight: 700;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .diff-opt.active {
+        background: rgba(255,255,255,0.1);
+        color: var(--accent-color);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Info Tooltips */
+    .info-icon-wrapper {
+        display: inline-flex;
+        align-items: center;
+        vertical-align: middle;
+        position: relative;
+        cursor: help;
+        margin-left: 4px;
+        opacity: 0.4;
+        transition: opacity 0.2s;
+    }
+    .info-icon-wrapper:hover { opacity: 1; }
+    
+    .metric-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translate(-50%, -10px);
+        background: #222;
+        color: #eee;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        width: 180px;
+        text-align: center;
+        text-transform: none;
+        letter-spacing: normal;
+        font-weight: 400;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        border: 1px solid #444;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s;
+        z-index: 200;
+        line-height: 1.4;
+    }
+    .info-icon-wrapper:hover .metric-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -6px);
+    }
+
+    /* SVG Chart Styles */
+    .chart-container {
+        height: 160px;
+        margin: 1.5rem 0;
+        position: relative;
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 0.8rem;
+    }
+
+    .chart-tooltip {
+        position: absolute;
+        background: #222;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+        border: 1px solid #444;
+        z-index: 100;
+        white-space: nowrap;
+        transform: translate(-50%, -110%);
+    }
+
+    .chart-point {
+        fill: var(--accent-color);
+        stroke: #0a0a0a;
+        stroke-width: 2;
+        cursor: pointer;
+    }
+
+    .result-card-premium {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 20px;
+        padding: 1.5rem 2rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .metrics-grid {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+        .metrics-grid { flex-direction: column; gap: 1.2rem; align-items: center; }
+        .metrics-grid > div:nth-child(2) { display: none; } /* Hide divider */
+        .result-card-premium { padding: 1.2rem; }
+    }
+
+    .metric-label {
+        font-size: 0.7rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #lab-hud {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        display: none;
+        justify-content: center;
+        gap: 1rem;
+        z-index: 100;
+        pointer-events: none;
+    }
+
+    .hud-node {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        padding: 0.5rem 1.2rem;
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 100px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hud-label {
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #666;
+        font-weight: 800;
+        margin-bottom: 2px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .hud-value {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .led-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--accent-color);
+        box-shadow: 0 0 8px var(--accent-color);
+        display: inline-block;
+    }
+
+    .led-dot.pulse {
+        animation: ledPulse 2s infinite;
+    }
+
+    .hud-progress-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        background: var(--accent-color);
+        box-shadow: 0 0 10px var(--accent-color);
+        width: 0%;
+        transition: width 0.3s ease;
+    }
+
+    @keyframes ledPulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    @media (max-width: 600px) {
+        #lab-hud { gap: 0.6rem; top: 15px; }
+        .hud-node { padding: 0.4rem 0.8rem; min-width: 80px; border-radius: 10px; }
+        .hud-value { font-size: 0.85rem; }
+    }
+</style>
+
+<div class="tool-container" style="max-width: 960px; margin: 0 auto; padding-top: 2rem;">
+    <div class="lab-page-header" style="text-align: center; margin-bottom: 2.5rem;">
+        <h1 style="font-weight: 900; letter-spacing: -1.5px; margin-bottom: 0.5rem;">JND Color Perception Test</h1>
+        <p style="font-size: 1.1rem; color: #666;">Vision Lab: Scientific Perceptual Threshold Diagnostic.</p>
+    </div>
+
+    <!-- Lab Game Container -->
+    <div class="lab-outer">
+        <div id="lab-hud">
+            <div class="hud-node">
+                <div class="hud-label">
+                    <span class="led-dot pulse"></span>
+                    ROUND
+                </div>
+                <div class="hud-value" id="round-val">1/20</div>
+                <div class="hud-progress-bar" id="round-progress"></div>
+            </div>
+            
+            <div class="hud-node">
+                <div class="hud-label">
+                    <span class="led-dot"></span>
+                    TELEMETRY
+                </div>
+                <div class="hud-value" style="color: var(--accent-color);">
+                    &delta;E <span id="delta-val">0.2000</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="lab-stage" onclick="handleStageClick(event)">
+            <div id="left-field" style="position: absolute; left: 0; top: 0; height: 100%; width: 50%;"></div>
+            <div id="right-field" style="position: absolute; top: 0; height: 100%; left: 50%; right: 0;"></div>
+            
+            
+            
+            <div id="indicator-true"></div>
+            <div id="indicator-user"></div>
+            
+            <div id="click-prompt" style="position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%); background: var(--accent-color); color: #000; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 800; font-size: 0.75rem; display: none; z-index: 80; pointer-events: none; box-shadow: 0 0 15px rgba(0,210,255,0.4); text-transform: uppercase;">
+                Click again to continue
+            </div>
+
+            <!-- Start Overlay -->
+            <div id="lab-start-overlay" style="position: absolute; inset: 0; background: #0a0a0a; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 24px; padding: 2rem;">
+                <i data-lucide="monitor-check" style="width: 48px; height: 48px; color: var(--accent-color); margin-bottom: 1.2rem;"></i>
+                <h2 style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; text-align: center;">Calibrate Your Vision</h2>
+                <p style="color: #666; text-align: center; max-width: 440px; margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.85rem;">Select complexity to begin your 20-round diagnostic.</p>
+                
+                <div class="diff-selector" id="diff-selector">
+                    <div class="diff-opt" data-diff="practice">Practice</div>
+                    <div class="diff-opt active" data-diff="standard">Standard</div>
+                    <div class="diff-opt" data-diff="pro">Pro</div>
+                </div>
+
+                <button onclick="startLab(event)" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.1rem 3.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(0,210,255,0.15);">
+                    Enter Vision Lab
+                </button>
+            </div>
+
+            <!-- Result Overlay -->
+            <div id="lab-result-overlay" style="position: absolute; inset: 0; background: #0a0a0a; z-index: 210; display: none; padding: 2rem 1.5rem; overflow-y: auto;">
+                <div style="max-width: 640px; margin: 0 auto;">
+                    <button id="copy-btn" onclick="copyResults()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #999; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; margin: 0 auto 1.5rem auto; transition: all 0.2s;">
+                        <i data-lucide="copy" style="width: 14px; height: 14px;"></i> <span>Copy Summary</span>
+                    </button>
+                    
+                    <div style="text-align: center;">
+                        <h2 style="color: #fff; font-size: 2.2rem; margin-bottom: 0.3rem; font-weight: 900;">Acuity Profile</h2>
+                        <p style="color: #666; margin-bottom: 2rem; font-size: 0.9rem;">Scientific threshold analysis compete.</p>
+                    </div>
+                    
+                    <div class="result-card-premium">
+                        <div id="rank-val" style="font-size: 2.2rem; font-weight: 900; color: var(--accent-color); letter-spacing: -1px; margin-bottom: 1rem; text-transform: uppercase;">PRISM MASTER</div>
+                        
+                        <div class="metrics-grid">
+                            <div>
+                                <div class="metric-label">
+                                    Avg. Threshold
+                                    <span class="info-icon-wrapper">
+                                        <i data-lucide="info" style="width: 11px; height: 11px;"></i>
+                                        <div class="metric-tooltip">The average Delta-E OK identified. Lower values indicate elite retinal sensitivity.</div>
+                                    </span>
+                                </div>
+                                <div id="final-delta" style="color: #fff; font-size: 1.4rem; font-weight: 700;">0.0000</div>
+                            </div>
+                            <div style="width: 1px; background: rgba(255,255,255,0.1); align-self: stretch;"></div>
+                            <div>
+                                <div class="metric-label">
+                                    Precision
+                                    <span class="info-icon-wrapper">
+                                        <i data-lucide="info" style="width: 11px; height: 11px;"></i>
+                                        <div class="metric-tooltip">Tracks physical accuracy—how many pixels away from the absolute boundary.</div>
+                                    </span>
+                                </div>
+                                <div id="final-precision" style="color: #fff; font-size: 1.4rem; font-weight: 700;">0%</div>
+                            </div>
+                        </div>
+
+                        <div id="rank-desc" style="color: #999; font-size: 0.9rem; line-height: 1.5; max-width: 480px; margin: 0 auto;">Analyzing results...</div>
+                    </div>
+
+                    <div style="color: #444; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-bottom: 1rem; font-weight: 800;">Threshold History per Round</div>
+                    <div class="chart-container" id="accuracy-chart-host">
+                        <div id="graph-tooltip" class="chart-tooltip"></div>
+                        <svg id="accuracy-svg" viewBox="0 0 1000 200" style="width: 100%; height: 100%; overflow: visible;" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="var(--accent-color)" stop-opacity="0.3" />
+                                    <stop offset="100%" stop-color="var(--accent-color)" stop-opacity="0" />
+                                </linearGradient>
+                            </defs>
+                            <path id="chart-area" d="" fill="url(#areaGradient)" />
+                            <path id="chart-line" d="" fill="none" stroke="var(--accent-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                            <g id="chart-points"></g>
+                        </svg>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                        <button onclick="startLab(event)" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.1rem 3.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
+                            New Calibration
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Article Content (Adaptive) -->
+    <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 5rem; padding-bottom: 5rem;">
+        <h2 style="color: var(--text-main); margin-bottom: 2.5rem; font-size: 2rem; font-weight: 800; letter-spacing: -1px;">The Science of the Vision Lab</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
+            <div>
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.3rem;">Trial Length & Accuracy</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.95rem;">
+                    The Vision Lab carries out exactly <strong>20 trials</strong> to ensure the highest level of scientific accuracy. In other words, from a statistical perspective, 20 trials are enough to calibrate away the effects of lucky guesses, as well as to ensure that the test is over before user <strong>retinal bleaching</strong> (eye fatigue) begins to impact the results.
+                </p>
+            </div>
+            <div>
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.3rem;">Why a "Dark Lab"?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.95rem;">
+                    In order to ensure the highest level of diagnostic accuracy, the testing phase is locked into a <strong>Fixed Dark Mode</strong>. This ensures that the amount of glare is minimized, as well as the amount of strain on the photoreceptor cells, so that only the Oklab color changes are processed by your brain, as opposed to being confused by increased environmental lighting.
+                </p>
+            </div>
+            <div>
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.3rem;">Weber-Fechner Law</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.95rem;">
+                    Our test is based on the <strong>Weber-Fechner Law</strong>, which asserts that the "just noticeable difference" between two stimuli is proportional to the overall magnitude of those two stimuli. In other words, the shadows must be processed at a different <strong>Delta E shift</strong> than the highlights in order to be noticed as "different."
+                </p>
+            </div>
+        </div>
+
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem; margin-bottom: 4rem;">
+            <h3 style="color: var(--text-main); margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 800;">Expanded Practical Applications</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem;">
+                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.7;">
+                    <strong style="color: var(--accent-color);">UI/UX Design:</strong> Emphasize the importance of interface elements having sufficient <strong>perceptual contrast</strong> to meet accessibility guidelines while also meeting the need for <strong>brand cohesion</strong> and visual identity.
+                </p>
+                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.7;">
+                    <strong style="color: var(--accent-color);">Monitor Calibration:</strong> Professional photographers and videographers will often conduct <strong>Just Noticeable Difference</strong> tests to ensure that their monitor can correctly display the differences in tone that the human eye can detect.
+                </p>
+                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.7;">
+                    <strong style="color: var(--accent-color);">Industrial Quality Control:</strong> In textile and automotive manufacturing, for instance, <strong>Delta-E</strong> is used as a standard to ensure that two different paints or fabrics appear identical to the naked eye.
+                </p>
+            </div>
+        </div>
+
+        <!-- Color Picker Magnet -->
+        <div style="background: rgba(201, 28, 35, 0.05); border: 1px solid rgba(201, 28, 35, 0.2); border-radius: 20px; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <div style="background: var(--accent-gradient); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(201, 28, 35, 0.25);">
+                    <i data-lucide="pipette" style="color: #fff; width: 24px; height: 24px;"></i>
+                </div>
+                <div>
+                    <h3 style="color: var(--text-main); margin: 0; font-size: 1.1rem; font-weight: 800;">Master the Colors You See</h3>
+                    <p style="color: var(--text-sub); margin: 0.2rem 0 0 0; font-size: 0.9rem;">Found your threshold? Now capture and design with our <a href="/color-picker" style="color: var(--accent-color); text-decoration: underline; font-weight: 700;">Professional Color Picker</a>.</p>
+                </div>
+            </div>
+            <a href="/color-picker" style="background: var(--accent-gradient); color: #fff; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 10px; font-weight: 800; font-size: 0.9rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Open Designer</a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Oklab Math (Minified)
+function lin(a){return a>0.04045?Math.pow((a+0.055)/1.055,2.4):a/12.92}
+function srv(a){return a>0.0031308?1.055*Math.pow(a,1/2.4)-0.055:12.92*a}
+function oklab_to_srgb(L,a,b){
+    let l_=L+0.39633*a+0.21580*b,m_=L-0.10556*a-0.06385*b,s_=L-0.08948*a-1.29148*b;
+    let l=l_*l_*l_,m=m_*m_*m_,s=s_*s_*s_;
+    let r=4.0767*l-3.3077*m+0.2309*s,g=-1.2684*l+2.6097*m-0.3413*s,bk=-0.0041*l-0.7034*m+1.7076*s;
+    let h=x=>Math.max(0,Math.min(255,Math.round(srv(x)*255)));
+    return `rgb(${h(r)},${h(g)},${h(bk)})`;
+}
+
+// Game State
+let isGameActive = false;
+let round = 1;
+let currentDeltaE = 0.2000;
+let trueX = 0;
+let isWaiting = false;
+let history = [];
+let difficulty = 'standard';
+const TOTAL_ROUNDS = 20;
+
+// Config levels
+const DIFF_CONFIG = {
+    practice: { start: 0.35, mult: 0.92, tol: 30 },
+    standard: { start: 0.20, mult: 0.88, tol: 20 },
+    pro:      { start: 0.10, mult: 0.84, tol: 10 }
+};
+
+const stage = document.getElementById('lab-stage');
+const lField = document.getElementById('left-field');
+const rField = document.getElementById('right-field');
+const rTarget = document.getElementById('radial-target');
+const tInd = document.getElementById('indicator-true');
+const uInd = document.getElementById('indicator-user');
+const deltaVal = document.getElementById('delta-val');
+const roundVal = document.getElementById('round-val');
+const startOverlay = document.getElementById('lab-start-overlay');
+const resultOverlay = document.getElementById('lab-result-overlay');
+
+// Difficulty UI
+document.querySelectorAll('.diff-opt').forEach(opt => {
+    opt.onclick = () => {
+        document.querySelectorAll('.diff-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        difficulty = opt.dataset.diff;
+    };
+});
+
+function startLab(e) {
+    if (e) e.stopPropagation();
+    round = 1;
+    currentDeltaE = DIFF_CONFIG[difficulty].start;
+    history = [];
+    isGameActive = true;
+    startOverlay.style.display = 'none';
+    resultOverlay.style.display = 'none';
+    document.getElementById('lab-hud').style.display = 'flex';
+    initRound();
+}
+
+function initRound() {
+    isWaiting = false;
+    
+    tInd.style.display = 'none';
+    uInd.style.display = 'none';
+    document.getElementById('click-prompt').style.display = 'none';
+    
+    const L = 0.4 + Math.random() * 0.3;
+    const a = -0.1 + Math.random() * 0.2;
+    const b = -0.1 + Math.random() * 0.2;
+    const baseColor = oklab_to_srgb(L, a, b);
+    
+    const d = currentDeltaE;
+    const sDir = [Math.random()-0.5, Math.random()-0.5, Math.random()-0.5];
+    const len = Math.sqrt(sDir[0]**2 + sDir[1]**2 + sDir[2]**2);
+    const shiftColor = oklab_to_srgb(L + (sDir[0]/len)*d, a + (sDir[1]/len)*d, b + (sDir[2]/len)*d);
+
+    lField.style.background = baseColor;
+    lField.style.width = '100%';
+    rField.style.background = shiftColor;
+
+    rField.style.display = 'block';
+    trueX = (stage.offsetWidth * 0.2) + Math.random() * (stage.offsetWidth * 0.6);
+    rField.style.left = trueX + 'px';
+    rField.style.width = (stage.offsetWidth - trueX) + 'px';
+
+    roundVal.textContent = `${round}/${TOTAL_ROUNDS}`;
+    deltaVal.textContent = currentDeltaE.toFixed(4);
+    
+    // Update HUD Progress
+    const progress = (round / TOTAL_ROUNDS) * 100;
+    document.getElementById('round-progress').style.width = progress + '%';
+}
+
+function handleStageClick(e) {
+    if (!isGameActive) return;
+    if (isWaiting) {
+        if (round >= TOTAL_ROUNDS) showResults();
+        else { round++; initRound(); }
+        return;
+    }
+
+    const rect = stage.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    let error = 0;
+    error = Math.abs(x - trueX);
+    tInd.style.left = trueX + 'px';
+    tInd.style.display = 'block';
+    uInd.style.left = x + 'px';
+    uInd.style.display = 'block';
+
+    const tol = DIFF_CONFIG[difficulty].tol;
+    const scaleTol = stage.offsetWidth < 600 ? tol * 1.5 : tol;
+
+    // Dynamic HSL Interpolation: 140 (Green) to 0 (Red)
+    const ratio = Math.min(1, error / (scaleTol * 4)); 
+    const hue = 140 - (ratio * 140);
+    const color = `hsl(${hue}, 85%, 60%)`;
+
+    // 1. Trigger Photon Burst
+    createPhotonBurst(x, y, color);
+
+    // 2. Trigger Stage Glow Pulse
+    const labOuter = document.querySelector('.lab-outer');
+    labOuter.style.transition = 'box-shadow 0.2s ease-out';
+    labOuter.style.boxShadow = `0 0 40px ${color}`;
+    setTimeout(() => {
+        labOuter.style.transition = 'box-shadow 0.8s ease-in';
+        labOuter.style.boxShadow = '0 30px 60px rgba(0,0,0,0.4)';
+    }, 250);
+
+    history.push({ error, delta: currentDeltaE });
+    if (error <= scaleTol) currentDeltaE *= DIFF_CONFIG[difficulty].mult; 
+    else currentDeltaE *= 1.1;
+    if (currentDeltaE > 0.4) currentDeltaE = 0.4;
+
+    isWaiting = true;
+    if (round === 1) {
+        const prompt = document.getElementById('click-prompt');
+        prompt.style.display = 'block';
+        prompt.style.animation = 'none';
+        setTimeout(() => prompt.style.animation = 'bounceSoft 2s infinite', 10);
+    }
+}
+
+function showResults() {
+    isGameActive = false;
+    const avgErr = history.reduce((a,b)=>a+b.error,0)/TOTAL_ROUNDS;
+    const avgDelta = history.reduce((a,b)=>a+b.delta,0)/TOTAL_ROUNDS;
+    const precision = Math.max(0, 100 - Math.round(avgErr));
+    
+    const ranks = [
+        { up: 0.03, name: "QUICK-SILVER GOD", desc: "Your brain is literally overclocked. You're seeing individual photons that haven't even decided to exist yet." },
+        { up: 0.05, name: "RETINAL DEITY", desc: "The absolute peak of display diagnostics. You perceive color shifts that are mathematically minute." },
+        { up: 0.07, name: "PRISM MASTER", desc: "Extremely sharp perception. You are in the top tier of visual acuity for color differentiation." },
+        { up: 0.09, name: "CHAMELEON STALKER", desc: "You can track a green lizard on a green leaf in a green forest. Impressive perceptual tracking." },
+        { up: 0.12, name: "EAGLE EYE", desc: "Superior focus. You are highly reliable at detecting professional-grade color inconsistencies." },
+        { up: 0.15, name: "FALCON ANALYST", desc: "Sharp and consistent. You have a solid grasp on color variations across the spectrum." },
+        { up: 0.18, name: "TIGER FOCUS", desc: "Solid performance. You're better than most, but there's room for sharpening your retinal focus." },
+        { up: 0.22, name: "AVERAGE HUMAN", desc: "Standard baseline. You're seeing the world exactly as it was intended—nothing more, nothing less." },
+        { up: 0.26, name: "MOLE ACUITY", desc: "Common human perception. You might benefit from optimized environmental lighting or monitor calibration." },
+        { up: 1.00, name: "SQUINTING POTATO", desc: "Is the monitor even on? You might be operating more on 'vibe' than actual vision right now." }
+    ];
+
+    let rankObj = ranks.find(r => avgDelta < r.up);
+    let rank = rankObj.name;
+    let desc = rankObj.desc;
+
+    document.getElementById('rank-val').textContent = rank;
+    document.getElementById('rank-desc').textContent = desc;
+    document.getElementById('final-delta').textContent = avgDelta.toFixed(4);
+    document.getElementById('final-precision').textContent = precision + "%";
+    
+    const svgLine = document.getElementById('chart-line');
+    const svgArea = document.getElementById('chart-area');
+    const gPoints = document.getElementById('chart-points');
+    const tooltip = document.getElementById('graph-tooltip');
+    
+    gPoints.innerHTML = '';
+    let points = [];
+    const maxVal = 0.4;
+    
+    history.forEach((h, i) => {
+        const x = (i / (TOTAL_ROUNDS - 1)) * 1000;
+        const y = 200 - ( (h.delta / maxVal) * 180 );
+        points.push(`${x},${y}`);
+        
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", x);
+        circle.setAttribute("cy", y);
+        circle.setAttribute("r", "5");
+        circle.setAttribute("class", "chart-point");
+        
+        circle.onmouseover = (e) => {
+            const hostRect = document.getElementById('accuracy-chart-host').getBoundingClientRect();
+            tooltip.style.left = ((x/1000) * hostRect.width) + 'px';
+            tooltip.style.top = (y/200 * hostRect.height) + 'px';
+            tooltip.textContent = `Rd ${i+1}: ΔE ${h.delta.toFixed(4)}`;
+            tooltip.style.opacity = '1';
+        };
+        circle.onmouseout = () => { tooltip.style.opacity = '0'; };
+        
+        gPoints.appendChild(circle);
+    });
+
+    const pathData = "M " + points.join(" L ");
+    svgLine.setAttribute("d", pathData);
+    const areaData = pathData + ` L 1000,200 L 0,200 Z`;
+    svgArea.setAttribute("d", areaData);
+
+    resultOverlay.style.display = 'block';
+    if (window.lucide) lucide.createIcons();
+}
+
+function copyResults() {
+    const rank = document.getElementById('rank-val').textContent;
+    const delta = document.getElementById('final-delta').textContent;
+    const precision = document.getElementById('final-precision').textContent;
+    const text = `HandleKit Vision Lab Result:\nDifficulty: ${difficulty.toUpperCase()}\nRank: ${rank}\nAvg. Threshold: ΔE OK ${delta}\nPrecision: ${precision}\nTest your eyes at: ${window.location.href}`;
+    const btnText = document.querySelector('#copy-btn span');
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            btnText.textContent = "Copied!";
+            setTimeout(() => btnText.textContent = "Copy Summary", 2000);
+        });
+    } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        btnText.textContent = "Copied!";
+        setTimeout(() => btnText.textContent = "Copy Summary", 2000);
+    }
+}
+function createPhotonBurst(x, y, color) {
+    const count = 12;
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'photon';
+        p.style.left = x + 'px';
+        p.style.top = y + 'px';
+        p.style.background = color;
+        p.style.boxShadow = `0 0 10px ${color}`;
+        
+        const tx = (Math.random() - 0.5) * 160;
+        const ty = (Math.random() - 0.5) * 160;
+        p.style.setProperty('--tx', tx + 'px');
+        p.style.setProperty('--ty', ty + 'px');
+        p.style.animation = `photonFly ${0.4 + Math.random() * 0.4}s cubic-bezier(0, .9, .1, 1) forwards`;
+        
+        stage.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
+    }
+}
+</script>
+
+<style>
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+@keyframes bounceSoft {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -8px); }
+}
+.photon {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 150;
+    filter: blur(2px);
+    opacity: 1;
+}
+@keyframes photonFly {
+    to { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+</style>
+{% endblock %}
