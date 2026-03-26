@@ -390,6 +390,14 @@ def color_picker():
 def jnd_test():
     return render_template('jnd_test.html')
 
+@app.route('/articles')
+def articles_list():
+    return render_template('articles_list.html')
+
+@app.route('/articles/jnd-perception')
+def article_jnd_perception():
+    return render_template('article_jnd.html')
+
 @app.route('/url-encoder')
 def url_encoder():
     return render_template('url_encoder.html')
