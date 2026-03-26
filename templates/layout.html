@@ -36,10 +36,17 @@
          preconnect would be wasted TCP handshakes flagged by PageSpeed as "unused". -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fundingchoicesmessages.google.com">
 
-    <!-- PERF: Load fonts with display=swap to satisfy Lighthouse's "Ensure text remains visible during webfont load" diagnostic. -->
+    {% block fonts %}
+    <!-- PERF: Load fonts asynchronously to eliminate render-blocking using the media="print" pattern.
+         display=swap ensures text remains visible during load. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
+    </noscript>
+    {% endblock %}
 
     <!-- PERF: style.css fully inlined, eliminates the 160ms render-blocking external request.
          At 4.5 KB it is well within the recommended inline budget (<14 KB).
