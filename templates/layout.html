@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scrollbar-gutter: stable;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,6 +96,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Prevent content jumping when modals open */
+html {
+  overflow-y: scroll;
+}
+@supports (scrollbar-gutter: stable) {
+  html {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+}
 /* Reserve space for Lucide icons before they load */
 i[data-lucide] {
   display: inline-block;
@@ -151,6 +161,8 @@ h1 {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  /* Force GPU rendering to prevent jitter in Firefox */
+  transform: translateZ(0); 
 }
 .top-bar-content {
   max-width: 1200px;
@@ -215,6 +227,8 @@ h1 {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  /* Prevent sub-pixel swinging in Firefox */
+  will-change: transform;
 }
 .hub-grid {
   display: grid;
