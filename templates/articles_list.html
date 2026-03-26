@@ -1,0 +1,112 @@
+{% set title = "Articles & Guides | HandleKit Research" %}
+{% set description = "Explore our collection of articles on psychology, perception, design, and scientific tools." %}
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+    .hub-wrap { max-width: 1000px; margin: 0 auto; padding: 4rem 1rem; }
+    .hub-header { text-align: center; margin-bottom: 5rem; }
+    .hub-header h1 { font-family: var(--font-heading); font-weight: 900; font-size: 3rem; color: var(--text-main); letter-spacing: -2px; }
+    .hub-header p { color: var(--text-sub); font-size: 1.2rem; }
+
+    .articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .article-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 2.5rem;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .article-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent-color);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    .card-tag {
+        font-family: var(--font-heading);
+        color: var(--accent-color);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 1rem;
+    }
+
+    .article-card h2 {
+        color: var(--text-main);
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .article-card p {
+        color: var(--text-sub);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        flex: 1;
+    }
+
+    .read-link {
+        color: var(--accent-color);
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .card-glow {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 70%);
+        pointer-events: none;
+    }
+</style>
+
+<div class="hub-wrap">
+    <header class="hub-header">
+        <h1>Research Articles</h1>
+        <p>Deep dives into the science and mechanics of our tools.</p>
+    </header>
+
+    <div class="articles-grid">
+        <!-- JND Article -->
+        <a href="/articles/jnd-perception" class="article-card">
+            <div class="card-glow"></div>
+            <span class="card-tag">Psychology & Perception</span>
+            <h2>Just Noticeable Difference: Weber's Law & Perception</h2>
+            <p>Explore the threshold of human perception and learn why the smallest detectable changes are always relative, not absolute.</p>
+            <div class="read-link">
+                Read Full Guide <i data-lucide="arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Placeholder for more articles -->
+        <div class="article-card" style="opacity: 0.4; cursor: default;">
+            <span class="card-tag">Upcoming</span>
+            <h2>Color Science & Oklab</h2>
+            <p>A deep dive into perceptually uniform color spaces and the future of digital color design.</p>
+            <div class="read-link" style="opacity: 0.5;">Coming Soon</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

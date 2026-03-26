@@ -1,0 +1,247 @@
+{% set title = "Just Noticeable Difference (JND): Weber's Law & Perception | HandleKit Articles" %}
+{% set description = "A deep dive into JND, Weber's Law, and how human sensory perception works. Learn why relative scaling is the key to design, marketing, and science." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Just Noticeable Difference (JND): Definition, Weber's Law, and Real-World Examples",
+  "description": "A clear, SEO-friendly guide to Just Noticeable Difference (JND), Weber's Law, and practical applications in perception, design, and marketing.",
+  "author": { "@type": "Organization", "name": "HandleKit Research Lab" },
+  "keywords": ["Just Noticeable Difference", "JND", "Weber's Law", "difference threshold", "psychophysics", "sensory perception"],
+  "articleSection": ["Psychology", "Neuroscience", "Perception"],
+  "inLanguage": "en",
+  "publisher": {
+    "@type": "Organization",
+    "name": "HandleKit",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://handlekit.com/static/img/logo.png"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<style>
+    .article-wrap { 
+        max-width: 840px; 
+        margin: 0 auto; 
+        padding-top: 3rem;
+        padding-bottom: 6rem;
+        color: var(--text-sub); 
+        line-height: 1.85; 
+    }
+    
+    .article-header { 
+        text-align: center; 
+        margin-bottom: 4rem; 
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 3rem;
+    }
+    
+    .eyebrow { 
+        font-family: var(--font-heading); 
+        color: var(--accent-color); 
+        font-weight: 800; 
+        text-transform: uppercase; 
+        letter-spacing: 2px; 
+        font-size: 0.75rem; 
+        margin-bottom: 1rem;
+        display: block;
+    }
+    
+    .article-header h1 { 
+        font-family: var(--font-heading);
+        font-weight: 900;
+        color: var(--text-main); 
+        font-size: 2.8rem; 
+        letter-spacing: -2px;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+    }
+    
+    .meta { 
+        color: #555; 
+        font-size: 0.85rem; 
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    .article-body h2 { 
+        color: var(--text-main); 
+        font-weight: 800; 
+        font-size: 1.9rem; 
+        margin-top: 4.5rem; 
+        margin-bottom: 1.5rem; 
+        font-family: var(--font-heading);
+        letter-spacing: -0.5px;
+    }
+    .article-body h2::first-letter { color: var(--accent-color); }
+    .article-body p { font-size: 1.1rem; margin-bottom: 1.8rem; }
+    .article-body strong { color: var(--text-main); font-weight: 700; }
+    
+    .article-body .formula { 
+        background: rgba(255,255,255,0.02); 
+        border: 1px solid var(--border-color); 
+        padding: 2.5rem; 
+        border-radius: 16px; 
+        text-align: center; 
+        font-family: 'Roboto Mono', monospace; 
+        font-size: 2rem; 
+        color: var(--text-main); /* Theme-aware color for readability */
+        margin: 3rem 0; 
+        box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+    }
+    
+    .article-body figure { 
+        background: rgba(255,255,255,0.02); 
+        border: 1px solid var(--border-color); 
+        padding: 1.5rem; 
+        border-radius: 20px; 
+        margin: 4rem 0; 
+    }
+    .article-body figure img { 
+        width: 100%; 
+        border-radius: 8px; 
+        background: #fdfdfd; /* Solid light background for readability of black text/lines */
+        padding: 1rem;
+        transition: all 0.4s ease; 
+        border: 1px solid rgba(255,255,255,0.05);
+        display: block;
+    }
+    .article-body figure img:hover { 
+        filter: brightness(1.05); 
+        box-shadow: 0 10px 40px rgba(0, 210, 255, 0.25); /* Cyan glow visible in both Light and Dark modes */
+    }
+    .article-body figcaption { 
+        margin-top: 1.5rem; 
+        font-size: 0.9rem; 
+        color: #777; 
+        line-height: 1.6; 
+        text-align: center;
+    }
+    
+    .source-link { 
+        font-family: 'Roboto Mono', monospace; 
+        font-size: 0.7rem; 
+        margin-top: 0.8rem; 
+        text-align: center;
+        opacity: 0.5;
+    }
+    .source-link a { color: var(--accent-color); text-decoration: none; }
+
+    .article-body ul { margin-bottom: 2.5rem; padding-left: 2rem; }
+    .article-body ul li { margin-bottom: 1rem; font-size: 1.05rem; }
+    
+    .article-body .refs { 
+        list-style: none; 
+        padding: 0; 
+        font-size: 0.9rem; 
+        color: #555; 
+        line-height: 1.8; 
+        margin-top: 3rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 3rem;
+    }
+    .article-body .refs li { margin-bottom: 1.2rem; }
+
+    /* Magnet style for articles */
+    .tool-magnet {
+        background: rgba(0, 210, 255, 0.05);
+        border: 1px solid rgba(0, 210, 255, 0.2);
+        border-radius: 24px;
+        padding: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-top: 5rem;
+    }
+
+    @media (max-width: 600px) {
+        .article-header h1 { font-size: 2rem; }
+        .article-body h2 { font-size: 1.5rem; }
+        .tool-magnet { padding: 1.5rem; flex-direction: column; text-align: center; gap: 1.5rem; }
+    }
+</style>
+
+<div class="article-wrap">
+    <header class="article-header">
+        <span class="eyebrow">Psychology & Perception</span>
+        <h1>Just Noticeable Difference (JND): Definition, Weber's Law, and Real-World Examples</h1>
+        <div class="meta">HandleKit Research Lab • 8 min read • Updated March 2026</div>
+    </header>
+
+    <div class="article-body">
+        <p>The concept of <strong>Just Noticeable Difference (JND)</strong> is fundamental in psychology, neuroscience, and sensory science. It refers to the smallest detectable difference between two stimuli that a person can perceive at least 50% of the time. Rather than responding to absolute changes, human perception is highly sensitive to relative differences, making JND a key principle for understanding how people experience sound, light, weight, and other sensory inputs.</p>
+
+        <h2>Origins of JND and Weber's Law</h2>
+        <p>The idea of JND is closely linked to the work of Ernst Heinrich Weber, who showed that perceptual sensitivity depends on proportional rather than absolute changes. This insight led to <strong>Weber's Law</strong>, which states that the ratio between the increment threshold and the initial stimulus intensity tends to remain constant.</p>
+        <p>For example, a person holding a light object may notice a small increase in weight, whereas detecting a change in a heavier object requires a proportionally larger increase. This principle helped establish psychophysics as a field that connects measurable stimuli with subjective human experience.</p>
+
+        <figure>
+            <!-- Fixed Wikimedia Link (Explicit hash from screenshot) -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Weber-Fechner_law_demo_-_dots.svg/960px-Weber-Fechner_law_demo_-_dots.svg.png" alt="Weber-Fechner Law Demonstration Dots">
+            <figcaption><strong>Figure 1.</strong> Illustration of the Weber-Fechner law for visual perception. The same absolute increase in dots is easier to detect at a lower baseline than at a higher baseline.</figcaption>
+            <div class="source-link">Source: <a href="https://commons.wikimedia.org/wiki/File:Weber-Fechner_law_demo_-_dots.svg" target="_blank">Wikimedia Commons</a></div>
+        </figure>
+
+        <h2>How Weber's Law Explains Perception</h2>
+        <p>Weber's Law is commonly expressed as follows:</p>
+        <div class="formula">ΔI / I = k</div>
+        <p>In this equation, <em>ΔI</em> represents the just noticeable difference, <em>I</em> represents the original stimulus intensity, and <em>k</em> is a constant known as the Weber fraction. The detectable change becomes less obvious when the baseline stimulus is already large. This is why perception operates on relative scaling rather than absolute units.</p>
+
+        <h2>Auditory Sensitivity and JND</h2>
+        <p>Hearing provides a strong real-world example of JND in action. Humans do not perceive all sound frequencies equally. Instead, sensitivity changes depending on frequency, which is why the same physical increase in sound intensity may be more noticeable in one range than another.</p>
+
+        <figure>
+            <!-- Fixed Wikimedia Link (Explicit hash from screenshot) -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Equal_loudness_no_caption.svg/960px-Equal_loudness_no_caption.svg.png" alt="Equal Loudness Contours Curve">
+            <figcaption><strong>Figure 2.</strong> Equal-loudness contours showing auditory sensitivity across frequencies, based on ISO 226:2003.</figcaption>
+            <div class="source-link">Source: <a href="https://commons.wikimedia.org/wiki/File:Equal_loudness_no_caption.svg" target="_blank">Wikimedia Commons</a></div>
+        </figure>
+
+        <p>People are generally more sensitive to mid-range frequencies, especially around 2–5 kHz, and require larger intensity changes to detect differences at very low or very high frequencies. These contours show that JND in hearing depends not only on intensity but also on frequency, highlighting the complexity of sensory processing.</p>
+
+        <h2>Examples of JND in Everyday Life</h2>
+        <p>Just Noticeable Difference is not limited to laboratory research. It appears in many everyday systems and decisions:</p>
+        <ul>
+            <li><strong>User interface design:</strong> Changes in brightness, contrast, or sound can be tuned to match perceptual thresholds.</li>
+            <li><strong>Audio and image compression:</strong> Engineers can remove information below perceptual thresholds without obvious quality loss.</li>
+            <li><strong>Marketing and pricing:</strong> Small price changes may fall below consumers' perceptual thresholds, reducing negative reactions.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+        <p>The Just Noticeable Difference is a central concept in sensory perception because it shows that people detect changes relative to what they are already experiencing, not in absolute terms. From classic psychophysics to modern design, audio technology, and pricing strategy, JND remains a practical way to understand how human perception works.</p>
+
+        <h2>References</h2>
+        <ul class="refs">
+            <li><strong>Fechner, G. T. (1966).</strong> <em>Elements of psychophysics</em> (H. E. Adler, Trans.). Holt, Rinehart & Winston. (Original work published 1860)</li>
+            <li><strong>Gescheider, G. A. (1997).</strong> <em>Psychophysics: The fundamentals</em> (3rd ed.). Lawrence Erlbaum Associates.</li>
+            <li><strong>Goldstein, E. B. (2014).</strong> <em>Sensation and perception</em> (9th ed.). Cengage Learning.</li>
+            <li><strong>International Organization for Standardization. (2003).</strong> <em>ISO 226: Acoustics—Normal equal-loudness-level contours</em>.</li>
+            <li><strong>Monroe, K. B. (2003).</strong> <em>Pricing: Making profitable decisions</em> (3rd ed.). McGraw-Hill.</li>
+            <li><strong>Weber, E. H. (1996).</strong> <em>De pulsu, resorptione, auditu et tactu</em> (H. E. Ross & D. J. Murray, Trans.). Academic Press. (Original work published 1834)</li>
+            <li><strong>Zwicker, E., & Fastl, H. (1999).</strong> <em>Psychoacoustics: Facts and models</em> (2nd ed.). Springer.</li>
+        </ul>
+
+        <!-- TOOL MAGNET (Link Back) -->
+        <div class="tool-magnet">
+            <div style="display: flex; align-items: center; gap: 1.5rem; flex: 1; min-width: 280px; text-align: left;">
+                <div style="background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0, 210, 255, 0.25);">
+                    <i data-lucide="eye" style="color: #fff; width: 28px; height: 28px;"></i>
+                </div>
+                <div>
+                    <h3 style="color: var(--text-main); margin: 0; font-size: 1.2rem; font-weight: 800;">Put Science to the Test</h3>
+                    <p style="color: var(--text-sub); margin: 0.2rem 0 0 0; font-size: 0.95rem;">Experience your own perceptual threshold with our <strong>Vision Lab Diagnostic</strong> tool.</p>
+                </div>
+            </div>
+            <a href="/jnd-test" style="background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); color: #fff; text-decoration: none; padding: 1rem 2.2rem; border-radius: 12px; font-weight: 800; font-size: 1rem; transition: transform 0.2s; white-space: nowrap;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Try JND Test</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

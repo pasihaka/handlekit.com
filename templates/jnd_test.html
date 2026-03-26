@@ -6,12 +6,25 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "HandleKit Vision Lab",
-  "url": "{{ request.url }}",
-  "description": "Scientific JND (Just Noticeable Difference) color perception test engine using Oklab Delta-E measurements.",
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "All"
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "HandleKit Vision Lab",
+      "url": "{{ request.url }}",
+      "description": "Scientific JND (Just Noticeable Difference) color perception test engine using Oklab Delta-E measurements.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "Article",
+      "headline": "Just Noticeable Difference (JND): Definition, Weber's Law, and Real-World Examples",
+      "description": "A clear, SEO-friendly guide to Just Noticeable Difference (JND), Weber's Law, and practical applications in perception, design, and marketing.",
+      "author": { "@type": "Organization", "name": "HandleKit Research Lab" },
+      "keywords": ["Just Noticeable Difference", "JND", "Weber's Law", "difference threshold", "psychophysics", "sensory perception"],
+      "articleSection": ["Psychology", "Neuroscience", "Perception"],
+      "inLanguage": "en"
+    }
+  ]
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,13 +41,119 @@
         --font-heading: 'Outfit', sans-serif;
     }
 
+    /* Article Styles */
+    .lab-article { 
+        color: var(--text-sub); 
+        line-height: 1.85; 
+        max-width: 840px; 
+        margin: 0 auto; 
+    }
+    .lab-article h2 { 
+        color: var(--text-main); 
+        font-weight: 800; 
+        font-size: 1.8rem; 
+        margin-top: 4.5rem; 
+        margin-bottom: 1.5rem; 
+        font-family: var(--font-heading);
+        letter-spacing: -0.5px;
+    }
+    .lab-article h2::first-letter { color: var(--accent-color); }
+    .lab-article p { font-size: 1.05rem; margin-bottom: 1.5rem; }
+    .lab-article strong { color: var(--text-main); font-weight: 700; }
+    .lab-article .eyebrow { 
+        font-family: var(--font-heading); 
+        color: var(--accent-color); 
+        font-weight: 800; 
+        text-transform: uppercase; 
+        letter-spacing: 2px; 
+        font-size: 0.75rem; 
+        margin-bottom: 0.6rem;
+    }
+    .lab-article .meta { 
+        color: #444; 
+        font-size: 0.8rem; 
+        margin-bottom: 2rem; 
+        border-bottom: 1px solid var(--border-color); 
+        padding-bottom: 1.2rem; 
+        font-family: 'Roboto Mono', monospace;
+    }
+    .lab-article .formula { 
+        background: rgba(255,255,255,0.02); 
+        border: 1px solid var(--border-color); 
+        padding: 2.5rem; 
+        border-radius: 16px; 
+        text-align: center; 
+        font-family: 'Roboto Mono', monospace; 
+        font-size: 1.8rem; 
+        color: #fff; 
+        margin: 2.5rem 0; 
+        box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+    }
+    .lab-article figure { 
+        background: rgba(255,255,255,0.02); 
+        border: 1px solid var(--border-color); 
+        padding: 1.5rem; 
+        border-radius: 20px; 
+        margin: 3.5rem 0; 
+    }
+    .lab-article figure img { 
+        width: 100%; 
+        border-radius: 12px; 
+        filter: grayscale(0.2) brightness(0.9); 
+        transition: all 0.4s ease; 
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    .lab-article figure img:hover { 
+        filter: grayscale(0) brightness(1.1); 
+        box-shadow: 0 0 30px rgba(0,210,255,0.1);
+    }
+    .lab-article figcaption { 
+        margin-top: 1.2rem; 
+        font-size: 0.85rem; 
+        color: #666; 
+        line-height: 1.6; 
+        text-align: center;
+    }
+    .lab-article figcaption strong { color: #888; }
+    .lab-article .source-link { 
+        font-family: 'Roboto Mono', monospace; 
+        font-size: 0.7rem; 
+        margin-top: 0.8rem; 
+        text-align: center;
+        opacity: 0.5;
+    }
+    .lab-article .source-link a { color: var(--accent-color); text-decoration: none; }
+    .lab-article .source-link a:hover { text-decoration: underline; }
+    .lab-article .note { 
+        background: rgba(0,210,255,0.03); 
+        border-left: 4px solid var(--accent-color); 
+        padding: 1.8rem; 
+        border-radius: 4px; 
+        margin: 2.5rem 0; 
+        font-size: 0.95rem; 
+        color: #999; 
+        line-height: 1.6;
+    }
+    .lab-article ul { margin-bottom: 2rem; padding-left: 1.5rem; }
+    .lab-article ul li { margin-bottom: 0.8rem; }
+    .lab-article .refs { 
+        list-style: none; 
+        padding: 0; 
+        font-size: 0.85rem; 
+        color: #444; 
+        line-height: 1.7; 
+        margin-top: 2rem;
+    }
+    .lab-article .refs li { margin-bottom: 1.2rem; }
+
     /* Page-level adaptive styling */
     .lab-page-header h1 { 
         font-family: var(--font-heading);
         font-weight: 900;
         color: var(--text-main); 
-        font-size: 2.2rem; 
-        letter-spacing: -0.04em;
+        font-size: 2.5rem; 
+        letter-spacing: -2px;
+        line-height: 1.1;
     }
     .lab-page-header p { color: var(--text-sub); }
 
@@ -466,47 +585,36 @@
         </div>
     </div>
 
-    <!-- Article Content (Adaptive) -->
-    <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 5rem; padding-bottom: 5rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2.5rem; font-size: 2rem; font-weight: 800; letter-spacing: -1px;">The Science of the Vision Lab</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
-            <div>
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.3rem;">Trial Length & Accuracy</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.95rem;">
-                    The Vision Lab carries out exactly <strong>20 trials</strong> to ensure the highest level of scientific accuracy. In other words, from a statistical perspective, 20 trials are enough to calibrate away the effects of lucky guesses, as well as to ensure that the test is over before user <strong>retinal bleaching</strong> (eye fatigue) begins to impact the results.
+    <!-- Science Summary Magnet -->
+    <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 5rem; padding-bottom: 5rem;">
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 3rem;">
+            <div style="flex: 2; min-width: 300px;">
+                <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 2rem; font-weight: 800; letter-spacing: -1px;">The Science of Perception</h2>
+                <p style="color: var(--text-sub); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                    The Vision Lab is powered by <strong>Weber's Law</strong>, a fundamental principle in psychophysics that governs how we perceive changes in light, color, and sound. Learn how your results are calculated and explore the deep-dive research into Just Noticeable Difference (JND).
                 </p>
+                <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                    <a href="/articles/jnd-perception" style="background: var(--accent-gradient); color: white; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 0.8rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        Read Full Guide <i data-lucide="book-open"></i>
+                    </a>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: #666; font-size: 0.9rem; font-weight: 600;">
+                        <i data-lucide="clock" style="width: 16px; height: 16px;"></i> 8 min deep dive
+                    </div>
+                </div>
             </div>
-            <div>
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.3rem;">Why a "Dark Lab"?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.95rem;">
-                    In order to ensure the highest level of diagnostic accuracy, the testing phase is locked into a <strong>Fixed Dark Mode</strong>. This ensures that the amount of glare is minimized, as well as the amount of strain on the photoreceptor cells, so that only the Oklab color changes are processed by your brain, as opposed to being confused by increased environmental lighting.
-                </p>
-            </div>
-            <div>
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.3rem;">Weber-Fechner Law</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.95rem;">
-                    Our test is based on the <strong>Weber-Fechner Law</strong>, which asserts that the "just noticeable difference" between two stimuli is proportional to the overall magnitude of those two stimuli. In other words, the shadows must be processed at a different <strong>Delta E shift</strong> than the highlights in order to be noticed as "different."
-                </p>
+            <div style="flex: 1; min-width: 250px; display: flex; justify-content: center;">
+                <div style="position: relative; width: 100%; max-width: 300px; aspect-ratio: 1; background: rgba(0,210,255,0.03); border-radius: 50%; border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; animation: spin-slow 20s linear infinite;">
+                    <i data-lucide="atom" style="width: 100px; height: 100px; color: var(--accent-color); opacity: 0.2;"></i>
+                </div>
             </div>
         </div>
 
-        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem; margin-bottom: 4rem;">
-            <h3 style="color: var(--text-main); margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 800;">Expanded Practical Applications</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem;">
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.7;">
-                    <strong style="color: var(--accent-color);">UI/UX Design:</strong> Emphasize the importance of interface elements having sufficient <strong>perceptual contrast</strong> to meet accessibility guidelines while also meeting the need for <strong>brand cohesion</strong> and visual identity.
-                </p>
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.7;">
-                    <strong style="color: var(--accent-color);">Monitor Calibration:</strong> Professional photographers and videographers will often conduct <strong>Just Noticeable Difference</strong> tests to ensure that their monitor can correctly display the differences in tone that the human eye can detect.
-                </p>
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.7;">
-                    <strong style="color: var(--accent-color);">Industrial Quality Control:</strong> In textile and automotive manufacturing, for instance, <strong>Delta-E</strong> is used as a standard to ensure that two different paints or fabrics appear identical to the naked eye.
-                </p>
-            </div>
-        </div>
+        <style>
+            @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        </style>
 
         <!-- Color Picker Magnet -->
-        <div style="background: rgba(201, 28, 35, 0.05); border: 1px solid rgba(201, 28, 35, 0.2); border-radius: 20px; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+        <div style="background: rgba(201, 28, 35, 0.05); border: 1px solid rgba(201, 28, 35, 0.2); border-radius: 20px; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; margin-top: 4rem;">
             <div style="display: flex; align-items: center; gap: 1.5rem;">
                 <div style="background: var(--accent-gradient); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(201, 28, 35, 0.25);">
                     <i data-lucide="pipette" style="color: #fff; width: 24px; height: 24px;"></i>
