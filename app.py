@@ -54,6 +54,10 @@ def robots_txt():
 def sitemap_xml():
     return app.send_static_file('sitemap.xml')
 
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('favicon.ico')
+
 @app.route('/ads.txt')
 def ads_txt():
     return app.send_static_file('ads.txt')
