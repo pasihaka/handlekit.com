@@ -516,13 +516,23 @@ def api_jnd_stats():
                 "count": buckets.get(b_min, 0)
             })
         
+        # Calculate higher_than if score sent
+        score_val = request.args.get('score')
+        higher_count = 0
+        if score_val is not None:
+            try:
+                score_val = int(score_val)
+                higher_count = sum(1 for s in scores if s > score_val)
+            except: pass
+
         return jsonify({
             "buckets": final_buckets,
             "total": total,
             "max_score": max_score,
             "bucket_size": bucket_size,
             "percentiles": percentiles,
-            "difficulty": difficulty
+            "difficulty": difficulty,
+            "higher_count": higher_count
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
