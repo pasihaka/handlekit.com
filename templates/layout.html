@@ -55,6 +55,7 @@
          The external file is kept on disk for caching on repeat visits. -->
     <style>
 :root {
+  color-scheme: dark;
   --bg-color: #0c0a0a;
   --card-bg: rgba(22, 18, 18, 0.65);
   --accent-color: #c91c23;
@@ -100,6 +101,7 @@ body {
 }
 /* Prevent content jumping when modals open */
 html {
+  background-color: var(--bg-color);
   overflow-y: scroll;
 }
 @supports (scrollbar-gutter: stable) {
@@ -107,6 +109,14 @@ html {
     overflow-y: auto;
     scrollbar-gutter: stable;
   }
+}
+html.modal-open {
+  scrollbar-gutter: auto !important;
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important;  /* IE and Edge */
+}
+html.modal-open::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari and Opera */
 }
 /* Reserve space for Lucide icons before they load */
 i[data-lucide] {

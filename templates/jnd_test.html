@@ -45,6 +45,14 @@
         --font-heading: 'Outfit', sans-serif;
     }
 
+    /* Prevent background scrolling and double scrollbars */
+    html.modal-open, body.modal-open {
+        overflow: hidden !important;
+        height: 100% !important;
+        width: 100% !important;
+        position: fixed !important; /* Force no scroll on some mobile browsers */
+    }
+
     /* Article Styles */
     .lab-article { 
         color: var(--text-sub); 
@@ -175,27 +183,30 @@
 
     /* Immersion Mode Extension */
     .lab-outer.immersion-mode {
-        position: fixed;
-        inset: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 2000;
-        border-radius: 0;
-        margin: 0;
-        border: none;
-        background: #000;
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 10000 !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: #000 !important;
+        transition: none !important;
     }
     .lab-outer.immersion-mode #lab-stage {
         height: 100vh;
     }
     /* Centers the game area in fullscreen */
-    .lab-outer.immersion-mode #lab-start-overlay,
-    .lab-outer.immersion-mode #lab-result-overlay,
     .lab-outer.immersion-mode #lab-gameover-overlay {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         background: radial-gradient(circle at center, #0a0a0a, #000);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0;
     }
 
     #lab-controls {
@@ -228,12 +239,19 @@
         cursor: crosshair;
         background: #000;
         overflow: hidden;
+        contain: layout paint;  /* prevent field shifts from propagating up */
+    }
+
+    #left-field, #right-field {
+        will-change: left, background-color;
     }
 
     @media (max-width: 600px) {
         #lab-stage { height: 450px; }
         #lab-controls { gap: 0.8rem; padding: 0.5rem 1.2rem; font-size: 0.75rem; top: 15px; }
         .lab-page-header h1 { font-size: 1.8rem; }
+        #start-icon, #start-icon svg { width: 96px; height: 96px; }
+        #start-icon { display: flex; justify-content: center; margin: 0 auto 0; }
     }
 
 
@@ -482,9 +500,20 @@
     }
 
     @media (max-width: 600px) {
-        #lab-hud { gap: 0.6rem; top: 15px; }
+        #lab-hud { 
+            top: auto !important; 
+            bottom: 25px !important; 
+            gap: 0.6rem; 
+        }
         .hud-node { padding: 0.4rem 0.8rem; min-width: 80px; border-radius: 10px; }
         .hud-value { font-size: 0.85rem; }
+        
+        #lab-exit-btn { 
+            top: 15px !important; 
+            right: 15px !important; 
+            width: 38px !important; 
+            height: 38px !important; 
+        }
     }
 
     /* Mode Selector Styles */
@@ -524,6 +553,24 @@
     .heart-icon { color: var(--accent-color); fill: var(--accent-color); filter: drop-shadow(0 0 5px var(--accent-color)); }
     .heart-icon.lost { color: #333; fill: transparent; filter: none; opacity: 0.5; }
 
+    /* Result Overlay */
+    #lab-result-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.98);
+        z-index: 210;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+        padding: 4rem 1.5rem 6rem;
+        border-radius: 24px;
+        overflow-y: auto;
+        backdrop-filter: blur(10px);
+        -webkit-overflow-scrolling: touch;
+    }
+
     /* Game Over Overlay */
     #lab-gameover-overlay {
         position: absolute;
@@ -533,11 +580,12 @@
         display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start; /* Better for scrolling */
+        justify-content: flex-start;
         text-align: center;
-        padding: 3rem 1.5rem;
+        padding: 4rem 1.5rem 6rem;
         border-radius: 24px;
-        overflow-y: auto; /* Enable scroll */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     /* Level Up Toast */
@@ -665,6 +713,9 @@
 
     <!-- Lab Game Container -->
     <div class="lab-outer">
+        <div id="lab-exit-btn" onclick="exitLab()" title="Exit Session">
+            <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </div>
         <div id="lab-hud">
             <!-- Diagnostic Rounds (Hidden in Arcade) -->
             <div class="hud-node diagnostic-only">
@@ -697,7 +748,7 @@
             <div class="hud-node">
                 <div class="hud-label">
                     <span class="led-dot"></span>
-                    TELEMETRY
+                    COLOR SENSITIVITY
                 </div>
                 <div class="hud-value" style="color: var(--accent-color);">
                     &delta;E <span id="delta-val">0.2000</span>
@@ -719,7 +770,7 @@
 
         <div id="lab-stage" onclick="handleStageClick(event)">
             <div id="left-field" style="position: absolute; left: 0; top: 0; height: 100%; width: 50%;"></div>
-            <div id="right-field" style="position: absolute; top: 0; height: 100%; left: 50%; right: 0;"></div>
+            <div id="right-field" style="position: absolute; top: 0; height: 100%; left: 50%; right: 0; display: none;"></div>
             
             
             
@@ -732,25 +783,19 @@
 
             <!-- Start Overlay -->
             <div id="lab-start-overlay" style="position: absolute; inset: 0; background: #0a0a0a; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 24px; padding: 2rem;">
-                <i data-lucide="monitor-check" style="width: 48px; height: 48px; color: var(--accent-color); margin-bottom: 1.2rem;"></i>
-                <h2 style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; text-align: center;">Vision Lab Diagnostic</h2>
-                <p style="color: #666; text-align: center; max-width: 440px; margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.85rem;">Select your mode and complexity to begin.</p>
+                <div id="start-icon"><i data-lucide="monitor-check" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i></div>
+                <h2 style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; text-align: center;">Vision Lab Diagnostic Mode</h2>
+                <p style="color: #666; text-align: center; max-width: 440px; margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.85rem;">Select your session mode to begin calibration.</p>
                 
-                <div class="mode-selector" id="mode-selector">
+                <div class="mode-selector" id="mode-selector" style="margin-bottom: 2.5rem;">
                     <div class="mode-opt active" data-mode="diagnostic">
                         <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
-                        Diagnostic
+                        Diagnostic Mode
                     </div>
                     <div class="mode-opt" data-mode="arcade">
                         <i data-lucide="gamepad-2" style="width: 16px; height: 16px;"></i>
-                        Quest Mode
+                        Fun Mode
                     </div>
-                </div>
-                
-                <div class="diff-selector" id="diff-selector">
-                    <div class="diff-opt" data-diff="practice">Practice</div>
-                    <div class="diff-opt active" data-diff="standard">Standard</div>
-                    <div class="diff-opt" data-diff="pro">Pro</div>
                 </div>
 
                 <button onclick="startLab(event)" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.1rem 3.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(0,210,255,0.15);">
@@ -791,57 +836,43 @@
                             </div>
                         </div>
                     </div>
+                    
+
 
                     <div style="width: 100%; margin-bottom: 1.5rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-                            <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;">Recent High Scores</div>
+                            <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;">Global Standing</div>
                             <button id="see-rank-btn" onclick="showRankInput()" style="background: transparent; color: var(--accent-color); border: none; font-size: 0.6rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 4px;">
                                 <i data-lucide="award" style="width: 10px; height: 10px;"></i>
-                                See How You Rank
+                                Submit Score
                             </button>
                         </div>
-                        
-                        <!-- Nickname Input (Initially Hidden) -->
-                        <div id="nickname-input-panel" style="display: none; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 1rem; text-align: left; animation: fadeInUp 0.3s ease-out;">
-                            <div id="nickname-form-content">
-                                <div style="color: #666; font-size: 0.6rem; text-transform: uppercase; font-weight: 700; margin-bottom: 0.8rem;">Enter callsign to join leaderboard</div>
-                                <div style="display: flex; gap: 0.6rem;">
-                                    <input type="text" id="player-nickname" placeholder="PILOT_ID" maxlength="12" style="flex: 1; background: #000; border: 1px solid #333; border-radius: 8px; color: #fff; padding: 0.5rem 1rem; font-family: 'Roboto Mono', monospace; font-size: 0.8rem; outline: none; width: 100%;">
-                                    <button onclick="submitToLeaderboard()" style="background: var(--accent-gradient); color: #fff; border: none; padding: 0 1rem; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.7rem;">RANK</button>
-                                </div>
-                            </div>
-                            <div id="nickname-status" style="display: none; color: #666; font-size: 0.8rem; padding: 0.5rem 0;"></div>
-                        </div>
-
-                        <div id="gameover-scoreboard-container">
-                            <!-- Table injected here -->
-                        </div>
+                        <div id="nickname-status" style="display: none; color: #00ff88; font-size: 0.75rem; padding: 0.3rem 0; font-weight: 700;"></div>
                     </div>
 
                     <!-- Global Leaderboard (Revealed on rank) -->
-                    <div id="global-leaderboard-section" style="width: 100%; margin-bottom: 1.5rem; display: none;">
+                    <div id="global-leaderboard-section" style="width: 100%; margin-bottom: 1.5rem; min-height: 0; opacity: 0; transition: opacity 0.3s ease 0.1s;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
                             <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; text-align: left;">Top Pilots Global</div>
-                            <div class="league-tabs">
-                                <div class="league-tab" data-league="standard" onclick="switchLeague('standard', 'main')">Standard</div>
-                                <div class="league-tab" data-league="pro" onclick="switchLeague('pro', 'main')">Pro</div>
+                            <div class="league-tabs" style="display: none;">
+                                <div class="league-tab active" data-league="pro">Global</div>
                             </div>
                         </div>
                         <div id="top-pilots-list"></div>
                     </div>
 
                     <!-- Global Distribution Section -->
-                    <div id="global-dist-section" style="width: 100%; margin-bottom: 2rem; display: none;">
+                    <div id="global-dist-section" style="width: 100%; margin-bottom: 2rem; min-height: 120px; opacity: 0; transition: opacity 0.3s ease;">
                         <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.2rem; font-weight: 800; text-align: left;">Score Distribution (Active League)</div>
                         <div class="global-dist-chart" id="global-dist-chart">
                             <!-- Bars injected here -->
                         </div>
-                        <div style="display: flex; justify-content: space-between; color: #444; font-size: 0.6rem; margin-top: 0.4rem; font-weight: 700;">
-                            <span>0%</span>
-                            <span>25%</span>
-                            <span>50%</span>
-                            <span>75%</span>
-                            <span>100%</span>
+                        <div id="global-dist-axis" style="display: flex; justify-content: space-between; color: #444; font-size: 0.6rem; margin-top: 0.4rem; font-weight: 700;">
+                            <span>0</span>
+                            <span>25k</span>
+                            <span>50k</span>
+                            <span>75k</span>
+                            <span>100k</span>
                         </div>
                     </div>
 
@@ -853,6 +884,37 @@
                             Play Again
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Feedback + Score Submission Pop-up Modal -->
+            <div id="submit-score-modal" style="display:none; position:absolute; inset:0; z-index:300; align-items:center; justify-content:center; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); border-radius:24px;">
+                <div style="background:#111; border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:2rem 2rem 1.6rem; width:90%; max-width:380px; position:relative; animation: slideUpFade 0.3s cubic-bezier(0.19,1,0.22,1);">
+                    <!-- Close button -->
+                    <button onclick="closeSubmitModal()" style="position:absolute; top:0.9rem; right:0.9rem; background:rgba(255,255,255,0.05); border:none; color:#666; width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">
+                        <i data-lucide="x" style="width:14px; height:14px;"></i>
+                    </button>
+                    <!-- Rank Feedback Section -->
+                    <div id="feedback-text" style="font-size:0.85rem; font-weight:700; line-height:1.5; margin-bottom:1.4rem; padding-bottom:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06);">Analyzing your rank...</div>
+                    <!-- Header -->
+                    <div style="margin-bottom:1rem;">
+                        <div style="color:#fff; font-size:1rem; font-weight:900; letter-spacing:-0.5px; margin-bottom:0.2rem;">Submit to Leaderboard</div>
+                        <div style="color:#555; font-size:0.68rem;">Enter your callsign to claim your global rank.</div>
+                    </div>
+                    <!-- Input -->
+                    <input type="text" id="player-nickname" placeholder="YOUR CALLSIGN" maxlength="20"
+                        style="width:100%; box-sizing:border-box; background:#000; border:1px solid #333; border-radius:10px; color:#fff; padding:0.75rem 1rem; font-family:'Roboto Mono',monospace; font-size:0.85rem; outline:none; margin-bottom:1rem; transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='#333'"
+                        onkeydown="if(event.key==='Enter') submitToLeaderboard()">
+                    <!-- Primary CTA -->
+                    <button onclick="submitToLeaderboard()" style="width:100%; background:var(--accent-gradient); color:#fff; border:none; padding:0.85rem; border-radius:10px; font-weight:900; font-size:0.9rem; cursor:pointer; letter-spacing:1px; margin-bottom:0.6rem; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                        SUBMIT SCORE
+                    </button>
+                    <!-- Play Again -->
+                    <button onclick="closeSubmitModal(); startLab(event)" style="width:100%; background:transparent; color:#666; border:1px solid rgba(255,255,255,0.08); padding:0.7rem; border-radius:10px; font-weight:700; font-size:0.8rem; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.color='#666'; this.style.borderColor='rgba(255,255,255,0.08)'">
+                        Play Again
+                    </button>
+                    <div id="submit-modal-status" style="display:none; text-align:center; font-size:0.75rem; font-weight:700; padding:0.6rem 0 0;"></div>
                 </div>
             </div>
 
@@ -880,11 +942,10 @@
             <div id="lab-global-rank-overlay" style="position: absolute; inset: 0; background: #0a0a0a; z-index: 230; display: none; flex-direction: column; padding: 2.5rem 2rem; border-radius: 24px; overflow-y: auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-shrink: 0;">
                     <h2 style="color: #fff; font-size: 1.8rem; font-weight: 900; margin: 0; letter-spacing: -1px;">Top Commanders</h2>
-                    <div class="league-tabs" style="margin-right: 1rem;">
-                        <div class="league-tab active" data-league="standard" onclick="switchLeague('standard', 'standalone')">Standard</div>
-                        <div class="league-tab" data-league="pro" onclick="switchLeague('pro', 'standalone')">Pro</div>
+                    <div class="league-tabs" style="display: none;">
+                        <div class="league-tab active" data-league="pro">Global</div>
                     </div>
-                    <button onclick="document.getElementById('lab-global-rank-overlay').style.display='none'" style="background: rgba(255,255,255,0.05); border: none; color: #666; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;">
+                    <button onclick="document.getElementById('lab-global-rank-overlay').style.display='none'; toggleBodyScroll(true);" style="background: rgba(255,255,255,0.05); border: none; color: #666; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;">
                         <i data-lucide="x" style="width: 18px; height: 18px;"></i>
                     </button>
                 </div>
@@ -897,17 +958,17 @@
                 <div style="width: 100%; margin-bottom: 1rem;">
                     <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; font-weight: 800; text-align: left;">Community Score Distribution</div>
                     <div class="global-dist-chart" id="standalone-dist-chart"></div>
-                    <div style="display: flex; justify-content: space-between; color: #444; font-size: 0.6rem; margin-top: 0.4rem; font-weight: 700;">
-                        <span>0%</span>
-                        <span>25%</span>
-                        <span>50%</span>
-                        <span>75%</span>
-                        <span>100%</span>
+                    <div id="standalone-dist-axis" style="display: flex; justify-content: space-between; color: #444; font-size: 0.6rem; margin-top: 0.4rem; font-weight: 700;">
+                        <span>0</span>
+                        <span>25k</span>
+                        <span>50k</span>
+                        <span>75k</span>
+                        <span>100k</span>
                     </div>
                 </div>
 
                 <div style="margin-top: 1.5rem; display: flex; justify-content: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; flex-shrink: 0;">
-                    <button onclick="document.getElementById('lab-global-rank-overlay').style.display='none'" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 2.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem;">
+                    <button onclick="document.getElementById('lab-global-rank-overlay').style.display='none'; toggleBodyScroll(true);" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 2.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem;">
                         Back to Menu
                     </button>
                 </div>
@@ -1013,10 +1074,10 @@
                 </p>
                 <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
                     <a href="/articles/jnd-perception" style="background: var(--accent-gradient); color: white; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 0.8rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                        Read Full Guide <i data-lucide="book-open"></i>
+                        Read Full Article <i data-lucide="book-open"></i>
                     </a>
                     <div style="display: flex; align-items: center; gap: 0.5rem; color: #666; font-size: 0.9rem; font-weight: 600;">
-                        <i data-lucide="clock" style="width: 16px; height: 16px;"></i> 8 min deep dive
+                        <i data-lucide="clock" style="width: 16px; height: 16px;"></i> 15 min deep dive
                     </div>
                 </div>
             </div>
@@ -1066,12 +1127,12 @@ let currentDeltaE = 0.2000;
 let trueX = 0;
 let isWaiting = false;
 let history = [];
-let difficulty = 'standard';
 let gameMode = 'diagnostic'; // 'diagnostic' or 'arcade'
 let lives = 3;
 let score = 0;
 let level = 1;
 let combo = 0;
+let difficulty = 'pro';
 const TOTAL_ROUNDS = 20;
 
 const DIFF_CONFIG = {
@@ -1091,7 +1152,7 @@ const roundVal = document.getElementById('round-val');
 const startOverlay = document.getElementById('lab-start-overlay');
 const resultOverlay = document.getElementById('lab-result-overlay');
 
-// Mode & Difficulty UI
+// Mode UI
 document.querySelectorAll('.mode-opt').forEach(opt => {
     opt.onclick = () => {
         document.querySelectorAll('.mode-opt').forEach(o => o.classList.remove('active'));
@@ -1100,19 +1161,22 @@ document.querySelectorAll('.mode-opt').forEach(opt => {
     };
 });
 
-document.querySelectorAll('.diff-opt').forEach(opt => {
-    opt.onclick = () => {
-        document.querySelectorAll('.diff-opt').forEach(o => o.classList.remove('active'));
-        opt.classList.add('active');
-        difficulty = opt.dataset.diff;
-    };
-});
+function toggleBodyScroll(enable) {
+    if (enable) {
+        document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
+    } else {
+        document.body.classList.add('modal-open');
+        document.documentElement.classList.add('modal-open');
+    }
+}
 
 function startLab(e) {
     if (e) e.stopPropagation();
     
     // Immersion trigger
     document.querySelector('.lab-outer').classList.add('immersion-mode');
+    toggleBodyScroll(false); // Hide body scroll
     
     round = 1;
     score = 0;
@@ -1126,6 +1190,13 @@ function startLab(e) {
     startOverlay.style.display = 'none';
     resultOverlay.style.display = 'none';
     document.getElementById('lab-gameover-overlay').style.display = 'none';
+    // Reset sections that fade in after game over
+    const distSec = document.getElementById('global-dist-section');
+    const lbSec = document.getElementById('global-leaderboard-section');
+    if (distSec) { distSec.style.opacity = '0'; distSec.style.pointerEvents = 'none'; }
+    if (lbSec)   { lbSec.style.opacity = '0';   lbSec.style.pointerEvents = 'none'; }
+    // Hide right-field until initRound positions it properly
+    rField.style.display = 'none';
     
     const hud = document.getElementById('lab-hud');
     hud.style.display = 'flex';
@@ -1133,7 +1204,7 @@ function startLab(e) {
     else hud.classList.remove('arcade-mode');
     
     updateArcadeUI();
-    if (window.lucide) lucide.createIcons();
+    // lucide initialised once on DOMContentLoaded
     initRound();
 }
 
@@ -1161,7 +1232,10 @@ function initRound() {
     rField.style.display = 'block';
     trueX = (stage.offsetWidth * 0.2) + Math.random() * (stage.offsetWidth * 0.6);
     rField.style.left = trueX + 'px';
-    rField.style.width = (stage.offsetWidth - trueX) + 'px';
+    rField.style.right = '0';
+    rField.style.width = 'auto';
+    rField.style.transform = '';
+    rField.style.transformOrigin = '';
 
     if (gameMode === 'diagnostic') {
         roundVal.textContent = `${round}/${TOTAL_ROUNDS}`;
@@ -1174,19 +1248,39 @@ function initRound() {
     deltaVal.textContent = currentDeltaE.toFixed(4);
 }
 
+function showScorePop(x, y, text, color, delay = 0) {
+    setTimeout(() => {
+        const div = document.createElement('div');
+        div.className = 'score-pop';
+        div.style.left = x + 'px';
+        div.style.top = y + 'px';
+        div.style.color = color;
+        div.textContent = text;
+        stage.appendChild(div);
+        setTimeout(() => div.remove(), 1000);
+    }, delay);
+}
+
+function exitLab() {
+    isGameActive = false;
+    isWaiting = false;
+    document.querySelector('.lab-outer').classList.remove('immersion-mode');
+    toggleBodyScroll(true);
+    
+    // Hide all overlays
+    document.getElementById('lab-gameover-overlay').style.display = 'none';
+    document.getElementById('lab-result-overlay').style.display = 'none';
+    document.getElementById('lab-history-overlay').style.display = 'none';
+    document.getElementById('lab-global-rank-overlay').style.display = 'none';
+    
+    // Hide HUD and Show start overlay
+    document.getElementById('lab-hud').style.display = 'none';
+    document.getElementById('lab-start-overlay').style.display = 'flex';
+}
+
 function handleStageClick(e) {
     if (!isGameActive) return;
-    if (isWaiting) {
-        if (gameMode === 'diagnostic') {
-            if (round >= TOTAL_ROUNDS) showResults();
-            else { round++; initRound(); }
-        } else {
-            // Arcade mode: if life lost and round ends, check game over
-            if (lives <= 0) showGameOver();
-            else { round++; initRound(); }
-        }
-        return;
-    }
+    if (isWaiting) return;
 
     const rect = stage.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -1226,15 +1320,22 @@ function handleStageClick(e) {
             // Success
             combo++;
             const basePoints = Math.round((1 - (error/scaleTol)) * 100);
-            const levelBonus = (level - 1) * 20;
             const comboBonus = combo * 10;
-            score += (basePoints + levelBonus + comboBonus);
+            score += (basePoints + comboBonus);
             
+            // Visual Feedback: Score Popups
+            if (basePoints > 0) showScorePop(x, y - 20, `+${basePoints} ACCURACY`, '#fff', 0);
+            if (comboBonus > 10) showScorePop(x, y - 70, `+${comboBonus} COMBO!`, '#00d2ff', 200);
+
             currentDeltaE *= 0.95; // Slight sharpen
             
             // Level Up Check (Every 5 rounds)
             if (round % 5 === 0) {
                 level++;
+                const milestoneBonus = (level - 1) * 100; // Award it once per level
+                score += milestoneBonus;
+                showScorePop(x, y - 45, `+${milestoneBonus} LEVEL UP!`, '#ffd700', 100);
+
                 currentDeltaE *= 0.85; // Sharp sharpen
                 showLevelUp();
             }
@@ -1252,14 +1353,20 @@ function handleStageClick(e) {
     if (currentDeltaE > 0.4) currentDeltaE = 0.4;
     isWaiting = true;
     
+    // Automatic Round Advance (0.5s delay)
+    setTimeout(() => {
+        if (!isGameActive) return; // Stop if game ended by other means
+        if (gameMode === 'diagnostic') {
+            if (round >= TOTAL_ROUNDS) showResults();
+            else { round++; initRound(); }
+        } else {
+            if (lives <= 0) showGameOver();
+            else { round++; initRound(); }
+        }
+    }, 500);
+
     const prompt = document.getElementById('click-prompt');
-    if (round === 1) {
-        prompt.style.display = 'block';
-        prompt.style.animation = 'none';
-        setTimeout(() => prompt.style.animation = 'bounceSoft 2s infinite', 10);
-    } else {
-        prompt.style.display = 'none';
-    }
+    prompt.style.display = 'none';
 }
 
 function updateArcadeUI() {
@@ -1282,77 +1389,155 @@ function showLevelUp() {
 
 function showGameOver() {
     isGameActive = false;
+    toggleBodyScroll(false);
     document.getElementById('final-level-arcade').textContent = level;
     document.getElementById('final-score-arcade').textContent = score;
     document.getElementById('lab-gameover-overlay').style.display = 'flex';
+    document.getElementById('lab-hud').style.display = 'none';
     
     // Reset global rank state
     const rankBtn = document.getElementById('see-rank-btn');
     if (rankBtn) {
         rankBtn.disabled = false;
-        rankBtn.innerHTML = '<i data-lucide="award" style="width: 10px; height: 10px;"></i> See How You Rank';
+        rankBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 11-1 9"/><path d="M11.216 6.217 8 20"/><path d="m16 7-3.13-2.618A2 2 0 0 0 11.522 4H8a2 2 0 0 0-1.898 1.367L5 9h3l.5 3"/><circle cx="9" cy="2" r="1"/></svg> Submit Score';
         rankBtn.style.display = 'flex';
     }
-    document.getElementById('nickname-input-panel').style.display = 'none';
-    document.getElementById('nickname-form-content').style.display = 'block';
-    document.getElementById('nickname-status').style.display = 'none';
-    document.getElementById('global-leaderboard-section').style.display = 'none';
-    document.getElementById('global-dist-section').style.display = 'none';
+    // Reset submit state
+    closeSubmitModal();
+    const ns = document.getElementById('nickname-status');
+    if (ns) { ns.style.display = 'none'; ns.textContent = ''; }
 
     // Auto-fill nickname if exists
     const savedNick = localStorage.getItem('jnd_nickname');
-    if (savedNick) document.getElementById('player-nickname').value = savedNick;
+    if (savedNick) {
+        const nickInput = document.getElementById('player-nickname');
+        if (nickInput) nickInput.value = savedNick;
+    }
 
-    if (window.lucide) lucide.createIcons();
+    // lucide initialised once on DOMContentLoaded
     
     saveScore();
-    loadScores('gameover-scoreboard-container', 3);
+    switchLeague(difficulty, 'main');
+    loadCompetitiveFeedback();
+}
+
+async function loadCompetitiveFeedback() {
+    const feedbackText = document.getElementById('feedback-text');
+    feedbackText.textContent = "Analyzing your rank...";
+    // Auto-show the combined feedback + submit modal
+    showRankInput();
+
+    try {
+        const response = await fetch(`/api/jnd/stats?difficulty=${difficulty}&score=${score}`);
+        const data = await response.json();
+        
+        if (data.total > 0) {
+            let percentMessage = "";
+            let accentColor = "var(--accent-color)";
+            let rankText = "";
+            const higherPct = Math.round((data.higher_count / data.total) * 100);
+
+            if (higherPct <= 2) {
+                percentMessage = data.higher_count === 0
+                    ? "WAIT... ARE YOU A CYBORG? <br>You're literally #1 in the world. No one scored higher than you."
+                    : `WAIT... ARE YOU A CYBORG? <br>Only ${higherPct}% of players scored higher than you. That's elite territory.`;
+                accentColor = "#00d2ff";
+                rankText = "Retinal Deity rank achieved.";
+            } else if (higherPct <= 5) {
+                percentMessage = `ABSOLUTE LEGEND. <br>${higherPct}% of players scored higher than you. Consider a career as a fighter pilot.`;
+                accentColor = "#00ff88";
+                rankText = "You're at the very peak of human performance.";
+            } else if (higherPct <= 10) {
+                percentMessage = `EXPERT PILOT. <br>${higherPct}% of players scored higher than you. Other commanders are still laughing from above.`;
+                accentColor = "#ffaa00";
+                rankText = "Superior visual threshold detected.";
+            } else if (higherPct <= 30) {
+                percentMessage = `SOLID PERFORMANCE. <br>${higherPct}% of players scored higher than you. Eat more carrots? 🥕`;
+                accentColor = "var(--accent-color)";
+                rankText = "Common human range (Above Average).";
+            } else if (higherPct <= 60) {
+                percentMessage = `ROOM FOR IMPROVEMENT. <br>${higherPct}% of players scored higher than you. That's a lot of people! 🧐`;
+                accentColor = "#666";
+                rankText = "Baseline human perception levels.";
+            } else {
+                percentMessage = `JUST GETTING STARTED. <br>${higherPct}% of players scored higher than you. Don't worry, everyone starts somewhere! 😅`;
+                accentColor = "#444";
+                rankText = "Sub-baseline color sensitivity detected.";
+            }
+
+            feedbackText.innerHTML = `<span style="color: ${accentColor}; font-weight: 900; line-height: 1.4; display: block;">${percentMessage}</span> 
+                <span style="font-size: 0.7rem; color: #666; font-weight: 400; margin-top: 8px; display: block;">${rankText} <br>Evaluated against ${data.total.toLocaleString()} global sessions.</span>`;
+        } else {
+            feedbackText.textContent = "First in league! You've set the baseline for this difficulty.";
+        }
+    } catch (e) {
+        feedbackText.textContent = "Retrying connection...";
+        console.error("Stats fetch failed", e);
+    }
 }
 
 function showRankInput() {
-    document.getElementById('see-rank-btn').style.display = 'none';
-    document.getElementById('nickname-input-panel').style.display = 'block';
-    document.getElementById('player-nickname').focus();
+    const modal = document.getElementById('submit-score-modal');
+    modal.style.display = 'flex';
+    // Pre-fill saved nickname if any
+    const saved = localStorage.getItem('jnd_nickname');
+    if (saved) document.getElementById('player-nickname').value = saved;
+    document.getElementById('submit-modal-status').style.display = 'none';
+    document.getElementById('submit-modal-status').textContent = '';
+    // Always re-enable the submit button (may have been disabled in a previous session)
+    const submitBtn = document.querySelector('#submit-score-modal button[onclick*="submitToLeaderboard"]');
+    if (submitBtn) submitBtn.disabled = false;
+    setTimeout(() => document.getElementById('player-nickname').focus(), 50);
+    // lucide initialised once on DOMContentLoaded
+}
+
+function closeSubmitModal() {
+    document.getElementById('submit-score-modal').style.display = 'none';
 }
 
 async function submitToLeaderboard() {
     const nickInput = document.getElementById('player-nickname');
-    const nickname = nickInput.value.trim() || "Anonymous";
-    const status = document.getElementById('nickname-status');
-    const form = document.getElementById('nickname-form-content');
-    
+    const nickname = (nickInput.value.trim() || "Anonymous");
+    const statusEl = document.getElementById('submit-modal-status');
+    const submitBtn = document.querySelector('#submit-score-modal button[onclick*="submitToLeaderboard"]');
+
     if (nickname) localStorage.setItem('jnd_nickname', nickname);
-    
-    form.style.display = 'none';
-    status.style.display = 'block';
-    status.textContent = "Registering with Command...";
-    
+
+    statusEl.style.display = 'block';
+    statusEl.style.color = '#888';
+    statusEl.textContent = 'Registering with Command...';
+    if (submitBtn) submitBtn.disabled = true;
+
     try {
         const response = await fetch('/api/jnd/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                nickname: nickname,
-                score: score,
-                level: level,
-                difficulty: difficulty
-            })
+            body: JSON.stringify({ nickname, score, level, difficulty })
         });
-        
+
         if (response.ok) {
-            document.getElementById('nickname-input-panel').style.display = 'none';
-            switchLeague(difficulty, 'main');
+            statusEl.style.color = '#00ff88';
+            statusEl.textContent = '✓ Score submitted! Loading board...';
+            setTimeout(() => {
+                closeSubmitModal();
+                // Show confirmation and hide submit button
+                const ns = document.getElementById('nickname-status');
+                if (ns) { ns.style.display = 'block'; ns.textContent = `✓ Submitted as "${nickname}"`; }
+                const rankBtn = document.getElementById('see-rank-btn');
+                if (rankBtn) rankBtn.style.display = 'none';
+                switchLeague(difficulty, 'main');
+            }, 1200);
+        } else {
+            throw new Error('Server error');
         }
     } catch (e) {
-        status.textContent = "Transmission Failed. Check Connection.";
-        setTimeout(() => {
-            status.style.display = 'none';
-            form.style.display = 'block';
-        }, 3000);
+        statusEl.style.color = 'var(--accent-color)';
+        statusEl.textContent = 'Transmission failed. Check your connection.';
+        if (submitBtn) submitBtn.disabled = false;
     }
 }
 
-async function loadLeaderboard(diff = 'standard') {
+async function loadLeaderboard(diff = 'pro') {
     if (diff === 'practice') return; // No rankings for practice
     try {
         const response = await fetch(`/api/jnd/leaderboard?difficulty=${diff}`);
@@ -1377,12 +1562,13 @@ async function loadLeaderboard(diff = 'standard') {
             });
             html += '</table>';
             list.innerHTML = html;
-            section.style.display = 'block';
+            section.style.opacity = '1';
+            section.style.pointerEvents = 'auto';
         }
     } catch (e) { console.error("Leaderboard failed", e); }
 }
 
-async function loadGlobalStats(diff = 'standard') {
+async function loadGlobalStats(diff = 'pro') {
     if (diff === 'practice') return;
     try {
         const response = await fetch(`/api/jnd/stats?difficulty=${diff}`);
@@ -1418,12 +1604,26 @@ function renderGlobalChart(data) {
     data.buckets.forEach(b => {
         const height = maxCount > 0 ? (b.count / maxCount) * 100 : 0;
         const isActive = (b.min <= score && score < b.max) && (data.difficulty === difficulty);
-        const rangeText = `Score ${b.min}-${b.max - 1}: ${b.count} Pilots`;
+        const rangeText = `Score ${b.min.toLocaleString()}-${(b.max - 1).toLocaleString()}: ${b.count} Pilots`;
         html += `<div class="dist-bar ${isActive ? 'active' : ''}" style="height: ${Math.max(2, height)}%" title="${rangeText}"></div>`;
     });
-    
     chart.innerHTML = html;
-    document.getElementById('global-dist-section').style.display = 'block';
+
+    // Inject accurate score-value x-axis labels
+    const fmt = v => v >= 1000 ? Math.round(v/1000) + 'k' : v;
+    const mx = data.max_score || 0;
+    const axisEl = document.getElementById('global-dist-axis');
+    if (axisEl) {
+        axisEl.innerHTML = `
+            <span>${fmt(0)}</span>
+            <span>${fmt(Math.round(mx * 0.25))}</span>
+            <span>${fmt(Math.round(mx * 0.5))}</span>
+            <span>${fmt(Math.round(mx * 0.75))}</span>
+            <span>${fmt(mx)}</span>`;
+    }
+
+    document.getElementById('global-dist-section').style.opacity = '1';
+    document.getElementById('global-dist-section').style.pointerEvents = 'auto';
 }
 
 function saveScore() {
@@ -1480,8 +1680,9 @@ function loadScores(containerId, limit = 10) {
 function showHistory() {
     const overlay = document.getElementById('lab-history-overlay');
     overlay.style.display = 'flex';
+    toggleBodyScroll(false);
     loadScores('history-table-container', 20);
-    if (window.lucide) lucide.createIcons();
+    // lucide initialised once on DOMContentLoaded
 }
 
 // Wipe Logic (Two-Stage Confirmation)
@@ -1540,12 +1741,16 @@ if (document.getElementById('wipe-records-btn')) {
 function resetToStart() {
     isGameActive = false;
     document.querySelector('.lab-outer').classList.remove('immersion-mode');
+    toggleBodyScroll(true); // Restore body scroll
     
     document.getElementById('lab-gameover-overlay').style.display = 'none';
     document.getElementById('lab-result-overlay').style.display = 'none';
+    document.getElementById('lab-global-rank-overlay').style.display = 'none';
+    document.getElementById('lab-history-overlay').style.display = 'none';
+    
     startOverlay.style.display = 'flex';
     document.getElementById('lab-hud').style.display = 'none';
-    if (window.lucide) lucide.createIcons();
+    // lucide initialised once on DOMContentLoaded
 }
 
 function showResults() {
@@ -1614,7 +1819,9 @@ function showResults() {
     svgArea.setAttribute("d", areaData);
 
     resultOverlay.style.display = 'block';
-    if (window.lucide) lucide.createIcons();
+    document.getElementById('lab-hud').style.display = 'none';
+    toggleBodyScroll(false);
+    // lucide initialised once on DOMContentLoaded
 }
 
 function copyResults() {
@@ -1661,9 +1868,10 @@ function createPhotonBurst(x, y, color) {
     }
 }
 
-async function showGlobalRank(diff = 'standard') {
+async function showGlobalRank(diff = 'pro') {
     document.getElementById('lab-global-rank-overlay').style.display = 'flex';
-    if (window.lucide) lucide.createIcons();
+    toggleBodyScroll(false);
+    // lucide initialised once on DOMContentLoaded
     
     // Update standalone tabs UI consistently
     document.getElementById('lab-global-rank-overlay').querySelectorAll('.league-tab').forEach(t => {
@@ -1707,21 +1915,45 @@ async function showGlobalRank(diff = 'standard') {
             let html = '';
             data.buckets.forEach(b => {
                 const height = maxCount > 0 ? (b.count / maxCount) * 100 : 0;
-                const rangeText = `Score ${b.min}-${b.max - 1}: ${b.count} Pilots`;
+                const rangeText = `Score ${b.min.toLocaleString()}-${(b.max - 1).toLocaleString()}: ${b.count} Pilots`;
                 html += `<div class="dist-bar" style="height: ${Math.max(2, height)}%" title="${rangeText}"></div>`;
             });
             chart.innerHTML = html;
+            // Inject real score-value labels
+            const fmt = v => v >= 1000 ? Math.round(v/1000) + 'k' : v;
+            const mx = data.max_score || 0;
+            const axisEl = document.getElementById('standalone-dist-axis');
+            if (axisEl) {
+                axisEl.innerHTML = `
+                    <span>${fmt(0)}</span>
+                    <span>${fmt(Math.round(mx * 0.25))}</span>
+                    <span>${fmt(Math.round(mx * 0.5))}</span>
+                    <span>${fmt(Math.round(mx * 0.75))}</span>
+                    <span>${fmt(mx)}</span>`;
+            }
         } else {
             document.getElementById('standalone-dist-chart').innerHTML = '';
         }
     } catch (e) { console.error("Stats failed", e); }
 }
+
+// Initialise icons once on load — avoid repeated createIcons() calls on each interaction
+document.addEventListener('DOMContentLoaded', () => {
+    // lucide initialised once on DOMContentLoaded
+});
 </script>
 
 <style>
 @keyframes fadeInUp {
     from { opacity: 0; transform: translate(-50%, 20px); }
     to { opacity: 1; transform: translate(-50%, 0); }
+}
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+#submit-score-modal > div {
+    will-change: transform, opacity;
 }
 @keyframes bounceSoft {
     0%, 100% { transform: translate(-50%, 0); }
@@ -1736,8 +1968,56 @@ async function showGlobalRank(diff = 'standard') {
     filter: blur(2px);
     opacity: 1;
 }
-@keyframes photonFly {
-    to { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-}
+    @keyframes photonFly {
+        to { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+    }
+
+    @keyframes scoreFloatUp {
+        0% { opacity: 0; transform: translateY(0) scale(0.5); }
+        20% { opacity: 1; transform: translateY(-20px) scale(1.1); }
+        80% { opacity: 1; transform: translateY(-40px) scale(1); }
+        100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+    }
+
+    .score-pop {
+        position: absolute;
+        pointer-events: none;
+        font-weight: 900;
+        font-family: 'Outfit', sans-serif;
+        z-index: 1000;
+        white-space: nowrap;
+        animation: scoreFloatUp 1s ease-out forwards;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+
+    #lab-exit-btn {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        width: 44px;
+        height: 44px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10001;
+        transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        backdrop-filter: blur(12px);
+    }
+    #lab-exit-btn:hover {
+        background: rgba(255, 50, 50, 0.25);
+        border-color: rgba(255, 50, 50, 0.5);
+        transform: rotate(90deg) scale(1.1);
+        color: #ff5555;
+    }
+    .lab-outer.immersion-mode #lab-exit-btn {
+        display: flex;
+    }
 </style>
 {% endblock %}
