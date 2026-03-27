@@ -922,7 +922,7 @@
             <div id="lab-history-overlay">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-shrink: 0;">
                     <h2 style="color: #fff; font-size: 1.8rem; font-weight: 900; margin: 0; letter-spacing: -1px;">Game History</h2>
-                    <button onclick="document.getElementById('lab-history-overlay').style.display='none'" style="background: rgba(255,255,255,0.05); border: none; color: #666; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;">
+                    <button onclick="document.getElementById('lab-history-overlay').style.display='none'; toggleBodyScroll(true);" style="background: rgba(255,255,255,0.05); border: none; color: #666; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;">
                         <i data-lucide="x" style="width: 18px; height: 18px;"></i>
                     </button>
                 </div>
@@ -1186,6 +1186,7 @@ function startLab(e) {
     currentDeltaE = DIFF_CONFIG[difficulty].start;
     history = [];
     isGameActive = true;
+    toggleBodyScroll(true); // Ensure scroll is restored if starting from results
     
     startOverlay.style.display = 'none';
     resultOverlay.style.display = 'none';
