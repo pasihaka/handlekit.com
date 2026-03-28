@@ -1,8 +1,17 @@
 {% set title = "JND Color Perception Test | Vision Lab | HandleKit" %}
-{% set description = "Take a scientific JND (Just Noticeable Difference) color perception test. Calibrate your visual acuity and find your Delta-E threshold with the HandleKit Vision Lab." %}
+{% if challenge and challenge.score %}
+    {% set display_name = challenge.name if challenge.name else "A Pilot" %}
+    {% set og_title = display_name + "'s Vision Lab Challenge" %}
+    {% set description = "See if you can beat this score of " + challenge.score + " in the JND Test. Top " + (100 - challenge.pct|int)|string + "% performance detected!" if challenge.pct else "See if you can beat this score of " + challenge.score + " in the JND Test!" %}
+{% else %}
+    {% set og_title = "JND Color Perception Challenge" %}
+    {% set description = "Take a scientific JND (Just Noticeable Difference) color perception test. Calibrate your visual acuity and find your Delta-E threshold with the HandleKit Vision Lab." %}
+{% endif %}
+{% set og_image = "jnd-og.png" %}
 {% extends "layout.html" %}
 
 {% block head_extra %}
+<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/jnd-og.png') }}">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -877,6 +886,10 @@
                     </div>
 
                     <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
+                        <button onclick="challengeFriends()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,100,100,0.3); color: #fff; padding: 0.8rem 2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                            <i data-lucide="share-2" style="width: 16px; height: 16px; color: var(--accent-color);"></i>
+                            Challenge Friends
+                        </button>
                         <button onclick="resetToStart()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem;">
                             Main Menu
                         </button>
@@ -909,6 +922,11 @@
                     <!-- Primary CTA -->
                     <button onclick="submitToLeaderboard()" style="width:100%; background:var(--accent-gradient); color:#fff; border:none; padding:0.85rem; border-radius:10px; font-weight:900; font-size:0.9rem; cursor:pointer; letter-spacing:1px; margin-bottom:0.6rem; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
                         SUBMIT SCORE
+                    </button>
+                    <!-- Challenge Friends -->
+                    <button id="challenge-btn" onclick="challengeFriends()" style="width:100%; background:#1a1a1a; color:#fff; border:1px solid rgba(255,100,100,0.3); padding:0.75rem; border-radius:10px; font-weight:800; font-size:0.85rem; cursor:pointer; margin-bottom:0.6rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#1a1a1a'">
+                        <i data-lucide="share-2" style="width:14px; height:14px; color:var(--accent-color);"></i>
+                        CHALLENGE FRIENDS
                     </button>
                     <!-- Play Again -->
                     <button onclick="closeSubmitModal(); startLab(event)" style="width:100%; background:transparent; color:#666; border:1px solid rgba(255,255,255,0.08); padding:0.7rem; border-radius:10px; font-weight:700; font-size:0.8rem; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.color='#666'; this.style.borderColor='rgba(255,255,255,0.08)'">
@@ -1133,6 +1151,7 @@ let score = 0;
 let level = 1;
 let combo = 0;
 let difficulty = 'pro';
+let higherThanPct = null; // Store for sharing
 const TOTAL_ROUNDS = 20;
 
 const DIFF_CONFIG = {
@@ -1186,6 +1205,7 @@ function startLab(e) {
     currentDeltaE = DIFF_CONFIG[difficulty].start;
     history = [];
     isGameActive = true;
+    higherThanPct = null; // Reset percentile for new session
     toggleBodyScroll(true); // Ensure scroll is restored if starting from results
     
     startOverlay.style.display = 'none';
@@ -1437,6 +1457,7 @@ async function loadCompetitiveFeedback() {
             let accentColor = "var(--accent-color)";
             let rankText = "";
             const higherPct = Math.round((data.higher_count / data.total) * 100);
+            higherThanPct = 100 - higherPct; // Store "higher than X%"
 
             if (higherPct <= 2) {
                 percentMessage = data.higher_count === 0
@@ -1823,6 +1844,80 @@ function showResults() {
     document.getElementById('lab-hud').style.display = 'none';
     toggleBodyScroll(false);
     // lucide initialised once on DOMContentLoaded
+}
+
+function challengeFriends() {
+    const shareScore = typeof score !== 'undefined' ? score : 0;
+    const shareLevel = typeof level !== 'undefined' ? level : 1;
+    const sharePct = typeof higherThanPct !== 'undefined' ? higherThanPct : null;
+    
+    // Get current nickname from input or storage
+    const nickInput = document.getElementById('player-nickname');
+    const nickname = (nickInput && nickInput.value.trim()) || localStorage.getItem('jnd_nickname') || "";
+    
+    // Build dynamic URL for custom social preview
+    const baseUrl = window.location.origin + window.location.pathname;
+    const params = new URLSearchParams();
+    params.set('s', shareScore);
+    params.set('l', shareLevel);
+    if (sharePct !== null) params.set('p', sharePct);
+    if (nickname) params.set('n', nickname);
+    params.set('v', '2'); // Version bump for cache busting
+    
+    const challengeUrl = `${baseUrl}?${params.toString()}`;
+    
+    let message = "";
+    if (sharePct !== null) {
+        message = `I scored higher than ${sharePct}% of players (Score: ${shareScore.toLocaleString()}, Level: ${shareLevel}) in the JND Test! `;
+    } else {
+        message = `I just scored ${shareScore.toLocaleString()} (Level ${shareLevel}) in the JND Color Perception Test! `;
+    }
+
+    if (shareScore > 50000) message += "My vision is basically superhuman. 👁️ ";
+    else if (shareScore > 20000) message += "I've got some sharp eyes! 🦅 ";
+    else message += "Can you beat my score? 🎯 ";
+    
+    const text = `${message}\n\nTry the Challenge Mode and see what level you can reach: ${challengeUrl}`;
+    const btn = document.getElementById('challenge-btn');
+    const originalText = btn ? btn.innerHTML : null;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: nickname ? `${nickname}'s JND Challenge` : 'JND Color Perception Challenge',
+            text: text,
+            url: challengeUrl
+        }).catch(err => {
+            console.error('Share failed:', err);
+            copyToClipboard(text, btn, originalText);
+        });
+    } else {
+        copyToClipboard(text, btn, originalText);
+    }
+}
+
+function copyToClipboard(text, btn, originalText) {
+    const cb = navigator.clipboard;
+    if (cb) {
+        cb.writeText(text).then(() => {
+            if (btn) {
+                btn.innerHTML = '<i data-lucide="check" style="width:14px; height:14px; color:#00ff88;"></i> COPIED!';
+                if (window.lucide) window.lucide.createIcons();
+                setTimeout(() => { btn.innerHTML = originalText; if (window.lucide) window.lucide.createIcons(); }, 2000);
+            }
+        });
+    } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if (btn) {
+            btn.innerHTML = '<i data-lucide="check" style="width:14px; height:14px; color:#00ff88;"></i> COPIED!';
+            if (window.lucide) window.lucide.createIcons();
+            setTimeout(() => { btn.innerHTML = originalText; if (window.lucide) window.lucide.createIcons(); }, 2000);
+        }
+    }
 }
 
 function copyResults() {
