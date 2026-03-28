@@ -1873,10 +1873,13 @@ function challengeFriends() {
         message = `I just scored ${shareScore.toLocaleString()} (Level ${shareLevel}) in the JND Color Perception Test! `;
     }
 
-    if (shareScore > 50000) message += "My vision is basically superhuman. 👁️ ";
-    else if (shareScore > 20000) message += "I've got some sharp eyes! 🦅 ";
-    else message += "Can you beat my score? 🎯 ";
+    if (shareScore > 25000) message += "My vision is basically superhuman. 👁️ ";
+    else if (shareScore > 17000) message += "I've got some sharp eyes! 🦅 ";
+    else message += "Can you beat my score? ";
     
+    // Add Fun Mode call to action and move dartboard
+    message += "Find Out in the Fun Mode 🎯";
+
     const text = `${message}`;
     const btn = document.getElementById('challenge-btn');
     const originalText = btn ? btn.innerHTML : null;
