@@ -792,18 +792,18 @@
 
             <!-- Start Overlay -->
             <div id="lab-start-overlay" style="position: absolute; inset: 0; background: #0a0a0a; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 24px; padding: 2rem;">
-                <div id="start-icon"><i data-lucide="monitor-check" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i></div>
-                <h2 style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; text-align: center;">Vision Lab Diagnostic Mode</h2>
+                <div id="start-icon"><i data-lucide="gamepad-2" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i></div>
+                <h2 id="start-overlay-title" style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; text-align: center;">Vision Lab Fun Mode</h2>
                 <p style="color: #666; text-align: center; max-width: 440px; margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.85rem;">Select your session mode to begin calibration.</p>
                 
                 <div class="mode-selector" id="mode-selector" style="margin-bottom: 2.5rem;">
-                    <div class="mode-opt active" data-mode="diagnostic">
-                        <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
-                        Diagnostic Mode
-                    </div>
-                    <div class="mode-opt" data-mode="arcade">
+                    <div class="mode-opt active" data-mode="arcade">
                         <i data-lucide="gamepad-2" style="width: 16px; height: 16px;"></i>
                         Fun Mode
+                    </div>
+                    <div class="mode-opt" data-mode="diagnostic">
+                        <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+                        Diagnostic Mode
                     </div>
                 </div>
 
@@ -1145,7 +1145,7 @@ let currentDeltaE = 0.2000;
 let trueX = 0;
 let isWaiting = false;
 let history = [];
-let gameMode = 'diagnostic'; // 'diagnostic' or 'arcade'
+let gameMode = 'arcade'; // 'arcade' or 'diagnostic'
 let lives = 3;
 let score = 0;
 let level = 1;
@@ -1177,6 +1177,19 @@ document.querySelectorAll('.mode-opt').forEach(opt => {
         document.querySelectorAll('.mode-opt').forEach(o => o.classList.remove('active'));
         opt.classList.add('active');
         gameMode = opt.dataset.mode;
+        
+        // Update Title and Icon dynamically
+        const title = document.getElementById('start-overlay-title');
+        const iconContainer = document.getElementById('start-icon');
+        
+        if (gameMode === 'arcade') {
+            title.textContent = 'Vision Lab Fun Mode';
+            iconContainer.innerHTML = '<i data-lucide="gamepad-2" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i>';
+        } else {
+            title.textContent = 'Vision Lab Diagnostic Mode';
+            iconContainer.innerHTML = '<i data-lucide="monitor-check" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i>';
+        }
+        if (window.lucide) lucide.createIcons();
     };
 });
 
