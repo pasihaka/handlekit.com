@@ -393,7 +393,14 @@ def color_picker():
 
 @app.route('/jnd-test')
 def jnd_test():
-    return render_template('jnd_test.html')
+    # Pass optional challenge data for dynamic social previews
+    challenge = {
+        "score": request.args.get('s'),
+        "level": request.args.get('l'),
+        "pct": request.args.get('p'),
+        "name": request.args.get('n')
+    }
+    return render_template('jnd_test.html', challenge=challenge)
 
 @app.route('/articles')
 def articles_list():
