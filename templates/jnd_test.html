@@ -2,7 +2,7 @@
 {% if challenge and challenge.score %}
     {% set display_name = challenge.name if challenge.name else "A Pilot" %}
     {% set og_title = display_name + "'s Vision Lab Challenge" %}
-    {% set description = "See if you can beat this score of " + challenge.score + " in the JND Test. Top " + (100 - challenge.pct|int)|string + "% performance detected!" if challenge.pct else "See if you can beat this score of " + challenge.score + " in the JND Test!" %}
+    {% set description = "See if you can beat this score of " + challenge.score + " in the JND test" %}
 {% else %}
     {% set og_title = "JND Color Perception Challenge" %}
     {% set description = "Take a scientific JND (Just Noticeable Difference) color perception test. Calibrate your visual acuity and find your Delta-E threshold with the HandleKit Vision Lab." %}
@@ -1868,17 +1868,10 @@ function challengeFriends() {
     
     let message = "";
     if (sharePct !== null) {
-        message = `I scored higher than ${sharePct}% of players (Score: ${shareScore.toLocaleString()}, Level: ${shareLevel}) in the JND Test! `;
+        message = `I scored higher than ${sharePct}% of players. Can you beat my score 🎯`;
     } else {
-        message = `I just scored ${shareScore.toLocaleString()} (Level ${shareLevel}) in the JND Color Perception Test! `;
+        message = `I just scored ${shareScore.toLocaleString()} in the JND Test! Can you beat my score 🎯`;
     }
-
-    if (shareScore > 25000) message += "My vision is basically superhuman. 👁️ ";
-    else if (shareScore > 17000) message += "I've got some sharp eyes! 🦅 ";
-    else message += "Can you beat my score? ";
-    
-    // Add Fun Mode call to action and move dartboard
-    message += "Find Out in the Fun Mode 🎯";
 
     const text = `${message}`;
     const btn = document.getElementById('challenge-btn');
