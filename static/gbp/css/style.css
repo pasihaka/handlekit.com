@@ -109,6 +109,7 @@ a:focus, button:focus, input:focus {
 .site-header nav ul {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
     margin-top: 0.5rem;
 }
@@ -223,10 +224,12 @@ main li {
 
 .border-red {
     border-left: 4px solid var(--danger-red);
+    border-radius: 8px;
 }
 
 .border-amber {
     border-left: 4px solid var(--warning-amber);
+    border-radius: 8px;
 }
 
 /* Forms */
@@ -295,6 +298,7 @@ button[type="submit"]:hover {
     border-left: 4px solid var(--warning-amber);
     padding: 1rem;
     color: var(--disclaimer-text);
+    border-radius: 8px;
 }
 
 .results-section h2 {
