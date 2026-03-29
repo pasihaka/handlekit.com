@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Authoritative robots.txt is at https://handlekit.com/robots.txt
+# This file is a reference and for portability.
+Sitemap: https://handlekit.com/gbp-triage/sitemap.xml
