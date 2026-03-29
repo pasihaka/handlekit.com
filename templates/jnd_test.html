@@ -1,17 +1,11 @@
-{% set title = "JND Color Perception Test | Vision Lab | HandleKit" %}
-{% if challenge and challenge.score %}
-    {% set display_name = challenge.name if challenge.name else "A Pilot" %}
-    {% set og_title = display_name + "'s Vision Lab Challenge" %}
-    {% set description = "See if you can beat this score of " + challenge.score + " in the JND test" %}
-{% else %}
-    {% set og_title = "JND Color Perception Challenge" %}
-    {% set description = "Take a scientific JND (Just Noticeable Difference) color perception test. Calibrate your visual acuity and find your Delta-E threshold with the HandleKit Vision Lab." %}
-{% endif %}
+{% set og_title = "Vision Lab JND Test" %}
+{% set description = "Scientific JND (Just Noticeable Difference) color perception test engine using Oklab Delta-E measurements." %}
 {% set og_image = "jnd-og.png" %}
 {% extends "layout.html" %}
 
 {% block head_extra %}
 <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/jnd-og.png') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -145,11 +139,70 @@
     }
     .lab-article .source-link a { color: var(--accent-color); text-decoration: none; }
     .lab-article .source-link a:hover { text-decoration: underline; }
-    .lab-article .note { 
-        background: rgba(0,210,255,0.03); 
-        border-left: 4px solid var(--accent-color); 
+    .modal-open { overflow: hidden !important; height: 100vh !important; }
+    .modal-open body { overflow: hidden !important; height: 100vh !important; position: fixed; width: 100%; }
+
+    #lab-stage {
+        width: 100%;
+        min-height: 600px;
+        height: auto;
+        background: #000;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        margin-top: 2rem;
+        cursor: crosshair;
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        z-index: 10;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    #lab-stage.immersion-mode {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        z-index: 10000 !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    #lab-exit-btn {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        width: 40px;
+        height: 40px;
+        background: rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50%;
+        display: none; /* hidden by default */
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        cursor: pointer;
+        z-index: 10500; /* Ensure absolute top */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition: all 0.2s;
+        pointer-events: auto;
+    }
+    #lab-exit-btn.active {
+        display: flex;
+    }
+    #lab-exit-btn:hover { background: #c91c23; border-color: #ff3333; transform: scale(1.1); }
+
+    .result-card-premium {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.05);
         padding: 1.8rem; 
-        border-radius: 4px; 
+        border-radius: 20px; 
         margin: 2.5rem 0; 
         font-size: 0.95rem; 
         color: #999; 
@@ -178,37 +231,10 @@
     }
     .lab-page-header p { color: var(--text-sub); }
 
-    .lab-outer {
-        width: 100%;
-        background: var(--lab-bg);
-        border-radius: 24px;
-        overflow: hidden;
-        border: 1px solid var(--border-color);
-        position: relative;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-        margin-bottom: 3rem;
-        transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    }
 
-    /* Immersion Mode Extension */
-    .lab-outer.immersion-mode {
-        position: fixed !important;
-        inset: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        z-index: 10000 !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        background: #000 !important;
-        transition: none !important;
-    }
-    .lab-outer.immersion-mode #lab-stage {
-        height: 100vh;
-    }
+    
     /* Centers the game area in fullscreen */
-    .lab-outer.immersion-mode #lab-gameover-overlay {
+    #lab-stage.immersion-mode #lab-gameover-overlay {
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -242,17 +268,20 @@
         white-space: nowrap;
     }
 
-    #lab-stage {
-        height: 600px;
-        position: relative;
-        cursor: crosshair;
-        background: #000;
-        overflow: hidden;
-        contain: layout paint;  /* prevent field shifts from propagating up */
+
+    #lab-hud { z-index: 100; pointer-events: none; }
+    #lab-hud * { pointer-events: auto; }
+    #lab-start-overlay, #lab-result-overlay, #lab-gameover-overlay, #lab-global-rank-overlay, #lab-history-overlay { 
+        z-index: 200; 
     }
 
     #left-field, #right-field {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: 100%;
         will-change: left, background-color;
+        z-index: 1;
     }
 
     @media (max-width: 600px) {
@@ -562,39 +591,39 @@
     .heart-icon { color: var(--accent-color); fill: var(--accent-color); filter: drop-shadow(0 0 5px var(--accent-color)); }
     .heart-icon.lost { color: #333; fill: transparent; filter: none; opacity: 0.5; }
 
-    /* Result Overlay */
-    #lab-result-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(10, 10, 10, 0.98);
+    /* Combined Result Overlay Styles */
+    #lab-result-overlay, #lab-gameover-overlay, #lab-start-overlay, #lab-history-overlay, #lab-rank-overlay {
+        position: relative;
+        min-height: 600px;
+        width: 100%;
+        background: rgba(10, 10, 10, 1);
         z-index: 210;
-        display: none;
+        display: none; /* Controlled by JS and Specificity */
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
+        padding: 4rem 1.5rem;
         text-align: center;
-        padding: 4rem 1.5rem 6rem;
         border-radius: 24px;
-        overflow-y: auto;
         backdrop-filter: blur(10px);
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Game Over Overlay */
-    #lab-gameover-overlay {
+    /* Ensure Start Overlay is visible on load */
+    #lab-start-overlay {
+        display: flex;
+    }
+
+    /* Absolute Centering in Immersion Mode */
+    .immersion-mode #lab-result-overlay, 
+    .immersion-mode #lab-gameover-overlay, 
+    .immersion-mode #lab-start-overlay, 
+    .immersion-mode #lab-history-overlay, 
+    .immersion-mode #lab-rank-overlay {
         position: absolute;
         inset: 0;
-        background: #0a0a0a;
-        z-index: 220;
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        text-align: center;
-        padding: 4rem 1.5rem 6rem;
-        border-radius: 24px;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        border-radius: 0;
+        background: radial-gradient(circle at center, #0a0a0a, #000);
     }
 
     /* Level Up Toast */
@@ -661,26 +690,12 @@
         overflow-y: auto;
     }
 
-    /* Distribution Chart Styles */
-    .global-dist-chart {
+    /* Distribution Chart Styles - Modernized for Chart.js */
+    .chart-canvas-container {
         width: 100%;
-        height: 120px;
-        display: flex;
-        align-items: flex-end;
-        gap: 2px;
+        height: 180px;
+        position: relative;
         margin-top: 1rem;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        padding-bottom: 4px;
-    }
-    .dist-bar {
-        flex: 1;
-        background: rgba(255,255,255,0.05);
-        border-radius: 2px 2px 0 0;
-        transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .dist-bar.active {
-        background: var(--accent-gradient);
-        box-shadow: 0 0 15px rgba(201, 28, 35, 0.3);
     }
 
     /* Mobile Sharpness */
@@ -721,8 +736,9 @@
     </div>
 
     <!-- Lab Game Container -->
-    <div class="lab-outer">
-        <div id="lab-exit-btn" onclick="exitLab()" title="Exit Session">
+    <div id="lab-stage" onclick="handleStageClick(event)">
+        <!-- Exit Button -->
+        <div id="lab-exit-btn" onclick="resetToStart()" title="Exit Laboratory">
             <i data-lucide="x" style="width: 20px; height: 20px;"></i>
         </div>
         <div id="lab-hud">
@@ -744,6 +760,7 @@
                 </div>
                 <div class="hud-value" id="score-val">0</div>
             </div>
+
 
             <!-- Arcade Level (Hidden in Diagnostic) -->
             <div class="hud-node arcade-only">
@@ -777,21 +794,17 @@
             </div>
         </div>
 
-        <div id="lab-stage" onclick="handleStageClick(event)">
-            <div id="left-field" style="position: absolute; left: 0; top: 0; height: 100%; width: 50%;"></div>
-            <div id="right-field" style="position: absolute; top: 0; height: 100%; left: 50%; right: 0; display: none;"></div>
+        <div id="left-field" style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; display: none; z-index: 1;"></div>
+        <div id="right-field" style="position: absolute; top: 0; height: 100%; left: 0; right: 0; display: none; z-index: 2;"></div>
+        <div id="indicator-true" style="z-index: 10;"></div>
+        <div id="indicator-user" style="z-index: 11;"></div>
             
-            
-            
-            <div id="indicator-true"></div>
-            <div id="indicator-user"></div>
-            
-            <div id="click-prompt" style="position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%); background: var(--accent-color); color: #000; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 800; font-size: 0.75rem; display: none; z-index: 80; pointer-events: none; box-shadow: 0 0 15px rgba(0,210,255,0.4); text-transform: uppercase;">
-                Tap/Click to Continue
-            </div>
+        <div id="click-prompt" style="position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%); background: var(--accent-color); color: #000; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 800; font-size: 0.75rem; display: none; z-index: 80; pointer-events: none; box-shadow: 0 0 15px rgba(0,210,255,0.4); text-transform: uppercase;">
+            Tap/Click to Continue
+        </div>
 
             <!-- Start Overlay -->
-            <div id="lab-start-overlay" style="position: absolute; inset: 0; background: #0a0a0a; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 24px; padding: 2rem;">
+            <div id="lab-start-overlay">
                 <div id="start-icon"><i data-lucide="gamepad-2" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i></div>
                 <h2 id="start-overlay-title" style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; text-align: center;">Vision Lab Fun Mode</h2>
                 <p style="color: #666; text-align: center; max-width: 440px; margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.85rem;">Select your session mode to begin calibration.</p>
@@ -818,7 +831,7 @@
                     </button>
                     <button onclick="showGlobalRank()" style="background: transparent; border: none; color: #444; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px; transition: all 0.2s;" onmouseover="this.style.color='#999'" onmouseout="this.style.color='#444'">
                         <i data-lucide="award" style="width: 14px; height: 14px;"></i>
-                        Global Leaderboard
+                        Fun Mode Leaderboard
                     </button>
                 </div>
             </div>
@@ -871,29 +884,22 @@
                     </div>
 
                     <!-- Global Distribution Section -->
-                    <div id="global-dist-section" style="width: 100%; margin-bottom: 2rem; min-height: 120px; opacity: 0; transition: opacity 0.3s ease;">
-                        <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.2rem; font-weight: 800; text-align: left;">Score Distribution (Active League)</div>
-                        <div class="global-dist-chart" id="global-dist-chart">
-                            <!-- Bars injected here -->
-                        </div>
-                        <div id="global-dist-axis" style="display: flex; justify-content: space-between; color: #444; font-size: 0.6rem; margin-top: 0.4rem; font-weight: 700;">
-                            <span>0</span>
-                            <span>25k</span>
-                            <span>50k</span>
-                            <span>75k</span>
-                            <span>100k</span>
+                    <div id="global-dist-section" style="width: 100%; margin-bottom: 2rem; min-height: 180px; opacity: 0; transition: opacity 0.3s ease;">
+                        <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.2rem; font-weight: 800; text-align: left;">Global Score Distribution</div>
+                        <div class="chart-canvas-container">
+                            <canvas id="globalDistChart"></canvas>
                         </div>
                     </div>
 
                     <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
-                        <button onclick="challengeFriends()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,100,100,0.3); color: #fff; padding: 0.8rem 2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-                            <i data-lucide="share-2" style="width: 16px; height: 16px; color: var(--accent-color);"></i>
-                            Challenge Friends
+                        <button onclick="shareJNDResult()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 1.8rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="share-2" style="width: 14px; height: 14px;"></i>
+                            Challenge
                         </button>
-                        <button onclick="resetToStart()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem;">
+                        <button onclick="resetToStart()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #666; padding: 0.8rem 1.8rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">
                             Main Menu
                         </button>
-                        <button onclick="startLab(event)" style="background: var(--accent-gradient); color: #fff; border: none; padding: 0.8rem 2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 20px rgba(201, 28, 35, 0.2); font-size: 0.85rem;">
+                        <button onclick="startLab(event)" style="background: var(--accent-gradient); color: #fff; border: none; padding: 0.8rem 2.2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 20px rgba(201, 28, 35, 0.2); font-size: 0.85rem;">
                             Play Again
                         </button>
                     </div>
@@ -909,6 +915,12 @@
                     </button>
                     <!-- Rank Feedback Section -->
                     <div id="feedback-text" style="font-size:0.85rem; font-weight:700; line-height:1.5; margin-bottom:1.4rem; padding-bottom:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06);">Analyzing your rank...</div>
+                    
+                    <button onclick="shareJNDResult()" style="width:100%; height:44px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:10px; font-weight:800; font-size:0.85rem; cursor:pointer; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                        <i data-lucide="share-2" style="width:14px; height:14px;"></i>
+                        Challenge Friend
+                    </button>
+
                     <!-- Header -->
                     <div style="margin-bottom:1rem;">
                         <div style="color:#fff; font-size:1rem; font-weight:900; letter-spacing:-0.5px; margin-bottom:0.2rem;">Submit to Leaderboard</div>
@@ -922,11 +934,6 @@
                     <!-- Primary CTA -->
                     <button onclick="submitToLeaderboard()" style="width:100%; background:var(--accent-gradient); color:#fff; border:none; padding:0.85rem; border-radius:10px; font-weight:900; font-size:0.9rem; cursor:pointer; letter-spacing:1px; margin-bottom:0.6rem; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
                         SUBMIT SCORE
-                    </button>
-                    <!-- Challenge Friends -->
-                    <button id="challenge-btn" onclick="challengeFriends()" style="width:100%; background:#1a1a1a; color:#fff; border:1px solid rgba(255,100,100,0.3); padding:0.75rem; border-radius:10px; font-weight:800; font-size:0.85rem; cursor:pointer; margin-bottom:0.6rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#1a1a1a'">
-                        <i data-lucide="share-2" style="width:14px; height:14px; color:var(--accent-color);"></i>
-                        CHALLENGE FRIENDS
                     </button>
                     <!-- Play Again -->
                     <button onclick="closeSubmitModal(); startLab(event)" style="width:100%; background:transparent; color:#666; border:1px solid rgba(255,255,255,0.08); padding:0.7rem; border-radius:10px; font-weight:700; font-size:0.8rem; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.color='#666'; this.style.borderColor='rgba(255,255,255,0.08)'">
@@ -969,19 +976,14 @@
                 </div>
 
                 <div style="width: 100%; margin-bottom: 2rem;">
-                    <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.8rem; font-weight: 800;">Global Leaderboard</div>
+                    <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.8rem; font-weight: 800;">Fun Mode Leaderboard</div>
                     <div id="standalone-leaderboard-list"></div>
                 </div>
 
                 <div style="width: 100%; margin-bottom: 1rem;">
                     <div style="color: #444; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; font-weight: 800; text-align: left;">Community Score Distribution</div>
-                    <div class="global-dist-chart" id="standalone-dist-chart"></div>
-                    <div id="standalone-dist-axis" style="display: flex; justify-content: space-between; color: #444; font-size: 0.6rem; margin-top: 0.4rem; font-weight: 700;">
-                        <span>0</span>
-                        <span>25k</span>
-                        <span>50k</span>
-                        <span>75k</span>
-                        <span>100k</span>
+                    <div class="chart-canvas-container">
+                        <canvas id="standaloneDistChart"></canvas>
                     </div>
                 </div>
 
@@ -1051,13 +1053,18 @@
                     </div>
 
                     <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
-                        <button onclick="resetToStart()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1.1rem 2.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.9rem;">
+                        <button onclick="shareJNDResult()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1.1rem 2.2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+                            <i data-lucide="share-2" style="width: 18px; height: 18px;"></i>
+                            Challenge
+                        </button>
+                        <button onclick="resetToStart()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #666; padding: 1.1rem 2.2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.9rem;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">
                             Main Menu
                         </button>
-                        <button onclick="startLab(event)" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.1rem 2.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 20px rgba(201, 28, 35, 0.2); font-size: 0.9rem;">
+                        <button onclick="startLab(event)" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.1rem 3rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 20px rgba(201, 28, 35, 0.2); font-size: 0.9rem;">
                             New Calibration
                         </button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -1121,8 +1128,9 @@
                     <p style="color: var(--text-sub); margin: 0.2rem 0 0 0; font-size: 0.9rem;">Found your threshold? Now capture and design with our <a href="/color-picker" style="color: var(--accent-color); text-decoration: underline; font-weight: 700;">Professional Color Picker</a>.</p>
                 </div>
             </div>
-            <a href="/color-picker" style="background: var(--accent-gradient); color: #fff; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 10px; font-weight: 800; font-size: 0.9rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Open Designer</a>
+            <a href="/color-picker" style="background: var(--accent-gradient); color: #fff; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 100px; font-weight: 800; font-size: 0.9rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Open Designer</a>
         </div>
+
     </div>
 </div>
 
@@ -1207,7 +1215,7 @@ function startLab(e) {
     if (e) e.stopPropagation();
     
     // Immersion trigger
-    document.querySelector('.lab-outer').classList.add('immersion-mode');
+    stage.classList.add('immersion-mode');
     toggleBodyScroll(false); // Hide body scroll
     
     round = 1;
@@ -1219,24 +1227,30 @@ function startLab(e) {
     history = [];
     isGameActive = true;
     higherThanPct = null; // Reset percentile for new session
-    toggleBodyScroll(true); // Ensure scroll is restored if starting from results
     
     startOverlay.style.display = 'none';
     resultOverlay.style.display = 'none';
     document.getElementById('lab-gameover-overlay').style.display = 'none';
+    
     // Reset sections that fade in after game over
     const distSec = document.getElementById('global-dist-section');
     const lbSec = document.getElementById('global-leaderboard-section');
     if (distSec) { distSec.style.opacity = '0'; distSec.style.pointerEvents = 'none'; }
     if (lbSec)   { lbSec.style.opacity = '0';   lbSec.style.pointerEvents = 'none'; }
-    // Hide right-field until initRound positions it properly
-    rField.style.display = 'none';
+    
+    // Show fields
+    lField.style.display = 'block';
+    rField.style.display = 'none'; // Will be shown in initRound
     
     const hud = document.getElementById('lab-hud');
     hud.style.display = 'flex';
     if (gameMode === 'arcade') hud.classList.add('arcade-mode');
     else hud.classList.remove('arcade-mode');
+
+    // Show Exit Button
+    document.getElementById('lab-exit-btn').classList.add('active');
     
+
     updateArcadeUI();
     // lucide initialised once on DOMContentLoaded
     initRound();
@@ -1264,7 +1278,10 @@ function initRound() {
     rField.style.background = shiftColor;
 
     rField.style.display = 'block';
+    
+    // Every round uses standard randomization for border position
     trueX = (stage.offsetWidth * 0.2) + Math.random() * (stage.offsetWidth * 0.6);
+    
     rField.style.left = trueX + 'px';
     rField.style.right = '0';
     rField.style.width = 'auto';
@@ -1295,21 +1312,34 @@ function showScorePop(x, y, text, color, delay = 0) {
     }, delay);
 }
 
-function exitLab() {
+function resetToStart() {
     isGameActive = false;
     isWaiting = false;
-    document.querySelector('.lab-outer').classList.remove('immersion-mode');
-    toggleBodyScroll(true);
-    
-    // Hide all overlays
-    document.getElementById('lab-gameover-overlay').style.display = 'none';
-    document.getElementById('lab-result-overlay').style.display = 'none';
-    document.getElementById('lab-history-overlay').style.display = 'none';
-    document.getElementById('lab-global-rank-overlay').style.display = 'none';
-    
-    // Hide HUD and Show start overlay
-    document.getElementById('lab-hud').style.display = 'none';
+    stage.classList.remove('immersion-mode');
+    toggleBodyScroll(true); // Restore body scroll
+
+    // UI Cleanup
+    const exitBtn = document.getElementById('lab-exit-btn');
+    if (exitBtn) exitBtn.classList.remove('active');
+
     document.getElementById('lab-start-overlay').style.display = 'flex';
+    document.getElementById('lab-gameover-overlay').style.display = 'none';
+    
+    const diagOverlay = document.getElementById('diagnostic-result-overlay');
+    if (diagOverlay) diagOverlay.style.display = 'none';
+    
+    document.getElementById('lab-result-overlay').style.display = 'none';
+    document.getElementById('lab-global-rank-overlay').style.display = 'none';
+    document.getElementById('lab-history-overlay').style.display = 'none';
+    
+    const targetGoal = document.getElementById('hud-target-goal');
+    if (targetGoal) targetGoal.style.display = 'none';
+
+    document.getElementById('lab-hud').style.display = 'none';
+
+    // Restore fields state
+    lField.style.display = 'none';
+    rField.style.display = 'none';
 }
 
 function handleStageClick(e) {
@@ -1335,12 +1365,12 @@ function handleStageClick(e) {
 
     createPhotonBurst(x, y, color);
 
-    const labOuter = document.querySelector('.lab-outer');
-    labOuter.style.transition = 'box-shadow 0.2s ease-out';
-    labOuter.style.boxShadow = `0 0 40px ${color}`;
+    // Visual Feedback Effect
+    stage.style.transition = 'box-shadow 0.2s ease-out';
+    stage.style.boxShadow = `0 0 40px ${color}`;
     setTimeout(() => {
-        labOuter.style.transition = 'box-shadow 0.8s ease-in';
-        labOuter.style.boxShadow = '0 30px 60px rgba(0,0,0,0.4)';
+        stage.style.transition = 'box-shadow 0.8s ease-in';
+        stage.style.boxShadow = 'none';
     }, 250);
 
     history.push({ error, delta: currentDeltaE });
@@ -1424,10 +1454,18 @@ function showLevelUp() {
 function showGameOver() {
     isGameActive = false;
     toggleBodyScroll(false);
-    document.getElementById('final-level-arcade').textContent = level;
     document.getElementById('final-score-arcade').textContent = score;
     document.getElementById('lab-gameover-overlay').style.display = 'flex';
+    document.getElementById('lab-exit-btn').classList.remove('active');
     document.getElementById('lab-hud').style.display = 'none';
+    
+    // Hide game fields
+    lField.style.display = 'none';
+    rField.style.display = 'none';
+
+    const title = document.querySelector('#lab-gameover-overlay h2');
+    title.textContent = 'GAME OVER';
+    title.style.color = '#fff';
     
     // Reset global rank state
     const rankBtn = document.getElementById('see-rank-btn');
@@ -1523,7 +1561,7 @@ function showRankInput() {
     const submitBtn = document.querySelector('#submit-score-modal button[onclick*="submitToLeaderboard"]');
     if (submitBtn) submitBtn.disabled = false;
     setTimeout(() => document.getElementById('player-nickname').focus(), 50);
-    // lucide initialised once on DOMContentLoaded
+    if (window.lucide) lucide.createIcons();
 }
 
 function closeSubmitModal() {
@@ -1606,9 +1644,11 @@ async function loadLeaderboard(diff = 'pro') {
 async function loadGlobalStats(diff = 'pro') {
     if (diff === 'practice') return;
     try {
-        const response = await fetch(`/api/jnd/stats?difficulty=${diff}`);
+        const response = await fetch(`/api/jnd/stats?difficulty=${diff}&score=${score}`);
         const data = await response.json();
-        if (data.buckets && data.buckets.length > 0) renderGlobalChart(data);
+        if (data.buckets && data.buckets.length > 0) {
+            renderGlobalChart(data, 'globalDistChart');
+        }
     } catch (e) { console.error("Stats failed", e); }
 }
 
@@ -1631,34 +1671,95 @@ function switchLeague(diff, scope) {
     }
 }
 
-function renderGlobalChart(data) {
-    const chart = document.getElementById('global-dist-chart');
-    const maxCount = Math.max(...data.buckets.map(b => b.count));
+let jndCharts = {};
+function renderGlobalChart(data, canvasId) {
+    const ctx = document.getElementById(canvasId).getContext('2d');
     
-    let html = '';
-    data.buckets.forEach(b => {
-        const height = maxCount > 0 ? (b.count / maxCount) * 100 : 0;
-        const isActive = (b.min <= score && score < b.max) && (data.difficulty === difficulty);
-        const rangeText = `Score ${b.min.toLocaleString()}-${(b.max - 1).toLocaleString()}: ${b.count} Pilots`;
-        html += `<div class="dist-bar ${isActive ? 'active' : ''}" style="height: ${Math.max(2, height)}%" title="${rangeText}"></div>`;
-    });
-    chart.innerHTML = html;
-
-    // Inject accurate score-value x-axis labels
-    const fmt = v => v >= 1000 ? Math.round(v/1000) + 'k' : v;
-    const mx = data.max_score || 0;
-    const axisEl = document.getElementById('global-dist-axis');
-    if (axisEl) {
-        axisEl.innerHTML = `
-            <span>${fmt(0)}</span>
-            <span>${fmt(Math.round(mx * 0.25))}</span>
-            <span>${fmt(Math.round(mx * 0.5))}</span>
-            <span>${fmt(Math.round(mx * 0.75))}</span>
-            <span>${fmt(mx)}</span>`;
+    if (jndCharts[canvasId]) {
+        jndCharts[canvasId].destroy();
     }
 
-    document.getElementById('global-dist-section').style.opacity = '1';
-    document.getElementById('global-dist-section').style.pointerEvents = 'auto';
+    const labels = data.buckets.map(b => {
+        const v = b.min;
+        return v >= 1000 ? Math.round(v/1000) + 'k' : v;
+    });
+
+    const pointRadii = data.buckets.map(b => {
+        return (b.min <= score && score < b.max) ? 8 : 2;
+    });
+    const pointColors = data.buckets.map(b => {
+        return (b.min <= score && score < b.max) ? '#fff' : '#c91c23';
+    });
+
+    jndCharts[canvasId] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Community Scores',
+                data: data.buckets.map(b => b.count),
+                borderColor: '#c91c23',
+                backgroundColor: 'rgba(201, 28, 35, 0.2)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: pointRadii,
+                pointBackgroundColor: pointColors,
+                pointBorderColor: '#c91c23',
+                pointBorderWidth: 2,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    display: false,
+                    beginAtZero: true
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.05)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#444',
+                        font: { size: 10, weight: '700' },
+                        maxRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: 10
+                    }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: '#111',
+                    titleColor: '#fff',
+                    bodyColor: '#888',
+                    borderColor: '#c91c23',
+                    borderWidth: 1,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `Pilots: ${context.parsed.y}`;
+                        },
+                        title: function(context) {
+                            const b = data.buckets[context[0].dataIndex];
+                            return `${b.min.toLocaleString()} - ${b.max.toLocaleString()}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const sectionId = canvasId === 'globalDistChart' ? 'global-dist-section' : null;
+    if (sectionId) {
+        document.getElementById(sectionId).style.opacity = '1';
+        document.getElementById(sectionId).style.pointerEvents = 'auto';
+    }
 }
 
 function saveScore() {
@@ -1773,23 +1874,15 @@ if (document.getElementById('wipe-records-btn')) {
     document.getElementById('wipe-records-btn').onclick = handleWipeClick;
 }
 
-function resetToStart() {
-    isGameActive = false;
-    document.querySelector('.lab-outer').classList.remove('immersion-mode');
-    toggleBodyScroll(true); // Restore body scroll
-    
-    document.getElementById('lab-gameover-overlay').style.display = 'none';
-    document.getElementById('lab-result-overlay').style.display = 'none';
-    document.getElementById('lab-global-rank-overlay').style.display = 'none';
-    document.getElementById('lab-history-overlay').style.display = 'none';
-    
-    startOverlay.style.display = 'flex';
-    document.getElementById('lab-hud').style.display = 'none';
-    // lucide initialised once on DOMContentLoaded
-}
+
 
 function showResults() {
     isGameActive = false;
+    
+    // Hide fields
+    lField.style.display = 'none';
+    rField.style.display = 'none';
+    
     const avgErr = history.reduce((a,b)=>a+b.error,0)/TOTAL_ROUNDS;
     const avgDelta = history.reduce((a,b)=>a+b.delta,0)/TOTAL_ROUNDS;
     const precision = Math.max(0, 100 - Math.round(avgErr));
@@ -1853,56 +1946,14 @@ function showResults() {
     const areaData = pathData + ` L 1000,200 L 0,200 Z`;
     svgArea.setAttribute("d", areaData);
 
-    resultOverlay.style.display = 'block';
+    document.getElementById('lab-game-area').style.display = 'none';
+    document.getElementById('lab-exit-btn').classList.remove('active');
+    resultOverlay.style.display = 'flex';
     document.getElementById('lab-hud').style.display = 'none';
     toggleBodyScroll(false);
     // lucide initialised once on DOMContentLoaded
 }
 
-function challengeFriends() {
-    const shareScore = typeof score !== 'undefined' ? score : 0;
-    const shareLevel = typeof level !== 'undefined' ? level : 1;
-    const sharePct = typeof higherThanPct !== 'undefined' ? higherThanPct : null;
-    
-    // Get current nickname from input or storage
-    const nickInput = document.getElementById('player-nickname');
-    const nickname = (nickInput && nickInput.value.trim()) || localStorage.getItem('jnd_nickname') || "";
-    
-    // Build dynamic URL for custom social preview
-    const baseUrl = window.location.origin + window.location.pathname;
-    const params = new URLSearchParams();
-    params.set('s', shareScore);
-    params.set('l', shareLevel);
-    if (sharePct !== null) params.set('p', sharePct);
-    if (nickname) params.set('n', nickname);
-    params.set('v', '2'); // Version bump for cache busting
-    
-    const challengeUrl = `${baseUrl}?${params.toString()}`;
-    
-    let message = "";
-    if (sharePct !== null) {
-        message = `I scored higher than ${sharePct}% of players. Can you beat my score in the Fun Mode? 🎯`;
-    } else {
-        message = `I just scored ${shareScore.toLocaleString()} in the JND Test! Can you beat my score in the Fun Mode? 🎯`;
-    }
-
-    const text = `${message}`;
-    const btn = document.getElementById('challenge-btn');
-    const originalText = btn ? btn.innerHTML : null;
-    
-    if (navigator.share) {
-        navigator.share({
-            title: nickname ? `${nickname}'s JND Challenge` : 'JND Color Perception Challenge',
-            text: text,
-            url: challengeUrl
-        }).catch(err => {
-            console.error('Share failed:', err);
-            copyToClipboard(text, btn, originalText);
-        });
-    } else {
-        copyToClipboard(text, btn, originalText);
-    }
-}
 
 function copyToClipboard(text, btn, originalText) {
     const cb = navigator.clipboard;
@@ -1950,6 +2001,33 @@ function copyResults() {
         document.body.removeChild(textArea);
         btnText.textContent = "Copied!";
         setTimeout(() => btnText.textContent = "Copy Summary", 2000);
+    }
+}
+
+function shareJNDResult() {
+    let rank = document.getElementById('rank-val')?.textContent || "Pilot";
+    let scoreDisplay = "";
+    let emoji = "👁️";
+
+    if (gameMode === 'arcade') {
+        scoreDisplay = `${score.toLocaleString()} pts`;
+        rank = (score > 50000) ? "Retinal Deity" : (score > 20000) ? "Eagle Eye" : "Pilot";
+        emoji = "👾";
+    } else {
+        const delta = document.getElementById('final-delta')?.textContent || "0.000";
+        scoreDisplay = `ΔE ${delta}`;
+        emoji = "🎯";
+    }
+
+    const percentileMsg = higherThanPct > 50 ? ` Better than ${higherThanPct}% of global pilots!` : "";
+    const text = `${emoji} I just tested my color perception on HandleKit!\n\nRank: ${rank}\nPerformance: ${scoreDisplay}\n${percentileMsg}\n\nChallenge my score here:`;
+    const url = window.location.href;
+
+    if (navigator.share) {
+        navigator.share({ title: 'Vision Lab JND Test', text: text, url: url });
+    } else {
+        navigator.clipboard.writeText(`${text} ${url}`);
+        alert('Challenge link copied to clipboard!');
     }
 }
 function createPhotonBurst(x, y, color) {
@@ -2015,36 +2093,51 @@ async function showGlobalRank(diff = 'pro') {
         const response = await fetch(`/api/jnd/stats?difficulty=${diff}`);
         const data = await response.json();
         if (data.buckets && data.buckets.length > 0) {
-            const chart = document.getElementById('standalone-dist-chart');
-            const maxCount = Math.max(...data.buckets.map(b => b.count));
-            let html = '';
-            data.buckets.forEach(b => {
-                const height = maxCount > 0 ? (b.count / maxCount) * 100 : 0;
-                const rangeText = `Score ${b.min.toLocaleString()}-${(b.max - 1).toLocaleString()}: ${b.count} Pilots`;
-                html += `<div class="dist-bar" style="height: ${Math.max(2, height)}%" title="${rangeText}"></div>`;
-            });
-            chart.innerHTML = html;
-            // Inject real score-value labels
-            const fmt = v => v >= 1000 ? Math.round(v/1000) + 'k' : v;
-            const mx = data.max_score || 0;
-            const axisEl = document.getElementById('standalone-dist-axis');
-            if (axisEl) {
-                axisEl.innerHTML = `
-                    <span>${fmt(0)}</span>
-                    <span>${fmt(Math.round(mx * 0.25))}</span>
-                    <span>${fmt(Math.round(mx * 0.5))}</span>
-                    <span>${fmt(Math.round(mx * 0.75))}</span>
-                    <span>${fmt(mx)}</span>`;
-            }
-        } else {
-            document.getElementById('standalone-dist-chart').innerHTML = '';
+            renderGlobalChart(data, 'standaloneDistChart');
         }
     } catch (e) { console.error("Stats failed", e); }
 }
 
 // Initialise icons once on load — avoid repeated createIcons() calls on each interaction
+function triggerConfetti() {
+    const stage = document.getElementById('lab-stage');
+    for (let i = 0; i < 40; i++) {
+        const p = document.createElement('div');
+        p.style.cssText = `
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: hsl(${Math.random() * 360}, 100%, 50%);
+            left: 50%;
+            top: 50%;
+            border-radius: 2px;
+            z-index: 1000;
+            pointer-events: none;
+        `;
+        stage.appendChild(p);
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 4 + Math.random() * 12;
+        const dx = Math.cos(angle) * velocity;
+        const dy = Math.sin(angle) * velocity;
+        
+        let x = 0, y = 0, opacity = 1;
+        const anim = setInterval(() => {
+            x += dx;
+            y += dy + 0.4;
+            opacity -= 0.025;
+            p.style.transform = `translate(${x}px, ${y}px) rotate(${x*2}deg)`;
+            p.style.opacity = opacity;
+            if (opacity <= 0) {
+                clearInterval(anim);
+                p.remove();
+            }
+        }, 16);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    // lucide initialised once on DOMContentLoaded
+    // Standard initialization if any
 });
 </script>
 
@@ -2097,32 +2190,5 @@ document.addEventListener('DOMContentLoaded', () => {
         letter-spacing: 1px;
     }
 
-    #lab-exit-btn {
-        position: absolute;
-        top: 2rem;
-        right: 2rem;
-        width: 44px;
-        height: 44px;
-        background: rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: #fff;
-        border-radius: 50%;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 10001;
-        transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-        backdrop-filter: blur(12px);
-    }
-    #lab-exit-btn:hover {
-        background: rgba(255, 50, 50, 0.25);
-        border-color: rgba(255, 50, 50, 0.5);
-        transform: rotate(90deg) scale(1.1);
-        color: #ff5555;
-    }
-    .lab-outer.immersion-mode #lab-exit-btn {
-        display: flex;
-    }
 </style>
 {% endblock %}

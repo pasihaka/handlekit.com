@@ -1,0 +1,1006 @@
+{% set title = "Free Online Contrast Sensitivity Test | Pelli-Robson VCS Chart" %}
+{% set description = "Take a free visual contrast sensitivity test online. Use the clinical standard Pelli-Robson chart to measure eye contrast sensitivity for vision health, functional acuity, and VCS mold testing." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Vision Lab Contrast Sensitivity Test",
+      "url": "{{ request.url }}",
+      "description": "Scientific Pelli-Robson contrast sensitivity test engine for measuring visual threshold and functional acuity.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "author": { "@type": "Organization", "name": "HandleKit Research Lab" }
+    },
+    {
+      "@type": "MedicalTest",
+      "name": "Pelli-Robson Contrast Sensitivity Test (VCS)",
+      "description": "The Pelli-Robson chart is the clinical standard for measuring visual contrast sensitivity (VCS), frequently used for vision health checks and environmental toxin exposure (mold) screening.",
+      "usedToDiagnose": {
+        "@type": "MedicalCondition",
+        "name": "Reduced Contrast Sensitivity"
+      }
+    }
+  ]
+}
+</script>
+<style>
+    :root {
+        --test-bg: #ffffff;
+        --test-text: #000000;
+        --glass-bg: rgba(22, 18, 18, 0.8);
+        --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    #test-container {
+        width: 100%;
+        margin-top: 2rem;
+        position: relative;
+        scroll-margin-top: 100px; /* Account for fixed header + breathing room */
+    }
+
+    #test-stage {
+        width: 100%;
+        min-height: 600px;
+        background: var(--test-bg);
+        border-radius: 24px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0;
+        overflow: hidden; /* Prevent internal overlays from having sub-pixel border gaps */
+    }
+
+    .sloan-letter {
+        font-family: 'Outfit', 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 8rem;
+        line-height: 1;
+        letter-spacing: 0.1em;
+        user-select: none;
+        color: #000; /* Always black for standard Pelli-Robson */
+        transition: opacity 0.3s ease;
+    }
+
+    #triplet-container {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Fullscreen Overlays (History & Global) */
+    .test-hub-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        background: rgba(10, 8, 8, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        display: none;
+        flex-direction: column;
+        padding: 5rem 2rem;
+        overflow-y: auto;
+        color: var(--text-main);
+        box-sizing: border-box;
+    }
+
+    .hub-content-box {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: left;
+    }
+
+    .test-overlay {
+        width: 100%;
+        min-height: 550px;
+        background: var(--bg-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        text-align: center;
+        color: var(--text-main);
+        box-sizing: border-box;
+    }
+
+    .keyboard {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 500px;
+        margin-top: 2rem;
+    }
+
+    .key-btn {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 1.25rem;
+        border-radius: 12px;
+        font-size: 1.5rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .key-btn:hover {
+        border-color: var(--accent-color);
+        background: var(--code-bg);
+        transform: translateY(-2px);
+    }
+
+    .stats-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--border-color);
+        transition: all 0.3s;
+    }
+    .dot.active { background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
+    .dot.success { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
+    .dot.fail { background: #ff4444; }
+
+    .test-hud {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        justify-content: space-between;
+        pointer-events: none;
+        z-index: 50;
+        height: auto;
+    }
+
+    .hud-stat {
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        backdrop-filter: blur(4px);
+    }
+
+    @media (max-width: 600px) {
+        .sloan-letter { font-size: 4rem; }
+        #triplet-container { gap: 1rem; }
+        .key-btn { padding: 1rem; font-size: 1.2rem; }
+        #test-stage { min-height: 400px; }
+    }
+    .lab-article {
+        max-width: 800px;
+        margin: 5rem 0;
+        line-height: 1.6;
+    }
+    .lab-article h2, .lab-article h3 {
+        color: var(--text-main);
+        font-family: 'Outfit', sans-serif;
+    }
+    .lab-article p {
+        color: var(--text-sub);
+    }
+    .lab-article strong {
+        color: var(--text-main);
+    }
+    .info-card-premium {
+        background: var(--glow-color);
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(5px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto; padding-top: 2rem;">
+    <header style="margin-bottom: 2rem;">
+        <h1 style="margin-bottom: 0.5rem;">Contrast Sensitivity Test</h1>
+        <p class="subtitle">Clinical-grade Pelli-Robson benchmark for visual health.</p>
+    </header>
+
+    <div id="test-container">
+        <!-- TEST STAGE -->
+        <div id="test-stage">
+            <!-- Start Screen Overlay -->
+            <div id="start-screen" class="test-overlay">
+                <i data-lucide="eye" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.5rem;"></i>
+                <h2 style="margin-bottom: 1rem; font-weight: 800;">Setup & Calibration</h2>
+                <div style="max-width: 500px; text-align: left; background: var(--card-bg); padding: 1.5rem; border-radius: 16px; margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.6; border: 1px solid var(--border-color);">
+                    <p style="margin-bottom: 0.8rem;"><strong style="color: var(--accent-color);">1. Full Brightness:</strong> Maximize screen brightness.</p>
+                    <p style="margin-bottom: 0.8rem;"><strong style="color: var(--accent-color);">2. Arm's Length:</strong> Stay 1 meter away from the screen.</p>
+                    <p style="margin-bottom: 0;"><strong style="color: var(--accent-color);">3. Correct 2/3:</strong> test ends when you fail to identify 2/3 letters in a group.</p>
+                </div>
+                <button onclick="startTest()" class="premium-input" style="background: var(--accent-gradient); color: #fff; font-weight: 800; width: auto; padding: 1rem 3rem; cursor: pointer; border: none; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2rem;">START TEST</button>
+                
+                <div style="display: flex; gap: 2rem; justify-content: center; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; margin-top: 1rem;">
+                    <button onclick="openHistory()" style="background: transparent; border: none; color: #444; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#444'">
+                        <i data-lucide="history" style="width: 14px; height: 14px;"></i>
+                        Game History
+                    </button>
+                    <button onclick="openGlobalLeaderboard()" style="background: transparent; border: none; color: #444; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#444'">
+                        <i data-lucide="award" style="width: 14px; height: 14px;"></i>
+                        Global Leaderboard
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Test UI -->
+            <div id="test-ui" style="display: none; width: 100%; height: 100%; min-height: 550px; padding: 60px 20px; flex-direction: column; align-items: center; justify-content: center; position: relative; box-sizing: border-box;">
+                <div class="test-hud">
+                    <div class="hud-stat">LOG CS: <span id="hud-log-cs">0.00</span></div>
+                    <div class="hud-stat">STEP: <span id="hud-level">1</span>/16</div>
+                </div>
+
+                <div id="triplet-container"></div>
+
+                <div class="progress-dots" style="margin-top: 4rem; display: flex; gap: 8px;">
+                    <div class="dot" id="dot-0"></div>
+                    <div class="dot" id="dot-1"></div>
+                    <div class="dot" id="dot-2"></div>
+                </div>
+
+                <div class="keyboard">
+                    <button class="key-btn" onclick="handleInput('C')">C</button>
+                    <button class="key-btn" onclick="handleInput('D')">D</button>
+                    <button class="key-btn" onclick="handleInput('H')">H</button>
+                    <button class="key-btn" onclick="handleInput('K')">K</button>
+                    <button class="key-btn" onclick="handleInput('N')">N</button>
+                    <button class="key-btn" onclick="handleInput('O')">O</button>
+                    <button class="key-btn" onclick="handleInput('P')">P</button>
+                    <button class="key-btn" onclick="handleInput('R')">R</button>
+                    <button class="key-btn" onclick="handleInput('S')">S</button>
+                    <button class="key-btn" onclick="handleInput('V')">V</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="result-screen" class="test-overlay" style="display: none; background: var(--bg-color); color: var(--text-main); min-height: 600px; height: auto; padding: 3rem 1rem;">
+                <h2 style="color: var(--accent-color); font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: 2px;">TEST COMPLETE</h2>
+                <div style="font-size: 6rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--text-main); text-shadow: 0 0 30px var(--glow-color); line-height: 1;" id="final-log-cs">0.00</div>
+                <p style="color: var(--text-sub); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; font-weight: 700;">Log Contrast Sensitivity</p>
+                
+                <div id="result-summary" style="max-width: 500px; margin-bottom: 1rem; line-height: 1.6; font-size: 1.1rem; font-weight: 700;"></div>
+                <div id="global-percentile-text" style="color: var(--accent-color); font-weight: 800; font-size: 0.9rem; margin-bottom: 2rem; opacity: 0; transition: opacity 0.5s;">Calculating global rank...</div>
+
+                <div id="nickname-status" style="display: none; color: #00ff88; font-size: 0.85rem; padding: 0.8rem; border-radius: 12px; background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.1); font-weight: 700; margin-bottom: 2rem; width: 100%; max-width: 400px; text-align: center;"></div>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 320px;">
+                    <button onclick="showRankInput()" id="see-rank-btn" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.2rem; border-radius: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 20px rgba(201, 28, 35, 0.2); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Submit to Leaderboard
+                    </button>
+
+                    <button onclick="shareResult()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                        <i data-lucide="share-2" style="width: 16px; height: 16px;"></i>
+                        Challenge Friend
+                    </button>
+                    
+                    <div style="display: flex; gap: 0.8rem;">
+                        <button onclick="openGlobalLeaderboard()" style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-main); padding: 1rem; border-radius: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+                            Leaderboard
+                        </button>
+                        <button onclick="openHistory()" style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-main); padding: 1rem; border-radius: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+                            History
+                        </button>
+                    </div>
+
+                    <div style="display: flex; gap: 0.8rem; margin-top: 2rem; justify-content: center; align-items: center;">
+                        <button onclick="startTest(event)" style="background: transparent; color: var(--text-sub); border: none; font-weight: 800; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-sub)'">
+                            New Test
+                        </button>
+                        <span style="color: rgba(255,255,255,0.1)">|</span>
+                        <button onclick="window.location.href='/'" style="background: transparent; color: var(--text-sub); border: none; font-weight: 800; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-sub)'">
+                            Main Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback + Score Submission Fullscreen Modal -->
+    <div id="submit-score-modal" style="display:none; position:fixed; inset:0; z-index:20000; align-items:center; justify-content:center; background:rgba(0,0,0,0.9); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); padding: 2rem;">
+        <div style="background:#0a0a0a; border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:2.5rem; width:100%; max-width:420px; position:relative; box-shadow: 0 30px 60px rgba(0,0,0,0.8); text-align: left;">
+            <button onclick="closeSubmitModal()" style="position:absolute; top:1.2rem; right:1.2rem; background:rgba(255,255,255,0.05); border:none; color:#666; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='#666'">
+                <i data-lucide="x" style="width:18px; height:18px;"></i>
+            </button>
+            
+            <div id="feedback-header" style="margin-bottom: 2rem;">
+                <div id="feedback-title" style="color:#00d2ff; font-size:1.1rem; font-weight:900; line-height:1.2; margin-bottom:0.4rem; text-transform: uppercase; letter-spacing: 0.5px;">MISSION COMPLETE</div>
+                <div id="feedback-rank-text" style="color:#fff; font-size:0.95rem; font-weight:700; line-height:1.5;">Analyzing your global standing...</div>
+                <div id="feedback-stat-text" style="color:#555; font-size:0.8rem; margin-top: 0.5rem;">Connecting to global hub...</div>
+            </div>
+
+            <button onclick="shareResult()" style="width:100%; height:55px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:14px; font-weight:800; font-size:0.9rem; cursor:pointer; margin-bottom:2.5rem; display:flex; align-items:center; justify-content:center; gap:12px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.transform='none'">
+                <i data-lucide="share-2" style="width:18px; height:18px;"></i>
+                Challenge Friend
+            </button>
+
+            <div style="margin-bottom:1.5rem;">
+                <div style="color:#fff; font-size:1.3rem; font-weight:900; letter-spacing:-0.5px; margin-bottom:0.4rem;">Submit to Leaderboard</div>
+                <div style="color:#555; font-size:0.8rem; line-height: 1.4;">Enter your callsign to claim your global rank in the Vision Lab.</div>
+            </div>
+
+            <div style="position: relative; margin-bottom: 1.2rem;">
+                <input type="text" id="player-nickname" placeholder="YOUR CALLSIGN" maxlength="20"
+                    style="width:100%; box-sizing:border-box; background:#000; border:2px solid #222; border-radius:14px; color:#fff; padding:1.2rem; font-family:'Roboto Mono',monospace; font-size:1rem; font-weight: 700; outline:none; transition:all 0.3s; letter-spacing: 2px;"
+                    onfocus="this.style.borderColor='var(--accent-color)'; this.style.boxShadow='0 0 15px rgba(201,28,35,0.2)'"
+                    onblur="this.style.borderColor='#222'; this.style.boxShadow='none'">
+            </div>
+
+            <button onclick="submitToLeaderboard()" style="width:100%; height:55px; background:var(--accent-gradient); border:none; color:#fff; border-radius:14px; font-weight:900; font-size:1rem; cursor:pointer; margin-bottom:1rem; transition: all 0.2s; text-transform: uppercase; letter-spacing: 2px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                SUBMIT SCORE
+            </button>
+
+            <button onclick="closeSubmitModal(); startTest(event);" style="width:100%; height:50px; background:transparent; border:1px solid rgba(255,255,255,0.05); color:#444; border-radius:14px; font-weight:800; font-size:0.85rem; cursor:pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s;" onmouseover="this.style.color='#999'; this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.color='#444'; this.style.background='transparent'">
+                Play Again
+            </button>
+
+            <div id="submit-modal-status" style="margin-top: 1rem; text-align:center; font-size:0.75rem; font-weight:700; color: #555;"></div>
+        </div>
+    </div>
+
+    <!-- Competition Overlays (Now Viewport Root) -->
+    <!-- History Overlay -->
+    <div id="lab-history-overlay" class="test-hub-overlay">
+        <div class="hub-content-box">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 4rem; position: relative;">
+                <h2 style="font-size: 2.5rem; font-weight: 900; letter-spacing: -1.5px; color: #fff; margin: 0;">Game History</h2>
+                <button onclick="closeCompetitionOverlays()" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.05); border: none; color: #444; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='#444'; this.style.background='rgba(255,255,255,0.05)'">
+                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+            
+            <div id="history-list-root">
+                <!-- History Table generated here -->
+            </div>
+
+            <div style="margin-top: 4rem; display: flex; justify-content: center; gap: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">
+                <button onclick="wipeHistory()" style="background: rgba(255,255,255,0.02); color: #444; border: 1px solid #222; padding: 1rem 3rem; border-radius: 50px; font-size: 0.8rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,100,100,0.05)'; this.style.color='var(--accent-color)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.color='#444'">
+                    Wipe All Records
+                </button>
+                <button onclick="closeCompetitionOverlays()" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1rem 3rem; border-radius: 50px; font-size: 0.85rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">
+                    Return to Mission
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Leaderboard Overlay -->
+    <div id="lab-global-rank-overlay" class="test-hub-overlay">
+        <div class="hub-content-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; font-weight: 900; letter-spacing: -1.5px; color: #fff; margin: 0;">Top Commanders</h2>
+                <button onclick="closeCompetitionOverlays()" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.05); border: none; color: #444; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='#444'; this.style.background='rgba(255,255,255,0.05)'">
+                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+
+            <div style="color: #444; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; margin-bottom: 1.2rem;">GLOBAL LEADERBOARD</div>
+            <div id="global-rank-list" style="margin-bottom: 4rem;">
+                <!-- Leaderboard rows generated here -->
+            </div>
+
+            <div style="color: #444; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; margin-bottom: 1.2rem;">COMMUNITY SCORE DISTRIBUTION</div>
+            <div style="width: 100%; margin-bottom: 4rem;">
+                <div style="height: 250px; width: 100%; position: relative;">
+                    <canvas id="community-dist-chart" height="180"></canvas>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; display: flex; justify-content: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">
+                <button onclick="closeCompetitionOverlays()" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.2rem 4rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;">
+                    Back to Laboratory
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO & Science Deep Dive -->
+    <div style="margin-top: 5rem;" class="lab-article">
+        <h2 style="font-size: 2rem; color: var(--text-main); margin-bottom: 1.5rem; font-weight: 800; letter-spacing: -1px;">Technical & Clinical Overview</h2>
+        <p>The <strong>Pelli-Robson Contrast Sensitivity Test</strong> is the medical standard for evaluating how well a patient can distinguish objects from their background. While visual acuity (Snellen) measures the <em>size</em> of letters, contrast sensitivity measures the <em>faintness</em> of letters, providing a more comprehensive view of functional vision.</p>
+        
+        <div class="info-card-premium" style="padding: 2.5rem; margin: 3rem 0; border-radius: 20px;">
+            <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">VCS Testing and Mold Exposure</h3>
+            <p style="margin-bottom: 1.2rem;">Increasingly, <strong>Visual Contrast Sensitivity (VCS)</strong> tests are used by clinicians as a biomarker for neurotoxicity. Chronic exposure to certain indoor molds, biotoxins, and environmental neurotoxins can lead to a measurable reduction in mid-spatial frequency contrast sensitivity.</p>
+            <p>Our online VCS test follows the <strong>0.15 Log CS</strong> step progression used in clinical Pelli-Robson charts, providing a reliable screening tool for individuals monitoring changes in their vision due to health or environmental factors.</p>
+        </div>
+
+        <h3 style="font-weight: 800; margin-top: 3.5rem; margin-bottom: 1rem;">Interpreting Your Results</h3>
+        <p>Contrast sensitivity is reported as the <strong>Log Contrast Sensitivity (Log CS)</strong> score. A higher score indicates better retinal health and neural processing of visual information.</p>
+        
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; margin: 2rem 0; font-family: 'Roboto Mono', monospace; font-size: 0.85rem;">
+            <div style="display: flex; justify-content: space-between; padding: 0.8rem; border-bottom: 1px solid var(--border-color);">
+                <span style="color: #00ff88; font-weight: 800;">2.00 - 2.25</span>
+                <span style="color: var(--text-main);">Optimal (Eagle Eye)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 0.8rem; border-bottom: 1px solid var(--border-color);">
+                <span style="color: var(--text-main); font-weight: 800;">1.65 - 1.95</span>
+                <span style="color: var(--text-main);">Normal / Functional Vision</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 0.8rem; border-bottom: 1px solid var(--border-color);">
+                <span style="color: #ff9f1c; font-weight: 800;">1.35 - 1.50</span>
+                <span style="color: var(--text-main);">Low-Normal (Early Warning)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 0.8rem;">
+                <span style="color: #ff4444; font-weight: 800;">< 1.35</span>
+                <span style="color: var(--text-main);">Significant Impairment</span>
+            </div>
+        </div>
+
+        <h3 style="font-weight: 800; margin-top: 3.5rem; margin-bottom: 1.5rem;">Pelli-Robson vs Mars Chart</h3>
+        <div class="info-card-premium">
+            <p style="margin: 0;">Both the <strong>Pelli-Robson</strong> and the <strong>Mars Contrast Sensitivity Test</strong> measure a patient's threshold using Sloan letters. However, the Pelli-Robson chart is typically viewed from 1 meter and uses fixed size triplets, whereas the Mars test is designed for near-vision (handheld) and decreases contrast on a per-letter basis. Our Vision Lab uses the Pelli-Robson standard for wide-range desktop diagnostic accuracy.</p>
+        </div>
+
+        <!-- FAQ Section (Cached Version v2.1: Formatting Corrected) -->
+        <h3 style="font-weight: 800; margin-top: 4rem; margin-bottom: 1.5rem;">Frequently Asked Questions</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            <div class="info-card-premium">
+                <h4 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 800;">Is this a clinical diagnosis?</h4>
+                <p style="font-size: 0.95rem; margin: 0;">No. This online test is a screening and calibration utility. While it accurately follows clinical step-progression, it is not a substitute for a professional eye exam by an optometrist or ophthalmologist.</p>
+            </div>
+            <div class="info-card-premium">
+                <h4 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 800;">Can a VCS test detect mold?</h4>
+                <p style="font-size: 0.95rem; margin: 0;">A VCS test measures neurological visual response. If your contrast sensitivity is reduced below 1.50 Log CS, it may correlate with neurotoxin exposure (mold/biotoxins). Consult a medical professional for a detoxification protocols.</p>
+            </div>
+            <div class="info-card-premium">
+                <h4 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 800;">How often should I take the test?</h4>
+                <p style="font-size: 0.95rem; margin: 0;">Monitoring your visual threshold monthly is recommended for individuals tracking recovery from environmental illness or managing chronic eye conditions like glaucoma.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SLOAN_LETTERS = ['C', 'D', 'H', 'K', 'N', 'O', 'P', 'R', 'S', 'V'];
+    const STEPS = [
+        { log: 0.00, contrast: 1.0000 },
+        { log: 0.15, contrast: 0.7079 },
+        { log: 0.30, contrast: 0.5012 },
+        { log: 0.45, contrast: 0.3548 },
+        { log: 0.60, contrast: 0.2512 },
+        { log: 0.75, contrast: 0.1778 },
+        { log: 0.90, contrast: 0.1259 },
+        { log: 1.05, contrast: 0.0891 },
+        { log: 1.20, contrast: 0.0631 },
+        { log: 1.35, contrast: 0.0447 },
+        { log: 1.50, contrast: 0.0316 },
+        { log: 1.65, contrast: 0.0224 },
+        { log: 1.80, contrast: 0.0158 },
+        { log: 1.95, contrast: 0.0112 },
+        { log: 2.10, contrast: 0.0079 },
+        { log: 2.25, contrast: 0.0056 }
+    ];
+
+    let currentStepIdx = 0;
+    let currentTriplet = [];
+    let currentInputIdx = 0;
+    let correctCount = 0;
+    let finalScore = 0;
+    let higherThanPct = 0;
+
+    function startTest(e) {
+        if (e) e.stopPropagation();
+        
+        // Reset state
+        currentStepIdx = 0;
+        currentTriplet = [];
+        currentInputIdx = 0;
+        correctCount = 0;
+        finalScore = 0;
+        higherThanPct = 0;
+
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'none';
+        document.getElementById('test-ui').style.display = 'flex';
+        
+        // Auto-scroll to test container with precise offset
+        const container = document.getElementById('test-container');
+        if (container) {
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Reset Leaderboard status
+        document.getElementById('nickname-status').style.display = 'none';
+        document.getElementById('see-rank-btn').style.display = 'flex';
+        
+        nextLevel();
+    }
+
+    function nextLevel() {
+        if (currentStepIdx >= STEPS.length) {
+            endTest();
+            return;
+        }
+
+        currentInputIdx = 0;
+        correctCount = 0;
+        currentTriplet = [];
+        
+        for (let i = 0; i < 3; i++) {
+            currentTriplet.push(SLOAN_LETTERS[Math.floor(Math.random() * SLOAN_LETTERS.length)]);
+        }
+
+        renderLevel();
+    }
+
+    function renderLevel() {
+        const step = STEPS[currentStepIdx];
+        const container = document.getElementById('triplet-container');
+        container.innerHTML = '';
+        
+        currentTriplet.forEach((letter) => {
+            const el = document.createElement('div');
+            el.className = 'sloan-letter';
+            el.innerText = letter;
+            el.style.opacity = step.contrast;
+            container.appendChild(el);
+        });
+
+        document.getElementById('hud-log-cs').innerText = step.log.toFixed(2);
+        document.getElementById('hud-level').innerText = currentStepIdx + 1;
+        
+        for (let i = 0; i < 3; i++) {
+            document.getElementById(`dot-${i}`).className = 'dot';
+        }
+        document.getElementById('dot-0').classList.add('active');
+    }
+
+    function handleInput(letter) {
+        const isCorrect = (letter === currentTriplet[currentInputIdx]);
+        if (isCorrect) correctCount++;
+
+        const dot = document.getElementById(`dot-${currentInputIdx}`);
+        dot.classList.remove('active');
+        dot.classList.add(isCorrect ? 'success' : 'fail');
+
+        currentInputIdx++;
+
+        if (currentInputIdx < 3) {
+            document.getElementById(`dot-${currentInputIdx}`).classList.add('active');
+        } else {
+            if (correctCount >= 2) {
+                finalScore = STEPS[currentStepIdx].log;
+                currentStepIdx++;
+                setTimeout(nextLevel, 400);
+            } else {
+                endTest();
+            }
+        }
+    }
+
+    function endTest() {
+        console.log("Ending test with score:", finalScore);
+        document.getElementById('test-ui').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'flex';
+        document.getElementById('final-log-cs').innerText = finalScore.toFixed(2);
+        
+        const summary = document.getElementById('result-summary');
+        if (finalScore >= 2.0) {
+            summary.innerHTML = '<p style="color: #00ff88;"><strong>Excellent.</strong> High-tier contrast sensitivity. Normal for healthy young adults.</p>';
+        } else if (finalScore >= 1.65) {
+            summary.innerHTML = '<p><strong>Normal.</strong> You have functional contrast sensitivity sufficient for most daily tasks.</p>';
+        } else if (finalScore >= 1.35) {
+            summary.innerHTML = '<p style="color: #ff9f1c;"><strong>Low-Normal.</strong> Some challenges in low-light or low-contrast environments.</p>';
+        } else {
+            summary.innerHTML = '<p style="color: #ff4444;"><strong>Impaired.</strong> Significant loss of contrast detected. Consider an eye exam.</p>';
+        }
+
+        submitResult().then(async () => {
+            saveLocalResult();
+            
+            // Populate initial global percentile feedback on result screen
+            try {
+                const res = await fetch(`/api/contrast/stats?score=${finalScore}`);
+                const data = await res.json();
+                const total = data.total || 0;
+                const lowerThanCount = data.lower_count || 0;
+                const percentile = total > 0 ? Math.round((lowerThanCount / total) * 100) : 0;
+                
+                const pctEl = document.getElementById('global-percentile-text');
+                pctEl.textContent = `Better than ${percentile}% of the global population.`;
+                pctEl.style.opacity = '1';
+            } catch (e) {
+                console.error("Result screen stats failed", e);
+            }
+
+            // showRankInput(); // Disabled auto-popup per user request
+        });
+    }
+
+    function saveLocalResult() {
+        let history = JSON.parse(localStorage.getItem('contrast_history') || '[]');
+        history.unshift({
+            score: finalScore,
+            date: new Date().toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false }),
+            nickname: localStorage.getItem('jnd_nickname') || 'Pilot'
+        });
+        localStorage.setItem('contrast_history', JSON.stringify(history.slice(0, 50)));
+    }
+
+    function openHistory() {
+        const overlay = document.getElementById('lab-history-overlay');
+        overlay.style.display = 'block';
+        renderHistoryTable();
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function renderHistoryTable() {
+        const container = document.getElementById('history-list-root');
+        const history = JSON.parse(localStorage.getItem('contrast_history') || '[]');
+        
+        if (history.length === 0) {
+            container.innerHTML = '<div style="color: #444; text-align: center; padding: 2rem; font-weight: 700;">No diagnostic history found.</div>';
+            return;
+        }
+
+        let html = `
+            <table style="width: 100%; border-collapse: collapse; color: #fff; font-family: 'Roboto Mono', monospace; font-size: 0.9rem;">
+                <thead>
+                    <tr style="color: var(--accent-color); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;">
+                        <th style="padding: 1rem; text-align: left;">LOG CS</th>
+                        <th style="padding: 1rem; text-align: left;">PILOT</th>
+                        <th style="padding: 1rem; text-align: right;">DATE</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+        
+        history.forEach(entry => {
+            html += `
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                    <td style="padding: 1.2rem 1rem; font-weight: 900; font-size: 1.1rem;">${parseFloat(entry.score).toFixed(2)}</td>
+                    <td style="padding: 1.2rem 1rem; color: #666; font-size: 0.8rem;">${entry.nickname}</td>
+                    <td style="padding: 1.2rem 1rem; text-align: right; color: #444; font-size: 0.75rem;">${entry.date}</td>
+                </tr>`;
+        });
+        
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    function wipeHistory() {
+        if (confirm("Erase all diagnostic records?")) {
+            localStorage.removeItem('contrast_history');
+            renderHistoryTable();
+        }
+    }
+
+    let globalChart = null;
+    async function openGlobalLeaderboard() {
+        const overlay = document.getElementById('lab-global-rank-overlay');
+        overlay.style.display = 'flex';
+        document.documentElement.classList.add('modal-open');
+        if (window.lucide) lucide.createIcons();
+        
+        try {
+            const res = await fetch('/api/contrast/leaderboard');
+            const leaderboard = await res.json();
+            
+            // Render Leaderboard
+            const list = document.getElementById('global-rank-list');
+            let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">';
+            leaderboard.forEach((r, i) => {
+                const isMe = (r.nickname === localStorage.getItem('jnd_nickname') && Math.abs(r.log_cs - finalScore) < 0.001);
+                html += `
+                    <tr style="${isMe ? 'background: rgba(201, 28, 35, 0.1);' : ''}; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                        <td style="padding: 0.7rem 0.5rem; color: #444; width: 40px;">#${i+1}</td>
+                        <td style="padding: 0.7rem 0.5rem; color: #fff; font-weight: 700;">${r.nickname}</td>
+                        <td style="padding: 0.7rem 0.5rem; text-align: right; color: var(--accent-color); font-weight: 800;">${r.log_cs.toFixed(2)}</td>
+                    </tr>`;
+            });
+            html += '</table>';
+            list.innerHTML = leaderboard.length > 0 ? html : '<div style="color: #444; text-align: center;">Retrieving data...</div>';
+
+            // Load Distribution Chart
+            const statsRes = await fetch(`/api/contrast/stats?score=${finalScore}`);
+            const stats = await statsRes.json();
+            renderGlobalDistChart(stats);
+        } catch (e) { console.error(e); }
+    }
+
+    function renderGlobalDistChart(data) {
+        const canvas = document.getElementById('community-dist-chart');
+        if (!canvas) return; // Guard against missing container
+        const ctx = canvas.getContext('2d');
+        if (globalChart) globalChart.destroy();
+        
+        globalChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.buckets.map(b => b.x.toFixed(2)),
+                datasets: [{
+                    data: data.buckets.map(b => b.y),
+                    borderColor: '#c91c23',
+                    backgroundColor: 'rgba(201, 28, 35, 0.4)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: data.buckets.map(b => Math.abs(b.x - finalScore) < 0.01 ? 8 : 0),
+                    pointBackgroundColor: '#fff',
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { display: false },
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+                        ticks: { color: '#444', font: { size: 10, weight: '800' } }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true }
+                }
+            }
+        });
+    }
+
+    function closeCompetitionOverlays() {
+        document.getElementById('lab-history-overlay').style.display = 'none';
+        document.getElementById('lab-global-rank-overlay').style.display = 'none';
+        document.documentElement.classList.remove('modal-open');
+    }
+
+    function closeSubmitModal() {
+        document.getElementById('submit-score-modal').style.display = 'none';
+        document.documentElement.classList.remove('modal-open');
+    }
+
+    async function showRankInput() {
+        const modal = document.getElementById('submit-score-modal');
+        modal.style.display = 'flex';
+        document.documentElement.classList.add('modal-open');
+        
+        // Identity Sync
+        const saved = localStorage.getItem('jnd_nickname');
+        if (saved) document.getElementById('player-nickname').value = saved;
+        
+        document.getElementById('submit-modal-status').textContent = '';
+        if (window.lucide) lucide.createIcons();
+
+        // Dynamic Feedback Logic
+        const titleEl = document.getElementById('feedback-title');
+        const rankTextEl = document.getElementById('feedback-rank-text');
+        const statTextEl = document.getElementById('feedback-stat-text');
+
+        try {
+            const res = await fetch(`/api/contrast/stats?score=${finalScore}`);
+            const data = await res.json();
+            
+            const total = data.total || 0;
+            const strictlyHigher = data.higher_count || 0;
+            const lowerThanCount = data.lower_count || 0;
+            const percentile = total > 0 ? Math.round((lowerThanCount / total) * 100) : 0;
+
+            let clinicalFeedback = "Normal Vision rank achieved.";
+            if (finalScore >= 2.0) {
+                clinicalFeedback = "Excellent. High-tier contrast sensitivity. Normal for healthy young adults.";
+            } else if (finalScore >= 1.65) {
+                clinicalFeedback = "Normal. You have functional contrast sensitivity sufficient for most daily tasks.";
+            } else if (finalScore >= 1.35) {
+                clinicalFeedback = "Low-Normal. Some challenges in low-light or low-contrast environments.";
+            } else {
+                clinicalFeedback = "Impaired. Significant loss of contrast detected. Consider an eye exam.";
+            }
+
+            const isExcellent = finalScore >= 2.0;
+
+            if (strictlyHigher === 0 && total > 0 && isExcellent) {
+                titleEl.textContent = "WAIT... ARE YOU A CYBORG?";
+                titleEl.style.color = "#00d2ff";
+                rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>You're literally #1 in the world. No one scored higher than you.`;
+            } else if (percentile >= 90 && finalScore >= 1.65) {
+                titleEl.textContent = "EYE OF THE TIGER";
+                titleEl.style.color = "#ff9d00";
+                rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>Top 10% global performance achieved. Elite vision detected.`;
+            } else {
+                titleEl.textContent = "MISSION COMPLETE";
+                titleEl.style.color = "#fff";
+                rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>Better than ${percentile}% of the global population.`;
+            }
+            statTextEl.textContent = `Evaluated against ${total.toLocaleString()} global sessions.`;
+            
+        } catch (e) {
+            console.error("Stats fetch failed", e);
+            titleEl.textContent = "MISSION COMPLETE";
+            rankTextEl.textContent = "Global stats currently unavailable, but your score is recorded.";
+            statTextEl.textContent = "Syncing with global hub...";
+        }
+    }
+
+    async function submitToLeaderboard() {
+        const nickInput = document.getElementById('player-nickname');
+        const nickname = (nickInput.value.trim() || "Anonymous");
+        const statusEl = document.getElementById('submit-modal-status');
+
+        if (nickname) localStorage.setItem('jnd_nickname', nickname);
+        
+        statusEl.style.color = '#888';
+        statusEl.textContent = 'Registering with Command...';
+
+        try {
+            const response = await fetch('/api/contrast/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nickname, log_cs: finalScore })
+            });
+
+            if (response.ok) {
+                statusEl.style.color = '#00ff88';
+                statusEl.textContent = '✓ Score submitted! Loading board...';
+                document.getElementById('nickname-status').style.display = 'block';
+                document.getElementById('nickname-status').innerHTML = `✓ Submitted as "${nickname}"`;
+                document.getElementById('see-rank-btn').style.display = 'none';
+
+                setTimeout(() => {
+                    closeSubmitModal();
+                    openGlobalLeaderboard(); // Show them the top 10
+                }, 1200);
+            } else {
+                throw new Error('Server error');
+            }
+        } catch (e) {
+            statusEl.style.color = 'var(--accent-color)';
+            statusEl.textContent = 'Transmission failed. Try again.';
+        }
+    }
+
+    async function loadLeaderboard() {
+        try {
+            const res = await fetch('/api/contrast/leaderboard');
+            const data = await res.json();
+            renderLeaderboard(data);
+        } catch (e) { console.error(e); }
+    }
+
+    function renderLeaderboard(data) {
+        const list = document.getElementById('global-rank-list');
+        const section = document.getElementById('global-leaderboard-section');
+        if (!data || data.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+        section.style.display = 'block';
+        section.style.opacity = '1';
+
+        let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">';
+        data.forEach((r, i) => {
+            const isMe = (r.nickname === localStorage.getItem('jnd_nickname') && Math.abs(r.log_cs - finalScore) < 0.001);
+            html += `
+                <tr style="${isMe ? 'background: rgba(201, 28, 35, 0.1);' : ''}; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                    <td style="padding: 0.5rem; color: #444; width: 25px;">#${i+1}</td>
+                    <td style="padding: 0.5rem; color: #fff; font-weight: 700;">${r.nickname}</td>
+                    <td style="padding: 0.5rem; text-align: right; color: var(--accent-color); font-weight: 800;">${r.log_cs.toFixed(2)}</td>
+                </tr>`;
+        });
+        html += '</table>';
+        list.innerHTML = html;
+    }
+
+    function submitResult() {
+        return fetch('/api/contrast/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                log_cs: finalScore,
+                nickname: 'Guest'
+            })
+        }).catch(err => console.error("Submit failed", err));
+    }
+
+    let chart = null;
+    function loadStats() {
+        fetch(`/api/contrast/stats?score=${finalScore}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.buckets || data.buckets.length === 0) return;
+                
+                // Calculate percentile feedback
+                if (data.total > 0) {
+                    higherThanPct = Math.round(((data.total - data.higher_count) / data.total) * 100);
+                    const feedback = document.getElementById('feedback-text');
+                    feedback.innerHTML = higherThanPct > 50 
+                        ? `EXCELLENT. You performed better than ${higherThanPct}% of pilots in our global database! 🔥`
+                        : `GOOD EFFORT. You are in the top ${100 - higherThanPct}% of global contrast masters! 👁️`;
+                }
+
+                const ctx = document.getElementById('distChart').getContext('2d');
+                if (chart) chart.destroy();
+                
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.buckets.map(b => b.x.toFixed(2)),
+                        datasets: [{
+                            data: data.buckets.map(b => b.y),
+                            borderColor: '#c91c23',
+                            backgroundColor: 'rgba(201, 28, 35, 0.4)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: data.buckets.map(b => Math.abs(b.x - finalScore) < 0.01 ? 8 : 4),
+                            pointBackgroundColor: data.buckets.map(b => Math.abs(b.x - finalScore) < 0.01 ? '#fff' : '#c91c23'),
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: { padding: { left: 10, right: 10, top: 10, bottom: 0 } },
+                        scales: {
+                            y: { display: false, beginAtZero: true },
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+                                ticks: { color: '#888', font: { size: 11, weight: '800' } }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { 
+                                enabled: true,
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: '#161212',
+                                titleColor: '#fff',
+                                bodyColor: '#888',
+                                borderColor: '#da252c',
+                                borderWidth: 1
+                            }
+                        }
+                    }
+                });
+            }).catch(err => console.error("Stats load failed", err));
+    }
+    function shareResult() {
+        let rank = "Normal Vision";
+        let emoji = "👁️";
+        if (finalScore >= 2.0) { rank = "Eagle Eye"; emoji = "🏆"; }
+        else if (finalScore >= 1.65) { rank = "Optimal Vision"; emoji = "✅"; }
+        else if (finalScore >= 1.35) { rank = "Functional Vision"; emoji = "📊"; }
+        else { rank = "Sub-Optimal"; emoji = "⚠️"; }
+
+        const percentileText = higherThanPct > 0 ? ` Better than ${higherThanPct}% of the population!` : "";
+        const text = `${emoji} I just tested my Contrast Sensitivity on HandleKit!\n\nRank: ${rank}\nScore: ${finalScore.toFixed(2)} Log CS\n${percentileText}\n\nCheck yours here:`;
+        
+        const url = window.location.href;
+        if (navigator.share) {
+            navigator.share({ title: 'Contrast Sensitivity Test', text: text, url: url });
+        } else {
+            navigator.clipboard.writeText(`${text} ${url}`);
+            alert('Score copied to clipboard with your rank!');
+        }
+    }
+    
+    // Initial icons
+    window.addEventListener('DOMContentLoaded', () => {
+        if (window.lucide) lucide.createIcons();
+    });
+</script>
+{% endblock %}

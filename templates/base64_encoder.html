@@ -1,4 +1,4 @@
-﻿{% set title = "Base64 Encoder & Decoder | Free Online Tool | HandleKit" %}
+{% set title = "Base64 Encoder & Decoder | Free Online Tool | HandleKit" %}
 {% set description = "Encode text or files to Base64 and decode Base64 strings back to plain text instantly. Free, fast, 100% browser-based, no data ever leaves your device." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
@@ -109,16 +109,16 @@
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is Base64?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            Base64 is a binary-to-text encoding scheme that represents binary data using a set of 64 printable ASCII characters. It is commonly used when binary data needs to be transmitted or stored in systems that only support text, such as email, HTML, or JSON.
+            Base64 is a binary-to-text encoding scheme that represents binary data in the form of a set of 64 printable ASCII characters. It is often necessary to use binary data in a system that only supports text. In this case, Base64 encoding can be used.
         </p>
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">How It Works</h3>
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">Every 3 bytes of binary data are converted into 4 Base64 characters. The result is approximately 33% larger than the original but is safe to transmit through any text-based protocol.</p>
+                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">For each set of 3 bytes of binary data, there are 4 Base64 characters. This means that the data is approximately 33% larger than the original but perfectly safe to send using any text-based protocol.</p>
             </div>
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Base64 vs. Encryption</h3>
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">Base64 is <strong style="color: var(--text-main);">encoding, not encryption</strong>. Anyone can decode it, it provides no security on its own. It is used purely for safe data transport, not for protecting sensitive information.</p>
+                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">Base64 is encoding, not encryption. Anyone can decode it. It does not provide security. It's simply for safe transmission.</p>
             </div>
         </div>
     </div>
@@ -131,27 +131,34 @@
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I encode text to Base64?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Make sure you're in "Text" mode. Paste or type your text in the input box, then click "Encode to Base64". The encoded string appears in the output, ready to copy. To go the other direction, paste a Base64 string and click "Decode from Base64". The "Swap" button lets you flip the input and output quickly.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">First, you need to be in <strong style="color: var(--text-main);">"Text" mode</strong>. Then you can paste your text in the input box. After clicking <strong style="color: var(--accent-color);">"Encode to Base64"</strong>, you will get your encoded text ready to copy. If you want to reverse the process, you can paste your Base64 text. Then click <strong style="color: var(--accent-color);">"Decode from Base64"</strong>. You can use <strong style="color: var(--text-main);">"Swap"</strong> to reverse text and Base64 rapidly.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I encode a file to Base64?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Switch to "File → Base64" mode using the button at the top, then drag and drop any file onto the upload zone (or click it to browse). The tool reads the file entirely in your browser and outputs the Base64 string instantly. You can copy it or download it as a <code style="color:var(--accent-color);">.txt</code> file. No file size is sent to a server, it all happens locally.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Click on <strong style="color: var(--text-main);">"File → Base64"</strong> at the top. Then you can simply drop a file onto the upload region, or click on it to browse. You can read the file entirely in your browser. Then you can get your Base64 code immediately. There are <strong style="color: var(--accent-color);">no file sizes sent to a server</strong>. This works entirely on your local machine.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is Base64 a form of encryption?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, and this is a really common misconception. Base64 is pure encoding, it just represents binary data as text. Anyone who sees the encoded string can instantly decode it. It provides zero security. It exists purely to move binary data safely through systems that only handle text, not to protect the data from being read.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, and this is a really common misconception. Base 64 is just encoding, and it does nothing to secure data. Anyone who looks at a Base 64 encoded string can immediately decode it.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why does Base64 output end with "==" sometimes?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Base64 works by grouping 3 bytes of input into 4 characters of output. If the input isn't a multiple of 3 bytes, padding characters (<code style="color:var(--accent-color);">=</code> or <code style="color:var(--accent-color);">==</code>) are added to make the output length a multiple of 4. It's just bookkeeping, the <code style="color:var(--accent-color);">=</code> tells the decoder how many padding bytes to expect when reversing the process.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why does Base 64 output contain "==" sometimes?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Base 64 is a simple encoding scheme, and it works by taking 3 bytes of data and converting them into 4 characters of output. This means that if you're working with a data length that isn't a multiple of 3, you'll need to add padding characters to make it a multiple of 4. This is why you'll sometimes see "==" in a Base 64 encoded output, because this is a signal to a decoder that there are padding bytes in the data.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Where is Base64 used in practice?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You'll run into it constantly in web development: embedding small images directly in HTML or CSS as data URIs, HTTP Basic Authentication headers (credentials are Base64-encoded before sending), JWT token payloads, email attachments (MIME encoding), and transferring binary data through JSON APIs that only accept text strings.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Where is Base 64 used in the real world?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">You'll use Base 64 encoding constantly in web development, especially if you're working with any of the following:</p>
+                <ul style="color: var(--text-sub); line-height: 1.8; margin: 0; padding-left: 1.5rem;">
+                    <li>Embedding images directly into HTML or CSS</li>
+                    <li>Working with HTTP Basic Authentication headers</li>
+                    <li>Working with JWT token payloads</li>
+                    <li>Sending email attachments</li>
+                    <li>Working with binary data and a JSON API that only accepts text strings</li>
+                </ul>
             </div>
 
         </div>

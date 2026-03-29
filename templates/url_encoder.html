@@ -1,4 +1,4 @@
-﻿{% set title = "URL Encoder & Decoder | Free Online Tool | HandleKit" %}
+{% set title = "URL Encoder & Decoder | Free Online Tool | HandleKit" %}
 {% set description = "Encode or decode URLs and URI components instantly online. Supports encodeURIComponent, decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
@@ -8,7 +8,7 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="link" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">URL Encoder & Decoder</h1>
-        <p style="color: var(--text-sub);">Encode or decode URLs and URI components instantly, no signup, 100% private.</p>
+        <p style="color: var(--text-sub);">Instantly encode or decode URLs and URI components. No sign-up required. 100% private.</p>
     </div>
 
     <!-- Mode Toggle -->
@@ -81,10 +81,7 @@
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is URL Encoding?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            URL encoding (also called percent-encoding) converts characters that are not allowed in a URL into a safe format. Each unsafe character is replaced by a percent sign (%) followed by two hexadecimal digits representing the character's ASCII code. For example, a space becomes <code style="color:var(--accent-color);">%20</code> and an ampersand becomes <code style="color:var(--accent-color);">%26</code>.
-        </p>
-        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 2rem;">
-            This is essential when passing query parameters, form data, or special characters in URLs. Without proper encoding, browsers and servers may misinterpret the data.
+            URL encoding, which is also known as percent encoding, takes a URL and replaces any characters that are not allowed in a URL. This is done by inserting a percent sign (%) followed by two hexadecimal digits representing the ASCII code of a character. For example, a space becomes %20, whereas an ampersand becomes %26. This is important when you are passing form data or special characters in a URL. Without encoding, browsers may misinterpret the data.
         </p>
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
@@ -115,27 +112,27 @@
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I encode a URL?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Paste your URL or text into the input box, make sure "Component" mode is selected for query parameter values (or "Full URL" if you're encoding a complete URL), then click "Encode". The percent-encoded result appears in the output. Hit "Copy" to use it in your code or browser.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can paste the URL or text in the input field and select <strong style="color: var(--text-main);">'Component'</strong> for query parameter value encoding (or <strong style="color: var(--text-main);">'Full URL'</strong> for complete URL encoding). After that, click <strong style="color: var(--accent-color);">'Encode'</strong>, and the percent-encoded URL will be displayed in the output field. The encoded URL can be copied using the 'Copy' button.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference between Component and Full URL mode?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">Component mode</strong> (encodeURIComponent) encodes nearly every special character, including <code style="color:var(--accent-color);">/ ? # & =</code>, perfect for encoding a search query or parameter value. <strong style="color: var(--text-main);">Full URL mode</strong> (encodeURI) leaves structural URL characters intact, so slashes and question marks stay as-is. Use Component for values, Full URL for complete addresses.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the difference between 'Component' and 'Full URL' modes?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--accent-color);">'Component'</strong> (encodeURIComponent) percent-encodes nearly all special characters in a URL. This is useful for encoding a <strong style="color: var(--text-main);">search query</strong> or a value for a <strong style="color: var(--text-main);">query parameter</strong>. <strong style="color: var(--accent-color);">'Full URL'</strong> (encodeURI) leaves structural characters in a URL unchanged, so forward slashes and question marks are left as-is.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why does a space become %20 in URLs?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">URLs can only contain a limited set of ASCII characters. Any character outside that set, including spaces, gets "percent-encoded": replaced by a % sign and the character's two-digit hexadecimal code. A space is ASCII character 32, which is 20 in hex, hence %20. Some forms use + to represent spaces in query strings, but %20 is the correct standard.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why is a space encoded as %20 in a URL?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">There are only a limited set of ASCII characters that a URL can contain. All other characters, including a space, are percent-encoded: replaced with a percent sign (%) followed by two digits representing the code for that character in hexadecimal. The code for a space is 32 in decimal and 20 in hexadecimal, hence %20.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">When do I need to decode a URL?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Decoding is useful when you receive a URL from a server log, a redirect, or an API response and need to read what the encoded values actually say. For example, a URL like <code style="color:var(--accent-color);">q=hello%20world%21</code> decodes to <code style="color:var(--accent-color);">q=hello world!</code>. Paste any encoded URL here and click "Decode" to make it human-readable again.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You need to decode a URL when you receive a URL in a server log, after a redirect, or as a response from a web API and need to read the actual value of the encoded string. For example, a URL like 'q=hello%20world%21' needs to be decoded to 'q=hello world!' before you can read its value. Simply paste the encoded URL in the input field and click 'Decode' to make the encoded URL human-readable again.</p>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does this tool store the URLs I paste?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. Everything happens locally in your browser with JavaScript. We never see or log the URLs you encode or decode. This matters if you're working with URLs that contain sensitive tokens, search terms, or personal data, you can use this tool with confidence.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does this tool store the URLs that I paste?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. The encoding and decoding process happens on the client side using JavaScript in your browser. We do not store any URLs that you paste into this page. If you are working with URLs that contain sensitive data, you can use this page with confidence.</p>
             </div>
 
         </div>

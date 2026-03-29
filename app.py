@@ -11,6 +11,7 @@ import hashlib
 import json
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.url_map.strict_slashes = False
 CORS(app)
 
@@ -393,14 +394,13 @@ def color_picker():
 
 @app.route('/jnd-test')
 def jnd_test():
-    # Pass optional challenge data for dynamic social previews
-    challenge = {
-        "score": request.args.get('s'),
-        "level": request.args.get('l'),
-        "pct": request.args.get('p'),
-        "name": request.args.get('n')
-    }
-    return render_template('jnd_test.html', challenge=challenge)
+    return render_template('jnd_test.html')
+
+@app.route('/contrast-sensitivity-test')
+def contrast_sensitivity_test():
+    return render_template('contrast_sensitivity_test.html')
+
+
 
 @app.route('/articles')
 def articles_list():
@@ -564,6 +564,219 @@ def api_jnd_leaderboard():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/reaction/submit', methods=['POST'])
+def api_reaction_submit():
+    data = request.get_json()
+    if not data or ('score' not in data and 'latency' not in data):
+        return jsonify({"success": False, "error": "Missing data"}), 400
+    
+    data_dir = 'data'
+    os.makedirs(data_dir, exist_ok=True)
+    file_path = os.path.join(data_dir, 'reaction_global.json')
+    
+    try:
+        results = []
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                results = json.load(f)
+        
+        results.append({
+            "nickname": data.get('nickname', 'Anonymous'),
+            "score": int(data.get('score', 0)),
+            "latency": int(data.get('latency', 0)),
+            "level": int(data.get('level', 1)),
+            "difficulty": data.get('difficulty', 'standard'),
+            "timestamp": time.time()
+        })
+        
+        with open(file_path, 'w') as f:
+            json.dump(results, f)
+            
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/reaction/stats', methods=['GET'])
+def api_reaction_stats():
+    file_path = 'data/reaction_global.json'
+    if not os.path.exists(file_path):
+        return jsonify({"buckets": [], "total": 0})
+    
+    try:
+        with open(file_path, 'r') as f:
+            all_results = json.load(f)
+        
+        # We analyze Latency (ms) for the distribution chart
+        results = [r for r in all_results if r.get('latency', 0) > 0]
+        
+        if not results:
+            return jsonify({"buckets": [], "total": 0})
+            
+        latencies = sorted([r['latency'] for r in results])
+        total = len(latencies)
+        
+        # Standardized range for high-quality graphing: 0ms to 800ms
+        bucket_size = 10 
+        max_range = 800
+        
+        buckets = {}
+        for l in latencies:
+            b_idx = (l // bucket_size) * bucket_size
+            if b_idx <= max_range:
+                buckets[b_idx] = buckets.get(b_idx, 0) + 1
+            
+        final_buckets = []
+        for b_min in range(0, max_range + bucket_size, bucket_size):
+            final_buckets.append({
+                "x": b_min,
+                "y": buckets.get(b_min, 0)
+            })
+            
+        # Global Percentiles
+        percentiles = {
+            "25": latencies[int(total * 0.25)],
+            "50": latencies[int(total * 0.50)],
+            "75": latencies[int(total * 0.75)]
+        }
+
+        return jsonify({
+            "buckets": final_buckets,
+            "total": total,
+            "percentiles": percentiles
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/reaction/leaderboard', methods=['GET'])
+def api_reaction_leaderboard():
+    file_path = 'data/reaction_global.json'
+    if not os.path.exists(file_path):
+        return jsonify([])
+    
+    try:
+        with open(file_path, 'r') as f:
+            results = json.load(f)
+        
+        # For arcade leaderboard: sort by score desc
+        # For best time leaderboard: sort by latency asc
+        sort_by = request.args.get('sort', 'score')
+        
+        if sort_by == 'score':
+            sorted_results = sorted(results, key=lambda x: x['score'], reverse=True)
+        else:
+            # Latency (best time) - only show those with actual latency
+            l_results = [r for r in results if r.get('latency', 0) > 0]
+            sorted_results = sorted(l_results, key=lambda x: x['latency'])
+            
+        return jsonify(sorted_results[:10])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/contrast/submit', methods=['POST'])
+def api_contrast_submit():
+    data = request.get_json()
+    if not data or 'log_cs' not in data:
+        return jsonify({"success": False, "error": "Missing data"}), 400
+    
+    data_dir = 'data'
+    os.makedirs(data_dir, exist_ok=True)
+    file_path = os.path.join(data_dir, 'contrast_global.json')
+    
+    try:
+        results = []
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                results = json.load(f)
+        
+        results.append({
+            "nickname": data.get('nickname', 'Anonymous'),
+            "log_cs": float(data['log_cs']),
+            "timestamp": time.time()
+        })
+        
+        with open(file_path, 'w') as f:
+            json.dump(results, f)
+            
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/contrast/leaderboard', methods=['GET'])
+def api_contrast_leaderboard():
+    file_path = 'data/contrast_global.json'
+    if not os.path.exists(file_path):
+        return jsonify([])
+    try:
+        with open(file_path, 'r') as f:
+            all_results = json.load(f)
+        # Sort by score desc
+        sorted_results = sorted(all_results, key=lambda x: x['log_cs'], reverse=True)
+        return jsonify(sorted_results[:10])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/contrast/stats', methods=['GET'])
+def api_contrast_stats():
+    file_path = 'data/contrast_global.json'
+    if not os.path.exists(file_path):
+        return jsonify({"buckets": [], "total": 0})
+    
+    try:
+        with open(file_path, 'r') as f:
+            all_results = json.load(f)
+        
+        if not all_results:
+            return jsonify({"buckets": [], "total": 0})
+            
+        scores = sorted([r['log_cs'] for r in all_results])
+        total = len(scores)
+        
+        # Pelli-Robson Log CS ranges from 0.0 to 2.25 in 0.05 increments
+        bucket_size = 0.05
+        max_val = 2.4
+        
+        buckets = {}
+        for s in scores:
+            b_idx = round(s / bucket_size) * bucket_size
+            key = f"{b_idx:.2f}"
+            buckets[key] = buckets.get(key, 0) + 1
+            
+        final_buckets = []
+        for i in range(int(max_val / bucket_size) + 1):
+            val = i * bucket_size
+            key = f"{val:.2f}"
+            final_buckets.append({
+                "x": val,
+                "y": buckets.get(key, 0)
+            })
+            
+        # Calculate higher/lower if score sent
+        score_val = request.args.get('score')
+        higher_count = 0
+        lower_count = 0
+        if score_val is not None:
+            try:
+                score_val = float(score_val)
+                higher_count = sum(1 for s in scores if s > (score_val + 0.001))
+                lower_count = sum(1 for s in scores if s < (score_val - 0.001))
+            except: pass
+
+        return jsonify({
+            "buckets": final_buckets,
+            "total": total,
+            "higher_count": higher_count,
+            "lower_count": lower_count,
+            "percentiles": {
+                "25": scores[int(total * 0.25)],
+                "50": scores[int(total * 0.50)],
+                "75": scores[int(total * 0.75)]
+            }
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
+
     app.run(debug=True, port=5000, threaded=True)

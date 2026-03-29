@@ -1,0 +1,826 @@
+{% set title = "Reaction Time Test | Vision Lab | Neural Latency Benchmark" %}
+{% if challenge and challenge.ms %}
+    {% set display_name = challenge.name if challenge.name else "A Pilot" %}
+    {% set og_title = display_name + "'s Neural Latency Challenge" %}
+    {% set description = "See if you can beat this reaction time of " + challenge.ms + "ms in the Neural Latency Test!" %}
+{% else %}
+    {% set og_title = "Vision Lab: Neural Latency Test" %}
+    {% set description = "Measure your neural latency with our professional reaction time benchmark. Calibrate your reflexes and compare your speed globally with the Vision Lab." %}
+{% endif %}
+{% set og_image = "reaction-og.png" %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/reaction-og.png') }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Vision Lab: Neural Latency Test",
+      "url": "{{ request.url }}",
+      "description": "Scientific reaction time benchmark measuring neural latency in milliseconds.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "Article",
+      "headline": "Reaction Time: Understanding Neural Latency and Human Performance",
+      "description": "A scientific guide to reaction time, neural pathways, and how elite performers optimize their reflexes.",
+      "author": { "@type": "Organization", "name": "HandleKit Research Lab" },
+      "keywords": ["reaction time test", "neural latency", "reflexes", "human benchmark", "cognitive speed"],
+      "articleSection": ["Psychology", "Neuroscience", "Human Performance"],
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
+{% block fonts %}
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;600;700;800;900&family=Roboto+Mono:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;600;700;800;900&family=Roboto+Mono:wght@700&display=swap" media="print" onload="this.media='all'">
+<noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;600;700;800;900&family=Roboto+Mono:wght@700&display=swap">
+</noscript>
+{% endblock %}
+{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --lab-bg: #0a0a0a;
+        --glass-bg: rgba(25, 25, 25, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.12);
+        --font-main: 'Inter', system-ui, sans-serif;
+        --font-heading: 'Outfit', sans-serif;
+        --accent-color: #00d2ff; /* Neon Cyan for Reaction */
+        --wait-color: #c91c23; /* Red for Waiting */
+        --early-color: #3498db; /* Blue for Early */
+        --accent-gradient: linear-gradient(135deg, #00d2ff 0%, #3a86ff 100%);
+    }
+
+    /* Prevent background scrolling and double scrollbars */
+    .modal-open { overflow: hidden !important; height: 100vh !important; }
+    .modal-open body { overflow: hidden !important; height: 100vh !important; position: fixed; width: 100%; top: 0; left: 0; }
+
+    #lab-stage {
+        min-height: 540px;
+        height: auto;
+        position: relative;
+        width: 100%;
+        border-radius: 24px;
+        overflow: hidden; 
+        cursor: pointer;
+        user-select: none;
+        background: #000;
+        margin-bottom: 3rem;
+        transition: background 0.1s ease-out, all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #lab-stage.immersion-mode {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 10000 !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #lab-stage.waiting { background: var(--wait-color); }
+    #lab-stage.ready { background: var(--accent-color); }
+    #lab-stage.early { background: var(--early-color); }
+
+    .lab-hud {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 150;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        pointer-events: none;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    .hud-node { display: flex; flex-direction: column; }
+    .hud-label { font-size: 0.6rem; color: #666; letter-spacing: 1px; margin-bottom: 2px; text-transform: uppercase; }
+    .hud-value { font-size: 1.1rem; color: #fff; font-weight: 700; }
+    .hud-node.target-goal { border-left: 1px solid rgba(255,255,255,0.1); padding-left: 1.5rem; display: none; }
+    .hud-node.target-goal .hud-value { color: var(--accent-color); text-shadow: 0 0 10px rgba(0,210,255,0.3); }
+
+    /* Fluid Overlay styles */
+    .lab-overlay {
+        position: relative;
+        min-height: 540px;
+        width: 100%;
+        background: rgba(10, 10, 10, 1);
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3.5rem 2rem;
+        text-align: center;
+        backdrop-filter: blur(20px);
+    }
+
+    /* Centered Overlays in Full-screen Immersion */
+    .immersion-mode .lab-overlay {
+        position: absolute;
+        inset: 0;
+        padding: 2rem;
+        overflow-y: auto !important; /* Enable scroll if content exceeds viewport */
+        max-height: 100vh !important;
+        justify-content: flex-start; /* Ensure top-alignment when scrolling */
+    }
+
+    .mode-selector {
+        display: flex;
+        background: rgba(255,255,255,0.05);
+        padding: 6px;
+        border-radius: 100px;
+        border: 1px solid rgba(255,255,255,0.1);
+        gap: 4px;
+    }
+
+    .mode-opt {
+        padding: 0.7rem 1.4rem;
+        border-radius: 100px;
+        color: #666;
+        font-weight: 700;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .mode-opt.active {
+        background: var(--accent-gradient);
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+    }
+
+    .stage-msg {
+        color: #fff;
+        font-family: var(--font-heading);
+        font-weight: 900;
+        font-size: 3.5rem;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .stage-submsg {
+        color: rgba(255,255,255,0.8);
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+    }
+
+    /* Result Card */
+    .result-card-premium {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 1.2rem;
+        margin-bottom: 0.5rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .metric-label { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 4px; }
+    
+    .arcade-only { display: none; }
+    .arcade-mode .arcade-only { display: flex; }
+
+    @keyframes pulse-wait {
+        0% { opacity: 0.8; }
+        50% { opacity: 1; }
+        100% { opacity: 0.8; }
+    }
+    .waiting .stage-msg { animation: pulse-wait 1.5s infinite; }
+
+    .click-prompt {
+        color: var(--accent-color);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.8rem;
+        border: 1px solid rgba(0, 210, 255, 0.3);
+        padding: 0.8rem 1.5rem;
+        border-radius: 100px;
+        background: rgba(0, 210, 255, 0.05);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .click-prompt:hover {
+        background: rgba(0, 210, 255, 0.1);
+        transform: scale(1.05);
+    }
+
+    #stats-chart-wrapper {
+        width: 100%;
+        max-width: 440px;
+        margin: 0.5rem 0;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 16px;
+        padding: 1.2rem;
+        position: relative;
+    }
+
+    .chart-axis { stroke: rgba(255,255,255,0.1); stroke-width: 1; }
+    .chart-grid { stroke: rgba(255,255,255,0.03); stroke-width: 1; }
+    .chart-label { fill: #555; font-size: 0.6rem; font-family: var(--font-main); font-weight: 600; }
+    
+    .dist-curve { fill: rgba(0, 210, 255, 0.08); stroke: rgba(0, 210, 255, 0.4); stroke-width: 2; }
+    .user-marker { stroke: var(--accent-color); stroke-width: 2; stroke-dasharray: 4 4; transition: all 1s cubic-bezier(0.19, 1, 0.22, 1); }
+    .user-marker-glow { fill: var(--accent-color); filter: blur(4px); opacity: 0.3; }
+    .user-marker-node { fill: var(--accent-color); stroke: #000; stroke-width: 2; }
+
+    .chart-legend { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+</style>
+
+<div class="tool-page-container lab-page-header" style="margin-top: 2rem; margin-bottom: 3rem; text-align: center;">
+    <div class="container">
+        <h6 class="eyebrow" style="color: var(--accent-color); font-weight: 800; letter-spacing: 4px; margin-bottom: 0.5rem;">VISION LAB // SERIES 02</h6>
+        <h1>Neural Latency Test</h1>
+        <p style="max-width: 600px; margin: 0 auto; margin-top: 1rem;">Scientific Perceptual Response Diagnostic. Measure and optimize your cognitive lightning.</p>
+    </div>
+</div>
+
+<div class="container" style="max-width: 1000px;">
+    <div id="lab-stage" onmousedown="handleAction()">
+        <div class="lab-hud" id="lab-hud" style="display: none;">
+            <div class="hud-node" style="pointer-events: auto;">
+                <button onclick="exitLab()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #666; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.3)';" onmouseout="this.style.color='#666'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                    <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+                </button>
+            </div>
+            <div class="hud-node">
+                <div class="hud-label">Trial</div>
+                <div class="hud-value"><span id="trial-count">0</span> / 5</div>
+            </div>
+            <div class="hud-node target-goal" id="hud-target-goal" style="display: none;">
+                <div class="hud-label">Goal to Beat</div>
+                <div id="target-val" class="hud-value">-- ms</div>
+            </div>
+            <div class="hud-node">
+                <div class="hud-label">Average</div>
+                <div class="hud-value"><span id="avg-val">0</span>ms</div>
+            </div>
+            <div class="hud-node">
+                <div class="hud-label" id="timer-label">Last</div>
+                <div class="hud-value"><span id="timer-val">0</span>ms</div>
+            </div>
+        </div>
+
+        <div id="countdown-wrap" style="position: absolute; color: var(--accent-color); font-size: 8rem; font-weight: 900; font-family: var(--font-heading); display: none; text-shadow: 0 0 30px rgba(0, 210, 255, 0.4); z-index: 10;">3</div>
+        <div class="stage-msg" id="stage-msg" style="z-index: 10;"></div>
+        <div class="stage-submsg" id="stage-submsg" style="z-index: 10;"></div>
+        <div id="click-to-continue" style="display: none; margin-top: 2rem; z-index: 10;">
+            <div class="click-prompt">Click to Continue Test</div>
+        </div>
+
+        <!-- Start Overlay -->
+        <div id="lab-start-overlay" class="lab-overlay">
+            <div id="start-icon"><i data-lucide="activity" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i></div>
+            <h2 style="color: #fff; margin-bottom: 0.5rem; font-weight: 800;">Vision Lab Diagnostic</h2>
+            <p style="color: #666; max-width: 440px; margin-bottom: 2.5rem; font-size: 0.85rem; line-height: 1.6;">Measure your neural latency with our professional benchmark. Complete 5 trials to determine your absolute reaction profile.</p>
+            
+            <button onclick="startLab(event)" style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.1rem 3.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(0, 210, 255, 0.2); text-transform: uppercase; letter-spacing: 1px;">
+                Start Benchmark
+            </button>
+        </div>
+
+        <!-- Game Over / Results -->
+        <div id="lab-result-overlay" class="lab-overlay" style="display: none;">
+            <div id="lab-exit-btn-results" onclick="event.stopPropagation(); exitLab()" style="position: absolute; top: 25px; left: 25px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #666; transition: all 0.2s; z-index: 300;" onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.3)';" onmouseout="this.style.color='#666'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+            </div>
+            <i data-lucide="award" style="width: 48px; height: 48px; color: var(--accent-color); margin-bottom: 1rem; margin-top: 1rem;"></i>
+            <h2 style="color: #fff; font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem;">DIAGNOSIS COMPLETE</h2>
+            
+            <div class="result-card-premium" style="width: 100%; max-width: 400px; margin-bottom: 0;">
+                <div style="display: flex; justify-content: space-around;">
+                    <div>
+                        <div class="metric-label">Mean Latency</div>
+                        <div id="final-avg" style="color: #fff; font-size: 1.8rem; font-weight: 800;">0ms</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Rating</div>
+                        <div id="final-pct" style="color: var(--accent-color); font-size: 1.4rem; font-weight: 800;">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="stats-chart-wrapper">
+                <svg id="stats-svg" viewBox="0 0 400 180" style="width: 100%; height: auto; overflow: visible;">
+                    <!-- Grid Lines -->
+                    <g id="chart-grid-grp"></g>
+                    <!-- Distribution Curve -->
+                    <path id="dist-path" class="dist-curve" d="" />
+                    <!-- User Marker -->
+                    <g id="user-marker-grp" style="opacity: 0; transition: opacity 0.5s;">
+                        <rect id="marker-glow" class="user-marker-glow" x="0" y="0" width="4" height="150" />
+                        <line id="marker-line" class="user-marker" x1="0" y1="0" x2="0" y2="150" />
+                        <circle id="marker-dot" class="user-marker-node" cx="0" cy="0" r="4" />
+                    </g>
+                    <!-- Labels -->
+                    <g id="chart-labels-grp"></g>
+                </svg>
+                
+                <div class="chart-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background: rgba(0, 210, 255, 0.4);"></div> Average Users</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: var(--accent-color);"></div> Your Speed</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; width: 100%; max-width: 400px; flex-wrap: wrap; margin-bottom: 2rem;">
+                <button onclick="event.stopPropagation(); resetLab()" style="flex: 1; background: #222; color: #fff; border: none; padding: 1rem; border-radius: 12px; font-weight: 700; cursor: pointer;">Retry</button>
+                <button onclick="event.stopPropagation(); challengeFriends()" style="flex: 1; background: var(--accent-gradient); color: #fff; border: none; padding: 1rem; border-radius: 12px; font-weight: 700; cursor: pointer;">Challenge Friend</button>
+                <button onclick="event.stopPropagation(); exitLab()" style="width: 100%; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #666; padding: 0.8rem; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 0.5rem;" onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.3)';" onmouseout="this.style.color='#666'; this.style.borderColor='rgba(255,255,255,0.1)';">Main Menu</button>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a href="/jnd-test" style="color: #666; text-decoration: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">&larr; Switch to Color Lab</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Science Section for SEO -->
+    <div class="lab-article">
+        <div class="eyebrow">RESEARCH LOG // NEURAL PERFORMANCE</div>
+        <div class="meta">PUBLISHED: MARCH 2026 // AUTHOR: VISION LAB SYSTEMS</div>
+        
+        <h2>The Science of Neural Latency</h2>
+        <p>Human reaction time is the temporal bridge between sensory input and motor output. This gap, measured in milliseconds (ms), is known as <strong>neural latency</strong>. In a classic visual reaction test, light strikes the retina, travels through the optic nerve to the primary visual cortex, is processed in the prefrontal cortex, and finally triggers a signal to the motor cortex to initiate a physical movement.</p>
+        
+        <div class="formula">T(total) = T(sensory) + T(cognitive) + T(motor)</div>
+        
+        <p>While the average human reaction time is approximately <strong>250ms</strong> for visual stimuli, elite performers such as Formula 1 drivers or professional gamers often reach latencies beneath <strong>200ms</strong>. Factors affecting these results include neuroplasticity, physical fatigue, and even the refresh rate of your display hardware.</p>
+        
+        <div class="note">
+            <strong>Vision Lab Insight:</strong> Our benchmark uses high-precision timing hooks to minimize local browser delay, providing you with an absolute latency reading that correlates closely with professional clinical assessments.
+        </div>
+    </div>
+</div>
+
+<script>
+// Game State
+let currentState = 'idle'; // idle, waiting, ready, result, early
+let gameMode = 'arcade';
+let startTime = 0;
+let endTime = 0;
+let timeoutId = null;
+let trials = [];
+let lives = 3;
+let score = 0;
+let level = 1;
+let bestTime = Infinity;
+let challengeMs = null;
+let challengerName = null;
+
+const stage = document.getElementById('lab-stage');
+const stageMsg = document.getElementById('stage-msg');
+const stageSub = document.getElementById('stage-submsg');
+const startOverlay = document.getElementById('lab-start-overlay');
+const resultOverlay = document.getElementById('lab-result-overlay');
+const hud = document.getElementById('lab-hud');
+
+// Mode Selection Logic
+document.querySelectorAll('.mode-opt').forEach(opt => {
+    opt.onclick = (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.mode-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        gameMode = opt.dataset.mode;
+        
+        const title = document.getElementById('start-overlay-title');
+        const icon = document.getElementById('start-icon');
+        const startBtn = document.querySelector('#lab-start-overlay button');
+        
+        if (gameMode === 'arcade') {
+            title.textContent = 'Vision Lab Fun Mode';
+            icon.innerHTML = '<i data-lucide="gamepad-2" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i>';
+            startBtn.textContent = 'ENTER ARCADE';
+        } else {
+            title.textContent = 'Vision Lab Diagnostic Mode';
+            icon.innerHTML = '<i data-lucide="activity" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i>';
+            startBtn.textContent = 'START DIAGNOSTIC';
+        }
+        lucide.createIcons();
+    };
+});
+
+function toggleBodyScroll(enable) {
+    if (enable) {
+        document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
+    } else {
+        document.body.classList.add('modal-open');
+        document.documentElement.classList.add('modal-open');
+    }
+}
+
+function exitLab() {
+    clearTimeout(timeoutId);
+    currentState = 'idle';
+    toggleBodyScroll(true);
+    
+    // Reset stage and overlays
+    stage.classList.remove('immersion-mode', 'waiting', 'ready', 'early');
+    startOverlay.style.display = 'flex';
+    resultOverlay.style.display = 'none';
+    hud.style.display = 'none';
+    document.getElementById('hud-target-goal').style.display = 'none';
+    
+    // Reset messages
+    stageMsg.textContent = "";
+    stageSub.textContent = "";
+    document.getElementById('click-to-continue').style.display = 'none';
+}
+
+function resetLab() {
+    startLab(null);
+}
+
+function startLab(e) {
+    if (e) e.stopPropagation();
+    
+    // Immersion Mode lock
+    stage.classList.add('immersion-mode');
+    toggleBodyScroll(false);
+
+    startOverlay.style.display = 'none';
+    hud.style.display = 'flex';
+    if (challengeMs) {
+        document.getElementById('hud-target-goal').style.display = 'flex';
+        document.getElementById('target-val').textContent = challengeMs + ' ms';
+    }
+    
+    // Reset and Start Flow
+    document.getElementById('stage-msg').style.display = 'block';
+    document.getElementById('stage-submsg').style.display = 'block';
+    
+    trials = [];
+    bestTime = Infinity;
+    document.getElementById('avg-val').textContent = '0';
+    document.getElementById('timer-val').textContent = '0';
+    document.getElementById('trial-count').textContent = '0';
+    
+    // Force immediate visual clearing of previous states
+    stage.style.background = '#000';
+    stage.classList.remove('pulse-green', 'too-early', 'ready', 'waiting', 'early');
+    
+    prepareRound();
+}
+
+function prepareRound() {
+    clearTimeout(timeoutId);
+    currentState = 'waiting';
+    stage.className = 'waiting';
+    stage.classList.add('immersion-mode'); // Keep immersion
+    stageMsg.innerText = "WAIT FOR GREEN";
+    stageSub.innerText = "Focus on the screen...";
+    document.getElementById('click-to-continue').style.display = 'none';
+    
+    // Random delay between 1.5 and 4.5 seconds
+    const delay = 1500 + Math.random() * 3000;
+    timeoutId = setTimeout(triggerStart, delay);
+}
+
+function triggerStart() {
+    currentState = 'ready';
+    stage.className = 'ready';
+    stageMsg.textContent = 'REACT';
+    stageSub.textContent = 'GO!';
+    startTime = performance.now();
+}
+
+function handleAction() {
+    if (currentState === 'idle') {
+        const prompt = document.getElementById('click-to-continue');
+        if (prompt.style.display === 'block') {
+            prepareRound();
+        }
+        return;
+    };
+    
+    if (currentState === 'waiting') {
+        handleFailure('TOO EARLY');
+        return;
+    }
+    
+    if (currentState === 'ready') {
+        endTime = performance.now();
+        const latency = Math.round(endTime - startTime);
+        handleSuccess(latency);
+    }
+}
+
+function getRating(ms) {
+    if (ms <= 0) return '---';
+    if (ms < 180) return 'Excellent';
+    if (ms <= 220) return 'Very Fast';
+    if (ms <= 260) return 'Average';
+    if (ms <= 320) return 'Below Average';
+    return 'Slow';
+}
+
+function exitLab() {
+    currentState = 'idle';
+    clearTimeout(timeoutId);
+    startOverlay.style.display = 'flex';
+    resultOverlay.style.display = 'none';
+    hud.style.display = 'none';
+    stage.className = '';
+    stageMsg.textContent = '';
+    stageSub.textContent = '';
+    document.getElementById('countdown-wrap').style.display = 'none';
+}
+
+function handleSuccess(ms) {
+    clearTimeout(timeoutId);
+    currentState = 'idle';
+    stage.className = '';
+    stageMsg.textContent = ms + 'ms';
+    const rating = getRating(ms);
+    stageSub.textContent = `${rating} Reaction`;
+    
+    if (ms < bestTime) bestTime = ms;
+    document.getElementById('timer-val').textContent = ms;
+
+    trials.push(ms);
+    const avg = Math.round(trials.reduce((a,b) => a+b) / trials.length);
+    document.getElementById('avg-val').textContent = avg;
+    document.getElementById('trial-count').textContent = trials.length;
+
+    if (trials.length >= 5) {
+        showResults(avg);
+    } else {
+        document.getElementById('click-to-continue').style.display = 'block';
+    }
+}
+
+function handleFailure(msg) {
+    clearTimeout(timeoutId);
+    currentState = 'idle';
+    stage.className = 'early';
+    stageMsg.textContent = msg;
+    stageSub.textContent = 'PENALTY: TRIAL RESTARTING';
+    document.getElementById('click-to-continue').style.display = 'block';
+}
+
+function showResults(val) {
+    currentState = 'idle';
+    hud.style.display = 'none';
+    stageMsg.textContent = "";
+    stageSub.textContent = "";
+    document.getElementById('countdown-wrap').style.display = 'none';
+    document.getElementById('click-to-continue').style.display = 'none';
+    resultOverlay.style.display = 'flex';
+    
+    const finalAvg = document.getElementById('final-avg');
+    const finalPct = document.getElementById('final-pct');
+    const title = document.querySelector('#lab-result-overlay h2');
+    
+    title.textContent = 'DIAGNOSIS COMPLETE';
+    
+    if (challengeMs) {
+        if (val < challengeMs) {
+            title.textContent = 'TARGET DESTROYED';
+            title.style.color = '#00ff88';
+            title.style.textShadow = '0 0 20px rgba(0, 255, 136, 0.4)';
+            triggerConfetti();
+        } else {
+            title.textContent = 'CHALLENGE FAILED';
+            title.style.color = '#ff3333';
+        }
+    }
+
+    finalAvg.parentElement.querySelector('.metric-label').textContent = 'Mean Latency';
+    finalAvg.textContent = val + 'ms';
+    finalPct.parentElement.querySelector('.metric-label').textContent = 'Rating';
+    finalPct.textContent = getRating(val);
+    finalPct.style.fontSize = '1.4rem';
+    
+    if (val > 0) {
+        fetch('/api/reaction/submit', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                latency: val,
+                nickname: localStorage.getItem('jnd_nickname') || 'A Pilot'
+            })
+        });
+        
+        // Fetch global stats and draw chart
+        fetch('/api/reaction/stats')
+            .then(r => r.json())
+            .then(stats => {
+                if (stats.buckets && stats.buckets.length > 0) {
+                    drawDistribution(val, stats.buckets);
+                }
+            });
+    }
+}
+
+function drawDistribution(myMs, buckets) {
+    const svg = document.getElementById('stats-svg');
+    const path = document.getElementById('dist-path');
+    const gridGrp = document.getElementById('chart-grid-grp');
+    const labelsGrp = document.getElementById('chart-labels-grp');
+    const markerGrp = document.getElementById('user-marker-grp');
+    
+    // Clear previous
+    gridGrp.innerHTML = '';
+    labelsGrp.innerHTML = '';
+    
+    const width = 400;
+    const height = 150;
+    const padding = 10;
+    
+    const maxVal = Math.max(...buckets.map(b => b.y)) || 1;
+    const bucketRange = 800; // 0 to 800ms
+    
+    // Helper to map coordinates
+    const getX = (ms) => (ms / bucketRange) * width;
+    const getY = (count) => height - (count / maxVal) * (height - 20);
+
+    // Draw Grid & Labels
+    for (let i = 0; i <= 800; i += 200) {
+        const x = getX(i);
+        gridGrp.innerHTML += `<line class="chart-grid" x1="${x}" y1="0" x2="${x}" y2="${height}" />`;
+        labelsGrp.innerHTML += `<text class="chart-label" x="${x}" y="${height + 15}" text-anchor="middle">${i}ms</text>`;
+    }
+
+    // Build Spline Path (Quadratic interpolation)
+    let d = `M 0 ${height}`;
+    for (let i = 0; i < buckets.length - 1; i++) {
+        const curr = buckets[i];
+        const next = buckets[i+1];
+        const cpX = (getX(curr.x) + getX(next.x)) / 2;
+        d += ` Q ${getX(curr.x)} ${getY(curr.y)} ${cpX} ${(getY(curr.y) + getY(next.y)) / 2}`;
+    }
+    d += ` L ${width} ${height} Z`;
+    path.setAttribute('d', d);
+
+    // Position Marker
+    const markerX = Math.min(width, Math.max(0, getX(myMs)));
+    // Find approximate Y on path (interpolation)
+    const bIdx = Math.floor((myMs / 800) * (buckets.length - 1));
+    const markerY = getY(buckets[bIdx]?.y || 0);
+
+    const markerLine = document.getElementById('marker-line');
+    const markerGlow = document.getElementById('marker-glow');
+    const markerDot = document.getElementById('marker-dot');
+
+    markerLine.setAttribute('x1', markerX);
+    markerLine.setAttribute('x2', markerX);
+    markerGlow.setAttribute('x', markerX - 2);
+    markerDot.setAttribute('cx', markerX);
+    markerDot.setAttribute('cy', markerY);
+
+    setTimeout(() => {
+        markerGrp.style.opacity = '1';
+    }, 500);
+}
+
+function resetLab() {
+    resultOverlay.style.display = 'none';
+    stage.style.background = '#000';
+    stage.classList.remove('pulse-green');
+    stage.classList.remove('too-early');
+    startLab();
+}
+
+function exitLab() {
+    resultOverlay.style.display = 'none';
+    startOverlay.style.display = 'flex';
+    hud.style.display = 'none';
+    document.getElementById('hud-target-goal').style.display = 'none';
+    document.getElementById('stage-msg').style.display = 'none';
+    document.getElementById('stage-submsg').style.display = 'none';
+    
+    stage.style.background = '#000';
+    stage.classList.remove('immersion-mode');
+    toggleBodyScroll(true);
+    
+    currentState = 'idle';
+    trials = [];
+}
+
+function challengeFriends() {
+    const val = document.getElementById('final-avg').textContent.replace('ms','');
+    const params = new URLSearchParams();
+    params.set('ms', val);
+    params.set('n', localStorage.getItem('jnd_nickname') || 'A Pilot');
+    params.set('v', '2'); 
+    
+    const shareUrl = window.location.origin + window.location.pathname + '?' + params.toString();
+    
+    let text = `My neural latency is ${val}ms! Can you beat my score in the Vision Lab? 🎯`;
+    if (challengeMs && parseInt(val) < challengeMs) {
+        text = `I just SMASHED ${challengerName}'s record with a ${val}ms latency! Can anyone beat me? 🏆`;
+    }
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Neural Latency Challenge',
+            text: text,
+            url: shareUrl
+        });
+    } else {
+        navigator.clipboard.writeText(shareUrl + ' ' + text);
+        alert('Challenge link copied!');
+    }
+}
+
+function triggerConfetti() {
+    const stage = document.getElementById('lab-stage');
+    for (let i = 0; i < 40; i++) {
+        const p = document.createElement('div');
+        p.style.cssText = `
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: hsl(${Math.random() * 360}, 100%, 50%);
+            left: 50%;
+            top: 50%;
+            border-radius: 2px;
+            z-index: 1000;
+            pointer-events: none;
+        `;
+        stage.appendChild(p);
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 4 + Math.random() * 12;
+        const dx = Math.cos(angle) * velocity;
+        const dy = Math.sin(angle) * velocity;
+        
+        let x = 0, y = 0, opacity = 1;
+        const anim = setInterval(() => {
+            x += dx;
+            y += dy + 0.4;
+            opacity -= 0.025;
+            p.style.transform = `translate(${x}px, ${y}px) rotate(${x*2}deg)`;
+            p.style.opacity = opacity;
+            if (opacity <= 0) {
+                clearInterval(anim);
+                p.remove();
+            }
+        }, 16);
+    }
+}
+
+// Challenge Detection
+function loadChallenge() {
+    const params = new URLSearchParams(window.location.search);
+    const ms = params.get('ms');
+    const n = params.get('n');
+    
+    if (ms) {
+        challengeMs = parseInt(ms);
+        challengerName = n || 'A Pilot';
+        
+        // Update Title and Icon
+        const title = document.querySelector('#lab-start-overlay h2');
+        const desc = document.querySelector('#lab-start-overlay p');
+        const startIcon = document.getElementById('start-icon');
+        
+        startIcon.innerHTML = '<i data-lucide="swords" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i>';
+        title.textContent = 'CHALLENGE RECEIVED';
+        desc.innerHTML = `<span style="color:#fff; font-weight:800;">${challengerName}</span> has challenged you! <br>Beat their record of <span style="color:var(--accent-color); font-weight:800;">${challengeMs}ms</span> to claim the title.`;
+        
+        const startBtn = document.querySelector('#lab-start-overlay button');
+        startBtn.textContent = 'ACCEPT CHALLENGE';
+        startBtn.style.background = 'linear-gradient(45deg, #00d2ff, #0072ff)';
+        
+        if (window.lucide) lucide.createIcons();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadChallenge);
+</script>
+{% endblock %}

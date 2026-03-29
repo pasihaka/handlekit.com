@@ -70,6 +70,16 @@
         text-transform: uppercase;
         letter-spacing: 1px;
     }
+    
+    .jnd-article .card-tag { color: #c91c23; }
+    .jnd-article .read-link { color: #c91c23; }
+    .jnd-article .card-glow { background: radial-gradient(circle, rgba(201, 28, 35, 0.05) 0%, transparent 70%); }
+    .jnd-article:hover { border-color: #c91c23; }
+
+    .reaction-article .card-tag { color: #00d2ff; }
+    .reaction-article .read-link { color: #00d2ff; }
+    .reaction-article .card-glow { background: radial-gradient(circle, rgba(0, 210, 255, 0.05) 0%, transparent 70%); }
+    .reaction-article:hover { border-color: #00d2ff; }
 
     .card-glow {
         position: absolute;
@@ -90,7 +100,7 @@
 
     <div class="articles-grid">
         <!-- JND Article -->
-        <a href="/articles/jnd-perception" class="article-card">
+        <a href="/articles/jnd-perception" class="article-card jnd-article">
             <div class="card-glow"></div>
             <span class="card-tag">Psychology & Perception</span>
             <h2>Just Noticeable Difference: Weber's Law & Perception</h2>
@@ -100,13 +110,6 @@
             </div>
         </a>
 
-        <!-- Placeholder for more articles -->
-        <div class="article-card" style="opacity: 0.4; cursor: default;">
-            <span class="card-tag">Upcoming</span>
-            <h2>Color Science & Oklab</h2>
-            <p>A deep dive into perceptually uniform color spaces and the future of digital color design.</p>
-            <div class="read-link" style="opacity: 0.5;">Coming Soon</div>
-        </div>
     </div>
 </div>
 {% endblock %}
