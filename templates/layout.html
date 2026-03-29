@@ -18,8 +18,8 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/favicon-180x180.png') }}">
 
-    <title>{{ title if title else "HandleKit | Professional Digital Tools for Developers &amp; Creators" }}</title>
-    <meta name="description" content="{{ description if description else 'Fast, simple, and premium online tools. Check username availability, optimize images with AI, and use essential developer utilities with HandleKit.' }}">
+    <title>{% block title %}{{ title if title else "HandleKit | Professional Digital Tools for Developers &amp; Creators" }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{{ description if description else 'Fast, simple, and premium online tools. Check username availability, optimize images with AI, and use essential developer utilities with HandleKit.' }}{% endblock %}">
 
     <!-- OpenGraph / Facebook -->
     <meta property="og:type" content="website">
