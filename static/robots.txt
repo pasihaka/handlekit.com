@@ -4,3 +4,4 @@ Disallow: /api/
 Disallow: /static/img/optimized/
 
 Sitemap: https://handlekit.com/sitemap.xml
+Sitemap: https://handlekit.com/gbp-triage/sitemap.xml
