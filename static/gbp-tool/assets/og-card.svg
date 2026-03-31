@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Google Business Profile Suspension Triage &amp; Appeal Prep Checker</title>
+  <desc id="desc">A calm blue and white card describing a static triage tool for suspended, disabled, verification failed, or appeal denied profiles.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6fbff"/>
+      <stop offset="100%" stop-color="#e8f1fa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1080" cy="110" r="220" fill="#d9e8f7"/>
+  <rect x="72" y="72" width="1056" height="486" rx="28" fill="#ffffff" stroke="#b7cadc" stroke-width="2"/>
+  <text x="120" y="160" fill="#0a4174" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700">Google Business Profile</text>
+  <text x="120" y="214" fill="#172536" font-family="'Segoe UI', sans-serif" font-size="54" font-weight="700">Suspension Triage &amp;</text>
+  <text x="120" y="276" fill="#172536" font-family="'Segoe UI', sans-serif" font-size="54" font-weight="700">Appeal Prep Checker</text>
+  <text x="120" y="354" fill="#516273" font-family="'Segoe UI', sans-serif" font-size="28">Likely issue buckets. Evidence checklist. Official next steps.</text>
+  <rect x="120" y="416" width="232" height="64" rx="32" fill="#0a4174"/>
+  <text x="154" y="457" fill="#ffffff" font-family="'Segoe UI', sans-serif" font-size="24" font-weight="700">Static, SEO-friendly v1</text>
+</svg>
