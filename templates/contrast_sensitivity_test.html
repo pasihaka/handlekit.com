@@ -130,9 +130,9 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     }
 
     .key-btn {
-        background: var(--input-bg);
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
+        background: #f8f9fa;
+        border: 1px solid #e2e8f0;
+        color: #1a0f0f;
         padding: 1.25rem;
         border-radius: 12px;
         font-size: 1.5rem;
@@ -143,8 +143,9 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 
     .key-btn:hover {
         border-color: var(--accent-color);
-        background: var(--code-bg);
+        background: #ffffff;
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
 
     .stats-card {
@@ -161,7 +162,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background: var(--border-color);
+        background: #e2e8f0;
         transition: all 0.3s;
     }
 
@@ -411,7 +412,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             <div id="feedback-header" style="margin-bottom: 2rem;">
                 <div id="feedback-title"
                     style="color:#00d2ff; font-size:1.1rem; font-weight:900; line-height:1.2; margin-bottom:0.4rem; text-transform: uppercase; letter-spacing: 0.5px;">
-                    MISSION COMPLETE</div>
+                    TEST COMPLETE</div>
                 <div id="feedback-rank-text" style="color:#fff; font-size:0.95rem; font-weight:700; line-height:1.5;">
                     Analyzing your global standing...</div>
                 <div id="feedback-stat-text" style="color:#555; font-size:0.8rem; margin-top: 0.5rem;">Connecting to
@@ -772,7 +773,8 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 const percentile = total > 0 ? Math.round((lowerThanCount / total) * 100) : 0;
 
                 const pctEl = document.getElementById('global-percentile-text');
-                pctEl.textContent = `Better than ${percentile}% of the global population.`;
+                pctEl.innerHTML = `Better than ${percentile}% of those who took our test. <br>
+                <span style="font-size: 0.75rem; color: #666; font-weight: 400; margin-top: 8px; display: block;">Note: Our database is still growing and may not yet reflect true global distributions.</span>`;
                 pctEl.style.opacity = '1';
             } catch (e) {
                 console.error("Result screen stats failed", e);
@@ -970,15 +972,15 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 titleEl.style.color = "#ff9d00";
                 rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>Top 10% global performance achieved. Elite vision detected.`;
             } else {
-                titleEl.textContent = "MISSION COMPLETE";
+                titleEl.textContent = "TEST COMPLETE";
                 titleEl.style.color = "#fff";
-                rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>Better than ${percentile}% of the global population.`;
+                rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>Better than ${percentile}% of those who took our test.`;
             }
-            statTextEl.textContent = `Evaluated against ${total.toLocaleString()} global sessions.`;
+            statTextEl.textContent = `Evaluated against ${total.toLocaleString()} global sessions. Note: Our database is still growing and may not yet reflect true global distributions.`;
 
         } catch (e) {
             console.error("Stats fetch failed", e);
-            titleEl.textContent = "MISSION COMPLETE";
+            titleEl.textContent = "TEST COMPLETE";
             rankTextEl.textContent = "Global stats currently unavailable, but your score is recorded.";
             statTextEl.textContent = "Syncing with global hub...";
         }
@@ -1134,7 +1136,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         else if (finalScore >= 1.35) { rank = "Functional Vision"; emoji = "📊"; }
         else { rank = "Sub-Optimal"; emoji = "⚠️"; }
 
-        const percentileText = higherThanPct > 0 ? ` Better than ${higherThanPct}% of the population!` : "";
+        const percentileText = higherThanPct > 0 ? ` Better than ${higherThanPct}% of those who took our test!` : "";
         const text = `${emoji} I just tested my Contrast Sensitivity on HandleKit!\n\nRank: ${rank}\nScore: ${finalScore.toFixed(2)} Log CS\n${percentileText}\n\nCheck yours here:`;
 
         const url = window.location.href;

@@ -46,10 +46,21 @@
 <style>
     :root {
         --lab-bg: #0a0a0a;
+        --lab-text: #ffffff;
+        --lab-shadow: rgba(0, 0, 0, 0.5);
         --glass-bg: rgba(25, 25, 25, 0.7);
         --glass-border: rgba(255, 255, 255, 0.12);
         --font-main: 'Inter', system-ui, sans-serif;
         --font-heading: 'Outfit', sans-serif;
+    }
+
+    html[data-theme='light'],
+    html[data-theme='light'] :root {
+        --lab-bg: #ffffff;
+        --lab-text: #1a0f0f;
+        --lab-shadow: rgba(0, 0, 0, 0.1);
+        --glass-bg: rgba(255, 255, 255, 0.95);
+        --glass-border: rgba(201, 28, 35, 0.1);
     }
 
     /* Prevent background scrolling and double scrollbars */
@@ -105,7 +116,7 @@
     }
 
     .lab-article .meta {
-        color: #444;
+        color: var(--text-sub);
         font-size: 0.8rem;
         margin-bottom: 2rem;
         border-bottom: 1px solid var(--border-color);
@@ -121,7 +132,7 @@
         text-align: center;
         font-family: 'Roboto Mono', monospace;
         font-size: 1.8rem;
-        color: #fff;
+        color: var(--text-main);
         margin: 2.5rem 0;
         box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     }
@@ -192,7 +203,7 @@
         width: 100%;
         min-height: 600px;
         height: auto;
-        background: #000;
+        background: var(--lab-bg);
         border-radius: 20px;
         position: relative;
         overflow: hidden;
@@ -201,7 +212,7 @@
         border: 1px solid rgba(255, 255, 255, 0.05);
         transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         z-index: 10;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 20px 50px var(--lab-shadow);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -254,8 +265,8 @@
     }
 
     .result-card-premium {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
         padding: 1.8rem;
         border-radius: 20px;
         margin: 2.5rem 0;
@@ -307,7 +318,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        background: radial-gradient(circle at center, #0a0a0a, #000);
+        background: radial-gradient(circle at center, var(--lab-bg), var(--bg-color));
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         border-radius: 0;
@@ -329,7 +340,7 @@
         padding: 0.6rem 1.8rem;
         z-index: 100;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        color: #eee;
+        color: var(--lab-text);
         font-family: 'Outfit', sans-serif;
         font-weight: 700;
         font-size: 0.85rem;
@@ -433,8 +444,8 @@
     /* Difficulty Selector Styles */
     .diff-selector {
         display: flex;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
         padding: 4px;
         border-radius: 12px;
         margin-bottom: 2rem;
@@ -479,8 +490,8 @@
         bottom: 100%;
         left: 50%;
         transform: translate(-50%, -10px);
-        background: #222;
-        color: #eee;
+        background: var(--glass-bg);
+        color: var(--text-main);
         padding: 8px 12px;
         border-radius: 8px;
         font-size: 0.75rem;
@@ -509,15 +520,15 @@
         height: 160px;
         margin: 1.5rem 0;
         position: relative;
-        background: rgba(255, 255, 255, 0.02);
+        background: var(--input-bg);
         border-radius: 12px;
         padding: 0.8rem;
     }
 
     .chart-tooltip {
         position: absolute;
-        background: #222;
-        color: #fff;
+        background: var(--input-bg);
+        color: var(--text-main);
         padding: 4px 10px;
         border-radius: 6px;
         font-size: 0.7rem;
@@ -538,8 +549,8 @@
     }
 
     .result-card-premium {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
         border-radius: 20px;
         padding: 1.5rem 2rem;
         margin-bottom: 1rem;
@@ -604,7 +615,7 @@
         flex-direction: column;
         align-items: center;
         min-width: 100px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 8px 32px var(--lab-shadow);
         position: relative;
         overflow: hidden;
     }
@@ -625,7 +636,7 @@
         font-family: 'Roboto Mono', monospace;
         font-size: 1rem;
         font-weight: 700;
-        color: #fff;
+        color: var(--lab-text);
     }
 
     .led-dot {
@@ -694,8 +705,8 @@
     /* Mode Selector Styles */
     .mode-selector {
         display: flex;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
         padding: 4px;
         border-radius: 100px;
         margin-bottom: 2rem;
@@ -757,7 +768,8 @@
         position: relative;
         min-height: 600px;
         width: 100%;
-        background: rgba(10, 10, 10, 1);
+        background: var(--lab-bg);
+        color: var(--lab-text);
         z-index: 210;
         display: none;
         /* Controlled by JS and Specificity */
@@ -785,7 +797,7 @@
         position: absolute;
         inset: 0;
         border-radius: 0;
-        background: radial-gradient(circle at center, #0a0a0a, #000);
+        background: radial-gradient(circle at center, var(--lab-bg), var(--bg-color));
     }
 
     /* Level Up Toast */
@@ -868,7 +880,8 @@
     #lab-history-overlay {
         position: absolute;
         inset: 0;
-        background: #0a0a0a;
+        background: var(--lab-bg);
+        color: var(--lab-text);
         z-index: 230;
         display: none;
         flex-direction: column;
@@ -1016,7 +1029,7 @@
             <div id="start-icon"><i data-lucide="gamepad-2"
                     style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.2rem;"></i></div>
             <h2 id="start-overlay-title"
-                style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; text-align: center;">Vision Lab Fun Mode
+                style="color: var(--lab-text); margin-bottom: 0.5rem; font-weight: 800; text-align: center;">Vision Lab Fun Mode
             </h2>
             <p
                 style="color: #666; text-align: center; max-width: 440px; margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.85rem;">
@@ -1064,7 +1077,7 @@
                 <i data-lucide="skull"
                     style="width: 48px; height: 48px; color: var(--accent-color); margin-bottom: 1rem;"></i>
                 <h2
-                    style="color: #fff; font-size: 2.2rem; font-weight: 900; margin-bottom: 0.3rem; letter-spacing: -1px;">
+                    style="color: var(--lab-text); font-size: 2.2rem; font-weight: 900; margin-bottom: 0.3rem; letter-spacing: -1px;">
                     GAME OVER</h2>
                 <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Your visual acuity reached its limit.
                 </p>
@@ -1073,12 +1086,12 @@
                     <div style="display: flex; justify-content: space-around; gap: 1.5rem;">
                         <div>
                             <div class="metric-label">Final Level</div>
-                            <div id="final-level-arcade" style="color: #fff; font-size: 1.6rem; font-weight: 800;">1
+                            <div id="final-level-arcade" style="color: var(--lab-text); font-size: 1.6rem; font-weight: 800;">1
                             </div>
                         </div>
                         <div>
                             <div class="metric-label">Final Score</div>
-                            <div id="final-score-arcade" style="color: #fff; font-size: 1.6rem; font-weight: 800;">0
+                            <div id="final-score-arcade" style="color: var(--lab-text); font-size: 1.6rem; font-weight: 800;">0
                             </div>
                         </div>
                     </div>
@@ -1131,7 +1144,7 @@
 
                 <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
                     <button onclick="shareJNDResult()"
-                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 1.8rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                        style="background: var(--input-bg); border: 1px solid var(--border-color); color: var(--lab-text); padding: 0.8rem 1.8rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
                         <i data-lucide="share-2" style="width: 14px; height: 14px;"></i>
                         Challenge
                     </button>
@@ -1150,24 +1163,25 @@
 
         <!-- Feedback + Score Submission Pop-up Modal -->
         <div id="submit-score-modal"
-            style="display:none; position:absolute; inset:0; z-index:300; align-items:center; justify-content:center; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); border-radius:24px;">
+            style="display:none; position:absolute; inset:0; z-index:300; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); border-radius:24px;">
             <div
-                style="background:#111; border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:2rem 2rem 1.6rem; width:90%; max-width:380px; position:relative; animation: slideUpFade 0.3s cubic-bezier(0.19,1,0.22,1);">
+                style="background: var(--lab-bg); color: var(--lab-text); border:1px solid var(--border-color); border-radius:20px; padding:2rem 2rem 1.6rem; width:90%; max-width:380px; position:relative; animation: slideUpFade 0.3s cubic-bezier(0.19,1,0.22,1);">
                 <!-- Close button -->
                 <button onclick="closeSubmitModal()"
-                    style="position:absolute; top:0.9rem; right:0.9rem; background:rgba(255,255,255,0.05); border:none; color:#666; width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;"
-                    onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">
+                    style="position:absolute; top:0.9rem; right:0.9rem; background: var(--input-bg); border:1px solid var(--border-color); color: var(--text-sub); width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;"
+                    onmouseover="this.style.color='var(--lab-text)'; this.style.borderColor='var(--accent-color)'"
+                    onmouseout="this.style.color='var(--text-sub)'; this.style.borderColor='var(--border-color)'">
                     <i data-lucide="x" style="width:14px; height:14px;"></i>
                 </button>
                 <!-- Rank Feedback Section -->
                 <div id="feedback-text"
-                    style="font-size:0.85rem; font-weight:700; line-height:1.5; margin-bottom:1.4rem; padding-bottom:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    style="font-size:0.85rem; font-weight:700; line-height:1.5; margin-bottom:1.4rem; padding-bottom:1.2rem; border-bottom:1px solid var(--border-color);">
                     Analyzing your rank...</div>
 
                 <button onclick="shareJNDResult()"
-                    style="width:100%; height:44px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:10px; font-weight:800; font-size:0.85rem; cursor:pointer; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;"
-                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
-                    onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                    style="width:100%; height:44px; background: var(--input-bg); border:1px solid var(--border-color); color: var(--lab-text); border-radius:10px; font-weight:800; font-size:0.85rem; cursor:pointer; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;"
+                    onmouseover="this.style.background='var(--border-color)'"
+                    onmouseout="this.style.background='var(--input-bg)'">
                     <i data-lucide="share-2" style="width:14px; height:14px;"></i>
                     Challenge Friend
                 </button>
@@ -1175,14 +1189,14 @@
                 <!-- Header -->
                 <div style="margin-bottom:1rem;">
                     <div
-                        style="color:#fff; font-size:1rem; font-weight:900; letter-spacing:-0.5px; margin-bottom:0.2rem;">
+                        style="color: var(--lab-text); font-size:1rem; font-weight:900; letter-spacing:-0.5px; margin-bottom:0.2rem;">
                         Submit to Leaderboard</div>
                     <div style="color:#555; font-size:0.68rem;">Enter your callsign to claim your global rank.</div>
                 </div>
                 <!-- Input -->
                 <input type="text" id="player-nickname" placeholder="YOUR CALLSIGN" maxlength="20"
-                    style="width:100%; box-sizing:border-box; background:#000; border:1px solid #333; border-radius:10px; color:#fff; padding:0.75rem 1rem; font-family:'Roboto Mono',monospace; font-size:0.85rem; outline:none; margin-bottom:1rem; transition:border-color 0.2s;"
-                    onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='#333'"
+                    style="width:100%; box-sizing:border-box; background: var(--input-bg); border:1px solid var(--border-color); border-radius:10px; color: var(--lab-text); padding:0.75rem 1rem; font-family:'Roboto Mono',monospace; font-size:0.85rem; outline:none; margin-bottom:1rem; transition:border-color 0.2s;"
+                    onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='var(--border-color)'"
                     onkeydown="if(event.key==='Enter') submitToLeaderboard()">
                 <!-- Primary CTA -->
                 <button onclick="submitToLeaderboard()"
@@ -1192,9 +1206,9 @@
                 </button>
                 <!-- Play Again -->
                 <button onclick="closeSubmitModal(); startLab(event)"
-                    style="width:100%; background:transparent; color:#666; border:1px solid rgba(255,255,255,0.08); padding:0.7rem; border-radius:10px; font-weight:700; font-size:0.8rem; cursor:pointer; transition:all 0.2s;"
-                    onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.2)'"
-                    onmouseout="this.style.color='#666'; this.style.borderColor='rgba(255,255,255,0.08)'">
+                    style="width:100%; background:transparent; color: var(--text-sub); border:1px solid var(--border-color); padding:0.7rem; border-radius:10px; font-weight:700; font-size:0.8rem; cursor:pointer; transition:all 0.2s;"
+                    onmouseover="this.style.color='var(--accent-color)'; this.style.borderColor='var(--accent-color)'; this.style.background='var(--input-bg)'"
+                    onmouseout="this.style.color='var(--text-sub)'; this.style.borderColor='var(--border-color)'; this.style.background='transparent'">
                     Play Again
                 </button>
                 <div id="submit-modal-status"
@@ -1207,7 +1221,7 @@
         <div id="lab-history-overlay">
             <div
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-shrink: 0;">
-                <h2 style="color: #fff; font-size: 1.8rem; font-weight: 900; margin: 0; letter-spacing: -1px;">Game
+                <h2 style="color: var(--lab-text); font-size: 1.8rem; font-weight: 900; margin: 0; letter-spacing: -1px;">Game
                     History</h2>
                 <button
                     onclick="document.getElementById('lab-history-overlay').style.display='none'; toggleBodyScroll(true);"
@@ -1233,10 +1247,10 @@
 
         <!-- Global Leaderboard Standalone Overlay -->
         <div id="lab-global-rank-overlay"
-            style="position: absolute; inset: 0; background: #0a0a0a; z-index: 230; display: none; flex-direction: column; padding: 2.5rem 2rem; border-radius: 24px; overflow-y: auto;">
+            style="position: absolute; inset: 0; background: var(--lab-bg); color: var(--lab-text); z-index: 230; display: none; flex-direction: column; padding: 2.5rem 2rem; border-radius: 24px; overflow-y: auto;">
             <div
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-shrink: 0;">
-                <h2 style="color: #fff; font-size: 1.8rem; font-weight: 900; margin: 0; letter-spacing: -1px;">Top
+                <h2 style="color: var(--lab-text); font-size: 1.8rem; font-weight: 900; margin: 0; letter-spacing: -1px;">Top
                     Commanders</h2>
                 <div class="league-tabs" style="display: none;">
                     <div class="league-tab active" data-league="pro">Global</div>
@@ -1268,7 +1282,7 @@
                 style="margin-top: 1.5rem; display: flex; justify-content: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; flex-shrink: 0;">
                 <button
                     onclick="document.getElementById('lab-global-rank-overlay').style.display='none'; toggleBodyScroll(true);"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 2.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem;">
+                    style="background: var(--input-bg); border: 1px solid var(--border-color); color: var(--lab-text); padding: 0.8rem 2.5rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.85rem;">
                     Back to Menu
                 </button>
             </div>
@@ -1276,20 +1290,21 @@
 
         <!-- Result Overlay -->
         <div id="lab-result-overlay"
-            style="position: absolute; inset: 0; background: #0a0a0a; z-index: 210; display: none; padding: 2rem 1.5rem; overflow-y: auto;">
+            style="position: absolute; inset: 0; background: var(--lab-bg); color: var(--lab-text); z-index: 210; display: none; padding: 2rem 1.5rem; overflow-y: auto;">
             <div style="max-width: 640px; margin: 0 auto;">
                 <button id="copy-btn" onclick="copyResults()"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #999; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; margin: 0 auto 1.5rem auto; transition: all 0.2s;">
+                    style="background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-sub); padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; margin: 0 auto 1.5rem auto; transition: all 0.2s;"
+                    onmouseover="this.style.color='var(--lab-text)'; this.style.borderColor='var(--accent-color)'"
+                    onmouseout="this.style.color='var(--text-sub)'; this.style.borderColor='var(--border-color)'">
                     <i data-lucide="copy" style="width: 14px; height: 14px;"></i> <span>Copy Summary</span>
                 </button>
 
                 <div style="text-align: center;">
-                    <h2 style="color: #fff; font-size: 2.2rem; margin-bottom: 0.3rem; font-weight: 900;">Acuity Profile
+                    <h2 style="color: var(--lab-text); font-size: 2.2rem; margin-bottom: 0.3rem; font-weight: 900;">Acuity Profile
                     </h2>
-                    <p style="color: #666; margin-bottom: 2rem; font-size: 0.9rem;">Scientific threshold analysis
-                        compete.</p>
+                    <p style="color: var(--text-sub); margin-bottom: 2rem; font-size: 0.9rem;">Scientific threshold analysis
+                        complete.</p>
                 </div>
-
                 <div class="result-card-premium">
                     <div id="rank-val"
                         style="font-size: 2.2rem; font-weight: 900; color: var(--accent-color); letter-spacing: -1px; margin-bottom: 1rem; text-transform: uppercase;">
@@ -1305,9 +1320,9 @@
                                         elite retinal sensitivity.</div>
                                 </span>
                             </div>
-                            <div id="final-delta" style="color: #fff; font-size: 1.4rem; font-weight: 700;">0.0000</div>
+                            <div id="final-delta" style="color: var(--lab-text); font-size: 1.4rem; font-weight: 700;">0.0000</div>
                         </div>
-                        <div style="width: 1px; background: rgba(255,255,255,0.1); align-self: stretch;"></div>
+                        <div style="width: 1px; background: var(--border-color); align-self: stretch;"></div>
                         <div>
                             <div class="metric-label">
                                 Precision
@@ -1317,17 +1332,17 @@
                                         absolute boundary.</div>
                                 </span>
                             </div>
-                            <div id="final-precision" style="color: #fff; font-size: 1.4rem; font-weight: 700;">0%</div>
+                            <div id="final-precision" style="color: var(--lab-text); font-size: 1.4rem; font-weight: 700;">0%</div>
                         </div>
                     </div>
 
                     <div id="rank-desc"
-                        style="color: #999; font-size: 0.9rem; line-height: 1.5; max-width: 480px; margin: 0 auto;">
+                        style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; max-width: 480px; margin: 0 auto;">
                         Analyzing results...</div>
                 </div>
 
                 <div
-                    style="color: #444; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-bottom: 1rem; font-weight: 800;">
+                    style="color: var(--text-sub); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-bottom: 1rem; font-weight: 800;">
                     Threshold History per Round</div>
                 <div class="chart-container" id="accuracy-chart-host">
                     <div id="graph-tooltip" class="chart-tooltip"></div>
@@ -1348,13 +1363,14 @@
 
                 <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
                     <button onclick="shareJNDResult()"
-                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1.1rem 2.2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+                        style="background: var(--input-bg); border: 1px solid var(--border-color); color: var(--lab-text); padding: 1.1rem 2.2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
                         <i data-lucide="share-2" style="width: 18px; height: 18px;"></i>
                         Challenge
                     </button>
                     <button onclick="resetToStart()"
-                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #666; padding: 1.1rem 2.2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.9rem;"
-                        onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">
+                        style="background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-sub); padding: 1.1rem 2.2rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.9rem;"
+                        onmouseover="this.style.color='var(--lab-text)'; this.style.borderColor='var(--accent-color)'"
+                        onmouseout="this.style.color='var(--text-sub)'; this.style.borderColor='var(--border-color)'">
                         Main Menu
                     </button>
                     <button onclick="startLab(event)"
@@ -1876,7 +1892,7 @@
                 }
 
                 feedbackText.innerHTML = `<span style="color: ${accentColor}; font-weight: 900; line-height: 1.4; display: block;">${percentMessage}</span> 
-                <span style="font-size: 0.7rem; color: #666; font-weight: 400; margin-top: 8px; display: block;">${rankText} <br>Evaluated against ${data.total.toLocaleString()} global sessions.</span>`;
+                <span style="font-size: 0.7rem; color: #666; font-weight: 400; margin-top: 8px; display: block;">${rankText} <br>Evaluated against ${data.total.toLocaleString()} global sessions. <br><em>Note: Our database is still growing and may not yet reflect true global distributions.</em></span>`;
             } else {
                 feedbackText.textContent = "First in league! You've set the baseline for this difficulty.";
             }
@@ -1963,10 +1979,10 @@
                     const isUser = (nick === localStorage.getItem('jnd_nickname')) && (p.score === score) && (diff === difficulty);
                     html += `
                     <tr style="${isUser ? 'background: rgba(201, 28, 35, 0.1);' : ''}">
-                        <td style="width: 30px; color: #444;">#${i + 1}</td>
-                        <td style="color: #fff; font-weight: 700;">${nick}</td>
+                        <td style="width: 30px; color: var(--text-sub);">#${i + 1}</td>
+                        <td style="color: var(--lab-text); font-weight: 700;">${nick}</td>
                         <td style="text-align: right; color: var(--accent-color); font-weight: 800;">${p.score.toLocaleString()}</td>
-                        <td style="text-align: right; color: #666; font-size: 0.65rem;">Lvl ${p.level}</td>
+                        <td style="text-align: right; color: var(--text-sub); font-size: 0.65rem;">Lvl ${p.level}</td>
                     </tr>
                 `;
                 });
@@ -2025,7 +2041,7 @@
             return (b.min <= score && score < b.max) ? 8 : 2;
         });
         const pointColors = data.buckets.map(b => {
-            return (b.min <= score && score < b.max) ? '#fff' : '#c91c23';
+            return (b.min <= score && score < b.max) ? 'var(--lab-text)' : '#c91c23';
         });
 
         jndCharts[canvasId] = new Chart(ctx, {
@@ -2138,7 +2154,7 @@
         history.slice(0, limit).forEach(entry => {
             html += `
             <tr>
-                <td style="color: #fff; font-weight: 700;">${entry.score.toLocaleString()}</td>
+                <td style="color: var(--lab-text); font-weight: 700;">${entry.score.toLocaleString()}</td>
                 <td>Lvl ${entry.level}</td>
                 <td style="text-transform: capitalize;">${entry.diff}</td>
                 <td style="font-size: 0.75rem;">${entry.date}</td>
@@ -2225,16 +2241,12 @@
         const precision = Math.max(0, 100 - Math.round(avgErr));
 
         const ranks = [
-            { up: 0.03, name: "QUICK-SILVER GOD", desc: "Your brain is literally overclocked. You're seeing individual photons that haven't even decided to exist yet." },
-            { up: 0.05, name: "RETINAL DEITY", desc: "The absolute peak of display diagnostics. You perceive color shifts that are mathematically minute." },
-            { up: 0.07, name: "PRISM MASTER", desc: "Extremely sharp perception. You are in the top tier of visual acuity for color differentiation." },
-            { up: 0.09, name: "CHAMELEON STALKER", desc: "You can track a green lizard on a green leaf in a green forest. Impressive perceptual tracking." },
-            { up: 0.12, name: "EAGLE EYE", desc: "Superior focus. You are highly reliable at detecting professional-grade color inconsistencies." },
-            { up: 0.15, name: "FALCON ANALYST", desc: "Sharp and consistent. You have a solid grasp on color variations across the spectrum." },
-            { up: 0.18, name: "TIGER FOCUS", desc: "Solid performance. You're better than most, but there's room for sharpening your retinal focus." },
-            { up: 0.22, name: "AVERAGE HUMAN", desc: "Standard baseline. You're seeing the world exactly as it was intended—nothing more, nothing less." },
-            { up: 0.26, name: "MOLE ACUITY", desc: "Common human perception. You might benefit from optimized environmental lighting or monitor calibration." },
-            { up: 1.00, name: "SQUINTING POTATO", desc: "Is the monitor even on? You might be operating more on 'vibe' than actual vision right now." }
+            { up: 0.005, name: "The Mantis Shrimp", desc: "Your eyes are basically biological sensors. You can probably see the individual photons hitting your screen. Are you sure you aren't a high-end OLED panel in a human suit?" },
+            { up: 0.012, name: "The Color Savant", desc: "You see differences that would make a professional printer weep with joy. You probably spend your weekends arguing about which shade of \"eggshell\" is too aggressive." },
+            { up: 0.022, name: "The \"Just Noticeable\"", desc: "You hit the sweet spot of human biology. You can tell when a pixel is lying to you, but you still have enough of a life to not notice the dust on your monitor." },
+            { up: 0.045, name: "The Civilized Human", desc: "You can tell red from slightly-less-red, which is more than most can say. You're perfectly qualified to pick out a shirt that matches your pants, and that’s plenty." },
+            { up: 0.080, name: "The \"Solitaire\" Tier", desc: "As the test said, your heart really isn't in this. You're seeing the \"general vibe\" of a color rather than the color itself. Maybe try a game with more distinct shapes?" },
+            { up: 1.00, name: "The Gray-Scale Vision", desc: "To you, the world is a beautiful, blurry smudge of \"mostly green-ish.\" You’re either testing this on a 1994 calculator screen, or you should probably stop wearing sunglasses indoors." }
         ];
 
         let rankObj = ranks.find(r => avgDelta < r.up);
@@ -2283,7 +2295,6 @@
         const areaData = pathData + ` L 1000,200 L 0,200 Z`;
         svgArea.setAttribute("d", areaData);
 
-        document.getElementById('lab-game-area').style.display = 'none';
         document.getElementById('lab-exit-btn').classList.remove('active');
         resultOverlay.style.display = 'flex';
         document.getElementById('lab-hud').style.display = 'none';
@@ -2411,17 +2422,17 @@
                     const nick = p.nickname || "Anonymous Pilot";
                     html += `
                     <tr>
-                        <td style="width: 30px; color: #444;">#${i + 1}</td>
-                        <td style="color: #fff; font-weight: 700;">${nick}</td>
+                        <td style="width: 30px; color: var(--text-sub);">#${i + 1}</td>
+                        <td style="color: var(--lab-text); font-weight: 700;">${nick}</td>
                         <td style="text-align: right; color: var(--accent-color); font-weight: 800;">${p.score.toLocaleString()}</td>
-                        <td style="text-align: right; color: #666; font-size: 0.65rem;">Lvl ${p.level}</td>
+                        <td style="text-align: right; color: var(--text-sub); font-size: 0.65rem;">Lvl ${p.level}</td>
                     </tr>
                 `;
                 });
                 html += '</table>';
                 list.innerHTML = html;
             } else {
-                list.innerHTML = '<div style="color: #444; font-size: 0.75rem; padding: 1rem; border: 1px dashed rgba(255,255,255,0.05); border-radius: 12px; text-align: center;">No pilots in this league yet.</div>';
+                list.innerHTML = `<div style="color: var(--text-sub); font-size: 0.75rem; padding: 1rem; border: 1px dashed var(--border-color); border-radius: 12px; text-align: center;">No pilots in this league yet.</div>`;
             }
         } catch (e) { console.error("Leaderboard failed", e); }
 
