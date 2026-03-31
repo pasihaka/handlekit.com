@@ -144,19 +144,23 @@ def api_check_username():
 
         elif platform == 'instagram':
             import re
-            if len(username) < 1 or len(username) > 30 or not re.match(r'^[a-zA-Z0-9_\.]+$', username):
-                available = 'invalid'
-            elif username.startswith('.') or username.endswith('.') or '..' in username:
-                available = 'invalid'
-            elif len(username) <= 3:
-                # User request: mark 3 or less as "Unavailable" (Taken)
-                available = 'taken_or_invalid'
-            elif username.isdigit():
+            if len(username) < 1 or len(username) > 30 or not re.match(r'^[a-zA-Z0-9_\.]+$', username) or '..' in username or username.startswith('.') or username.endswith('.'):
                 available = 'invalid'
             else:
-                # Instagram rate-limits all server-side requests (HTTP 429) regardless of cookies.
-                # Cannot be checked without a residential proxy or authenticated session.
-                available = None
+                # Use Twitterbot UA for raw metadata access without login shell
+                bot_headers = {'User-Agent': 'Mozilla/5.0 (compatible; Twitterbot/1.1)'}
+                try:
+                    r = requests.get(f"https://www.instagram.com/{username}/", headers=bot_headers, timeout=6)
+                    # Taken: Check for handle in OG Title, OG URL, or encoded in text
+                    handle_lower = username.lower()
+                    if f'instagram.com/{handle_lower}' in r.text.lower() or f'@{handle_lower}' in r.text.lower() or f'&#064;{handle_lower}' in r.text.lower():
+                        available = False
+                    elif r.status_code == 404 or (r.status_code == 200 and 'property="og:url"' not in r.text):
+                        available = True
+                    else:
+                        available = None
+                except:
+                    available = None
 
         elif platform == 'tiktok':
             import re
