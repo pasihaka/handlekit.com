@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
 from flask_cors import CORS
 import os
 import requests
@@ -787,33 +787,13 @@ def api_contrast_stats():
 
 
 @app.route('/gbp-triage')
+def gbp_triage_redirect():
+    return redirect('/gbp-triage/', code=301)
+
 @app.route('/gbp-triage/')
-def gbp_index():
-    return render_template('gbp/index.html')
-
-@app.route('/gbp-triage/suspended')
-def gbp_suspended():
-    return render_template('gbp/suspended.html')
-
-@app.route('/gbp-triage/disabled')
-def gbp_disabled():
-    return render_template('gbp/disabled.html')
-
-@app.route('/gbp-triage/verification-failed')
-def gbp_verification_failed():
-    return render_template('gbp/verification_failed.html')
-
-@app.route('/gbp-triage/appeal-denied')
-def gbp_appeal_denied():
-    return render_template('gbp/appeal_denied.html')
-
-@app.route('/gbp-triage/evidence-checklist')
-def gbp_evidence_checklist():
-    return render_template('gbp/evidence_checklist.html')
-
-@app.route('/gbp-triage/storefront-vs-service-area')
-def gbp_storefront_vs_sab():
-    return render_template('gbp/storefront_vs_sab.html')
+@app.route('/gbp-triage/<path:path>')
+def gbp_triage_serve(path='index.html'):
+    return send_from_directory('static/gbp-tool', path)
 
 if __name__ == '__main__':
 
