@@ -262,18 +262,66 @@ def api_check_username():
                     available = 'taken_or_invalid'
 
         elif platform == 'pinterest':
-            r = requests.get(f"https://www.pinterest.com/{username}/", headers=headers, timeout=6)
-            if r.status_code == 404:
-                available = True
-            elif r.status_code == 200:
-                available = False
+            import re
+            if len(username) < 3 or len(username) > 30 or not re.match(r'^[a-zA-Z0-9_]+$', username) or username.isdigit():
+                available = 'invalid'
+            else:
+                # Use Pinterest OEmbed for accuracy (Available = 400, Taken = 200)
+                oembed_url = f"https://www.pinterest.com/oembed.json?url=https://www.pinterest.com/{username}/"
+                try:
+                    r = requests.get(oembed_url, headers=headers, timeout=6)
+                    if r.status_code == 200:
+                        available = False
+                    elif r.status_code == 400:
+                        available = True
+                    else:
+                        available = None
+                except:
+                    available = None
+
+        elif platform == 'threads':
+            import re
+            if len(username) < 1 or len(username) > 30 or not re.match(r'^[a-zA-Z0-9_\.]+$', username) or '..' in username or username.startswith('.') or username.endswith('.'):
+                available = 'invalid'
+            else:
+                # Threads/Instagram use SPA shells. Twitterbot UA gets raw metadata.
+                bot_headers = {'User-Agent': 'Mozilla/5.0 (compatible; Twitterbot/1.1)'}
+                try:
+                    r = requests.get(f"https://www.threads.net/@{username}/", headers=bot_headers, timeout=6)
+                    # Available handles redirect to login shell or have "Log in" in title
+                    if 'Log in' in r.text or 'login' in r.url or r.status_code == 404:
+                        available = True
+                    else:
+                        available = False
+                except:
+                    available = None
 
         elif platform == 'twitch':
-            r = requests.get(f"https://www.twitch.tv/{username}", headers=headers, timeout=6)
-            if r.status_code == 404:
-                available = True
-            elif r.status_code == 200:
-                available = False
+            import re
+            if len(username) < 4 or len(username) > 25 or not re.match(r'^[a-zA-Z0-9_]+$', username) or username.startswith('_'):
+                available = 'invalid'
+            else:
+                # Use Twitch GQL for high accuracy (Distinguishes Ghost/Available from Taken)
+                gql_url = "https://gql.twitch.tv/gql"
+                gql_headers = {
+                    "Client-Id": "kimne78kx3ncx6brgo4mv6wki5h1ko",
+                    "Content-Type": "application/json"
+                }
+                query = "query($login: String!) { user(login: $login) { id } }"
+                payload = [{"operationName": None, "variables": {"login": username}, "query": query}]
+                
+                try:
+                    # Twitch GQL returns 200 with 'user': null for available names
+                    r = requests.post(gql_url, headers=gql_headers, json=payload, timeout=6)
+                    if r.status_code == 200:
+                        data = r.json()
+                        user_data = data[0].get('data', {}).get('user')
+                        available = (user_data is None)
+                    else:
+                        # Fallback if GQL fails or rate limits
+                        available = None
+                except:
+                    available = None
 
     except Exception as e:
         print(f"[TikTok ERROR] {str(e)}")
