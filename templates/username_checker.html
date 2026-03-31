@@ -6,27 +6,26 @@ and secure your brand before someone else does. Free and private." %}
 {% block content %}
 <div class="tool-content" style="max-width: 1000px; margin: 0 auto; padding-bottom: 5rem;">
     <!-- MAIN TOOL CARD -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+    <div class="tool-main-card">
         
         <!-- HEADER SECTION -->
-        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3.5rem;">
-            <div style="background: var(--accent-gradient); width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 35px var(--glow-color); flex-shrink: 0;">
+        <div class="tool-header">
+            <div class="tool-icon-container">
                 <i data-lucide="at-sign" style="color: #fff; width: 36px; height: 36px;"></i>
             </div>
-            <div>
-                <h1 style="margin: 0; color: var(--text-main); font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;">Social Username Checker</h1>
-                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Search 9 major social networks instantly and secure your brand.</p>
+            <div class="tool-title-container">
+                <h1 class="tool-title">Social Username Checker</h1>
+                <p class="tool-subtitle">Search 9 major social networks instantly and secure your brand.</p>
             </div>
         </div>
 
         <!-- SEARCH BOX -->
-        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 22px; padding: 0.75rem; display: flex; gap: 0.75rem; margin-bottom: 2.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
-            <div style="position: relative; flex: 1; display: flex; align-items: center;">
-                <i data-lucide="search" style="position: absolute; left: 1.25rem; color: var(--text-sub); width: 20px; height: 20px;"></i>
-                <input type="text" id="username-input" placeholder="Enter desired username (e.g. handlekit)" 
-                    style="width: 100%; background: transparent; border: none; padding: 1rem 1rem 1rem 3.5rem; color: var(--text-main); font-size: 1.2rem; font-weight: 700; outline: none; font-family: 'Outfit', sans-serif;">
+        <div class="search-box-container">
+            <div class="search-input-wrapper">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="username-input" placeholder="Enter desired username (e.g. handlekit)">
             </div>
-            <button id="search-btn" style="background: var(--accent-gradient); border: none; border-radius: 16px; padding: 0 2.5rem; color: #fff; font-weight: 800; font-size: 1.05rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 20px var(--glow-color); white-space: nowrap;">
+            <button id="search-btn">
                 Check Now
             </button>
         </div>
@@ -42,12 +41,11 @@ and secure your brand before someone else does. Free and private." %}
         <!-- Results will be injected here -->
     </div>
 
-    <!-- Link back to rules page -->
-    <div
-        style="background: rgba(0, 210, 255, 0.05); border: 1px solid var(--accent-color); border-radius: 12px; padding: 1.5rem; margin-top: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <i data-lucide="book-open" style="color: var(--accent-color); width: 24px; height: 24px;"></i>
-            <div style="color: var(--text-sub);">
+    <!-- Help Box -->
+    <div class="help-box">
+        <div class="help-box-content">
+            <i data-lucide="book-open" class="help-icon"></i>
+            <div class="help-text">
                 <strong style="color: var(--text-main);">Need help choosing?</strong> Read our complete guide on <a
                     href="/username-rules" style="color: var(--accent-color); text-decoration: underline;">username
                     rules and character limits</a> across all major platforms.
@@ -138,6 +136,108 @@ and secure your brand before someone else does. Free and private." %}
     #search-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 12px 25px var(--glow-color);
+    }
+
+    /* Refactored Layout Classes */
+    .tool-main-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 3.5rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .tool-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 3.5rem;
+    }
+
+    .tool-icon-container {
+        background: var(--accent-gradient);
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 12px 35px var(--glow-color);
+        flex-shrink: 0;
+    }
+
+    .tool-title-container {
+        flex: 1;
+    }
+
+    .tool-title {
+        margin: 0;
+        color: var(--text-main);
+        font-size: 2.6rem;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+    }
+
+    .tool-subtitle {
+        color: var(--text-sub);
+        margin-top: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .search-box-container {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 22px;
+        padding: 0.75rem;
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .search-input-wrapper {
+        position: relative;
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 1.25rem;
+        color: var(--text-sub);
+        width: 20px;
+        height: 20px;
+    }
+
+    #username-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        padding: 1rem 1rem 1rem 3.5rem;
+        color: var(--text-main);
+        font-size: 1.2rem;
+        font-weight: 700;
+        outline: none;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    #search-btn {
+        background: var(--accent-gradient);
+        border: none;
+        border-radius: 16px;
+        padding: 0 2.5rem;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.05rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 8px 20px var(--glow-color);
+        white-space: nowrap;
     }
 
     .platform-card {
@@ -260,13 +360,120 @@ and secure your brand before someone else does. Free and private." %}
         }
     }
 
+    /* Help Box Styling */
+    .help-box {
+        background: rgba(0, 210, 255, 0.05);
+        border: 1px solid var(--accent-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .help-box-content {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+    }
+
+    .help-icon {
+        color: var(--accent-color);
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        min-height: 32px;
+        flex-shrink: 0;
+        display: block;
+    }
+
+    /* Force size even for SVGs injected by Lucide */
+    .help-box-content svg.help-icon {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .help-text {
+        color: var(--text-sub);
+        line-height: 1.6;
+    }
+
     @media (max-width: 768px) {
-        .search-box {
-            padding: 1.5rem !important;
+        .tool-main-card {
+            padding: 1.5rem;
+            border-radius: 20px;
+        }
+
+        .tool-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-icon-container {
+            width: 60px;
+            height: 60px;
+        }
+
+        .tool-title {
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+        }
+
+        .tool-subtitle {
+            font-size: 1rem;
+        }
+
+        .search-box-container {
+            flex-direction: column;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            gap: 1rem;
+        }
+
+        .search-input-wrapper {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
 
         #search-btn {
-            padding: 1rem !important;
+            width: 100%;
+            padding: 1.1rem;
+            border-radius: 16px;
+            font-size: 1.1rem;
+        }
+
+        .info-card-premium {
+            padding: 1.5rem !important;
+        }
+
+        .info-sections {
+            margin-top: 3rem !important;
+            padding-top: 2rem !important;
+        }
+
+        .result-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .help-icon, 
+        .help-box-content svg.help-icon {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+        }
+
+        .help-box-content {
+            gap: 1.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .tool-title {
+            font-size: 1.55rem;
         }
     }
 </style>
