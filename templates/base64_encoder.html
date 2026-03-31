@@ -1,326 +1,429 @@
 {% set title = "Base64 Encoder & Decoder | Free Online Tool | HandleKit" %}
-{% set description = "Encode text or files to Base64 and decode Base64 strings back to plain text instantly. Free, fast, 100% browser-based, no data ever leaves your device." %}
+{% set description = "Encode text or files to Base64 and decode Base64 strings back to plain text instantly. Free, fast,
+100% browser-based, no data ever leaves your device." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="tool-container" style="max-width: 860px; margin: 0 auto;">
-    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
-        <i data-lucide="binary" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Base64 Encoder & Decoder</h1>
-        <p style="color: var(--text-sub);">Encode or decode Base64 instantly, no signup, 100% private, nothing ever leaves your browser.</p>
-    </div>
-
-    <!-- Mode Toggle -->
-    <div style="display: flex; gap: 0.6rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-        <button class="b64-mode-btn active" id="mode-text" onclick="setMode('text')">
-            <i data-lucide="type" style="width:14px;height:14px;"></i> Text
-        </button>
-        <button class="b64-mode-btn" id="mode-file" onclick="setMode('file')">
-            <i data-lucide="file-up" style="width:14px;height:14px;"></i> File → Base64
-        </button>
-    </div>
-
-    <!-- Text Mode -->
-    <div id="text-mode-panel">
-        <!-- Input -->
-        <div style="position: relative; margin-bottom: 1rem;">
-            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Input</label>
-            <textarea id="b64-input" placeholder="Paste text or Base64 string here…"
-                oninput="onInput()"
-                onfocus="this.style.borderColor='var(--accent-color)'"
-                onblur="this.style.borderColor='var(--border-color)'"
-                style="width:100%;min-height:150px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.92rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
+<div class="tool-content" style="max-width: 1000px; margin: 0 auto; padding-bottom: 5rem;">
+    <!-- MAIN TOOL CARD -->
+    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        
+        <!-- HEADER SECTION -->
+        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;">
+            <div style="background: var(--accent-gradient); width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 35px var(--glow-color); flex-shrink: 0;">
+                <i data-lucide="binary" style="color: #fff; width: 36px; height: 36px;"></i>
+            </div>
+            <div>
+                <h1 style="margin: 0; color: var(--text-main); font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;">Base64 Encoder & Decoder</h1>
+                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Securely convert text and files with browser-side processing.</p>
+            </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;">
-            <button class="b64-action-btn" id="btn-encode" onclick="doEncode()">
-                <i data-lucide="arrow-down" style="width:14px;height:14px;"></i> Encode to Base64
+        <!-- MODE TOGGLE -->
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 0.5rem; margin-bottom: 2.5rem; display: inline-flex; gap: 0.25rem;">
+            <button class="b64-mode-btn active" id="mode-text" onclick="setMode('text')">
+                <i data-lucide="type" style="width:16px;height:16px;"></i> Text Input
             </button>
-            <button class="b64-action-btn" id="btn-decode" onclick="doDecode()">
-                <i data-lucide="arrow-up" style="width:14px;height:14px;"></i> Decode from Base64
+            <button class="b64-mode-btn" id="mode-file" onclick="setMode('file')">
+                <i data-lucide="file-up" style="width:16px;height:16px;"></i> File Upload
             </button>
-            <button onclick="swapIO()" class="b64-util-btn">
-                <i data-lucide="arrow-up-down" style="width:14px;height:14px;"></i> Swap
-            </button>
-            <button onclick="clearAll()" class="b64-util-btn">
-                <i data-lucide="x" style="width:14px;height:14px;"></i> Clear
-            </button>
-            <span id="b64-status" style="font-size:0.82rem; margin-left:auto;"></span>
         </div>
 
-        <!-- Output -->
-        <div style="position: relative; margin-bottom: 2rem;">
-            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Output</label>
-            <textarea id="b64-output" readonly placeholder="Result will appear here…"
-                onfocus="this.style.borderColor='var(--accent-color)'"
-                onblur="this.style.borderColor='var(--border-color)'"
-                style="width:100%;min-height:150px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.92rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
-            <button id="copy-btn" onclick="copyOutput()" style="position:absolute;bottom:1rem;right:1.2rem;background:var(--accent-color);border:none;border-radius:10px;padding:0.45rem 1.1rem;color:#000;font-weight:700;font-size:0.8rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;">
-                <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy
-            </button>
-        </div>
-    </div>
+        <!-- TEXT MODE PANEL -->
+        <div id="text-mode-panel">
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- INPUT -->
+                <div style="position: relative;">
+                    <label style="font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; display: block; margin-bottom: 0.75rem;">Source Content</label>
+                    <div style="position: relative;">
+                        <textarea id="b64-input" placeholder="Paste text or Base64 string here…" oninput="onInput()"
+                            onfocus="this.parentElement.style.borderColor='var(--accent-color)'; this.parentElement.style.boxShadow='0 0 20px var(--glow-color)';"
+                            onblur="this.parentElement.style.borderColor='var(--border-color)'; this.parentElement.style.boxShadow='none';"
+                            style="width:100%; min-height:180px; background:transparent; border:none; color: var(--text-main); font-size:0.95rem; font-family: 'JetBrains Mono', monospace; resize:vertical; outline:none; box-sizing:border-box; line-height:1.7; padding: 1.5rem;"></textarea>
+                        <div style="position:absolute; top:0; left:0; right:0; bottom:0; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; pointer-events: none; z-index: -1; transition: all 0.3s ease;"></div>
+                    </div>
+                </div>
 
-    <!-- File Mode -->
-    <div id="file-mode-panel" style="display:none; margin-bottom: 2rem;">
-        <div id="file-drop-zone"
-            ondragover="event.preventDefault(); this.style.borderColor='var(--accent-color)'"
-            ondragleave="this.style.borderColor='var(--border-color)'"
-            ondrop="handleFileDrop(event)"
-            style="border: 2px dashed var(--border-color); border-radius: 20px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: border-color 0.2s; margin-bottom: 1rem;"
-            onclick="document.getElementById('file-input').click()">
-            <i data-lucide="upload-cloud" style="width:48px;height:48px;color:var(--text-sub);margin-bottom:1rem;"></i>
-            <p style="color:var(--text-sub);margin:0 0 0.5rem;">Drag & drop a file here, or click to select</p>
-            <p style="color:var(--text-sub);font-size:0.8rem;margin:0;">Any file type supported</p>
-            <input type="file" id="file-input" style="display:none" onchange="handleFileSelect(event)">
+                <!-- ACTIONS -->
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                    <button class="b64-action-btn primary" id="btn-encode" onclick="doEncode()">
+                        <i data-lucide="lock" style="width:16px;height:16px;"></i> Encode to Base64
+                    </button>
+                    <button class="b64-action-btn" id="btn-decode" onclick="doDecode()">
+                        <i data-lucide="unlock" style="width:16px;height:16px;"></i> Decode from Base64
+                    </button>
+                    <div style="margin-left: auto; display: flex; gap: 0.75rem;">
+                        <button onclick="swapIO()" class="b64-util-btn" title="Swap Input/Output">
+                            <i data-lucide="repeat" style="width:16px;height:16px;"></i>
+                        </button>
+                        <button onclick="clearAll()" class="b64-util-btn" title="Clear All">
+                            <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <span id="b64-status" style="font-size:0.85rem; font-weight: 600; text-align: right; min-height: 1.2rem;"></span>
+
+                <!-- OUTPUT -->
+                <div style="position: relative;">
+                    <label style="font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; display: block; margin-bottom: 0.75rem;">Resulting Base64</label>
+                    <div style="position: relative;">
+                        <textarea id="b64-output" readonly placeholder="Result will appear here…"
+                            onfocus="this.parentElement.style.borderColor='var(--accent-color)'; this.parentElement.style.boxShadow='0 0 20px var(--glow-color)';"
+                            onblur="this.parentElement.style.borderColor='var(--border-color)'; this.parentElement.style.boxShadow='none';"
+                            style="width:100%; min-height:180px; background:transparent; border:none; color: var(--text-main); font-size:0.95rem; font-family: 'JetBrains Mono', monospace; resize:vertical; outline:none; box-sizing:border-box; line-height:1.7; padding: 1.5rem;"></textarea>
+                        <div style="position:absolute; top:0; left:0; right:0; bottom:0; background: rgba(var(--accent-rgb), 0.03); border: 1px solid var(--border-color); border-radius: 18px; pointer-events: none; z-index: -1; transition: all 0.3s ease;"></div>
+                        <button id="copy-btn" onclick="copyOutput()"
+                            style="position:absolute; bottom:1.25rem; right:1.25rem; background: var(--accent-color); border: none; border-radius: 12px; padding: 0.75rem 1.5rem; color: #fff; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <i data-lucide="copy" style="width:16px;height:16px;"></i> Copy Result
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="file-result" style="display:none;">
-            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Base64 Output</label>
-            <textarea id="file-output" readonly
-                style="width:100%;min-height:150px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.82rem;font-family:'Courier New',monospace;resize:vertical;outline:none;box-sizing:border-box;line-height:1.7;"></textarea>
-            <div style="display:flex;gap:0.75rem;margin-top:0.75rem;flex-wrap:wrap;">
-                <button onclick="copyFileOutput()" class="b64-action-btn" id="file-copy-btn">
-                    <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy Base64
-                </button>
-                <button onclick="downloadFileOutput()" class="b64-action-btn">
-                    <i data-lucide="download" style="width:14px;height:14px;"></i> Download .txt
-                </button>
-                <span id="file-info" style="font-size:0.82rem;color:var(--text-sub);align-self:center;"></span>
+
+        <!-- FILE MODE PANEL -->
+        <div id="file-mode-panel" style="display:none;">
+            <div id="file-drop-zone" ondragover="event.preventDefault(); this.style.borderColor='var(--accent-color)'; this.style.background='rgba(var(--accent-rgb), 0.05)';"
+                ondragleave="this.style.borderColor='var(--border-color)'; this.style.background='transparent';" ondrop="handleFileDrop(event)"
+                style="border: 2px dashed var(--border-color); border-radius: 24px; padding: 4rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 2rem; background: transparent; position: relative; overflow: hidden;"
+                onclick="document.getElementById('file-input').click()">
+                <div style="background: var(--accent-gradient); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px var(--glow-color);">
+                    <i data-lucide="upload-cloud" style="width:32px;height:32px;color:#fff;"></i>
+                </div>
+                <h3 style="color:var(--text-main); margin-bottom: 0.5rem; font-size: 1.25rem;">Drop your file here</h3>
+                <p style="color:var(--text-sub); margin:0;">or click to browse your local files</p>
+                <input type="file" id="file-input" style="display:none" onchange="handleFileSelect(event)">
+            </div>
+
+            <div id="file-result" style="display:none; animation: slideUp 0.4s ease-out;">
+                <label style="font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; display: block; margin-bottom: 0.75rem;">Base64 File Output</label>
+                <div style="position: relative;">
+                    <textarea id="file-output" readonly
+                        style="width:100%; min-height:180px; background:rgba(var(--accent-rgb), 0.03); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.5rem; color: var(--text-main); font-size: 0.85rem; font-family: monospace; resize:vertical; outline:none; box-sizing:border-box; line-height: 1.6;"></textarea>
+                </div>
+                <div style="display:flex; gap:0.75rem; margin-top: 1.5rem; flex-wrap:wrap; align-items: center;">
+                    <button onclick="copyFileOutput()" class="b64-action-btn primary" id="file-copy-btn">
+                        <i data-lucide="copy" style="width:16px;height:16px;"></i> Copy Base64
+                    </button>
+                    <button onclick="downloadFileOutput()" class="b64-action-btn">
+                        <i data-lucide="download" style="width:16px;height:16px;"></i> Download .txt
+                    </button>
+                    <span id="file-info" style="font-size:0.85rem; color:var(--text-sub); margin-left: auto; font-weight: 600;"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK REFERENCE -->
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; margin-top: 3rem;">
+            <h2 style="font-size: 0.75rem; font-weight: 800; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="help-circle" style="width: 18px; height: 18px;"></i> Common Use Cases
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
+                <div class="b64-use-item"><i data-lucide="code" style="width:14px; opacity:0.6;"></i> Embed images in HTML/CSS</div>
+                <div class="b64-use-item"><i data-lucide="shield" style="width:14px; opacity:0.6;"></i> HTTP Basic Auth headers</div>
+                <div class="b64-use-item"><i data-lucide="key" style="width:14px; opacity:0.6;"></i> JWT token payloads</div>
+                <div class="b64-use-item"><i data-lucide="mail" style="width:14px; opacity:0.6;"></i> Email attachments (MIME)</div>
+                <div class="b64-use-item"><i data-lucide="server" style="width:14px; opacity:0.6;"></i> API binary data transfer</div>
+                <div class="b64-use-item"><i data-lucide="link" style="width:14px; opacity:0.6;"></i> Data URI schemes</div>
             </div>
         </div>
     </div>
 
-    <!-- Quick Reference -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem;">
-        <h2 style="font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Common Use Cases</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem;">
-            <div class="b64-use-item">Embed images in HTML/CSS</div>
-            <div class="b64-use-item">HTTP Basic Auth headers</div>
-            <div class="b64-use-item">JWT token payloads</div>
-            <div class="b64-use-item">Email attachments (MIME)</div>
-            <div class="b64-use-item">API binary data transfer</div>
-            <div class="b64-use-item">Data URI schemes</div>
+    <!-- DOCUMENTATION SECTION -->
+    <div style="margin-top: 5rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: var(--accent-gradient); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="book-open" style="color: #fff; width: 24px; height: 24px;"></i>
+            </div>
+            <h2 style="color: var(--text-main); font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; margin: 0;">What is Base64?</h2>
         </div>
-    </div>
-
-    <!-- SEO Content -->
-    <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is Base64?</h2>
-        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            Base64 is a binary-to-text encoding scheme that represents binary data in the form of a set of 64 printable ASCII characters. It is often necessary to use binary data in a system that only supports text. In this case, Base64 encoding can be used.
+        
+        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 2rem; font-size: 1.1rem;">
+            Base64 is a <strong>binary-to-text encoding scheme</strong> that represents data as a string of 64 printable ASCII characters. It is primarily used to transmit binary data over systems that are designed to handle text, such as embedding images in HTML or sending email attachments.
         </p>
-        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">How It Works</h3>
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">For each set of 3 bytes of binary data, there are 4 Base64 characters. This means that the data is approximately 33% larger than the original but perfectly safe to send using any text-based protocol.</p>
+
+        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem;">
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+                <h3 style="color: var(--accent-color); margin-bottom: 1.25rem; font-size: 1.2rem; font-weight: 800;">How it Works</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">
+                    Base64 works by taking groups of 24 bits (3 bytes) and mapping them into four 6-bit values. Each 6-bit value then corresponds to a character in the Base64 alphabet (A-Z, a-z, 0-9, +, /).
+                </p>
+                <div style="background: rgba(var(--accent-rgb), 0.05); padding: 1rem; border-radius: 12px; border-left: 3px solid var(--accent-color);">
+                    <p style="color: var(--text-main); margin: 0; font-size: 0.9rem; font-weight: 600;">Resulting data is ~33% larger than the original but safe for text-based transport.</p>
+                </div>
             </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Base64 vs. Encryption</h3>
-                <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">Base64 is encoding, not encryption. Anyone can decode it. It does not provide security. It's simply for safe transmission.</p>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+                <h3 style="color: var(--accent-color); margin-bottom: 1.25rem; font-size: 1.2rem; font-weight: 800;">Not Encryption</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1.25rem;">
+                    A common security pitfall is assuming Base64 protects your data. It does not. Base64 is an <strong>encoding</strong>, not <strong>encryption</strong>.
+                </p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Anyone with a simple decoder can reveal the original content. Never use Base64 to store or transmit sensitive data without secondary encryption.</p>
+            </div>
+        </div>
+
+        <!-- FAQ SECTION -->
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">Frequently Asked Questions</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 5rem;">
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">Why do Base64 strings end in "=="?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The equal sign (`=`) is used as <strong>padding</strong>. Since Base64 processes data in 24-bit chunks, if the source data isn't a <strong>multiple of 3 bytes</strong>, padding is added to ensure the output length is a multiple of 4 characters.</p>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">Is my file size limited for Base64 encoding?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">HandleKit processes files <strong>entirely on your device</strong>. While there's no hard limit, very large files (<strong>50MB+</strong>) may slow down your browser tab. For web assets like small images or favicons, it's near-instant.</p>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">When should I use Data URIs?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>Data URIs</strong> (Base64 strings used as a `src`) are perfect for tiny icons or decorative elements that you want to bundle directly into your HTML or CSS to reduce the number of HTTP requests.</p>
             </div>
         </div>
     </div>
 
-    <!-- FAQ Section -->
-    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
-
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I encode text to Base64?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">First, you need to be in <strong style="color: var(--text-main);">"Text" mode</strong>. Then you can paste your text in the input box. After clicking <strong style="color: var(--accent-color);">"Encode to Base64"</strong>, you will get your encoded text ready to copy. If you want to reverse the process, you can paste your Base64 text. Then click <strong style="color: var(--accent-color);">"Decode from Base64"</strong>. You can use <strong style="color: var(--text-main);">"Swap"</strong> to reverse text and Base64 rapidly.</p>
-            </div>
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I encode a file to Base64?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Click on <strong style="color: var(--text-main);">"File → Base64"</strong> at the top. Then you can simply drop a file onto the upload region, or click on it to browse. You can read the file entirely in your browser. Then you can get your Base64 code immediately. There are <strong style="color: var(--accent-color);">no file sizes sent to a server</strong>. This works entirely on your local machine.</p>
-            </div>
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is Base64 a form of encryption?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, and this is a really common misconception. Base 64 is just encoding, and it does nothing to secure data. Anyone who looks at a Base 64 encoded string can immediately decode it.</p>
-            </div>
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Why does Base 64 output contain "==" sometimes?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Base 64 is a simple encoding scheme, and it works by taking 3 bytes of data and converting them into 4 characters of output. This means that if you're working with a data length that isn't a multiple of 3, you'll need to add padding characters to make it a multiple of 4. This is why you'll sometimes see "==" in a Base 64 encoded output, because this is a signal to a decoder that there are padding bytes in the data.</p>
-            </div>
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Where is Base 64 used in the real world?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1rem;">You'll use Base 64 encoding constantly in web development, especially if you're working with any of the following:</p>
-                <ul style="color: var(--text-sub); line-height: 1.8; margin: 0; padding-left: 1.5rem;">
-                    <li>Embedding images directly into HTML or CSS</li>
-                    <li>Working with HTTP Basic Authentication headers</li>
-                    <li>Working with JWT token payloads</li>
-                    <li>Sending email attachments</li>
-                    <li>Working with binary data and a JSON API that only accepts text strings</li>
-                </ul>
-            </div>
-
-        </div>
+    <!-- INTERNAL MAGNET -->
+    <div style="background: var(--accent-gradient); border-radius: 24px; padding: 3rem; margin-top: 5rem; text-align: center; color: #fff; box-shadow: 0 20px 40px var(--glow-color); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; pointer-events: none;"></div>
+        <i data-lucide="braces" style="width: 48px; height: 48px; margin-bottom: 1.5rem;"></i>
+        <h2 style="color: #fff; margin: 0 0 1rem 0; font-size: 1.8rem; font-weight: 800;">Working with JSON?</h2>
+        <p style="color: rgba(255,255,255,0.9); margin-bottom: 2rem; font-size: 1.1rem; max-width: 500px; margin-left: auto; margin-right: auto;">Switch to our <strong>JSON Formatter</strong> to prettify or minify your code with instant syntax highlighting.</p>
+        <a href="/json-formatter" style="display: inline-block; background: #fff; color: var(--accent-color); text-decoration: none; padding: 1.1rem 2.5rem; border-radius: 14px; font-weight: 800; font-size: 1.1rem; transition: transform 0.2s ease, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+            Launch JSON Tool
+        </a>
     </div>
+</div>
 </div>
 
 <style>
-.b64-mode-btn {
-    background: var(--input-bg); border: 1px solid var(--border-color);
-    border-radius: 10px; padding: 0.5rem 1rem; color: var(--text-sub);
-    cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif; font-weight: 600;
-    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-}
-.b64-mode-btn:hover, .b64-mode-btn.active { border-color: var(--accent-color); color: var(--text-main); background: rgba(0,210,255,0.1); }
-.b64-action-btn {
-    background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px;
-    padding: 0.55rem 1.3rem; color: var(--text-sub); font-weight: 700; font-size: 0.9rem;
-    cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s;
-    display: flex; align-items: center; gap: 0.4rem;
-}
-.b64-action-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
-.b64-util-btn {
-    background: var(--input-bg); border: 1px solid var(--border-color);
-    border-radius: 10px; padding: 0.55rem 1rem; color: var(--text-sub);
-    cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif;
-    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-}
-.b64-util-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
-.b64-use-item {
-    background: rgba(255,255,255,0.03); border-radius: 10px; padding: 0.5rem 0.9rem;
-    font-size: 0.82rem; color: var(--text-sub);
-}
+    .b64-mode-btn {
+        background: transparent;
+        border: none;
+        border-radius: 14px;
+        padding: 0.75rem 1.75rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .b64-mode-btn:hover {
+        color: var(--text-main);
+    }
+
+    .b64-mode-btn.active {
+        background: var(--card-bg);
+        color: var(--accent-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .b64-action-btn {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 0.85rem 1.75rem;
+        color: var(--text-sub);
+        font-weight: 800;
+        font-size: 0.9rem;
+        cursor: pointer;
+        font-family: 'Outfit', sans-serif;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .b64-action-btn:hover {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+        background: rgba(var(--accent-rgb), 0.05);
+        transform: translateY(-2px);
+    }
+
+    .b64-action-btn.primary {
+        background: var(--accent-gradient);
+        border-color: transparent;
+        color: #fff;
+        box-shadow: 0 4px 15px var(--glow-color);
+    }
+
+    .b64-util-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        width: 48px;
+        height: 48px;
+        color: var(--text-sub);
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .b64-util-btn:hover {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .b64-use-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        color: var(--text-sub);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.2s;
+    }
+
+    .b64-use-item:hover {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+        transform: scale(1.02);
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 </style>
 
 <script>
-let currentMode = 'text';
-let currentFileName = 'base64_output';
+    let currentMode = 'text';
+    let currentFileName = 'base64_output';
 
-function setMode(mode) {
-    currentMode = mode;
-    document.querySelectorAll('.b64-mode-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('mode-' + mode).classList.add('active');
-    document.getElementById('text-mode-panel').style.display = mode === 'text' ? 'block' : 'none';
-    document.getElementById('file-mode-panel').style.display = mode === 'file' ? 'block' : 'none';
-}
-
-function setStatus(msg, color) {
-    const el = document.getElementById('b64-status');
-    el.textContent = msg;
-    el.style.color = color || 'var(--text-sub)';
-}
-
-function onInput() {
-    document.getElementById('b64-output').value = '';
-    setStatus('', '');
-}
-
-function doEncode() {
-    const input = document.getElementById('b64-input').value;
-    if (!input.trim()) return;
-    try {
-        const encoded = btoa(unescape(encodeURIComponent(input)));
-        document.getElementById('b64-output').value = encoded;
-        setStatus(`✓ Encoded, ${encoded.length} characters`, 'var(--accent-color)');
-    } catch(e) {
-        setStatus('✗ Encoding error: ' + e.message, '#ff4c4c');
+    function setMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.b64-mode-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('mode-' + mode).classList.add('active');
+        document.getElementById('text-mode-panel').style.display = mode === 'text' ? 'block' : 'none';
+        document.getElementById('file-mode-panel').style.display = mode === 'file' ? 'block' : 'none';
     }
-}
 
-function doDecode() {
-    const input = document.getElementById('b64-input').value.trim();
-    if (!input) return;
-    try {
-        const decoded = decodeURIComponent(escape(atob(input)));
-        document.getElementById('b64-output').value = decoded;
-        setStatus('✓ Decoded successfully', 'var(--accent-color)');
-    } catch(e) {
-        setStatus('✗ Invalid Base64 string', '#ff4c4c');
+    function setStatus(msg, color) {
+        const el = document.getElementById('b64-status');
+        el.textContent = msg;
+        el.style.color = color || 'var(--text-sub)';
     }
-}
 
-function swapIO() {
-    const inp = document.getElementById('b64-input');
-    const out = document.getElementById('b64-output');
-    const tmp = inp.value;
-    inp.value = out.value;
-    out.value = tmp;
-    setStatus('', '');
-}
+    function onInput() {
+        document.getElementById('b64-output').value = '';
+        setStatus('', '');
+    }
 
-function clearAll() {
-    document.getElementById('b64-input').value = '';
-    document.getElementById('b64-output').value = '';
-    setStatus('', '');
-}
+    function doEncode() {
+        const input = document.getElementById('b64-input').value;
+        if (!input.trim()) return;
+        try {
+            const encoded = btoa(unescape(encodeURIComponent(input)));
+            document.getElementById('b64-output').value = encoded;
+            setStatus(`✓ Encoded, ${encoded.length} characters`, 'var(--accent-color)');
+        } catch (e) {
+            setStatus('✗ Encoding error: ' + e.message, '#ff4c4c');
+        }
+    }
 
-function copyOutput() {
-    const output = document.getElementById('b64-output').value;
-    if (!output) return;
-    navigator.clipboard.writeText(output).then(() => {
-        const btn = document.getElementById('copy-btn');
-        btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
-        btn.style.background = '#00ff88';
-        lucide.createIcons();
-        setTimeout(() => {
-            btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy';
-            btn.style.background = 'var(--accent-color)';
+    function doDecode() {
+        const input = document.getElementById('b64-input').value.trim();
+        if (!input) return;
+        try {
+            const decoded = decodeURIComponent(escape(atob(input)));
+            document.getElementById('b64-output').value = decoded;
+            setStatus('✓ Decoded successfully', 'var(--accent-color)');
+        } catch (e) {
+            setStatus('✗ Invalid Base64 string', '#ff4c4c');
+        }
+    }
+
+    function swapIO() {
+        const inp = document.getElementById('b64-input');
+        const out = document.getElementById('b64-output');
+        const tmp = inp.value;
+        inp.value = out.value;
+        out.value = tmp;
+        setStatus('', '');
+    }
+
+    function clearAll() {
+        document.getElementById('b64-input').value = '';
+        document.getElementById('b64-output').value = '';
+        setStatus('', '');
+    }
+
+    function copyOutput() {
+        const output = document.getElementById('b64-output').value;
+        if (!output) return;
+        navigator.clipboard.writeText(output).then(() => {
+            const btn = document.getElementById('copy-btn');
+            btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
+            btn.style.background = '#00ff88';
             lucide.createIcons();
-        }, 2000);
-    });
-}
+            setTimeout(() => {
+                btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy';
+                btn.style.background = 'var(--accent-color)';
+                lucide.createIcons();
+            }, 2000);
+        });
+    }
 
-// File mode
-function handleFileDrop(e) {
-    e.preventDefault();
-    document.getElementById('file-drop-zone').style.borderColor = 'var(--border-color)';
-    const file = e.dataTransfer.files[0];
-    if (file) encodeFile(file);
-}
+    // File mode
+    function handleFileDrop(e) {
+        e.preventDefault();
+        document.getElementById('file-drop-zone').style.borderColor = 'var(--border-color)';
+        const file = e.dataTransfer.files[0];
+        if (file) encodeFile(file);
+    }
 
-function handleFileSelect(e) {
-    const file = e.target.files[0];
-    if (file) encodeFile(file);
-}
+    function handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) encodeFile(file);
+    }
 
-function encodeFile(file) {
-    currentFileName = file.name;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const b64 = e.target.result.split(',')[1];
-        document.getElementById('file-output').value = b64;
-        document.getElementById('file-result').style.display = 'block';
-        const sizeKB = (file.size / 1024).toFixed(1);
-        const b64Size = (b64.length / 1024).toFixed(1);
-        document.getElementById('file-info').textContent = `${file.name} (${sizeKB} KB → ${b64Size} KB Base64)`;
-        lucide.createIcons();
-    };
-    reader.readAsDataURL(file);
-}
-
-function copyFileOutput() {
-    const out = document.getElementById('file-output').value;
-    if (!out) return;
-    navigator.clipboard.writeText(out).then(() => {
-        const btn = document.getElementById('file-copy-btn');
-        btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
-        lucide.createIcons();
-        setTimeout(() => {
-            btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy Base64';
+    function encodeFile(file) {
+        currentFileName = file.name;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const b64 = e.target.result.split(',')[1];
+            document.getElementById('file-output').value = b64;
+            document.getElementById('file-result').style.display = 'block';
+            const sizeKB = (file.size / 1024).toFixed(1);
+            const b64Size = (b64.length / 1024).toFixed(1);
+            document.getElementById('file-info').textContent = `${file.name} (${sizeKB} KB → ${b64Size} KB Base64)`;
             lucide.createIcons();
-        }, 2000);
-    });
-}
+        };
+        reader.readAsDataURL(file);
+    }
 
-function downloadFileOutput() {
-    const out = document.getElementById('file-output').value;
-    if (!out) return;
-    const blob = new Blob([out], { type: 'text/plain' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = currentFileName + '.base64.txt';
-    a.click();
-}
+    function copyFileOutput() {
+        const out = document.getElementById('file-output').value;
+        if (!out) return;
+        navigator.clipboard.writeText(out).then(() => {
+            const btn = document.getElementById('file-copy-btn');
+            btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
+            lucide.createIcons();
+            setTimeout(() => {
+                btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy Base64';
+                lucide.createIcons();
+            }, 2000);
+        });
+    }
+
+    function downloadFileOutput() {
+        const out = document.getElementById('file-output').value;
+        if (!out) return;
+        const blob = new Blob([out], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = currentFileName + '.base64.txt';
+        a.click();
+    }
 </script>
 {% endblock %}

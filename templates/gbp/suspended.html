@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 
 {% block title %}Google Business Profile Suspended - Triage Guide | HandleKit{% endblock %}
-{% block description %}What you need to know when your Google Business Profile is suspended. Common issues, evidence checklists, and right next steps.{% endblock %}
+{% block description %}What you need to know when your Google Business Profile is suspended. Common issues, evidence
+checklists, and right next steps.{% endblock %}
 
 {% block head_extra %}
 <link rel="canonical" href="https://handlekit.com/gbp-triage/suspended">
@@ -43,25 +44,31 @@
 
     <section class="panel">
         <h2>What Suspension Means</h2>
-        <p>Your listing is no longer visible on Google Maps and Search. A suspension means Google has flagged your profile for a potential policy violation or quality concern.</p>
-        
+        <p>Your listing is no longer visible on <strong>Google Maps</strong> and <strong>Search</strong>. A suspension means Google has flagged your
+            listing as potentially violating one of their quality guidelines.</p>
+
         <h3>Common Issue Patterns</h3>
         <ul>
-            <li>Address eligibility format problems may be one possible cause.</li>
-            <li>Lack of verifiable permanent signage is commonly checked for storefronts.</li>
-            <li>Recent sweeping edits to core business data can trigger reviews.</li>
+            <li><strong>Address eligibility</strong> format problems may be one possible cause.</li>
+            <li>Lack of <strong>verifiable permanent signage</strong> is commonly checked for storefronts.</li>
+            <li>Recent <strong>sweeping edits</strong> to core business data can trigger reviews.</li>
         </ul>
-        
+
         <h3>Evidence Gathering Before Appeal</h3>
-        <p>Documentation that proves your entity and your connection to the specific location is usually reviewed. See our <a href="{{ url_for('gbp_evidence_checklist') }}">Evidence Checklist</a>.</p>
+        <p>Documentation that proves your entity and your connection to the specific location is usually reviewed. See
+            our <a href="{{ url_for('gbp_evidence_checklist') }}">Evidence Checklist</a>.</p>
 
         <h3>Official Next Steps</h3>
-        <p>It is recommended to submit an appeal with solid proof. Use the <a href="https://support.google.com/business/workflow/13569690" target="_blank" rel="noopener">Official Appeals Tool</a>.</p>
+        <p>It is recommended to submit an appeal with solid proof. Use the <a
+                href="https://support.google.com/business/workflow/13569690" target="_blank" rel="noopener">Official
+                Appeals Tool</a>.</p>
     </section>
 </main>
 
-<footer class="site-footer" style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;">
-    <p>This is an independent tool to assist local marketing professionals and business owners. Not affiliated with Google.</p>
+<footer class="site-footer"
+    style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;">
+    <p>This is an independent tool to assist local marketing professionals and business owners. Not affiliated with
+        Google.</p>
     <p>This is preparation guidance, not a diagnosis or a guarantee of reinstatement.</p>
 </footer>
 {% endblock %}

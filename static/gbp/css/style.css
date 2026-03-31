@@ -10,7 +10,7 @@
     --danger-red: #f28b82;
     --border-color: rgba(255, 255, 255, 0.1);
     --focus-ring: rgba(11, 87, 208, 0.4);
-    
+
     --tag-fix-bg: rgba(242, 139, 130, 0.15);
     --tag-review-bg: rgba(249, 171, 0, 0.15);
     --tag-possible-bg: rgba(138, 180, 248, 0.15);
@@ -29,7 +29,7 @@ html[data-theme='light'] {
     --warning-amber: #b06000;
     --danger-red: #c5221f;
     --border-color: #dadce0;
-    
+
     --tag-fix-bg: #fce8e6;
     --tag-review-bg: #fef7e0;
     --tag-possible-bg: #e8f0fe;
@@ -85,11 +85,14 @@ a {
     text-decoration: underline;
 }
 
-a:hover, a:focus {
+a:hover,
+a:focus {
     color: var(--accent-blue-hover);
 }
 
-a:focus, button:focus, input:focus {
+a:focus,
+button:focus,
+input:focus {
     outline: 3px solid var(--focus-ring);
     outline-offset: 2px;
 }
@@ -145,25 +148,31 @@ h1 {
     line-height: 1.3;
 }
 
-h2, h3 {
+h2,
+h3 {
     margin-top: 2rem;
     margin-bottom: 1rem;
     line-height: 1.3;
 }
 
 /* Specific heading sizes for hierarchy */
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.2rem; }
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
 
 /* Remove top margin if the heading is the first element in its container (like a .panel) */
-.panel > :first-child,
-.hero > :first-child,
-.results-section > :first-child {
+.panel> :first-child,
+.hero> :first-child,
+.results-section> :first-child {
     margin-top: 0;
 }
 
 /* Also remove top margin if it follows an h2 (standard subtitle pattern) */
-h2 + h3 {
+h2+h3 {
     margin-top: 0.5rem;
 }
 
@@ -172,7 +181,8 @@ p {
 }
 
 /* List indentation & spacing — ensure breathing room and clear alignment */
-main ul, main ol {
+main ul,
+main ol {
     padding-left: 2.5rem;
     margin-bottom: 1.25rem;
 }
@@ -211,7 +221,7 @@ main li {
     border-radius: 8px;
     padding: 2rem;
     margin-bottom: 2rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .card {
@@ -245,7 +255,8 @@ legend {
     font-size: 1.05rem;
 }
 
-.radio-group, .checkbox-group {
+.radio-group,
+.checkbox-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -258,7 +269,8 @@ label {
     cursor: pointer;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"],
+input[type="checkbox"] {
     width: 1.2rem;
     height: 1.2rem;
     accent-color: var(--accent-blue);
@@ -346,13 +358,17 @@ button[type="submit"]:hover {
     font-weight: 600;
 }
 
-.action-list, .warning-list, .evidence-list {
+.action-list,
+.warning-list,
+.evidence-list {
     /* Use the same indentation and spacing as global main lists */
     padding-left: 2.5rem;
     margin-bottom: 1.25rem;
 }
 
-.action-list li, .warning-list li, .evidence-list li {
+.action-list li,
+.warning-list li,
+.evidence-list li {
     margin-bottom: 0.5rem;
 }
 
@@ -367,6 +383,13 @@ button[type="submit"]:hover {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

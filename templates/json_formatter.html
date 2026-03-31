@@ -1,344 +1,450 @@
 {% set title = "JSON Formatter & Validator | Free Online Tool | HandleKit" %}
-{% set description = "Format, validate and minify JSON instantly online. Syntax highlighting, error detection, collapsible tree view, and one-click copy. Free, fast, 100% browser-based." %}
+{% set description = "Format, validate and minify JSON instantly online. Syntax highlighting, error detection,
+collapsible tree view, and one-click copy. Free, fast, 100% browser-based." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="tool-container" style="max-width: 960px; margin: 0 auto;">
-    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
-        <i data-lucide="braces" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">JSON Formatter & Validator</h1>
-        <p style="color: var(--text-sub);">Format, validate, and minify JSON instantly, no signup, 100% private.</p>
-    </div>
-
-    <!-- Action Buttons Row -->
-    <div style="display: flex; gap: 0.6rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;">
-        <button class="jf-action-btn active" id="btn-format" onclick="doFormat()">
-            <i data-lucide="align-left" style="width:14px;height:14px;"></i> Format / Prettify
-        </button>
-        <button class="jf-action-btn" id="btn-minify" onclick="doMinify()">
-            <i data-lucide="minimize-2" style="width:14px;height:14px;"></i> Minify
-        </button>
-        <button class="jf-action-btn" id="btn-validate" onclick="doValidate()">
-            <i data-lucide="shield-check" style="width:14px;height:14px;"></i> Validate
-        </button>
-        <div style="margin-left: auto; display: flex; gap: 0.6rem;">
-            <button onclick="loadSample()" class="jf-util-btn">
-                <i data-lucide="flask-conical" style="width:14px;height:14px;"></i> Sample
-            </button>
-            <button onclick="clearAll()" class="jf-util-btn">
-                <i data-lucide="x" style="width:14px;height:14px;"></i> Clear
-            </button>
-        </div>
-    </div>
-
-    <!-- Indent Options -->
-    <div style="display: flex; gap: 0.6rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap;">
-        <span style="font-size: 0.8rem; color: var(--text-sub); font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px;">Indent:</span>
-        <button class="jf-indent-btn active" id="indent-2" onclick="setIndent(2)">2 spaces</button>
-        <button class="jf-indent-btn" id="indent-4" onclick="setIndent(4)">4 spaces</button>
-        <button class="jf-indent-btn" id="indent-tab" onclick="setIndent('tab')">Tab</button>
-        <span id="jf-status" style="margin-left: auto; font-size: 0.82rem;"></span>
-    </div>
-
-    <!-- Editor Area -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;" class="jf-grid">
-        <!-- Input -->
-        <div style="position: relative;">
-            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Input JSON</label>
-            <textarea id="jf-input" placeholder='Paste your JSON here…&#10;&#10;{"name": "HandleKit", "tools": 11}'
-                oninput="onInput()"
-                onfocus="this.style.borderColor='var(--accent-color)'"
-                onblur="this.style.borderColor='var(--border-color)'"
-                style="width:100%;min-height:400px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.88rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;tab-size:2;"></textarea>
-            <div id="jf-input-info" style="position:absolute;bottom:1rem;left:1.5rem;font-size:0.75rem;color:var(--text-sub);pointer-events:none;"></div>
+<div class="tool-content" style="max-width: 1000px; margin: 0 auto; padding-bottom: 5rem;">
+    <!-- MAIN TOOL CARD -->
+    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        
+        <!-- HEADER SECTION -->
+        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;">
+            <div style="background: var(--accent-gradient); width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 35px var(--glow-color); flex-shrink: 0;">
+                <i data-lucide="braces" style="color: #fff; width: 36px; height: 36px;"></i>
+            </div>
+            <div>
+                <h1 style="margin: 0; color: var(--text-main); font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;">JSON Formatter & Validator</h1>
+                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Format, validate, and minify JSON instantly with 100%% privacy.</p>
+            </div>
         </div>
 
-        <!-- Output -->
-        <div style="position: relative;">
-            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Output</label>
-            <div id="jf-output-wrap" style="position:relative;">
-                <textarea id="jf-output" readonly placeholder="Formatted JSON will appear here…"
-                    onfocus="this.style.borderColor='var(--accent-color)'"
-                    onblur="this.style.borderColor='var(--border-color)'"
-                    style="width:100%;min-height:400px;background:rgba(0,210,255,0.04);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.88rem;font-family:'Courier New',monospace;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
-                <button id="copy-btn" onclick="copyOutput()" style="position:absolute;bottom:1rem;right:1.2rem;background:var(--accent-color);border:none;border-radius:10px;padding:0.45rem 1.1rem;color:#000;font-weight:700;font-size:0.8rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;">
-                    <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy
+        <!-- ACTION BAR -->
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.25rem; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1.25rem;">
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                <button class="jf-action-btn active" id="btn-format" onclick="doFormat()">
+                    <i data-lucide="align-left" style="width:16px;height:16px;"></i> Format / Prettify
                 </button>
+                <button class="jf-action-btn" id="btn-minify" onclick="doMinify()">
+                    <i data-lucide="minimize-2" style="width:16px;height:16px;"></i> Minify
+                </button>
+                <button class="jf-action-btn" id="btn-validate" onclick="doValidate()">
+                    <i data-lucide="shield-check" style="width:16px;height:16px;"></i> Validate
+                </button>
+                <div style="margin-left: auto; display: flex; gap: 0.75rem;" class="mobile-stack">
+                    <button onclick="loadSample()" class="jf-util-btn">
+                        <i data-lucide="flask-conical" style="width:16px;height:16px;"></i> Sample
+                    </button>
+                    <button onclick="clearAll()" class="jf-util-btn">
+                        <i data-lucide="trash-2" style="width:16px;height:16px;"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- OPTIONS BAR -->
+            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+                <span style="font-size: 0.75rem; color: var(--text-sub); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Indentation:</span>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="jf-indent-btn active" id="indent-2" onclick="setIndent(2)">2 spaces</button>
+                    <button class="jf-indent-btn" id="indent-4" onclick="setIndent(4)">4 spaces</button>
+                    <button class="jf-indent-btn" id="indent-tab" onclick="setIndent('tab')">Tab</button>
+                </div>
+                <span id="jf-status" style="margin-left: auto; font-size: 0.85rem; font-weight: 600;"></span>
+            </div>
+        </div>
+
+        <!-- EDITOR GRID -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;" class="jf-grid">
+            <!-- INPUT -->
+            <div style="position: relative; display: flex; flex-direction: column;">
+                <label style="font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; display: block; margin-bottom: 0.75rem;">Source JSON</label>
+                <div style="position: relative; flex: 1;">
+                    <textarea id="jf-input" placeholder='Paste your JSON here…&#10;&#10;{"id": "trust-light", "status": "premium"}'
+                        oninput="onInput()" onfocus="this.parentElement.style.borderColor='var(--accent-color)'; this.parentElement.style.boxShadow='0 0 20px var(--glow-color)';"
+                        onblur="this.parentElement.style.borderColor='var(--border-color)'; this.parentElement.style.boxShadow='none';"
+                        style="width:100%; min-height:450px; background:transparent; border:none; color: var(--text-main); font-size:0.9rem; font-family: 'JetBrains Mono', 'Fira Code', monospace; resize:vertical; outline:none; box-sizing:border-box; line-height:1.7; tab-size:2; padding: 1.5rem;"></textarea>
+                    <div style="position:absolute; top:0; left:0; right:0; bottom:0; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; pointer-events: none; z-index: -1; transition: all 0.3s ease;"></div>
+                    <div id="jf-input-info" style="position:absolute; bottom:1rem; left:1.5rem; font-size:0.7rem; color:var(--text-sub); pointer-events:none; font-weight:700; opacity:0.6;"></div>
+                </div>
+            </div>
+
+            <!-- OUTPUT -->
+            <div style="position: relative; display: flex; flex-direction: column;">
+                <label style="font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; display: block; margin-bottom: 0.75rem;">Formatted Result</label>
+                <div id="jf-output-wrap" style="position:relative; flex: 1;">
+                    <textarea id="jf-output" readonly placeholder="Output will appear here…"
+                        onfocus="this.parentElement.style.borderColor='var(--accent-color)'; this.parentElement.style.boxShadow='0 0 20px var(--glow-color)';"
+                        onblur="this.parentElement.style.borderColor='var(--border-color)'; this.parentElement.style.boxShadow='none';"
+                        style="width:100%; min-height:450px; background:transparent; border:none; color: var(--text-main); font-size:0.9rem; font-family: 'JetBrains Mono', 'Fira Code', monospace; resize:vertical; outline:none; box-sizing:border-box; line-height:1.7; padding: 1.5rem;"></textarea>
+                    <div style="position:absolute; top:0; left:0; right:0; bottom:0; background: rgba(var(--accent-rgb), 0.03); border: 1px solid var(--border-color); border-radius: 18px; pointer-events: none; z-index: -1; transition: all 0.3s ease;"></div>
+                    <button id="copy-btn" onclick="copyOutput()"
+                        style="position:absolute; bottom:1.25rem; right:1.25rem; background: var(--accent-color); border: none; border-radius: 12px; padding: 0.75rem 1.5rem; color: #fff; font-weight: 800; font-size: 0.85rem; cursor: pointer; font-family:'Outfit',sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i data-lucide="copy" style="width:16px;height:16px;"></i> Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS GRID -->
+        <div id="jf-stats" style="display:none; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.5rem; gap: 2rem; flex-wrap: wrap;">
+            <div class="jf-stat">
+                <span class="jf-stat-label">Total Keys</span>
+                <span id="stat-keys" class="jf-stat-value">—</span>
+            </div>
+            <div class="jf-stat">
+                <span class="jf-stat-label">Max Depth</span>
+                <span id="stat-depth" class="jf-stat-value">—</span>
+            </div>
+            <div class="jf-stat">
+                <span class="jf-stat-label">Arrays</span>
+                <span id="stat-arrays" class="jf-stat-value">—</span>
+            </div>
+            <div class="jf-stat">
+                <span class="jf-stat-label">Objects</span>
+                <span id="stat-objects" class="jf-stat-value">—</span>
+            </div>
+            <div class="jf-stat">
+                <span class="jf-stat-label">Raw Size</span>
+                <span id="stat-size" class="jf-stat-value">—</span>
             </div>
         </div>
     </div>
 
-    <!-- Stats Bar -->
-    <div id="jf-stats" style="display:none; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem 1.5rem; margin-bottom: 2rem; display: flex; gap: 2rem; flex-wrap: wrap;">
-        <div class="jf-stat"><span class="jf-stat-label">Keys</span><span id="stat-keys" class="jf-stat-value">—</span></div>
-        <div class="jf-stat"><span class="jf-stat-label">Depth</span><span id="stat-depth" class="jf-stat-value">—</span></div>
-        <div class="jf-stat"><span class="jf-stat-label">Arrays</span><span id="stat-arrays" class="jf-stat-value">—</span></div>
-        <div class="jf-stat"><span class="jf-stat-label">Objects</span><span id="stat-objects" class="jf-stat-value">—</span></div>
-        <div class="jf-stat"><span class="jf-stat-label">Size (raw)</span><span id="stat-size" class="jf-stat-value">—</span></div>
-    </div>
+    <!-- DOCUMENTATION SECTION -->
+    <div style="margin-top: 5rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: var(--accent-gradient); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="book-open" style="color: #fff; width: 24px; height: 24px;"></i>
+            </div>
+            <h2 style="color: var(--text-main); font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; margin: 0;">What is JSON Formatting?</h2>
+        </div>
+        
+        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 2rem; font-size: 1.1rem;">
+            JSON (JavaScript Object Notation) is the global standard for data interchange. While it's inherently readable, raw API responses are often <strong>"minified"</strong> to save bandwidth, making them nearly impossible for humans to audit. Our tool adds <strong>semantic indentation</strong> and structure, turning wall-of-text data into a clean, hierarchical view.
+        </p>
 
-    <!-- SEO Content -->
-    <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is JSON?</h2>
-        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and for machines to parse and generate.
-        </p>
-        <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 2rem;">
-            Well-formed JSON code is much more readable and debuggable. The formatter provides proper indentation, line breaks, and structure of the JSON syntax so that it becomes easy to spot errors or understand the structure of the JSON code.
-        </p>
-        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Format vs. Minify</h3>
-                <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color: var(--text-main);">Format / Prettify</strong>, adds indentation and line breaks for human readability. Use during development and debugging.</li>
-                    <li style="margin-top:0.5rem;"><strong style="color: var(--text-main);">Minify</strong>, removes all whitespace to reduce file size. Use for production APIs and storage.</li>
+        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem;">
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+                <h3 style="color: var(--accent-color); margin-bottom: 1.25rem; font-size: 1.2rem; font-weight: 800;">Prettify vs. Minify</h3>
+                <ul style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem;">
+                    <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <i data-lucide="eye" style="color: var(--accent-color); width: 20px; height: 20px; flex-shrink: 0; margin-top: 3px;"></i>
+                        <span><strong style="color: var(--text-main);">Prettify:</strong> Adds whitespace and indentation. Best for debugging, code reviews, and technical documentation.</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <i data-lucide="zap" style="color: var(--accent-color); width: 20px; height: 20px; flex-shrink: 0; margin-top: 3px;"></i>
+                        <span><strong style="color: var(--text-main);">Minify:</strong> Strips all non-essential characters. Essential for production environments to minimize latency and payload size.</span>
+                    </li>
                 </ul>
             </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Common JSON Use Cases</h3>
-                <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li>REST API responses and requests</li>
-                    <li>Configuration files (package.json, etc.)</li>
-                    <li>NoSQL database documents</li>
-                    <li>Data exchange between services</li>
-                    <li>Browser localStorage data</li>
-                </ul>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+                <h3 style="color: var(--accent-color); margin-bottom: 1.25rem; font-size: 1.2rem; font-weight: 800;">Privacy First Approach</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 1.25rem;">Unlike other online formatters, HandleKit processes your data <strong>entirely in your browser</strong>. </p>
+                <div style="background: rgba(var(--accent-rgb), 0.05); padding: 1rem; border-radius: 12px; border-left: 3px solid var(--accent-color);">
+                    <p style="color: var(--text-main); margin: 0; font-size: 0.9rem; font-weight: 600;">No data is ever uploaded to our servers. Your sensitive API keys and payloads remain on your machine.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ SECTION -->
+        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">Frequently Asked Questions</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 5rem;">
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">How do I check if my JSON is valid?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Simply paste your code into the source box and click <strong>"Validate"</strong>. Our engine will parse the structure according to <strong>RFC 8259</strong> standards and highlight any <strong>syntax errors</strong>, such as <strong>trailing commas</strong> or <strong>mismatched braces</strong>.</p>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">Can I format JSON for Python or Java?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes! While JSON originated from JavaScript, it is language-independent. The formatted output is compatible with all modern programming languages including <strong>Python (json module)</strong>, <strong>Java (Jackson/Gson)</strong>, Go, and PHP.</p>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">Does this tool support JSONL (JSON Lines)?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Currently, this tool specializes in standard structured JSON objects/arrays. For <strong>JSONL (JSON Lines)</strong>, we recommend processing lines individually to maintain the line-delimited format required for log analysis.</p>
             </div>
         </div>
     </div>
 
-    <!-- FAQ Section -->
-    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
-
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I format my JSON using this tool?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Just enter your raw JSON text into the left-hand box, then click <strong style="color: var(--accent-color);">"Format / Prettify"</strong>. The formatted, pretty-printed version of your JSON text will be displayed <strong style="color: var(--text-main);">instantaneously</strong> in the right-hand box. You can choose between <strong style="color: var(--text-main);">2 spaces, 4 spaces, and tabs</strong> using the buttons above the text editor. Then, click <strong style="color: var(--accent-color);">"Copy"</strong> to copy the result.</p>
-            </div>
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the purpose of Minifying JSON?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">When you send JSON data over a network, like in the case of an API, the extra spaces are unnecessary. The <strong style="color: var(--accent-color);">"Minify"</strong> button removes all spaces and new lines, reducing the size of the JSON text by <strong style="color: var(--text-main);">20-50%</strong>. There is absolutely no effect on the actual data, and it remains perfectly valid JSON.</p>
-            </div>
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is it safe to enter my JSON data into this tool?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes, it is perfectly safe to enter your JSON data into the text editor, even sensitive JSON like API responses containing tokens or user data, because it is purely a client-side operation performed in your browser using JavaScript, without any interaction with a remote server.</p>
-            </div>
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What does the error message mean when my JSON is invalid?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The most common errors include a trailing comma, single quotes instead of double quotes, missing quotes, and an unclosed bracket/brace. The error message should also specify where the error occurred, approximately. If it says "Unexpected character", check the actual character before where it says that.</p>
-            </div>
-
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is JSON used for?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">JSON stands for JavaScript Object Notation, but it is not exclusive to JavaScript at all. In fact, it is used as the standard data format for exchanging data on the internet, and you'll find it being used in almost every other web technology, including RESTful APIs, configuration files, browser local storage, NoSQL databases like MongoDB and Firestore, and the communication layer of almost every other web application.</p>
-            </div>
-
-        </div>
+    <!-- INTERNAL MAGNET -->
+    <div style="background: var(--accent-gradient); border-radius: 24px; padding: 3rem; margin-top: 5rem; text-align: center; color: #fff; box-shadow: 0 20px 40px var(--glow-color); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; pointer-events: none;"></div>
+        <i data-lucide="binary" style="width: 48px; height: 48px; margin-bottom: 1.5rem;"></i>
+        <h2 style="color: #fff; margin: 0 0 1rem 0; font-size: 1.8rem; font-weight: 800;">Need to Encode Data?</h2>
+        <p style="color: rgba(255,255,255,0.9); margin-bottom: 2rem; font-size: 1.1rem; max-width: 500px; margin-left: auto; margin-right: auto;">Switch to our <strong>Base64 Encoder</strong> to safely convert strings and files for secure transmission.</p>
+        <a href="/base64-encoder" style="display: inline-block; background: #fff; color: var(--accent-color); text-decoration: none; padding: 1.1rem 2.5rem; border-radius: 14px; font-weight: 800; font-size: 1.1rem; transition: transform 0.2s ease, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+            Launch Base64 Tool
+        </a>
     </div>
+</div>
 </div>
 
 <style>
-.jf-action-btn {
-    background: var(--input-bg); border: 1px solid var(--border-color);
-    border-radius: 10px; padding: 0.55rem 1.2rem; color: var(--text-sub);
-    cursor: pointer; font-size: 0.88rem; font-family: 'Outfit', sans-serif; font-weight: 600;
-    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-}
-.jf-action-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
-.jf-action-btn.active { background: var(--accent-color); border-color: var(--accent-color); color: #000; }
-.jf-util-btn {
-    background: var(--input-bg); border: 1px solid var(--border-color);
-    border-radius: 10px; padding: 0.55rem 1rem; color: var(--text-sub);
-    cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif;
-    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-}
-.jf-util-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
-.jf-indent-btn {
-    background: rgba(255,255,255,0.04); border: 1px solid var(--border-color);
-    border-radius: 8px; padding: 0.3rem 0.8rem; color: var(--text-sub);
-    cursor: pointer; font-size: 0.8rem; font-family: 'Outfit', sans-serif; font-weight: 600;
-    transition: all 0.2s;
-}
-.jf-indent-btn:hover, .jf-indent-btn.active { border-color: var(--accent-color); color: var(--accent-color); }
-.jf-stat { display: flex; flex-direction: column; gap: 0.2rem; }
-.jf-stat-label { font-size: 0.72rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.7px; font-weight: 600; }
-.jf-stat-value { font-size: 1.15rem; font-weight: 700; color: var(--accent-color); }
-@media (max-width: 680px) {
-    .jf-grid { grid-template-columns: 1fr !important; }
-}
+    .jf-action-btn {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .jf-action-btn:hover {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+        background: rgba(var(--accent-rgb), 0.05);
+        transform: translateY(-2px);
+    }
+
+    .jf-action-btn.active {
+        background: var(--accent-gradient);
+        border-color: transparent;
+        color: #fff;
+        box-shadow: 0 4px 15px var(--glow-color);
+    }
+
+    .jf-util-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.75rem 1.25rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .jf-util-btn:hover {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .jf-indent-btn {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0.5rem 1.25rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        transition: all 0.2s;
+    }
+
+    .jf-indent-btn:hover,
+    .jf-indent-btn.active {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        background: rgba(var(--accent-rgb), 0.05);
+    }
+
+    .jf-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        min-width: 120px;
+    }
+
+    .jf-stat-label {
+        font-size: 0.7rem;
+        color: var(--text-sub);
+        text-transform: uppercase;
+        letter-spacing: 1.25px;
+        font-weight: 800;
+        opacity: 0.7;
+    }
+
+    .jf-stat-value {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--text-main);
+    }
+
+    @media (max-width: 680px) {
+        .jf-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
 </style>
 
 <script>
-let indentValue = 2;
+    let indentValue = 2;
 
-function setIndent(v) {
-    indentValue = v;
-    document.querySelectorAll('.jf-indent-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('indent-' + v).classList.add('active');
-}
-
-function getIndent() {
-    return indentValue === 'tab' ? '\t' : indentValue;
-}
-
-function setActiveBtn(id) {
-    document.querySelectorAll('.jf-action-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
-
-function setStatus(msg, color) {
-    const el = document.getElementById('jf-status');
-    el.textContent = msg;
-    el.style.color = color || 'var(--text-sub)';
-}
-
-function onInput() {
-    document.getElementById('jf-output').value = '';
-    setStatus('', '');
-    updateInputInfo();
-}
-
-function updateInputInfo() {
-    const val = document.getElementById('jf-input').value;
-    const el = document.getElementById('jf-input-info');
-    if (val.trim()) {
-        el.textContent = `${val.length.toLocaleString()} chars`;
-    } else {
-        el.textContent = '';
+    function setIndent(v) {
+        indentValue = v;
+        document.querySelectorAll('.jf-indent-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('indent-' + v).classList.add('active');
     }
-}
 
-function doFormat() {
-    const input = document.getElementById('jf-input').value.trim();
-    if (!input) return;
-    setActiveBtn('btn-format');
-    try {
-        const parsed = JSON.parse(input);
-        const formatted = JSON.stringify(parsed, null, getIndent());
-        document.getElementById('jf-output').value = formatted;
-        setStatus('✓ Valid JSON, formatted successfully', 'var(--accent-color)');
-        updateStats(parsed);
-        showStats();
-    } catch(e) {
+    function getIndent() {
+        return indentValue === 'tab' ? '\t' : indentValue;
+    }
+
+    function setActiveBtn(id) {
+        document.querySelectorAll('.jf-action-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function setStatus(msg, color) {
+        const el = document.getElementById('jf-status');
+        el.textContent = msg;
+        el.style.color = color || 'var(--text-sub)';
+    }
+
+    function onInput() {
         document.getElementById('jf-output').value = '';
-        setStatus('✗ ' + formatError(e.message), '#ff4c4c');
-        hideStats();
+        setStatus('', '');
+        updateInputInfo();
     }
-}
 
-function doMinify() {
-    const input = document.getElementById('jf-input').value.trim();
-    if (!input) return;
-    setActiveBtn('btn-minify');
-    try {
-        const parsed = JSON.parse(input);
-        const minified = JSON.stringify(parsed);
-        document.getElementById('jf-output').value = minified;
-        const saved = input.length - minified.length;
-        setStatus(`✓ Minified, saved ${saved} characters`, 'var(--accent-color)');
-        updateStats(parsed);
-        showStats();
-    } catch(e) {
-        document.getElementById('jf-output').value = '';
-        setStatus('✗ ' + formatError(e.message), '#ff4c4c');
-        hideStats();
-    }
-}
-
-function doValidate() {
-    const input = document.getElementById('jf-input').value.trim();
-    if (!input) return;
-    setActiveBtn('btn-validate');
-    try {
-        const parsed = JSON.parse(input);
-        document.getElementById('jf-output').value = '✓ Valid JSON';
-        setStatus('✓ JSON is valid!', 'var(--accent-color)');
-        updateStats(parsed);
-        showStats();
-    } catch(e) {
-        document.getElementById('jf-output').value = '✗ Invalid JSON\n\n' + formatError(e.message);
-        setStatus('✗ Invalid JSON', '#ff4c4c');
-        hideStats();
-    }
-}
-
-function formatError(msg) {
-    // Make JSON parse errors more readable
-    return msg.replace('JSON.parse: ', '').replace('Unexpected token', 'Unexpected character');
-}
-
-function updateStats(parsed) {
-    let keys = 0, arrays = 0, objects = 0, maxDepth = 0;
-    function traverse(obj, depth) {
-        if (depth > maxDepth) maxDepth = depth;
-        if (Array.isArray(obj)) {
-            arrays++;
-            obj.forEach(v => { if (typeof v === 'object' && v !== null) traverse(v, depth + 1); });
-        } else if (typeof obj === 'object' && obj !== null) {
-            objects++;
-            Object.keys(obj).forEach(k => { keys++; if (typeof obj[k] === 'object' && obj[k] !== null) traverse(obj[k], depth + 1); });
+    function updateInputInfo() {
+        const val = document.getElementById('jf-input').value;
+        const el = document.getElementById('jf-input-info');
+        if (val.trim()) {
+            el.textContent = `${val.length.toLocaleString()} chars`;
+        } else {
+            el.textContent = '';
         }
     }
-    traverse(parsed, 1);
-    const rawSize = document.getElementById('jf-input').value.length;
-    document.getElementById('stat-keys').textContent = keys.toLocaleString();
-    document.getElementById('stat-depth').textContent = maxDepth;
-    document.getElementById('stat-arrays').textContent = arrays.toLocaleString();
-    document.getElementById('stat-objects').textContent = objects.toLocaleString();
-    document.getElementById('stat-size').textContent = rawSize < 1024 ? rawSize + ' B' : (rawSize / 1024).toFixed(1) + ' KB';
-}
 
-function showStats() {
-    document.getElementById('jf-stats').style.display = 'flex';
-}
+    function doFormat() {
+        const input = document.getElementById('jf-input').value.trim();
+        if (!input) return;
+        setActiveBtn('btn-format');
+        try {
+            const parsed = JSON.parse(input);
+            const formatted = JSON.stringify(parsed, null, getIndent());
+            document.getElementById('jf-output').value = formatted;
+            setStatus('✓ Valid JSON, formatted successfully', 'var(--accent-color)');
+            updateStats(parsed);
+            showStats();
+        } catch (e) {
+            document.getElementById('jf-output').value = '';
+            setStatus('✗ ' + formatError(e.message), '#ff4c4c');
+            hideStats();
+        }
+    }
 
-function hideStats() {
-    document.getElementById('jf-stats').style.display = 'none';
-}
+    function doMinify() {
+        const input = document.getElementById('jf-input').value.trim();
+        if (!input) return;
+        setActiveBtn('btn-minify');
+        try {
+            const parsed = JSON.parse(input);
+            const minified = JSON.stringify(parsed);
+            document.getElementById('jf-output').value = minified;
+            const saved = input.length - minified.length;
+            setStatus(`✓ Minified, saved ${saved} characters`, 'var(--accent-color)');
+            updateStats(parsed);
+            showStats();
+        } catch (e) {
+            document.getElementById('jf-output').value = '';
+            setStatus('✗ ' + formatError(e.message), '#ff4c4c');
+            hideStats();
+        }
+    }
 
-function loadSample() {
-    const sample = {
-        "name": "HandleKit",
-        "version": "2.0",
-        "tools": ["JSON Formatter", "Unit Converter", "QR Generator", "Color Picker"],
-        "stats": { "users": 0, "tools": 11, "active": true },
-        "meta": { "author": "Pasi", "license": "MIT" }
-    };
-    document.getElementById('jf-input').value = JSON.stringify(sample);
-    updateInputInfo();
-    doFormat();
-}
+    function doValidate() {
+        const input = document.getElementById('jf-input').value.trim();
+        if (!input) return;
+        setActiveBtn('btn-validate');
+        try {
+            const parsed = JSON.parse(input);
+            document.getElementById('jf-output').value = '✓ Valid JSON';
+            setStatus('✓ JSON is valid!', 'var(--accent-color)');
+            updateStats(parsed);
+            showStats();
+        } catch (e) {
+            document.getElementById('jf-output').value = '✗ Invalid JSON\n\n' + formatError(e.message);
+            setStatus('✗ Invalid JSON', '#ff4c4c');
+            hideStats();
+        }
+    }
 
-function clearAll() {
-    document.getElementById('jf-input').value = '';
-    document.getElementById('jf-output').value = '';
-    document.getElementById('jf-input-info').textContent = '';
-    setStatus('', '');
-    hideStats();
-    document.querySelectorAll('.jf-action-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('btn-format').classList.add('active');
-}
+    function formatError(msg) {
+        // Make JSON parse errors more readable
+        return msg.replace('JSON.parse: ', '').replace('Unexpected token', 'Unexpected character');
+    }
 
-function copyOutput() {
-    const output = document.getElementById('jf-output').value;
-    if (!output) return;
-    navigator.clipboard.writeText(output).then(() => {
-        const btn = document.getElementById('copy-btn');
-        btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
-        btn.style.background = '#00ff88';
-        lucide.createIcons();
-        setTimeout(() => {
-            btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy';
-            btn.style.background = 'var(--accent-color)';
+    function updateStats(parsed) {
+        let keys = 0, arrays = 0, objects = 0, maxDepth = 0;
+        function traverse(obj, depth) {
+            if (depth > maxDepth) maxDepth = depth;
+            if (Array.isArray(obj)) {
+                arrays++;
+                obj.forEach(v => { if (typeof v === 'object' && v !== null) traverse(v, depth + 1); });
+            } else if (typeof obj === 'object' && obj !== null) {
+                objects++;
+                Object.keys(obj).forEach(k => { keys++; if (typeof obj[k] === 'object' && obj[k] !== null) traverse(obj[k], depth + 1); });
+            }
+        }
+        traverse(parsed, 1);
+        const rawSize = document.getElementById('jf-input').value.length;
+        document.getElementById('stat-keys').textContent = keys.toLocaleString();
+        document.getElementById('stat-depth').textContent = maxDepth;
+        document.getElementById('stat-arrays').textContent = arrays.toLocaleString();
+        document.getElementById('stat-objects').textContent = objects.toLocaleString();
+        document.getElementById('stat-size').textContent = rawSize < 1024 ? rawSize + ' B' : (rawSize / 1024).toFixed(1) + ' KB';
+    }
+
+    function showStats() {
+        document.getElementById('jf-stats').style.display = 'flex';
+    }
+
+    function hideStats() {
+        document.getElementById('jf-stats').style.display = 'none';
+    }
+
+    function loadSample() {
+        const sample = {
+            "name": "HandleKit",
+            "version": "2.0",
+            "tools": ["JSON Formatter", "Unit Converter", "QR Generator", "Color Picker"],
+            "stats": { "users": 0, "tools": 11, "active": true },
+            "meta": { "author": "Pasi", "license": "MIT" }
+        };
+        document.getElementById('jf-input').value = JSON.stringify(sample);
+        updateInputInfo();
+        doFormat();
+    }
+
+    function clearAll() {
+        document.getElementById('jf-input').value = '';
+        document.getElementById('jf-output').value = '';
+        document.getElementById('jf-input-info').textContent = '';
+        setStatus('', '');
+        hideStats();
+        document.querySelectorAll('.jf-action-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-format').classList.add('active');
+    }
+
+    function copyOutput() {
+        const output = document.getElementById('jf-output').value;
+        if (!output) return;
+        navigator.clipboard.writeText(output).then(() => {
+            const btn = document.getElementById('copy-btn');
+            btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
+            btn.style.background = '#00ff88';
             lucide.createIcons();
-        }, 2000);
-    });
-}
+            setTimeout(() => {
+                btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy';
+                btn.style.background = 'var(--accent-color)';
+                lucide.createIcons();
+            }, 2000);
+        });
+    }
 </script>
 {% endblock %}

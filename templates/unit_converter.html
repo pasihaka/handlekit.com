@@ -1,5 +1,6 @@
 {% set title = "Unit Converter | Free Online Tool | HandleKit" %}
-{% set description = "Convert units of length, weight, temperature, area, volume, speed, and data instantly. Free online unit converter, fast, accurate, 100% browser-based." %}
+{% set description = "Convert units of length, weight, temperature, area, volume, speed, and data instantly. Free online
+unit converter, fast, accurate, 100% browser-based." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
@@ -8,7 +9,8 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="ruler" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--text-main);">Unit Converter</h1>
-        <p style="color: var(--text-sub); font-size: 1.1rem;">Instantly convert length, weight, temperature, area, volume, speed, and data, no signup needed.</p>
+        <p style="color: var(--text-sub); font-size: 1.1rem;">Instantly convert length, weight, temperature, area,
+            volume, speed, and data, no signup needed.</p>
     </div>
 
     <!-- Category Tabs -->
@@ -37,15 +39,18 @@
     </div>
 
     <!-- Converter Card -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; margin-bottom: 2rem;">
-        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: end;" class="uc-convert-row">
+    <div
+        style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; margin-bottom: 2rem;">
+        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: end;"
+            class="uc-convert-row">
             <!-- From -->
             <div>
-                <label for="uc-from-val" style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">From</label>
+                <label for="uc-from-val"
+                    style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">From</label>
                 <input id="uc-from-val" class="premium-input" type="number" value="1" oninput="convertFrom()"
                     style="font-size:1.2rem; font-weight:600;">
-                <select id="uc-from-unit" class="premium-input" aria-label="Select unit to convert from" onchange="convertFrom()"
-                    style="margin-top:0.5rem; font-size:0.9rem; padding: 0.7rem 1rem;">
+                <select id="uc-from-unit" class="premium-input" aria-label="Select unit to convert from"
+                    onchange="convertFrom()" style="margin-top:0.5rem; font-size:0.9rem; padding: 0.7rem 1rem;">
                 </select>
             </div>
 
@@ -61,36 +66,45 @@
 
             <!-- To -->
             <div>
-                <label for="uc-to-val" style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">To</label>
+                <label for="uc-to-val"
+                    style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">To</label>
                 <input id="uc-to-val" class="premium-input" type="number" value="" oninput="convertTo()"
                     style="background:rgba(201, 28, 35, 0.05); color:var(--accent-color); font-size:1.2rem; font-weight:700;">
-                <select id="uc-to-unit" class="premium-input" aria-label="Select unit to convert to" onchange="convertFrom()"
-                    style="margin-top:0.5rem; font-size:0.9rem; padding: 0.7rem 1rem;">
+                <select id="uc-to-unit" class="premium-input" aria-label="Select unit to convert to"
+                    onchange="convertFrom()" style="margin-top:0.5rem; font-size:0.9rem; padding: 0.7rem 1rem;">
                 </select>
             </div>
         </div>
 
         <!-- Result Label -->
-        <div id="uc-result-label" style="text-align:center;margin-top:1.5rem;font-size:0.95rem;color:var(--text-sub);min-height:1.5rem;"></div>
+        <div id="uc-result-label"
+            style="text-align:center;margin-top:1.5rem;font-size:0.95rem;color:var(--text-sub);min-height:1.5rem;">
+        </div>
     </div>
 
     <!-- All Units Reference Table -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem;">
-        <h2 style="font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;" id="uc-ref-title">All Length Units</h2>
-        <div id="uc-ref-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;"></div>
+    <div
+        style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem;">
+        <h2 style="font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;"
+            id="uc-ref-title">All Length Units</h2>
+        <div id="uc-ref-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;"></div>
     </div>
 
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">About Unit Conversion</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            Unit conversion is a process in which a quantity is expressed in various units while keeping its value constant. Unit conversion is a constant need in various fields such as science, engineering, as well as in daily life.
+            Unit conversion is a process in which a quantity is expressed in various units while keeping its value
+            constant. Unit conversion is a constant need in various fields such as science, engineering, as well as in
+            daily life.
         </p>
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
             <div class="info-card-premium">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Metric vs. Imperial</h3>
                 <p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.8;">
-                    Most of the world uses the metric system (metres, kilograms, litres), while the United States primarily uses the imperial system (feet, pounds, gallons). This converter handles both seamlessly.
+                    Most of the world uses the metric system (metres, kilograms, litres), while the United States
+                    primarily uses the imperial system (feet, pounds, gallons). This converter handles both seamlessly.
                 </p>
             </div>
             <div class="info-card-premium">
@@ -110,311 +124,374 @@
         <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How do I convert between units?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">To convert between units, first, select a category from the <strong style="color: var(--text-main);">tab bar</strong> at the top of the page. Then, select a unit to convert from on the left-hand dropdown menu and a unit to convert to on the right. Enter a value in <strong style="color: var(--text-main);">either box</strong>, and the other box will be filled in <strong style="color: var(--accent-color);">instantly</strong>. To reverse the conversion, click the double arrow button in the middle.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How do I convert
+                    between units?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">To convert between units, first, select
+                    a category from the <strong>tab bar</strong> at the top of the
+                    page. Then, select a unit to convert from on the left-hand dropdown menu and a unit to convert to on
+                    the right. Enter a value in <strong>either box</strong>, and the
+                    other box will be filled in <strong>instantly</strong>. To
+                    reverse the conversion, click the double arrow button in the middle.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How do I convert Celsius to Fahrenheit?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">To convert from Celsius to Fahrenheit, select <strong style="color: var(--accent-color);">"Temperature"</strong> from the tab bar, then "Celsius" from the left dropdown. The result appears at once. As a mental shortcut, simply multiply the Celsius reading by <strong style="color: var(--text-main);">1.8</strong>, then add <strong style="color: var(--text-main);">32</strong>.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How do I convert
+                    Celsius to Fahrenheit?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">To convert from Celsius to Fahrenheit,
+                    select <strong>"Temperature"</strong> from the tab bar, then
+                    "Celsius" from the left dropdown. The result appears at once. As a mental shortcut, simply multiply
+                    the Celsius reading by <strong>1.8</strong>, then add <strong>32</strong>.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How many pounds are in a kilogram?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">One kilogram is equivalent to about 2.20462 pounds. To convert from kilograms to pounds, one pound is equivalent to about 0.453592 kilograms. You can use the Weight tab. Select 'Kilograms' as the 'From' unit and 'Pounds' as the 'To' unit. Then enter your value. You will immediately get an exact result. Alternatively, you can use the reference table below. This table shows all weight unit conversions of your entered value at once.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How many pounds are
+                    in a kilogram?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">One kilogram is equivalent to about
+                    2.20462 pounds. To convert from kilograms to pounds, one pound is equivalent to about 0.453592
+                    kilograms. You can use the Weight tab. Select 'Kilograms' as the 'From' unit and 'Pounds' as the
+                    'To' unit. Then enter your value. You will immediately get an exact result. Alternatively, you can
+                    use the reference table below. This table shows all weight unit conversions of your entered value at
+                    once.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What does the reference table at the bottom show?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The reference table at the bottom shows your entered value converted to every single unit in the current category simultaneously. This table will change immediately as you enter your value. This table can be helpful if you want to compare your measurement to several units at once. For example, you may want to compare your height in metres, centimetres, inches, yards, and miles all at once. This reference table will display all of those conversions simultaneously.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What does the
+                    reference table at the bottom show?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The reference table at the bottom shows
+                    your entered value converted to every single unit in the current category simultaneously. This table
+                    will change immediately as you enter your value. This table can be helpful if you want to compare
+                    your measurement to several units at once. For example, you may want to compare your height in
+                    metres, centimetres, inches, yards, and miles all at once. This reference table will display all of
+                    those conversions simultaneously.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How accurate are the conversions?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Our conversions are very accurate. We use exact conversion factors. For example, 1 inch = 0.0254 metres exactly. This was specified by international agreement in 1959. For temperature, we use precise mathematical formulas. Our answers are given to 10 significant figures. Mach numbers are an exception. Mach numbers depend on altitude and temperature. Mach numbers are therefore not precisely known.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How accurate are the
+                    conversions?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Our conversions are very accurate. We
+                    use exact conversion factors. For example, 1 inch = 0.0254 metres exactly. This was specified by
+                    international agreement in 1959. For temperature, we use precise mathematical formulas. Our answers
+                    are given to 10 significant figures. Mach numbers are an exception. Mach numbers depend on altitude
+                    and temperature. Mach numbers are therefore not precisely known.</p>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-.uc-tab {
-    background: var(--input-bg); border: 1px solid var(--border-color);
-    border-radius: 10px; padding: 0.5rem 1rem; color: var(--text-sub);
-    cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif; font-weight: 600;
-    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-}
-.uc-tab:hover { border-color: var(--accent-color); color: var(--text-main); }
-.uc-tab.active { background: var(--accent-color); border-color: var(--accent-color); color: #000; font-weight: 700; }
+    .uc-tab {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
 
-.uc-ref-item {
-    background: rgba(255,255,255,0.03); border-radius: 10px; padding: 0.5rem 0.9rem;
-    display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
-}
-.uc-ref-name { font-size: 0.82rem; color: var(--text-sub); }
-.uc-ref-val { font-size: 0.82rem; color: var(--accent-color); font-weight: 700; font-family: monospace; }
+    .uc-tab:hover {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+    }
 
-@media (max-width: 640px) {
-    .uc-convert-row { grid-template-columns: 1fr !important; }
-}
+    .uc-tab.active {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+        color: #000;
+        font-weight: 700;
+    }
+
+    .uc-ref-item {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 0.5rem 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .uc-ref-name {
+        font-size: 0.82rem;
+        color: var(--text-sub);
+    }
+
+    .uc-ref-val {
+        font-size: 0.82rem;
+        color: var(--accent-color);
+        font-weight: 700;
+        font-family: monospace;
+    }
+
+    @media (max-width: 640px) {
+        .uc-convert-row {
+            grid-template-columns: 1fr !important;
+        }
+    }
 </style>
 
 <script>
-// ─── Unit Definitions ───────────────────────────────────────────────────────
-// Each category: { label, units: [{name, symbol, toBase, fromBase}] }
-// toBase / fromBase for linear: factor (multiply to convert to base unit)
-// for temperature: use special functions
+    // ─── Unit Definitions ───────────────────────────────────────────────────────
+    // Each category: { label, units: [{name, symbol, toBase, fromBase}] }
+    // toBase / fromBase for linear: factor (multiply to convert to base unit)
+    // for temperature: use special functions
 
-const CATEGORIES = {
-    length: {
-        label: 'Length',
-        base: 'Meter',
-        units: [
-            { name: 'Kilometer',   sym: 'km',  factor: 1000 },
-            { name: 'Meter',       sym: 'm',   factor: 1 },
-            { name: 'Centimeter',  sym: 'cm',  factor: 0.01 },
-            { name: 'Millimeter',  sym: 'mm',  factor: 0.001 },
-            { name: 'Micrometer',  sym: 'µm',  factor: 1e-6 },
-            { name: 'Nanometer',   sym: 'nm',  factor: 1e-9 },
-            { name: 'Mile',        sym: 'mi',  factor: 1609.344 },
-            { name: 'Yard',        sym: 'yd',  factor: 0.9144 },
-            { name: 'Foot',        sym: 'ft',  factor: 0.3048 },
-            { name: 'Inch',        sym: 'in',  factor: 0.0254 },
-            { name: 'Nautical Mile', sym: 'nmi', factor: 1852 },
-            { name: 'Light Year',  sym: 'ly',  factor: 9.461e15 },
-        ]
-    },
-    weight: {
-        label: 'Weight',
-        base: 'Kilogram',
-        units: [
-            { name: 'Tonne',       sym: 't',   factor: 1000 },
-            { name: 'Kilogram',    sym: 'kg',  factor: 1 },
-            { name: 'Gram',        sym: 'g',   factor: 0.001 },
-            { name: 'Milligram',   sym: 'mg',  factor: 1e-6 },
-            { name: 'Pound',       sym: 'lb',  factor: 0.453592 },
-            { name: 'Ounce',       sym: 'oz',  factor: 0.0283495 },
-            { name: 'Stone',       sym: 'st',  factor: 6.35029 },
-            { name: 'US Ton',      sym: 'tn',  factor: 907.185 },
-            { name: 'Carat',       sym: 'ct',  factor: 0.0002 },
-        ]
-    },
-    temperature: {
-        label: 'Temperature',
-        base: 'Celsius',
-        units: [
-            { name: 'Celsius',    sym: '°C' },
-            { name: 'Fahrenheit', sym: '°F' },
-            { name: 'Kelvin',     sym: 'K'  },
-            { name: 'Rankine',    sym: '°R' },
-        ]
-    },
-    area: {
-        label: 'Area',
-        base: 'Square Meter',
-        units: [
-            { name: 'Square Kilometer', sym: 'km²',  factor: 1e6 },
-            { name: 'Square Meter',     sym: 'm²',   factor: 1 },
-            { name: 'Square Centimeter',sym: 'cm²',  factor: 1e-4 },
-            { name: 'Square Millimeter',sym: 'mm²',  factor: 1e-6 },
-            { name: 'Square Mile',      sym: 'mi²',  factor: 2589988.11 },
-            { name: 'Square Yard',      sym: 'yd²',  factor: 0.836127 },
-            { name: 'Square Foot',      sym: 'ft²',  factor: 0.092903 },
-            { name: 'Square Inch',      sym: 'in²',  factor: 0.00064516 },
-            { name: 'Hectare',          sym: 'ha',   factor: 10000 },
-            { name: 'Acre',             sym: 'ac',   factor: 4046.86 },
-        ]
-    },
-    volume: {
-        label: 'Volume',
-        base: 'Liter',
-        units: [
-            { name: 'Cubic Meter',    sym: 'm³',  factor: 1000 },
-            { name: 'Liter',          sym: 'L',   factor: 1 },
-            { name: 'Milliliter',     sym: 'mL',  factor: 0.001 },
-            { name: 'Cubic Centimeter',sym:'cm³', factor: 0.001 },
-            { name: 'Cubic Inch',     sym: 'in³', factor: 0.0163871 },
-            { name: 'Cubic Foot',     sym: 'ft³', factor: 28.3168 },
-            { name: 'US Gallon',      sym: 'gal', factor: 3.78541 },
-            { name: 'US Quart',       sym: 'qt',  factor: 0.946353 },
-            { name: 'US Pint',        sym: 'pt',  factor: 0.473176 },
-            { name: 'US Cup',         sym: 'cup', factor: 0.24 },
-            { name: 'US Fluid Ounce', sym: 'fl oz',factor: 0.0295735 },
-            { name: 'Imperial Gallon',sym: 'imp gal', factor: 4.54609 },
-            { name: 'Tablespoon',     sym: 'tbsp',factor: 0.0147868 },
-            { name: 'Teaspoon',       sym: 'tsp', factor: 0.00492892 },
-        ]
-    },
-    speed: {
-        label: 'Speed',
-        base: 'Meter per Second',
-        units: [
-            { name: 'Meter per Second',    sym: 'm/s',  factor: 1 },
-            { name: 'Kilometer per Hour',  sym: 'km/h', factor: 0.277778 },
-            { name: 'Mile per Hour',       sym: 'mph',  factor: 0.44704 },
-            { name: 'Knot',                sym: 'kn',   factor: 0.514444 },
-            { name: 'Foot per Second',     sym: 'ft/s', factor: 0.3048 },
-            { name: 'Mach',                sym: 'M',    factor: 343 },
-        ]
-    },
-    data: {
-        label: 'Data',
-        base: 'Byte',
-        units: [
-            { name: 'Bit',       sym: 'b',   factor: 0.125 },
-            { name: 'Byte',      sym: 'B',   factor: 1 },
-            { name: 'Kilobyte',  sym: 'KB',  factor: 1024 },
-            { name: 'Megabyte',  sym: 'MB',  factor: 1048576 },
-            { name: 'Gigabyte',  sym: 'GB',  factor: 1073741824 },
-            { name: 'Terabyte',  sym: 'TB',  factor: 1099511627776 },
-            { name: 'Petabyte',  sym: 'PB',  factor: 1.12589990685e15 },
-            { name: 'Kibibyte',  sym: 'KiB', factor: 1024 },
-            { name: 'Mebibyte',  sym: 'MiB', factor: 1048576 },
-            { name: 'Gibibyte',  sym: 'GiB', factor: 1073741824 },
-        ]
+    const CATEGORIES = {
+        length: {
+            label: 'Length',
+            base: 'Meter',
+            units: [
+                { name: 'Kilometer', sym: 'km', factor: 1000 },
+                { name: 'Meter', sym: 'm', factor: 1 },
+                { name: 'Centimeter', sym: 'cm', factor: 0.01 },
+                { name: 'Millimeter', sym: 'mm', factor: 0.001 },
+                { name: 'Micrometer', sym: 'µm', factor: 1e-6 },
+                { name: 'Nanometer', sym: 'nm', factor: 1e-9 },
+                { name: 'Mile', sym: 'mi', factor: 1609.344 },
+                { name: 'Yard', sym: 'yd', factor: 0.9144 },
+                { name: 'Foot', sym: 'ft', factor: 0.3048 },
+                { name: 'Inch', sym: 'in', factor: 0.0254 },
+                { name: 'Nautical Mile', sym: 'nmi', factor: 1852 },
+                { name: 'Light Year', sym: 'ly', factor: 9.461e15 },
+            ]
+        },
+        weight: {
+            label: 'Weight',
+            base: 'Kilogram',
+            units: [
+                { name: 'Tonne', sym: 't', factor: 1000 },
+                { name: 'Kilogram', sym: 'kg', factor: 1 },
+                { name: 'Gram', sym: 'g', factor: 0.001 },
+                { name: 'Milligram', sym: 'mg', factor: 1e-6 },
+                { name: 'Pound', sym: 'lb', factor: 0.453592 },
+                { name: 'Ounce', sym: 'oz', factor: 0.0283495 },
+                { name: 'Stone', sym: 'st', factor: 6.35029 },
+                { name: 'US Ton', sym: 'tn', factor: 907.185 },
+                { name: 'Carat', sym: 'ct', factor: 0.0002 },
+            ]
+        },
+        temperature: {
+            label: 'Temperature',
+            base: 'Celsius',
+            units: [
+                { name: 'Celsius', sym: '°C' },
+                { name: 'Fahrenheit', sym: '°F' },
+                { name: 'Kelvin', sym: 'K' },
+                { name: 'Rankine', sym: '°R' },
+            ]
+        },
+        area: {
+            label: 'Area',
+            base: 'Square Meter',
+            units: [
+                { name: 'Square Kilometer', sym: 'km²', factor: 1e6 },
+                { name: 'Square Meter', sym: 'm²', factor: 1 },
+                { name: 'Square Centimeter', sym: 'cm²', factor: 1e-4 },
+                { name: 'Square Millimeter', sym: 'mm²', factor: 1e-6 },
+                { name: 'Square Mile', sym: 'mi²', factor: 2589988.11 },
+                { name: 'Square Yard', sym: 'yd²', factor: 0.836127 },
+                { name: 'Square Foot', sym: 'ft²', factor: 0.092903 },
+                { name: 'Square Inch', sym: 'in²', factor: 0.00064516 },
+                { name: 'Hectare', sym: 'ha', factor: 10000 },
+                { name: 'Acre', sym: 'ac', factor: 4046.86 },
+            ]
+        },
+        volume: {
+            label: 'Volume',
+            base: 'Liter',
+            units: [
+                { name: 'Cubic Meter', sym: 'm³', factor: 1000 },
+                { name: 'Liter', sym: 'L', factor: 1 },
+                { name: 'Milliliter', sym: 'mL', factor: 0.001 },
+                { name: 'Cubic Centimeter', sym: 'cm³', factor: 0.001 },
+                { name: 'Cubic Inch', sym: 'in³', factor: 0.0163871 },
+                { name: 'Cubic Foot', sym: 'ft³', factor: 28.3168 },
+                { name: 'US Gallon', sym: 'gal', factor: 3.78541 },
+                { name: 'US Quart', sym: 'qt', factor: 0.946353 },
+                { name: 'US Pint', sym: 'pt', factor: 0.473176 },
+                { name: 'US Cup', sym: 'cup', factor: 0.24 },
+                { name: 'US Fluid Ounce', sym: 'fl oz', factor: 0.0295735 },
+                { name: 'Imperial Gallon', sym: 'imp gal', factor: 4.54609 },
+                { name: 'Tablespoon', sym: 'tbsp', factor: 0.0147868 },
+                { name: 'Teaspoon', sym: 'tsp', factor: 0.00492892 },
+            ]
+        },
+        speed: {
+            label: 'Speed',
+            base: 'Meter per Second',
+            units: [
+                { name: 'Meter per Second', sym: 'm/s', factor: 1 },
+                { name: 'Kilometer per Hour', sym: 'km/h', factor: 0.277778 },
+                { name: 'Mile per Hour', sym: 'mph', factor: 0.44704 },
+                { name: 'Knot', sym: 'kn', factor: 0.514444 },
+                { name: 'Foot per Second', sym: 'ft/s', factor: 0.3048 },
+                { name: 'Mach', sym: 'M', factor: 343 },
+            ]
+        },
+        data: {
+            label: 'Data',
+            base: 'Byte',
+            units: [
+                { name: 'Bit', sym: 'b', factor: 0.125 },
+                { name: 'Byte', sym: 'B', factor: 1 },
+                { name: 'Kilobyte', sym: 'KB', factor: 1024 },
+                { name: 'Megabyte', sym: 'MB', factor: 1048576 },
+                { name: 'Gigabyte', sym: 'GB', factor: 1073741824 },
+                { name: 'Terabyte', sym: 'TB', factor: 1099511627776 },
+                { name: 'Petabyte', sym: 'PB', factor: 1.12589990685e15 },
+                { name: 'Kibibyte', sym: 'KiB', factor: 1024 },
+                { name: 'Mebibyte', sym: 'MiB', factor: 1048576 },
+                { name: 'Gibibyte', sym: 'GiB', factor: 1073741824 },
+            ]
+        }
+    };
+
+    // ─── Temperature Conversion ──────────────────────────────────────────────────
+    function tempToBase(val, fromName) {
+        // Convert to Celsius as base
+        switch (fromName) {
+            case 'Celsius': return val;
+            case 'Fahrenheit': return (val - 32) * 5 / 9;
+            case 'Kelvin': return val - 273.15;
+            case 'Rankine': return (val - 491.67) * 5 / 9;
+        }
     }
-};
-
-// ─── Temperature Conversion ──────────────────────────────────────────────────
-function tempToBase(val, fromName) {
-    // Convert to Celsius as base
-    switch(fromName) {
-        case 'Celsius':    return val;
-        case 'Fahrenheit': return (val - 32) * 5/9;
-        case 'Kelvin':     return val - 273.15;
-        case 'Rankine':    return (val - 491.67) * 5/9;
+    function tempFromBase(val, toName) {
+        // Convert from Celsius
+        switch (toName) {
+            case 'Celsius': return val;
+            case 'Fahrenheit': return val * 9 / 5 + 32;
+            case 'Kelvin': return val + 273.15;
+            case 'Rankine': return (val + 273.15) * 9 / 5;
+        }
     }
-}
-function tempFromBase(val, toName) {
-    // Convert from Celsius
-    switch(toName) {
-        case 'Celsius':    return val;
-        case 'Fahrenheit': return val * 9/5 + 32;
-        case 'Kelvin':     return val + 273.15;
-        case 'Rankine':    return (val + 273.15) * 9/5;
+
+    // ─── State ───────────────────────────────────────────────────────────────────
+    let currentCategory = 'length';
+
+    function setCategory(cat) {
+        currentCategory = cat;
+        document.querySelectorAll('.uc-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + cat).classList.add('active');
+        populateUnits();
+        updateRefTable();
+        convertFrom();
     }
-}
 
-// ─── State ───────────────────────────────────────────────────────────────────
-let currentCategory = 'length';
+    function populateUnits() {
+        const cat = CATEGORIES[currentCategory];
+        const fromSel = document.getElementById('uc-from-unit');
+        const toSel = document.getElementById('uc-to-unit');
+        fromSel.innerHTML = '';
+        toSel.innerHTML = '';
+        cat.units.forEach((u, i) => {
+            const opt1 = new Option(`${u.name} (${u.sym})`, u.name);
+            const opt2 = new Option(`${u.name} (${u.sym})`, u.name);
+            fromSel.appendChild(opt1);
+            toSel.appendChild(opt2);
+        });
+        // Default: first -> second
+        fromSel.selectedIndex = 0;
+        toSel.selectedIndex = 1;
+    }
 
-function setCategory(cat) {
-    currentCategory = cat;
-    document.querySelectorAll('.uc-tab').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + cat).classList.add('active');
-    populateUnits();
-    updateRefTable();
+    function getUnitByName(name) {
+        return CATEGORIES[currentCategory].units.find(u => u.name === name);
+    }
+
+    function doConvert(val, fromName, toName) {
+        const cat = CATEGORIES[currentCategory];
+        if (currentCategory === 'temperature') {
+            const base = tempToBase(val, fromName);
+            return tempFromBase(base, toName);
+        }
+        const fromU = getUnitByName(fromName);
+        const toU = getUnitByName(toName);
+        const base = val * fromU.factor;  // convert to base
+        return base / toU.factor;
+    }
+
+    function formatResult(val) {
+        if (isNaN(val) || !isFinite(val)) return '';
+        if (Math.abs(val) >= 1e15 || (Math.abs(val) < 1e-6 && val !== 0)) {
+            return val.toExponential(6);
+        }
+        // Smart rounding
+        if (Number.isInteger(val)) return val.toString();
+        const str = val.toPrecision(10);
+        return parseFloat(str).toString();
+    }
+
+    function convertFrom() {
+        const val = parseFloat(document.getElementById('uc-from-val').value);
+        const from = document.getElementById('uc-from-unit').value;
+        const to = document.getElementById('uc-to-unit').value;
+        if (isNaN(val)) { document.getElementById('uc-to-val').value = ''; return; }
+        const result = doConvert(val, from, to);
+        document.getElementById('uc-to-val').value = formatResult(result);
+        updateLabel(val, from, result, to);
+        updateRefTable();
+    }
+
+    function convertTo() {
+        const val = parseFloat(document.getElementById('uc-to-val').value);
+        const from = document.getElementById('uc-to-unit').value;
+        const to = document.getElementById('uc-from-unit').value;
+        if (isNaN(val)) { document.getElementById('uc-from-val').value = ''; return; }
+        const result = doConvert(val, from, to);
+        document.getElementById('uc-from-val').value = formatResult(result);
+        updateLabel(result, to, val, from);
+    }
+
+    function updateLabel(fromVal, fromName, toVal, toName) {
+        const fromU = getUnitByName(fromName);
+        const toU = getUnitByName(toName);
+        const fSym = fromU ? fromU.sym : '';
+        const tSym = toU ? toU.sym : '';
+        document.getElementById('uc-result-label').innerHTML =
+            `<strong style="color: var(--text-main)">${formatResult(fromVal)} ${fSym}</strong> <span style="color:var(--text-sub)">= </span><strong style="color:var(--accent-color)">${formatResult(toVal)} ${tSym}</strong>`;
+    }
+
+    function swapUnits() {
+        const fromSel = document.getElementById('uc-from-unit');
+        const toSel = document.getElementById('uc-to-unit');
+        const tmp = fromSel.value;
+        fromSel.value = toSel.value;
+        toSel.value = tmp;
+        // Also swap values
+        const fromVal = document.getElementById('uc-from-val').value;
+        const toVal = document.getElementById('uc-to-val').value;
+        document.getElementById('uc-from-val').value = toVal;
+        document.getElementById('uc-to-val').value = fromVal;
+        convertFrom();
+    }
+
+    function updateRefTable() {
+        const cat = CATEGORIES[currentCategory];
+        const val = parseFloat(document.getElementById('uc-from-val').value);
+        const from = document.getElementById('uc-from-unit').value;
+        const grid = document.getElementById('uc-ref-grid');
+        document.getElementById('uc-ref-title').textContent = 'All ' + cat.label + ' Units';
+        grid.innerHTML = '';
+        if (isNaN(val)) return;
+        cat.units.forEach(u => {
+            const result = doConvert(val, from, u.name);
+            const item = document.createElement('div');
+            item.className = 'uc-ref-item';
+            item.innerHTML = `<span class="uc-ref-name">${u.name} (${u.sym})</span><span class="uc-ref-val">${formatResult(result)}</span>`;
+            grid.appendChild(item);
+        });
+    }
+
+    // ─── Init ─────────────────────────────────────────────────────────────────────
+    setCategory('length');
+    document.getElementById('uc-from-val').value = 1;
     convertFrom();
-}
-
-function populateUnits() {
-    const cat = CATEGORIES[currentCategory];
-    const fromSel = document.getElementById('uc-from-unit');
-    const toSel   = document.getElementById('uc-to-unit');
-    fromSel.innerHTML = '';
-    toSel.innerHTML   = '';
-    cat.units.forEach((u, i) => {
-        const opt1 = new Option(`${u.name} (${u.sym})`, u.name);
-        const opt2 = new Option(`${u.name} (${u.sym})`, u.name);
-        fromSel.appendChild(opt1);
-        toSel.appendChild(opt2);
-    });
-    // Default: first -> second
-    fromSel.selectedIndex = 0;
-    toSel.selectedIndex = 1;
-}
-
-function getUnitByName(name) {
-    return CATEGORIES[currentCategory].units.find(u => u.name === name);
-}
-
-function doConvert(val, fromName, toName) {
-    const cat = CATEGORIES[currentCategory];
-    if (currentCategory === 'temperature') {
-        const base = tempToBase(val, fromName);
-        return tempFromBase(base, toName);
-    }
-    const fromU = getUnitByName(fromName);
-    const toU   = getUnitByName(toName);
-    const base  = val * fromU.factor;  // convert to base
-    return base / toU.factor;
-}
-
-function formatResult(val) {
-    if (isNaN(val) || !isFinite(val)) return '';
-    if (Math.abs(val) >= 1e15 || (Math.abs(val) < 1e-6 && val !== 0)) {
-        return val.toExponential(6);
-    }
-    // Smart rounding
-    if (Number.isInteger(val)) return val.toString();
-    const str = val.toPrecision(10);
-    return parseFloat(str).toString();
-}
-
-function convertFrom() {
-    const val  = parseFloat(document.getElementById('uc-from-val').value);
-    const from = document.getElementById('uc-from-unit').value;
-    const to   = document.getElementById('uc-to-unit').value;
-    if (isNaN(val)) { document.getElementById('uc-to-val').value = ''; return; }
-    const result = doConvert(val, from, to);
-    document.getElementById('uc-to-val').value = formatResult(result);
-    updateLabel(val, from, result, to);
-    updateRefTable();
-}
-
-function convertTo() {
-    const val  = parseFloat(document.getElementById('uc-to-val').value);
-    const from = document.getElementById('uc-to-unit').value;
-    const to   = document.getElementById('uc-from-unit').value;
-    if (isNaN(val)) { document.getElementById('uc-from-val').value = ''; return; }
-    const result = doConvert(val, from, to);
-    document.getElementById('uc-from-val').value = formatResult(result);
-    updateLabel(result, to, val, from);
-}
-
-function updateLabel(fromVal, fromName, toVal, toName) {
-    const fromU = getUnitByName(fromName);
-    const toU   = getUnitByName(toName);
-    const fSym  = fromU ? fromU.sym : '';
-    const tSym  = toU ? toU.sym : '';
-    document.getElementById('uc-result-label').innerHTML =
-        `<strong style="color: var(--text-main)">${formatResult(fromVal)} ${fSym}</strong> <span style="color:var(--text-sub)">= </span><strong style="color:var(--accent-color)">${formatResult(toVal)} ${tSym}</strong>`;
-}
-
-function swapUnits() {
-    const fromSel = document.getElementById('uc-from-unit');
-    const toSel   = document.getElementById('uc-to-unit');
-    const tmp = fromSel.value;
-    fromSel.value = toSel.value;
-    toSel.value = tmp;
-    // Also swap values
-    const fromVal = document.getElementById('uc-from-val').value;
-    const toVal   = document.getElementById('uc-to-val').value;
-    document.getElementById('uc-from-val').value = toVal;
-    document.getElementById('uc-to-val').value   = fromVal;
-    convertFrom();
-}
-
-function updateRefTable() {
-    const cat   = CATEGORIES[currentCategory];
-    const val   = parseFloat(document.getElementById('uc-from-val').value);
-    const from  = document.getElementById('uc-from-unit').value;
-    const grid  = document.getElementById('uc-ref-grid');
-    document.getElementById('uc-ref-title').textContent = 'All ' + cat.label + ' Units';
-    grid.innerHTML = '';
-    if (isNaN(val)) return;
-    cat.units.forEach(u => {
-        const result = doConvert(val, from, u.name);
-        const item = document.createElement('div');
-        item.className = 'uc-ref-item';
-        item.innerHTML = `<span class="uc-ref-name">${u.name} (${u.sym})</span><span class="uc-ref-val">${formatResult(result)}</span>`;
-        grid.appendChild(item);
-    });
-}
-
-// ─── Init ─────────────────────────────────────────────────────────────────────
-setCategory('length');
-document.getElementById('uc-from-val').value = 1;
-convertFrom();
 </script>
 {% endblock %}

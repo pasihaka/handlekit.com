@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 
 {% block title %}GBP Suspension Triage & Appeal Prep Checker | HandleKit{% endblock %}
-{% block description %}Answer a few questions and get a likely-cause shortlist, an evidence checklist, and the right next steps before you appeal your Google Business Profile suspension.{% endblock %}
+{% block description %}Answer a few questions and get a likely-cause shortlist, an evidence checklist, and the right
+next steps before you appeal your Google Business Profile suspension.{% endblock %}
 
 {% block head_extra %}
 <link rel="canonical" href="https://handlekit.com/gbp-triage/">
@@ -75,7 +76,8 @@
 
     <!-- Global Disclaimer -->
     <div class="disclaimer-alert" style="margin-bottom: 2rem;">
-        <strong>Important:</strong> This is preparation guidance, not a diagnosis or a guarantee of reinstatement. This tool does not diagnose the exact reason for restriction.
+        <strong>Important:</strong> This is preparation guidance, not a diagnosis or a guarantee of reinstatement. This
+        tool does not diagnose the exact reason for restriction.
     </div>
 
     <section class="panel">
@@ -94,8 +96,10 @@
                 <legend>2. Business Type</legend>
                 <div class="radio-group">
                     <label><input type="radio" name="businessType" value="Storefront" required> Storefront</label>
-                    <label><input type="radio" name="businessType" value="Service-area business"> Service-area business</label>
-                    <label><input type="radio" name="businessType" value="Hybrid"> Hybrid (Customers at store + service-area)</label>
+                    <label><input type="radio" name="businessType" value="Service-area business"> Service-area
+                        business</label>
+                    <label><input type="radio" name="businessType" value="Hybrid"> Hybrid (Customers at store +
+                        service-area)</label>
                 </div>
             </fieldset>
 
@@ -123,7 +127,8 @@
                     <label><input type="radio" name="addressType" value="Shared office" required> Shared office</label>
                     <label><input type="radio" name="addressType" value="Coworking space"> Coworking space</label>
                     <label><input type="radio" name="addressType" value="Virtual office"> Virtual office</label>
-                    <label><input type="radio" name="addressType" value="Mailbox / PO box / mail service"> Mailbox / PO box / mail service</label>
+                    <label><input type="radio" name="addressType" value="Mailbox / PO box / mail service"> Mailbox / PO
+                        box / mail service</label>
                     <label><input type="radio" name="addressType" value="None of these"> None of these</label>
                     <label><input type="radio" name="addressType" value="Not sure"> Not sure</label>
                 </div>
@@ -150,19 +155,28 @@
             <fieldset>
                 <legend>8. Do you already have evidence ready?</legend>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="evidenceReady" value="business registration / license"> Business registration / license</label>
-                    <label><input type="checkbox" name="evidenceReady" value="utility bill / lease"> Utility bill / lease</label>
-                    <label><input type="checkbox" name="evidenceReady" value="storefront photos"> Storefront photos</label>
+                    <label><input type="checkbox" name="evidenceReady" value="business registration / license"> Business
+                        registration / license</label>
+                    <label><input type="checkbox" name="evidenceReady" value="utility bill / lease"> Utility bill /
+                        lease</label>
+                    <label><input type="checkbox" name="evidenceReady" value="storefront photos"> Storefront
+                        photos</label>
                     <label><input type="checkbox" name="evidenceReady" value="signage photos"> Signage photos</label>
-                    <label><input type="checkbox" name="evidenceReady" value="vehicle branding photos"> Vehicle branding photos</label>
-                    <label><input type="checkbox" name="evidenceReady" value="website with matching business details"> Website with matching details</label>
-                    <label><input type="checkbox" name="evidenceReady" value="local phone number"> Local phone number</label>
-                    <label><input type="checkbox" name="evidenceReady" value="proof of relationship to the location"> Proof of relationship to the location</label>
+                    <label><input type="checkbox" name="evidenceReady" value="vehicle branding photos"> Vehicle branding
+                        photos</label>
+                    <label><input type="checkbox" name="evidenceReady" value="website with matching business details">
+                        Website with matching details</label>
+                    <label><input type="checkbox" name="evidenceReady" value="local phone number"> Local phone
+                        number</label>
+                    <label><input type="checkbox" name="evidenceReady" value="proof of relationship to the location">
+                        Proof of relationship to the location</label>
                     <label><input type="checkbox" name="evidenceReady" value="none yet"> None yet</label>
                 </div>
             </fieldset>
 
-            <button type="submit" style="background: var(--accent-blue); color: white; border: none; padding: 0.75rem 1.5rem; font-size: 1.1rem; font-weight: 600; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 1rem;">Analyze Situation</button>
+            <button type="submit"
+                style="background: var(--accent-blue); color: white; border: none; padding: 0.75rem 1.5rem; font-size: 1.1rem; font-weight: 600; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 1rem;">Analyze
+                Situation</button>
         </form>
     </section>
 
@@ -172,7 +186,8 @@
 
     <section class="panel">
         <h2>Supported Scope</h2>
-        <p>This tool helps to triage likely issue buckets, provide evidence-prep guidance, and direct you to the official next-step Google processes.</p>
+        <p>This tool helps to triage likely issue buckets, provide evidence-prep guidance, and direct you to the
+            official next-step Google processes.</p>
         <h3>What this tool does not do</h3>
         <ul>
             <li>Does not guarantee reinstatement.</li>
@@ -187,45 +202,61 @@
 
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What does a suspended Google Business Profile mean?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">It means the profile is taken off Google Maps and Search due to a perceived policy violation or quality issue.</p>
-            </div>
-            
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What is the difference between suspended and disabled?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Suspended locations are hidden. Disabled listings can be associated with broader platform restrictions.</p>
-            </div>
-            
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What should I gather before appeal?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Official licenses, matching utility bills, and verifiable photos of permanent signage or service-area proof.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What does a suspended
+                    Google Business Profile mean?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">It means the profile is taken off Google
+                    Maps and Search due to a perceived policy violation or quality issue.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Can this tool tell me the exact reason for suspension?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. Google rarely specifies the exact trigger. This tool identifies likely risks based on patterns.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What is the
+                    difference between suspended and disabled?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Suspended locations are hidden. Disabled
+                    listings can be associated with broader platform restrictions.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What if verification keeps failing?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">It is often expected to align closely with the visual and documentary evidence guidelines for your business type.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What should I gather
+                    before appeal?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Official licenses, matching utility
+                    bills, and verifiable photos of permanent signage or service-area proof.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What if my appeal was denied?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Secondary appeals often undergo closer scrutiny. Do not resubmit blindly.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Can this tool tell me
+                    the exact reason for suspension?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. Google rarely specifies the exact
+                    trigger. This tool identifies likely risks based on patterns.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Does this tool guarantee reinstatement?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. It organizes your preparation. Final review outcomes are up to Google's review process.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What if verification
+                    keeps failing?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">It is often expected to align closely
+                    with the visual and documentary evidence guidelines for your business type.</p>
+            </div>
+
+            <div class="info-card-premium">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What if my appeal was
+                    denied?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Secondary appeals often undergo closer
+                    scrutiny. Do not resubmit blindly.</p>
+            </div>
+
+            <div class="info-card-premium">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Does this tool
+                    guarantee reinstatement?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. It organizes your preparation. Final
+                    review outcomes are up to Google's review process.</p>
             </div>
         </div>
     </section>
 </main>
 
-<footer class="site-footer" style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;">
-    <p>This is an independent tool to assist local marketing professionals and business owners. Not affiliated with Google.</p>
+<footer class="site-footer"
+    style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;">
+    <p>This is an independent tool to assist local marketing professionals and business owners. Not affiliated with
+        Google.</p>
     <p>This is preparation guidance, not a diagnosis or a guarantee of reinstatement.</p>
 </footer>
 

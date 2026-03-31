@@ -1,25 +1,36 @@
 {% set title = "Words to Pages Converter & Speech Time Calculator | HandleKit" %}
-{% set description = "Instantly convert word counts to pages (single and double spaced). Calculate exact reading and speaking times for essays, scripts, and speeches." %}
+{% set description = "Instantly convert word counts to pages (single and double spaced). Calculate exact reading and
+speaking times for essays, scripts, and speeches." %}
 {% extends "layout.html" %}
 
 {% block content %}
 <div class="tool-container" style="max-width: 900px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
-        <i data-lucide="book-open" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <i data-lucide="book-open"
+            style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Words to Pages Converter</h1>
-        <p style="color: var(--text-sub);">Instantly convert any word count into pages, reading time, and speaking time.</p>
+        <p style="color: var(--text-sub);">Instantly convert any word count into pages, reading time, and speaking time.
+        </p>
     </div>
 
     <!-- Input Section -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+    <div
+        style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
         <div style="width: 100%; max-width: 400px; text-align: center;">
-            <label for="word-input" style="display: block; color: var(--accent-color); margin-bottom: 0.75rem; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Word Count</label>
-            <input type="number" id="word-input" class="premium-input" placeholder="e.g. 1000" min="0" oninput="calculatePages()" style="font-size: 2.5rem; font-weight: 800; text-align: center; height: auto; padding: 1rem;">
+            <label for="word-input"
+                style="display: block; color: var(--accent-color); margin-bottom: 0.75rem; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Word
+                Count</label>
+            <input type="number" id="word-input" class="premium-input" placeholder="e.g. 1000" min="0"
+                oninput="calculatePages()"
+                style="font-size: 2.5rem; font-weight: 800; text-align: center; height: auto; padding: 1rem;">
         </div>
 
         <div style="width: 100%; max-width: 400px; text-align: center;">
-            <label for="page-size" style="display: block; color: var(--text-sub); margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600;">Page Size & Layout</label>
-            <select id="page-size" onchange="calculatePages()" style="width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-main); font-size: 1rem; outline: none; cursor: pointer; font-family: 'Outfit', sans-serif;">
+            <label for="page-size"
+                style="display: block; color: var(--text-sub); margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600;">Page
+                Size & Layout</label>
+            <select id="page-size" onchange="calculatePages()"
+                style="width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-main); font-size: 1rem; outline: none; cursor: pointer; font-family: 'Outfit', sans-serif;">
                 <option value="a4" selected>A4 (210 x 297 mm)</option>
                 <option value="letter">US Letter (8.5 x 11 in)</option>
                 <option value="book">Standard Book (6 x 9 in)</option>
@@ -33,13 +44,17 @@
     <div class="wtp-stats-grid" id="stats-grid">
         <div class="wtp-stat-card">
             <div class="wtp-stat-value" id="val-single">0</div>
-            <div class="wtp-stat-label">Pages <span style="font-weight:400; text-transform:none; color:var(--text-sub)">(Single Spaced)</span></div>
-            <div style="font-size: 0.8rem; color: var(--text-sub); margin-top: 0.75rem;" id="label-single">~500 words per page</div>
+            <div class="wtp-stat-label">Pages <span
+                    style="font-weight:400; text-transform:none; color:var(--text-sub)">(Single Spaced)</span></div>
+            <div style="font-size: 0.8rem; color: var(--text-sub); margin-top: 0.75rem;" id="label-single">~500 words
+                per page</div>
         </div>
         <div class="wtp-stat-card">
             <div class="wtp-stat-value" id="val-double">0</div>
-            <div class="wtp-stat-label">Pages <span style="font-weight:400; text-transform:none; color:var(--text-sub)">(Double Spaced)</span></div>
-            <div style="font-size: 0.8rem; color: var(--text-sub); margin-top: 0.75rem;" id="label-double">~250 words per page</div>
+            <div class="wtp-stat-label">Pages <span
+                    style="font-weight:400; text-transform:none; color:var(--text-sub)">(Double Spaced)</span></div>
+            <div style="font-size: 0.8rem; color: var(--text-sub); margin-top: 0.75rem;" id="label-double">~250 words
+                per page</div>
         </div>
         <div class="wtp-stat-card">
             <div class="wtp-stat-value" id="val-reading">0 min</div>
@@ -52,13 +67,16 @@
             <div style="font-size: 0.8rem; color: var(--text-sub); margin-top: 0.75rem;">130 words / minute</div>
         </div>
     </div>
-    
+
     <!-- Link back to word counter -->
-    <div style="background: rgba(201, 28, 35, 0.05); border: 1px solid var(--accent-color); border-radius: 12px; padding: 1.5rem; margin-top: 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div
+        style="background: rgba(201, 28, 35, 0.05); border: 1px solid var(--accent-color); border-radius: 12px; padding: 1.5rem; margin-top: 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
         <div style="display: flex; align-items: center; gap: 1rem;">
             <i data-lucide="file-text" style="color: var(--accent-color); width: 24px; height: 24px;"></i>
             <div style="color: var(--text-sub);">
-                <strong style="color: var(--text-main);">Need to count words from a text?</strong> Use our full <a href="/word-counter" style="color: var(--accent-color); text-decoration: underline;">Text Analyzer & Word Counter</a> tool.
+                <strong style="color: var(--text-main);">Need to count words from a text?</strong> Use our full <a
+                    href="/word-counter" style="color: var(--accent-color); text-decoration: underline;">Text Analyzer &
+                    Word Counter</a> tool.
             </div>
         </div>
     </div>
@@ -66,36 +84,57 @@
     <!-- SEO Content -->
     <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div class="info-card" style="margin-bottom: 3rem;">
-            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">How Many Pages is My Word Count?</h2>
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">How Many Pages is My Word
+                Count?</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-                The number of pages your text will fill depends on the document size, font family, font size, margins, and spacing. While a standard A4 page is the global baseline, professional authors and legal teams often require more specific estimates.
+                The number of pages your text will fill depends on the document size, font family, font size, margins,
+                and spacing. While a standard A4 page is the global baseline, professional authors and legal teams often
+                require more specific estimates.
             </p>
-            <ul style="color: var(--text-sub); line-height: 2; font-size: 1rem; padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                <li><strong>A4 & US Letter:</strong> The standard for essays and business reports (~500 words per page).</li>
-                <li><strong>Standard Book (6" x 9"):</strong> The most common trim size for trade paperbacks (~300 words per page).</li>
+            <ul
+                style="color: var(--text-sub); line-height: 2; font-size: 1rem; padding-left: 1.5rem; margin-bottom: 1.5rem;">
+                <li><strong>A4 & US Letter:</strong> The standard for essays and business reports (~500 words per page).
+                </li>
+                <li><strong>Standard Book (6" x 9"):</strong> The most common trim size for trade paperbacks (~300 words
+                    per page).</li>
                 <li><strong>Legal:</strong> Used for contracts and legal filings (~600 words per page).</li>
                 <li><strong>A5:</strong> Ideal for brochures, booklets, and small journals (~250 words per page).</li>
             </ul>
             <p style="color: var(--text-sub); line-height: 1.8;">
-                Using our converter, you can toggle between these common industry standards to get the most accurate page count for your specific project, whether it's a 1000-word essay or a 50,000-word novel.
+                Using our converter, you can toggle between these common industry standards to get the most accurate
+                page count for your specific project, whether it's a 1000-word essay or a 50,000-word novel.
             </p>
         </div>
 
-        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+        <div class="info-grid mobile-stack"
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How accurate is the page count?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The calculation is based on standard font sizing (<strong style="color: var(--text-main);">12pt</strong>) and average margin settings. For <strong style="color: var(--text-main);">Single Spacing</strong>, we estimate about <strong style="color: var(--accent-color);">500 words per page</strong>, and for <strong style="color: var(--text-main);">Double Spacing</strong>, it's approximately <strong style="color: var(--accent-color);">275 words</strong>. Individual document formatting will vary slightly.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How accurate is the
+                    page count?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The calculation is based on standard
+                    font sizing (<strong style="color: var(--text-main);">12pt</strong>) and average margin settings.
+                    For <strong style="color: var(--text-main);">Single Spacing</strong>, we estimate about <strong
+                        style="color: var(--accent-color);">500 words per page</strong>, and for <strong
+                        style="color: var(--text-main);">Double Spacing</strong>, it's approximately <strong
+                        style="color: var(--accent-color);">275 words</strong>. Individual document formatting will vary
+                    slightly.</p>
             </div>
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the "Standard Book" size?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The "Standard Book" option uses a <strong style="color: var(--text-main);">6" x 9" format (15.24 x 22.86 cm)</strong>, which is the most common size for trade paperbacks. This is an essential reference if you are planning to self-publish a book or a novella.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the "Standard
+                    Book" size?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The "Standard Book" option uses a
+                    <strong style="color: var(--text-main);">6" x 9" format (15.24 x 22.86 cm)</strong>, which is the
+                    most common size for trade paperbacks. This is an essential reference if you are planning to
+                    self-publish a book or a novella.</p>
             </div>
             <div class="info-card">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Speech Speaking Times</h3>
                 <p style="color: var(--text-sub); line-height: 1.8;">
-                    The average adult speaks at roughly <strong>130 words per minute</strong> in a presentation setting. Rushing causes you to stumble, so pacing is key!
+                    The average adult speaks at roughly <strong>130 words per minute</strong> in a presentation setting.
+                    Rushing causes you to stumble, so pacing is key!
                 </p>
-                <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem; margin-top: 1rem;">
+                <ul
+                    style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem; margin-top: 1rem;">
                     <li><strong style="color: var(--text-main);">1 minute speech:</strong> ~130 words</li>
                     <li><strong style="color: var(--text-main);">3 minute speech:</strong> ~390 words</li>
                     <li><strong style="color: var(--text-main);">5 minute speech:</strong> ~650 words</li>
@@ -122,6 +161,7 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
+
     .wtp-stat-card {
         background: var(--card-bg);
         border: 1px solid var(--border-color);
@@ -130,7 +170,13 @@
         text-align: center;
         transition: border-color 0.2s, transform 0.2s;
     }
-    .wtp-stat-card:hover { border-color: var(--accent-color); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); }
+
+    .wtp-stat-card:hover {
+        border-color: var(--accent-color);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
     .wtp-stat-value {
         font-size: 3.5rem;
         font-weight: 800;
@@ -138,22 +184,35 @@
         line-height: 1;
         margin-bottom: 1rem;
     }
-    .wtp-stat-label { font-size: 1rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
-    
-    /* Remove arrows from number input */
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
+
+    .wtp-stat-label {
+        font-size: 1rem;
+        color: var(--text-main);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 800;
     }
+
+    /* Remove arrows from number input */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
     input[type=number] {
         -moz-appearance: textfield;
         appearance: textfield;
     }
 
     @media (max-width: 600px) {
-        .wtp-stats-grid { grid-template-columns: 1fr; }
-        .wtp-stat-value { font-size: 2.5rem; }
+        .wtp-stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .wtp-stat-value {
+            font-size: 2.5rem;
+        }
     }
 </style>
 
@@ -183,7 +242,7 @@
         // Pages
         const singlePages = Math.round((words / config.single) * 10) / 10;
         const doublePages = Math.round((words / config.double) * 10) / 10;
-        
+
         document.getElementById('val-single').textContent = singlePages;
         document.getElementById('val-double').textContent = doublePages;
 
@@ -196,7 +255,7 @@
         if (words === 0) return "0 min";
         const sec = Math.round((words / wpm) * 60);
         if (sec < 60) return sec + " sec";
-        
+
         const m = Math.floor(sec / 60);
         const s = sec % 60;
         if (s === 0) return m + "m";

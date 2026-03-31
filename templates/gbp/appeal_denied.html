@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 
 {% block title %}Google Business Profile Appeal Denied - Triage Guide | HandleKit{% endblock %}
-{% block description %}What to do if your Google Business Profile appeal was rejected or denied. Evidence checklist and what to avoid after a denial.{% endblock %}
+{% block description %}What to do if your Google Business Profile appeal was rejected or denied. Evidence checklist and
+what to avoid after a denial.{% endblock %}
 
 {% block head_extra %}
 <link rel="canonical" href="https://handlekit.com/gbp-triage/appeal-denied">
@@ -44,8 +45,8 @@
     <section class="panel">
         <h2>What to Review Before Resubmitting Evidence</h2>
         <ul>
-            <li>Review whether your submitted documentation had name mismatches.</li>
-            <li>Check if the phone number provided is actively tracked down to your business entity.</li>
+            <li>Review whether your submitted documentation had <strong>name mismatches</strong>.</li>
+            <li>Check if the <strong>phone number</strong> provided is actively tracked down to your business entity.</li>
         </ul>
 
         <h3 class="text-red">What Not To Do</h3>
@@ -54,15 +55,21 @@
         </ul>
 
         <h3>Evidence Prep Checklist</h3>
-        <p>If you intend to try support escalation or a further appeal, gather well-organized proof of your relationship to the business and location. See the <a href="{{ url_for('gbp_evidence_checklist') }}">evidence checklist</a> for guidance.</p>
+        <p>If you intend to try support escalation or a further appeal, gather well-organized proof of your relationship
+            to the business and location. See the <a href="{{ url_for('gbp_evidence_checklist') }}">evidence
+                checklist</a> for guidance.</p>
 
         <h3>Official Next Steps</h3>
-        <p>There is no direct secondary appeal button. The next step often involves working directly through <a href="https://support.google.com/business/gethelp" target="_blank" rel="noopener">Google Business Profile Support</a>.</p>
+        <p>There is no direct secondary appeal button. The next step often involves working directly through <a
+                href="https://support.google.com/business/gethelp" target="_blank" rel="noopener"><strong>Google Business
+                Profile Support</strong></a>.</p>
     </section>
 </main>
 
-<footer class="site-footer" style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;">
-    <p>This is an independent tool to assist local marketing professionals and business owners. Not affiliated with Google.</p>
+<footer class="site-footer"
+    style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;">
+    <p>This is an independent tool to assist local marketing professionals and business owners. Not affiliated with
+        Google.</p>
     <p>This is preparation guidance, not a diagnosis or a guarantee of reinstatement.</p>
 </footer>
 {% endblock %}

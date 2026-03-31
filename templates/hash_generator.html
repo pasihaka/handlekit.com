@@ -1,14 +1,17 @@
 {% set title = "MD5 & SHA256 Hash Generator | Free Online Tool | HandleKit" %}
-{% set description = "Generate MD5 and SHA256 cryptographic hashes from any text or file instantly. Free, fast, 100% browser-based hash tool, no data ever sent to a server." %}
+{% set description = "Generate MD5 and SHA256 cryptographic hashes from any text or file instantly. Free, fast, 100%
+browser-based hash tool, no data ever sent to a server." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
 {% block content %}
 <div class="tool-container" style="max-width: 860px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
-        <i data-lucide="fingerprint" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <i data-lucide="fingerprint"
+            style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Hash Generator</h1>
-        <p style="color: var(--text-sub);">Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text, instantly, privately, all in your browser.</p>
+        <p style="color: var(--text-sub);">Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text, instantly,
+            privately, all in your browser.</p>
     </div>
 
     <!-- Mode Toggle -->
@@ -24,9 +27,10 @@
     <!-- Text Mode -->
     <div id="hg-text-panel">
         <div style="position: relative; margin-bottom: 1rem;">
-            <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Input Text</label>
-            <textarea id="hg-input" placeholder="Type or paste text to hash…"
-                oninput="onTextInput()"
+            <label
+                style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Input
+                Text</label>
+            <textarea id="hg-input" placeholder="Type or paste text to hash…" oninput="onTextInput()"
                 onfocus="this.style.borderColor='var(--accent-color)'"
                 onblur="this.style.borderColor='var(--border-color)'"
                 style="width:100%;min-height:130px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:20px;padding:1.5rem;color: var(--text-main);font-size:0.95rem;font-family:'Outfit',sans-serif;resize:vertical;outline:none;transition:border-color 0.2s;box-sizing:border-box;line-height:1.7;"></textarea>
@@ -38,20 +42,21 @@
             <button onclick="clearText()" class="hg-util-btn">
                 <i data-lucide="x" style="width:14px;height:14px;"></i> Clear
             </button>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.85rem;color:var(--text-sub);font-family:'Outfit',sans-serif;">
-                <input type="checkbox" id="live-hash" onchange="toggleLive()" style="accent-color:var(--accent-color);width:15px;height:15px;">
+            <label
+                style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.85rem;color:var(--text-sub);font-family:'Outfit',sans-serif;">
+                <input type="checkbox" id="live-hash" onchange="toggleLive()"
+                    style="accent-color:var(--accent-color);width:15px;height:15px;">
                 Live (hash as you type)
             </label>
-            <span id="hg-status" style="font-size:0.82rem;color:var(--text-sub);align-self:center;margin-left:auto;"></span>
+            <span id="hg-status"
+                style="font-size:0.82rem;color:var(--text-sub);align-self:center;margin-left:auto;"></span>
         </div>
     </div>
 
     <!-- File Mode -->
     <div id="hg-file-panel" style="display:none; margin-bottom: 1.5rem;">
-        <div id="hg-file-drop"
-            ondragover="event.preventDefault(); this.style.borderColor='var(--accent-color)'"
-            ondragleave="this.style.borderColor='var(--border-color)'"
-            ondrop="handleFileDrop(event)"
+        <div id="hg-file-drop" ondragover="event.preventDefault(); this.style.borderColor='var(--accent-color)'"
+            ondragleave="this.style.borderColor='var(--border-color)'" ondrop="handleFileDrop(event)"
             style="border: 2px dashed var(--border-color); border-radius: 20px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: border-color 0.2s; margin-bottom: 1rem;"
             onclick="document.getElementById('hg-file-input').click()">
             <i data-lucide="upload-cloud" style="width:48px;height:48px;color:var(--text-sub);margin-bottom:1rem;"></i>
@@ -67,13 +72,20 @@
     </div>
 
     <!-- Algorithm Info Cards -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem;">
-        <h2 style="font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Supported Algorithms</h2>
+    <div
+        style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem;">
+        <h2
+            style="font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">
+            Supported Algorithms</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem;">
-            <div class="hg-algo-card"><span class="hg-algo-name">MD5</span><span class="hg-algo-bits">128-bit</span></div>
-            <div class="hg-algo-card"><span class="hg-algo-name">SHA-1</span><span class="hg-algo-bits">160-bit</span></div>
-            <div class="hg-algo-card"><span class="hg-algo-name">SHA-256</span><span class="hg-algo-bits">256-bit</span></div>
-            <div class="hg-algo-card"><span class="hg-algo-name">SHA-512</span><span class="hg-algo-bits">512-bit</span></div>
+            <div class="hg-algo-card"><span class="hg-algo-name">MD5</span><span class="hg-algo-bits">128-bit</span>
+            </div>
+            <div class="hg-algo-card"><span class="hg-algo-name">SHA-1</span><span class="hg-algo-bits">160-bit</span>
+            </div>
+            <div class="hg-algo-card"><span class="hg-algo-name">SHA-256</span><span class="hg-algo-bits">256-bit</span>
+            </div>
+            <div class="hg-algo-card"><span class="hg-algo-name">SHA-512</span><span class="hg-algo-bits">512-bit</span>
+            </div>
         </div>
     </div>
 
@@ -81,17 +93,23 @@
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is Cryptographic Hashing?</h2>
         <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-            Cryptographic hash functions take an input of arbitrary length and produce a fixed-length string of characters. The result changes completely with a small change in the input string; this phenomenon is known as the avalanche effect.
+            Cryptographic hash functions take an input of arbitrary length and produce a fixed-length string of
+            characters. The result changes completely with a small change in the input string; this phenomenon is known
+            as the avalanche effect.
         </p>
         <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">MD5 vs SHA-256</h3>
                 <ul style="color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; padding-left: 1.2rem;">
-                    <li><strong style="color: var(--text-main);">MD5</strong>, fast, 128-bit. Good for checksums and file integrity. Not suitable for password storage.</li>
-                    <li style="margin-top:0.5rem;"><strong style="color: var(--text-main);">SHA-256</strong>, industry standard, 256-bit. Used in Bitcoin, SSL certificates, and secure systems.</li>
+                    <li><strong style="color: var(--text-main);">MD5</strong>, fast, 128-bit. Good for checksums and
+                        file integrity. Not suitable for password storage.</li>
+                    <li style="margin-top:0.5rem;"><strong style="color: var(--text-main);">SHA-256</strong>, industry
+                        standard, 256-bit. Used in Bitcoin, SSL certificates, and secure systems.</li>
                 </ul>
             </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Common Uses</h3>
                 <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
                     <li>File integrity verification</li>
@@ -109,29 +127,63 @@
         <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I generate a hash?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can input or paste any text in the input box and click on <strong style="color: var(--accent-color);">"Generate Hashes."</strong> All four hash values are displayed immediately. <strong style="color: var(--text-main);">MD5, SHA-1, SHA-256, and SHA-512</strong> hash values are displayed immediately. Alternatively, you can use the <strong style="color: var(--text-main);">"Live"</strong> option to hash as you type in real-time. If you want to hash a file, you can use the <strong style="color: var(--text-main);">"File"</strong> option and drag the file into the upload zone.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I generate a
+                    hash?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can input or paste any text in the
+                    input box and click on <strong>"Generate Hashes."</strong> All
+                    four hash values are displayed immediately. <strong>MD5, SHA-1,
+                        SHA-256, and SHA-512</strong> hash values are displayed immediately. Alternatively, you can use
+                    the <strong>"Live"</strong> option to hash as you type in
+                    real-time. If you want to hash a file, you can use the <strong>"File"</strong> option and drag the file into the upload zone.
+                </p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which hash algorithm should I use?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--accent-color);">SHA-256</strong> is the best choice for most security-critical applications; it's the de facto standard in the industry today, used in SSL certificates, Bitcoin, and code signing. <strong style="color: var(--text-main);">MD5</strong> is acceptable for non-security use cases such as detecting changes in files or generating cache keys. <strong style="color: #ff4c4c; font-weight: 700;">MD5 has been broken</strong> for any use in a cryptographic context. If you need a more secure hash function for high-security applications, consider using <strong style="color: var(--text-main);">SHA-512</strong>.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which hash algorithm
+                    should I use?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong
+                        style="color: var(--accent-color);">SHA-256</strong> is the best choice for most
+                    security-critical applications; it's the de facto standard in the industry today, used in SSL
+                    certificates, Bitcoin, and code signing. <strong style="color: var(--text-main);">MD5</strong> is
+                    acceptable for non-security use cases such as detecting changes in files or generating cache keys.
+                    <strong style="color: #ff4c4c; font-weight: 700;">MD5 has been broken</strong> for any use in a
+                    cryptographic context. If you need a more secure hash function for high-security applications,
+                    consider using <strong style="color: var(--text-main);">SHA-512</strong>.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Can I reverse a hash back to the original text?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, that's the point of a hash function: its output is one-way only. There's no way to reverse a hash into the original input using any known algorithm. The only thing attackers can do is use a "rainbow table" of common password hashes, so password hashing always includes a random "salt" value that's appended before hashing.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Can I reverse a hash
+                    back to the original text?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, that's the point of a hash function:
+                    its output is one-way only. There's no way to reverse a hash into the original input using any known
+                    algorithm. The only thing attackers can do is use a "rainbow table" of common password hashes, so
+                    password hashing always includes a random "salt" value that's appended before hashing.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is my text or file sent to your servers?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No way! SHA-1, SHA-256, and SHA-512 hash calculations are done on the client-side using the browser's built-in Web Crypto API. MD5 hash calculations are done using pure JavaScript code running on the client-side. The code works even when you are offline after the page has loaded.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is my text or file sent
+                    to your servers?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No way! SHA-1, SHA-256, and SHA-512 hash
+                    calculations are done on the client-side using the browser's built-in Web Crypto API. MD5 hash
+                    calculations are done using pure JavaScript code running on the client-side. The code works even
+                    when you are offline after the page has loaded.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I verify a file download with a hash?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Software developers often publish the expected hash value for a download along with the file. Simply switch to "File" mode, drag in the file you downloaded, and compare the hash value we calculated with the expected hash value published by the software developer. If the two hash values are the same, the file download worked correctly and has not been tampered with in any way. Even a single bit difference in the file's contents will produce a completely different hash value.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I verify a file
+                    download with a hash?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Software developers often publish the
+                    expected hash value for a download along with the file. Simply switch to "File" mode, drag in the
+                    file you downloaded, and compare the hash value we calculated with the expected hash value published
+                    by the software developer. If the two hash values are the same, the file download worked correctly
+                    and has not been tampered with in any way. Even a single bit difference in the file's contents will
+                    produce a completely different hash value.</p>
             </div>
 
         </div>
@@ -139,164 +191,244 @@
 </div>
 
 <style>
-.hg-mode-btn {
-    background: var(--input-bg); border: 1px solid var(--border-color);
-    border-radius: 10px; padding: 0.5rem 1rem; color: var(--text-sub);
-    cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif; font-weight: 600;
-    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-}
-.hg-mode-btn:hover, .hg-mode-btn.active { border-color: var(--accent-color); color: var(--text-main); background: rgba(0,210,255,0.1); }
-.hg-action-btn {
-    background: var(--accent-color); border: none; border-radius: 10px;
-    padding: 0.55rem 1.3rem; color: #000; font-weight: 700; font-size: 0.9rem;
-    cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s;
-    display: flex; align-items: center; gap: 0.4rem;
-}
-.hg-action-btn:hover { opacity: 0.85; }
-.hg-util-btn {
-    background: var(--input-bg); border: 1px solid var(--border-color);
-    border-radius: 10px; padding: 0.55rem 1rem; color: var(--text-sub);
-    cursor: pointer; font-size: 0.85rem; font-family: 'Outfit', sans-serif;
-    transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-}
-.hg-util-btn:hover { border-color: var(--accent-color); color: var(--text-main); }
-.hg-hash-row {
-    background: var(--card-bg); border: 1px solid var(--border-color);
-    border-radius: 16px; padding: 1rem 1.25rem;
-}
-.hg-hash-label {
-    font-size: 0.72rem; font-weight: 700; color: var(--accent-color);
-    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem;
-    display: flex; align-items: center; justify-content: space-between;
-}
-.hg-hash-value {
-    font-family: 'Courier New', monospace; font-size: 0.88rem; color: #e0e0e0;
-    word-break: break-all; line-height: 1.6;
-}
-.hg-copy-mini {
-    background: rgba(0,210,255,0.1); border: 1px solid var(--accent-color);
-    border-radius: 6px; padding: 0.2rem 0.6rem; color: var(--accent-color);
-    font-size: 0.72rem; font-weight: 700; cursor: pointer;
-    font-family: 'Outfit', sans-serif; transition: all 0.2s;
-}
-.hg-copy-mini:hover { background: var(--accent-color); color: #000; }
-.hg-algo-card {
-    background: rgba(255,255,255,0.04); border-radius: 12px; padding: 0.75rem 1rem;
-    display: flex; justify-content: space-between; align-items: center;
-}
-.hg-algo-name { font-weight: 700; color: var(--text-main); font-size: 0.9rem; }
-.hg-algo-bits { font-size: 0.78rem; color: var(--text-sub); }
+    .hg-mode-btn {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .hg-mode-btn:hover,
+    .hg-mode-btn.active {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+        background: rgba(0, 210, 255, 0.1);
+    }
+
+    .hg-action-btn {
+        background: var(--accent-color);
+        border: none;
+        border-radius: 10px;
+        padding: 0.55rem 1.3rem;
+        color: #000;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        font-family: 'Outfit', sans-serif;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .hg-action-btn:hover {
+        opacity: 0.85;
+    }
+
+    .hg-util-btn {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0.55rem 1rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'Outfit', sans-serif;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .hg-util-btn:hover {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+    }
+
+    .hg-hash-row {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1rem 1.25rem;
+    }
+
+    .hg-hash-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--accent-color);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .hg-hash-value {
+        font-family: 'Courier New', monospace;
+        font-size: 0.88rem;
+        color: #e0e0e0;
+        word-break: break-all;
+        line-height: 1.6;
+    }
+
+    .hg-copy-mini {
+        background: rgba(0, 210, 255, 0.1);
+        border: 1px solid var(--accent-color);
+        border-radius: 6px;
+        padding: 0.2rem 0.6rem;
+        color: var(--accent-color);
+        font-size: 0.72rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: 'Outfit', sans-serif;
+        transition: all 0.2s;
+    }
+
+    .hg-copy-mini:hover {
+        background: var(--accent-color);
+        color: #000;
+    }
+
+    .hg-algo-card {
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .hg-algo-name {
+        font-weight: 700;
+        color: var(--text-main);
+        font-size: 0.9rem;
+    }
+
+    .hg-algo-bits {
+        font-size: 0.78rem;
+        color: var(--text-sub);
+    }
 </style>
 
 <script>
-// Use WebCrypto for SHA algorithms; MD5 implemented in pure JS
-// ─── MD5 (pure JS) ──────────────────────────────────────────────────────────
-function md5(str) {
-    function safeAdd(x, y) { const lsw=(x&0xFFFF)+(y&0xFFFF); return (((x>>16)+(y>>16)+(lsw>>16))<<16)|(lsw&0xFFFF); }
-    function bitRotateLeft(n, c) { return (n<<c)|(n>>>(32-c)); }
-    function md5cmn(q,a,b,x,s,t) { return safeAdd(bitRotateLeft(safeAdd(safeAdd(a,q),safeAdd(x,t)),s),b); }
-    function md5ff(a,b,c,d,x,s,t) { return md5cmn((b&c)|((~b)&d),a,b,x,s,t); }
-    function md5gg(a,b,c,d,x,s,t) { return md5cmn((b&d)|(c&(~d)),a,b,x,s,t); }
-    function md5hh(a,b,c,d,x,s,t) { return md5cmn(b^c^d,a,b,x,s,t); }
-    function md5ii(a,b,c,d,x,s,t) { return md5cmn(c^(b|(~d)),a,b,x,s,t); }
-    function str2binl(s) {
-        const b=[]; const m=0xFF; for(let i=0;i<s.length*8;i+=8) b[i>>5]|=(s.charCodeAt(i/8)&m)<<(i%32); return b;
-    }
-    function binl2hex(a) {
-        const hc='0123456789abcdef'; let s=''; for(let i=0;i<a.length*4;i++) s+=hc[(a[i>>2]>>((i%4)*8+4))&0xF]+hc[(a[i>>2]>>((i%4)*8))&0xF]; return s;
-    }
-    function core_md5(x, len) {
-        x[len>>5]|=0x80<<((len)%32); x[(((len+64)>>>9)<<4)+14]=len;
-        let a=1732584193,b=-271733879,c=-1732584194,d=271733878;
-        for(let i=0;i<x.length;i+=16){
-            let [oa,ob,oc,od]=[a,b,c,d];
-            a=md5ff(a,b,c,d,x[i],7,-680876936); d=md5ff(d,a,b,c,x[i+1],12,-389564586); c=md5ff(c,d,a,b,x[i+2],17,606105819); b=md5ff(b,c,d,a,x[i+3],22,-1044525330);
-            a=md5ff(a,b,c,d,x[i+4],7,-176418897); d=md5ff(d,a,b,c,x[i+5],12,1200080426); c=md5ff(c,d,a,b,x[i+6],17,-1473231341); b=md5ff(b,c,d,a,x[i+7],22,-45705983);
-            a=md5ff(a,b,c,d,x[i+8],7,1770035416); d=md5ff(d,a,b,c,x[i+9],12,-1958414417); c=md5ff(c,d,a,b,x[i+10],17,-42063); b=md5ff(b,c,d,a,x[i+11],22,-1990404162);
-            a=md5ff(a,b,c,d,x[i+12],7,1804603682); d=md5ff(d,a,b,c,x[i+13],12,-40341101); c=md5ff(c,d,a,b,x[i+14],17,-1502002290); b=md5ff(b,c,d,a,x[i+15],22,1236535329);
-            a=md5gg(a,b,c,d,x[i+1],5,-165796510); d=md5gg(d,a,b,c,x[i+6],9,-1069501632); c=md5gg(c,d,a,b,x[i+11],14,643717713); b=md5gg(b,c,d,a,x[i],20,-373897302);
-            a=md5gg(a,b,c,d,x[i+5],5,-701558691); d=md5gg(d,a,b,c,x[i+10],9,38016083); c=md5gg(c,d,a,b,x[i+15],14,-660478335); b=md5gg(b,c,d,a,x[i+4],20,-405537848);
-            a=md5gg(a,b,c,d,x[i+9],5,568446438); d=md5gg(d,a,b,c,x[i+14],9,-1019803690); c=md5gg(c,d,a,b,x[i+3],14,-187363961); b=md5gg(b,c,d,a,x[i+8],20,1163531501);
-            a=md5gg(a,b,c,d,x[i+13],5,-1444681467); d=md5gg(d,a,b,c,x[i+2],9,-51403784); c=md5gg(c,d,a,b,x[i+7],14,1735328473); b=md5gg(b,c,d,a,x[i+12],20,-1926607734);
-            a=md5hh(a,b,c,d,x[i+5],4,-378558); d=md5hh(d,a,b,c,x[i+8],11,-2022574463); c=md5hh(c,d,a,b,x[i+11],16,1839030562); b=md5hh(b,c,d,a,x[i+14],23,-35309556);
-            a=md5hh(a,b,c,d,x[i+1],4,-1530992060); d=md5hh(d,a,b,c,x[i+4],11,1272893353); c=md5hh(c,d,a,b,x[i+7],16,-155497632); b=md5hh(b,c,d,a,x[i+10],23,-1094730640);
-            a=md5hh(a,b,c,d,x[i+13],4,681279174); d=md5hh(d,a,b,c,x[i],11,-358537222); c=md5hh(c,d,a,b,x[i+3],16,-722521979); b=md5hh(b,c,d,a,x[i+6],23,76029189);
-            a=md5hh(a,b,c,d,x[i+9],4,-640364487); d=md5hh(d,a,b,c,x[i+12],11,-421815835); c=md5hh(c,d,a,b,x[i+15],16,530742520); b=md5hh(b,c,d,a,x[i+2],23,-995338651);
-            a=md5ii(a,b,c,d,x[i],6,-198630844); d=md5ii(d,a,b,c,x[i+7],10,1126891415); c=md5ii(c,d,a,b,x[i+14],15,-1416354905); b=md5ii(b,c,d,a,x[i+5],21,-57434055);
-            a=md5ii(a,b,c,d,x[i+12],6,1700485571); d=md5ii(d,a,b,c,x[i+3],10,-1894986606); c=md5ii(c,d,a,b,x[i+10],15,-1051523); b=md5ii(b,c,d,a,x[i+1],21,-2054922799);
-            a=md5ii(a,b,c,d,x[i+8],6,1873313359); d=md5ii(d,a,b,c,x[i+15],10,-30611744); c=md5ii(c,d,a,b,x[i+6],15,-1560198380); b=md5ii(b,c,d,a,x[i+13],21,1309151649);
-            a=md5ii(a,b,c,d,x[i+4],6,-145523070); d=md5ii(d,a,b,c,x[i+11],10,-1120210379); c=md5ii(c,d,a,b,x[i+2],15,718787259); b=md5ii(b,c,d,a,x[i+9],21,-343485551);
-            a=safeAdd(a,oa); b=safeAdd(b,ob); c=safeAdd(c,oc); d=safeAdd(d,od);
+    // Use WebCrypto for SHA algorithms; MD5 implemented in pure JS
+    // ─── MD5 (pure JS) ──────────────────────────────────────────────────────────
+    function md5(str) {
+        function safeAdd(x, y) { const lsw = (x & 0xFFFF) + (y & 0xFFFF); return (((x >> 16) + (y >> 16) + (lsw >> 16)) << 16) | (lsw & 0xFFFF); }
+        function bitRotateLeft(n, c) { return (n << c) | (n >>> (32 - c)); }
+        function md5cmn(q, a, b, x, s, t) { return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b); }
+        function md5ff(a, b, c, d, x, s, t) { return md5cmn((b & c) | ((~b) & d), a, b, x, s, t); }
+        function md5gg(a, b, c, d, x, s, t) { return md5cmn((b & d) | (c & (~d)), a, b, x, s, t); }
+        function md5hh(a, b, c, d, x, s, t) { return md5cmn(b ^ c ^ d, a, b, x, s, t); }
+        function md5ii(a, b, c, d, x, s, t) { return md5cmn(c ^ (b | (~d)), a, b, x, s, t); }
+        function str2binl(s) {
+            const b = []; const m = 0xFF; for (let i = 0; i < s.length * 8; i += 8) b[i >> 5] |= (s.charCodeAt(i / 8) & m) << (i % 32); return b;
         }
-        return [a,b,c,d];
+        function binl2hex(a) {
+            const hc = '0123456789abcdef'; let s = ''; for (let i = 0; i < a.length * 4; i++) s += hc[(a[i >> 2] >> ((i % 4) * 8 + 4)) & 0xF] + hc[(a[i >> 2] >> ((i % 4) * 8)) & 0xF]; return s;
+        }
+        function core_md5(x, len) {
+            x[len >> 5] |= 0x80 << ((len) % 32); x[(((len + 64) >>> 9) << 4) + 14] = len;
+            let a = 1732584193, b = -271733879, c = -1732584194, d = 271733878;
+            for (let i = 0; i < x.length; i += 16) {
+                let [oa, ob, oc, od] = [a, b, c, d];
+                a = md5ff(a, b, c, d, x[i], 7, -680876936); d = md5ff(d, a, b, c, x[i + 1], 12, -389564586); c = md5ff(c, d, a, b, x[i + 2], 17, 606105819); b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+                a = md5ff(a, b, c, d, x[i + 4], 7, -176418897); d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426); c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341); b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+                a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416); d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417); c = md5ff(c, d, a, b, x[i + 10], 17, -42063); b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+                a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682); d = md5ff(d, a, b, c, x[i + 13], 12, -40341101); c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290); b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+                a = md5gg(a, b, c, d, x[i + 1], 5, -165796510); d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632); c = md5gg(c, d, a, b, x[i + 11], 14, 643717713); b = md5gg(b, c, d, a, x[i], 20, -373897302);
+                a = md5gg(a, b, c, d, x[i + 5], 5, -701558691); d = md5gg(d, a, b, c, x[i + 10], 9, 38016083); c = md5gg(c, d, a, b, x[i + 15], 14, -660478335); b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+                a = md5gg(a, b, c, d, x[i + 9], 5, 568446438); d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690); c = md5gg(c, d, a, b, x[i + 3], 14, -187363961); b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+                a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467); d = md5gg(d, a, b, c, x[i + 2], 9, -51403784); c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473); b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+                a = md5hh(a, b, c, d, x[i + 5], 4, -378558); d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463); c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562); b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+                a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060); d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353); c = md5hh(c, d, a, b, x[i + 7], 16, -155497632); b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+                a = md5hh(a, b, c, d, x[i + 13], 4, 681279174); d = md5hh(d, a, b, c, x[i], 11, -358537222); c = md5hh(c, d, a, b, x[i + 3], 16, -722521979); b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+                a = md5hh(a, b, c, d, x[i + 9], 4, -640364487); d = md5hh(d, a, b, c, x[i + 12], 11, -421815835); c = md5hh(c, d, a, b, x[i + 15], 16, 530742520); b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+                a = md5ii(a, b, c, d, x[i], 6, -198630844); d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415); c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905); b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+                a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571); d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606); c = md5ii(c, d, a, b, x[i + 10], 15, -1051523); b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+                a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359); d = md5ii(d, a, b, c, x[i + 15], 10, -30611744); c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380); b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+                a = md5ii(a, b, c, d, x[i + 4], 6, -145523070); d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379); c = md5ii(c, d, a, b, x[i + 2], 15, 718787259); b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+                a = safeAdd(a, oa); b = safeAdd(b, ob); c = safeAdd(c, oc); d = safeAdd(d, od);
+            }
+            return [a, b, c, d];
+        }
+        const binStr = unescape(encodeURIComponent(str));
+        return binl2hex(core_md5(str2binl(binStr), binStr.length * 8));
     }
-    const binStr = unescape(encodeURIComponent(str));
-    return binl2hex(core_md5(str2binl(binStr), binStr.length*8));
-}
 
-// ─── SHA via WebCrypto ───────────────────────────────────────────────────────
-async function sha(algo, text) {
-    const enc = new TextEncoder();
-    const buf = await crypto.subtle.digest(algo, enc.encode(text));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-async function shaFile(algo, buffer) {
-    const buf = await crypto.subtle.digest(algo, buffer);
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-// ─── State ────────────────────────────────────────────────────────────────────
-let liveMode = false;
-let liveTimer = null;
-
-function setMode(mode) {
-    document.querySelectorAll('.hg-mode-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('mode-' + mode).classList.add('active');
-    document.getElementById('hg-text-panel').style.display = mode === 'text' ? 'block' : 'none';
-    document.getElementById('hg-file-panel').style.display = mode === 'file' ? 'block' : 'none';
-    document.getElementById('hg-results').innerHTML = '';
-}
-
-function toggleLive() {
-    liveMode = document.getElementById('live-hash').checked;
-    if (liveMode) onTextInput();
-}
-
-function onTextInput() {
-    if (liveMode) {
-        clearTimeout(liveTimer);
-        liveTimer = setTimeout(hashText, 300);
+    // ─── SHA via WebCrypto ───────────────────────────────────────────────────────
+    async function sha(algo, text) {
+        const enc = new TextEncoder();
+        const buf = await crypto.subtle.digest(algo, enc.encode(text));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
-}
 
-function clearText() {
-    document.getElementById('hg-input').value = '';
-    document.getElementById('hg-results').innerHTML = '';
-    document.getElementById('hg-status').textContent = '';
-}
+    async function shaFile(algo, buffer) {
+        const buf = await crypto.subtle.digest(algo, buffer);
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
-async function hashText() {
-    const text = document.getElementById('hg-input').value;
-    if (!text) return;
-    document.getElementById('hg-status').textContent = 'Computing…';
-    document.getElementById('hg-status').style.color = 'var(--text-sub)';
-    const [sha1, sha256, sha512] = await Promise.all([
-        sha('SHA-1', text), sha('SHA-256', text), sha('SHA-512', text)
-    ]);
-    renderHashes([
-        { label: 'MD5', value: md5(text) },
-        { label: 'SHA-1', value: sha1 },
-        { label: 'SHA-256', value: sha256 },
-        { label: 'SHA-512', value: sha512 },
-    ]);
-    document.getElementById('hg-status').textContent = '✓ Done';
-    document.getElementById('hg-status').style.color = 'var(--accent-color)';
-}
+    // ─── State ────────────────────────────────────────────────────────────────────
+    let liveMode = false;
+    let liveTimer = null;
 
-function renderHashes(hashes) {
-    const container = document.getElementById('hg-results');
-    container.innerHTML = hashes.map((h, i) => `
+    function setMode(mode) {
+        document.querySelectorAll('.hg-mode-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('mode-' + mode).classList.add('active');
+        document.getElementById('hg-text-panel').style.display = mode === 'text' ? 'block' : 'none';
+        document.getElementById('hg-file-panel').style.display = mode === 'file' ? 'block' : 'none';
+        document.getElementById('hg-results').innerHTML = '';
+    }
+
+    function toggleLive() {
+        liveMode = document.getElementById('live-hash').checked;
+        if (liveMode) onTextInput();
+    }
+
+    function onTextInput() {
+        if (liveMode) {
+            clearTimeout(liveTimer);
+            liveTimer = setTimeout(hashText, 300);
+        }
+    }
+
+    function clearText() {
+        document.getElementById('hg-input').value = '';
+        document.getElementById('hg-results').innerHTML = '';
+        document.getElementById('hg-status').textContent = '';
+    }
+
+    async function hashText() {
+        const text = document.getElementById('hg-input').value;
+        if (!text) return;
+        document.getElementById('hg-status').textContent = 'Computing…';
+        document.getElementById('hg-status').style.color = 'var(--text-sub)';
+        const [sha1, sha256, sha512] = await Promise.all([
+            sha('SHA-1', text), sha('SHA-256', text), sha('SHA-512', text)
+        ]);
+        renderHashes([
+            { label: 'MD5', value: md5(text) },
+            { label: 'SHA-1', value: sha1 },
+            { label: 'SHA-256', value: sha256 },
+            { label: 'SHA-512', value: sha512 },
+        ]);
+        document.getElementById('hg-status').textContent = '✓ Done';
+        document.getElementById('hg-status').style.color = 'var(--accent-color)';
+    }
+
+    function renderHashes(hashes) {
+        const container = document.getElementById('hg-results');
+        container.innerHTML = hashes.map((h, i) => `
         <div class="hg-hash-row">
             <div class="hg-hash-label">
                 <span>${h.label}</span>
@@ -305,46 +437,46 @@ function renderHashes(hashes) {
             <div class="hg-hash-value" id="hash-val-${i}">${h.value}</div>
         </div>
     `).join('');
-}
+    }
 
-function copyHash(id, btn) {
-    const text = document.getElementById(id).textContent;
-    navigator.clipboard.writeText(text).then(() => {
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = 'Copy', 2000);
-    });
-}
+    function copyHash(id, btn) {
+        const text = document.getElementById(id).textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 2000);
+        });
+    }
 
-// File hashing
-function handleFileDrop(e) {
-    e.preventDefault();
-    document.getElementById('hg-file-drop').style.borderColor = 'var(--border-color)';
-    const file = e.dataTransfer.files[0];
-    if (file) hashFile(file);
-}
+    // File hashing
+    function handleFileDrop(e) {
+        e.preventDefault();
+        document.getElementById('hg-file-drop').style.borderColor = 'var(--border-color)';
+        const file = e.dataTransfer.files[0];
+        if (file) hashFile(file);
+    }
 
-function handleFileSelect(e) {
-    const file = e.target.files[0];
-    if (file) hashFile(file);
-}
+    function handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) hashFile(file);
+    }
 
-async function hashFile(file) {
-    document.getElementById('hg-file-name').textContent = `Hashing: ${file.name}…`;
-    document.getElementById('hg-results').innerHTML = '<p style="color:var(--text-sub);text-align:center;padding:1rem;">Computing hashes…</p>';
-    const buffer = await file.arrayBuffer();
-    const text = await file.text().catch(() => null);
-    const [sha1, sha256, sha512] = await Promise.all([
-        shaFile('SHA-1', buffer), shaFile('SHA-256', buffer), shaFile('SHA-512', buffer)
-    ]);
-    const md5val = text ? md5(text) : '(binary file, MD5 requires text)';
-    renderHashes([
-        { label: 'MD5', value: md5val },
-        { label: 'SHA-1', value: sha1 },
-        { label: 'SHA-256', value: sha256 },
-        { label: 'SHA-512', value: sha512 },
-    ]);
-    const sizeKB = (file.size / 1024).toFixed(1);
-    document.getElementById('hg-file-name').textContent = `${file.name} (${sizeKB} KB)`;
-}
+    async function hashFile(file) {
+        document.getElementById('hg-file-name').textContent = `Hashing: ${file.name}…`;
+        document.getElementById('hg-results').innerHTML = '<p style="color:var(--text-sub);text-align:center;padding:1rem;">Computing hashes…</p>';
+        const buffer = await file.arrayBuffer();
+        const text = await file.text().catch(() => null);
+        const [sha1, sha256, sha512] = await Promise.all([
+            shaFile('SHA-1', buffer), shaFile('SHA-256', buffer), shaFile('SHA-512', buffer)
+        ]);
+        const md5val = text ? md5(text) : '(binary file, MD5 requires text)';
+        renderHashes([
+            { label: 'MD5', value: md5val },
+            { label: 'SHA-1', value: sha1 },
+            { label: 'SHA-256', value: sha256 },
+            { label: 'SHA-512', value: sha512 },
+        ]);
+        const sizeKB = (file.size / 1024).toFixed(1);
+        document.getElementById('hg-file-name').textContent = `${file.name} (${sizeKB} KB)`;
+    }
 </script>
 {% endblock %}

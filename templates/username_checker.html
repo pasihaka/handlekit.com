@@ -1,58 +1,94 @@
 {% set title = "Username Availability Checker | Search 6 Major Platforms | HandleKit" %}
-{% set description = "An available handle is your identity in the digital world. Search 6 major social platforms at once and secure your brand before someone else does. Free and private." %}
+{% set description = "An available handle is your identity in the digital world. Search 6 major social platforms at once
+and secure your brand before someone else does. Free and private." %}
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="tool-container" style="max-width: 800px; margin: 0 auto;">
-    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
-        <i data-lucide="at-sign" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
-        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--text-main);">Find Your Perfect Social Name</h1>
-        <p style="color: var(--text-sub); font-size: 1.1rem;">Search all major social networks at once and claim your digital identity before someone else does.</p>
+<div class="tool-content" style="max-width: 1000px; margin: 0 auto; padding-bottom: 5rem;">
+    <!-- MAIN TOOL CARD -->
+    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        
+        <!-- HEADER SECTION -->
+        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3.5rem;">
+            <div style="background: var(--accent-gradient); width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 35px var(--glow-color); flex-shrink: 0;">
+                <i data-lucide="at-sign" style="color: #fff; width: 36px; height: 36px;"></i>
+            </div>
+            <div>
+                <h1 style="margin: 0; color: var(--text-main); font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;">Social Username Checker</h1>
+                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Search 6 major social networks instantly and secure your brand.</p>
+            </div>
+        </div>
+
+        <!-- SEARCH BOX -->
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 22px; padding: 0.75rem; display: flex; gap: 0.75rem; margin-bottom: 2.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+            <div style="position: relative; flex: 1; display: flex; align-items: center;">
+                <i data-lucide="search" style="position: absolute; left: 1.25rem; color: var(--text-sub); width: 20px; height: 20px;"></i>
+                <input type="text" id="username-input" placeholder="Enter desired username (e.g. handlekit)" 
+                    style="width: 100%; background: transparent; border: none; padding: 1rem 1rem 1rem 3.5rem; color: var(--text-main); font-size: 1.2rem; font-weight: 700; outline: none; font-family: 'Outfit', sans-serif;">
+            </div>
+            <button id="search-btn" style="background: var(--accent-gradient); border: none; border-radius: 16px; padding: 0 2.5rem; color: #fff; font-weight: 800; font-size: 1.05rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 20px var(--glow-color); white-space: nowrap;">
+                Check Now
+            </button>
+        </div>
+
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;">
+        <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-badge status-uncertain"
+                style="display:inline-block;margin:0;"></span><span
+                style="color:var(--text-sub);font-size:0.8rem;">Uncertain, click to check manually</span></div>
     </div>
 
-    <div class="search-box mobile-stack info-card-premium" style="display: flex; gap: 1rem; margin-bottom: 2rem; padding: 2rem;">
-        <input type="text" id="username-input" class="premium-input" placeholder="Enter username..." style="flex: 1; font-size: 1.2rem; font-weight: 600;">
-        <button id="search-btn" style="background: var(--accent-gradient); border: none; border-radius: 12px; padding: 1rem 2.5rem; color: var(--text-on-accent); font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s ease; white-space: nowrap; box-shadow: 0 4px 15px var(--glow-color);">
-            Check Now
-        </button>
-    </div>
-    
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;">
-        <div style="display:flex;align-items:center;gap:0.5rem;"><span class="status-badge status-uncertain" style="display:inline-block;margin:0;"></span><span style="color:var(--text-sub);font-size:0.8rem;">Uncertain, click to check manually</span></div>
-    </div>
-    
-    <div class="result-grid" id="results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
+    <div class="result-grid" id="results"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
         <!-- Results will be injected here -->
     </div>
 
     <!-- Link back to rules page -->
-    <div style="background: rgba(0, 210, 255, 0.05); border: 1px solid var(--accent-color); border-radius: 12px; padding: 1.5rem; margin-top: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div
+        style="background: rgba(0, 210, 255, 0.05); border: 1px solid var(--accent-color); border-radius: 12px; padding: 1.5rem; margin-top: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
         <div style="display: flex; align-items: center; gap: 1rem;">
             <i data-lucide="book-open" style="color: var(--accent-color); width: 24px; height: 24px;"></i>
             <div style="color: var(--text-sub);">
-                <strong style="color: var(--text-main);">Need help choosing?</strong> Read our complete guide on <a href="/username-rules" style="color: var(--accent-color); text-decoration: underline;">username rules and character limits</a> across all major platforms.
+                <strong style="color: var(--text-main);">Need help choosing?</strong> Read our complete guide on <a
+                    href="/username-rules" style="color: var(--accent-color); text-decoration: underline;">username
+                    rules and character limits</a> across all major platforms.
             </div>
         </div>
     </div>
 
     <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div class="info-card-premium" style="margin-bottom: 3rem;">
-            <h3 style="color: var(--text-main); margin-bottom: 1.25rem; font-size: 1.6rem;">The Importance of Brand Consistency</h3>
+            <h3 style="color: var(--text-main); margin-bottom: 1.25rem; font-size: 1.6rem;">The Importance of Brand
+                Consistency</h3>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1.25rem;">
-                Your username is your identity in the digital world. With our tool, you can search all major platforms at once and find an available name everywhere and secure it before anyone else does.
+                Your username is your identity in the digital world. With our tool, you can search all major platforms
+                at once and find an available name everywhere and secure it before anyone else does.
             </p>
             <p style="color: var(--text-sub); line-height: 1.8;">
-                We let you search the platforms that matter most to you: GitHub and Reddit for communities, Twitter/X for public conversation, TikTok and YouTube for content creators, and Instagram with a link to verify.
+                We let you search the platforms that matter most to you: GitHub and Reddit for communities, Twitter/X
+                for public conversation, TikTok and YouTube for content creators, and Instagram with a link to verify.
             </p>
         </div>
 
         <div class="info-card">
-            <h3 style="color: var(--text-main); margin-bottom: 1.5rem; font-size: 1.5rem;">Tips for Choosing a Great Username</h3>
+            <h3 style="color: var(--text-main); margin-bottom: 1.5rem; font-size: 1.5rem;">Tips for Choosing a Great
+                Username</h3>
             <ul style="color: var(--text-sub); line-height: 2; padding-left: 1.5rem; list-style-type: none;">
-                <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Keep it Short:</strong> The shorter your username, the better it will be for mobile device users.</li>
-                <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Avoid Numbers:</strong> If you append "123" to your name, it may look as if you are a bot or an afterthought.</li>
-                <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Think Long-Term:</strong> You may be okay with your current name now, but what about five or ten years from now? Choose a name that will remain professional in the long term.</li>
-                <li><i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i> <strong>Act Fast:</strong> Good usernames are taken in an instant. If you find a good one, grab it quickly.</li>
+                <li><i data-lucide="check"
+                        style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i>
+                    <strong>Keep it Short:</strong> The shorter your username, the better it will be for mobile device
+                    users.</li>
+                <li><i data-lucide="check"
+                        style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i>
+                    <strong>Avoid Numbers:</strong> If you append "123" to your name, it may look as if you are a bot or
+                    an afterthought.</li>
+                <li><i data-lucide="check"
+                        style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i>
+                    <strong>Think Long-Term:</strong> You may be okay with your current name now, but what about five or
+                    ten years from now? Choose a name that will remain professional in the long term.</li>
+                <li><i data-lucide="check"
+                        style="width: 16px; height: 16px; color: var(--accent-color); margin-right: 0.5rem;"></i>
+                    <strong>Act Fast:</strong> Good usernames are taken in an instant. If you find a good one, grab it
+                    quickly.</li>
             </ul>
         </div>
     </div>
@@ -63,31 +99,47 @@
 
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Why do some checks take longer?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Each platform has its own <strong style="color: var(--text-main);">rate limits</strong> and response times. Sites like <strong style="color: var(--accent-color);">Twitter</strong> and <strong style="color: var(--accent-color);">TikTok</strong> often have stricter bot detection, which may result in an "Uncertain" status or a slightly longer wait time to ensure accuracy.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Why do some checks
+                    take longer?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Each platform has its own <strong
+                        style="color: var(--text-main);">rate limits</strong> and response times. Sites like <strong
+                        style="color: var(--accent-color);">Twitter</strong> and <strong
+                        style="color: var(--accent-color);">TikTok</strong> often have stricter bot detection, which may
+                    result in an "Uncertain" status or a slightly longer wait time to ensure accuracy.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">How does the username checker work?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Simply enter the name you want to secure and click <strong>"Check Now"</strong>. We immediately make a request in real-time to the public profile endpoints for all supported platforms at once. If a profile exists, we mark the handle as <strong>"Taken"</strong>. If no profile is found, it is labeled <strong>"Available"</strong>.</p>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">What does "Uncertain" mean?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">There are times when a platform (particularly Instagram) may temporarily block automated requests or be undergoing maintenance. In these cases, we display an <strong>"Uncertain"</strong> status with a yellow indicator. You can <strong>click the card</strong> to manually verify the profile's existence directly on the platform.</p>
             </div>
 
             <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How does the username checker work?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">If you enter a username that you wish to use and click on "Check Now," we immediately make a request in real-time to the public profile endpoint for all platforms at the same time. If a profile for that username exists, we say that username is "Taken." If no profile for that given username exists, we say that username is "Available." The results are displayed immediately without waiting for all platforms to complete checking.</p>
-            </div>
-
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What is "Uncertain"?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">There are times when a profile might be blocking or rate limiting us from making a request to them, and this is particularly true for Instagram, which is notoriously bad about this. If this happens, we won't be able to tell you for sure if the username is taken or not, so we'll display "Uncertain" for you with a yellow dot. If you click on this card, we'll take you to the profile so that you can check for yourself!</p>
-            </div>
-
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Which platforms do you check?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">We currently support <strong style="color: var(--text-main);">Instagram, TikTok, Twitter (X), Reddit, and YouTube</strong>. We are constantly expanding this list to include more social networks and developer platforms.</p>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Which platforms do
+                    you check?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">We currently support <strong
+                        style="color: var(--text-main);">Instagram, TikTok, Twitter (X), Reddit, and YouTube</strong>.
+                    We are constantly expanding this list to include more social networks and developer platforms.</p>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    #username-input:focus { border-color: var(--accent-color); box-shadow: 0 0 10px var(--glow-color); }
-    #search-btn:hover { transform: scale(1.05); }
+    #username-input:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 10px var(--glow-color);
+    }
+
+    #search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px var(--glow-color);
+    }
+
     .platform-card {
         background: var(--code-bg);
         border: 1px solid var(--border-color);
@@ -101,29 +153,53 @@
         color: inherit;
         cursor: default;
     }
-    .platform-card.clickable { cursor: pointer; }
+
+    .platform-card.clickable {
+        cursor: pointer;
+    }
+
     .platform-card.clickable:hover {
         background: var(--input-bg);
         border-color: var(--accent-color);
         transform: translateY(-2px);
     }
-    .platform-card.uncertain-clickable { cursor: pointer; }
+
+    .platform-card.uncertain-clickable {
+        cursor: pointer;
+    }
+
     .platform-card.uncertain-clickable:hover {
         background: rgba(255, 185, 35, 0.07);
         border-color: #FFB923;
         transform: translateY(-2px);
     }
+
     .plat-badge {
-        width: 36px; height: 36px; border-radius: 8px;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; font-size: 0.65rem; font-weight: 800;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 0.65rem;
+        font-weight: 800;
         letter-spacing: -0.5px;
     }
+
     .status-badge {
-        width: 10px; height: 10px;
-        border-radius: 50%; margin-left: auto; flex-shrink: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-left: auto;
+        flex-shrink: 0;
     }
-    .status-searching { background: #555; animation: pulse 1.5s infinite; }
+
+    .status-searching {
+        background: #555;
+        animation: pulse 1.5s infinite;
+    }
+
     /* Text Statuses */
     .status-text {
         font-size: 0.75rem;
@@ -135,117 +211,163 @@
         text-transform: uppercase;
         flex-shrink: 0;
     }
-    .status-available-text { color: #00ff88; background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.2); }
-    .status-taken-text     { color: #ff4444; background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.2); }
-    .status-invalid-text   { color: #b280ff; background: rgba(178, 128, 255, 0.1); border: 1px solid rgba(178, 128, 255, 0.2); }
-    .status-taken-invalid-text { color: #ffaa00; background: rgba(255, 170, 0, 0.1); border: 1px solid rgba(255, 170, 0, 0.2); }
-    .status-limited-text { color: #ff8800; background: rgba(255, 136, 0, 0.1); border: 1px solid rgba(255, 136, 0, 0.2); }
-    
+
+    .status-available-text {
+        color: #00ff88;
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+    }
+
+    .status-taken-text {
+        color: #ff4444;
+        background: rgba(255, 68, 68, 0.1);
+        border: 1px solid rgba(255, 68, 68, 0.2);
+    }
+
+    .status-invalid-text {
+        color: #b280ff;
+        background: rgba(178, 128, 255, 0.1);
+        border: 1px solid rgba(178, 128, 255, 0.2);
+    }
+
+    .status-taken-invalid-text {
+        color: #ffaa00;
+        background: rgba(255, 170, 0, 0.1);
+        border: 1px solid rgba(255, 170, 0, 0.2);
+    }
+
+    .status-limited-text {
+        color: #ff8800;
+        background: rgba(255, 136, 0, 0.1);
+        border: 1px solid rgba(255, 136, 0, 0.2);
+    }
+
     /* Uncertain Badge */
-    .status-uncertain { background: #FFB923; box-shadow: 0 0 8px #FFB92380; }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .status-uncertain {
+        background: #FFB923;
+        box-shadow: 0 0 8px #FFB92380;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.3;
+        }
+    }
+
     @media (max-width: 768px) {
-        .search-box { padding: 1.5rem !important; }
-        #search-btn { padding: 1rem !important; }
+        .search-box {
+            padding: 1.5rem !important;
+        }
+
+        #search-btn {
+            padding: 1rem !important;
+        }
     }
 </style>
 
 <script>
-const PLATFORMS = [
-    { name: 'GitHub',      id: 'github',    color: '#58a6ff', bg: '#161b22', label: 'GH', profileUrl: 'https://github.com/', signupUrl: 'https://github.com/signup' },
-    { name: 'Reddit',      id: 'reddit',    color: '#FF4500', bg: '#1a1a1b', label: 'Re', profileUrl: 'https://reddit.com/user/', signupUrl: 'https://www.reddit.com/register' },
-    { name: 'Twitter / X', id: 'twitter',   color: '#e7e9ea', bg: '#15202b', label: 'X',  profileUrl: 'https://x.com/', signupUrl: 'https://x.com/i/flow/signup' },
-    { name: 'Instagram',   id: 'instagram', color: '#E1306C', bg: '#1a1010', label: 'Ig', profileUrl: 'https://instagram.com/', signupUrl: 'https://www.instagram.com/' },
-    { name: 'TikTok',      id: 'tiktok',    color: '#ff0050', bg: '#0a0a0a', label: 'Tk', profileUrl: 'https://tiktok.com/@', signupUrl: 'https://tiktok.com/signup' },
-    { name: 'YouTube',     id: 'youtube',   color: '#FF0000', bg: '#0f0f0f', label: 'YT', profileUrl: 'https://youtube.com/@', signupUrl: 'https://www.youtube.com/create_channel' },
-];
+    const PLATFORMS = [
+        { name: 'GitHub', id: 'github', color: '#58a6ff', bg: '#161b22', label: 'GH', profileUrl: 'https://github.com/', signupUrl: 'https://github.com/signup' },
+        { name: 'Reddit', id: 'reddit', color: '#FF4500', bg: '#1a1a1b', label: 'Re', profileUrl: 'https://reddit.com/user/', signupUrl: 'https://www.reddit.com/register' },
+        { name: 'Twitter / X', id: 'twitter', color: '#e7e9ea', bg: '#15202b', label: 'X', profileUrl: 'https://x.com/', signupUrl: 'https://x.com/i/flow/signup' },
+        { name: 'Instagram', id: 'instagram', color: '#E1306C', bg: '#1a1010', label: 'Ig', profileUrl: 'https://instagram.com/', signupUrl: 'https://www.instagram.com/' },
+        { name: 'TikTok', id: 'tiktok', color: '#ff0050', bg: '#0a0a0a', label: 'Tk', profileUrl: 'https://tiktok.com/@', signupUrl: 'https://tiktok.com/signup' },
+        { name: 'YouTube', id: 'youtube', color: '#FF0000', bg: '#0f0f0f', label: 'YT', profileUrl: 'https://youtube.com/@', signupUrl: 'https://www.youtube.com/create_channel' },
+    ];
 
-const resultsDiv = document.getElementById('results');
-const input      = document.getElementById('username-input');
-const btn        = document.getElementById('search-btn');
+    const resultsDiv = document.getElementById('results');
+    const input = document.getElementById('username-input');
+    const btn = document.getElementById('search-btn');
 
-btn.onclick = () => checkAll();
-input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAll(); });
+    btn.onclick = () => checkAll();
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAll(); });
 
-async function checkAll() {
-    const user = input.value.trim();
-    if (!user) return;
+    async function checkAll() {
+        const user = input.value.trim();
+        if (!user) return;
 
-    resultsDiv.innerHTML = '';
-    btn.disabled = true;
-    btn.innerText = 'Checking…';
+        resultsDiv.innerHTML = '';
+        btn.disabled = true;
+        btn.innerHTML = '<i data-lucide="loader-2" class="spin" style="width:18px;height:18px;"></i> Checking…';
+        lucide.createIcons();
 
-    // Create all cards immediately in loading state
-    PLATFORMS.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'platform-card';
-        card.id = `card-${p.id}`;
-        card.innerHTML = `
+        // Create all cards immediately in loading state
+        PLATFORMS.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'platform-card';
+            card.id = `card-${p.id}`;
+            card.innerHTML = `
             <div class="plat-badge" style="background:${p.bg};border:1px solid ${p.color}50;color:${p.color};">${p.label}</div>
             <span style="font-weight:600;font-size:0.88rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</span>
             <div id="status-${p.id}" class="status-badge status-searching"></div>
         `;
-        resultsDiv.appendChild(card);
-    });
+            resultsDiv.appendChild(card);
+        });
 
-    // Kick off all requests in parallel
-    const promises = PLATFORMS.map(p =>
-        fetch(`/api/check-username?user=${encodeURIComponent(user)}&platform=${p.id}`)
-            .then(r => r.json())
-            .then(data => updateCard(p, user, data.available))
-            .catch(() => updateCard(p, user, null))
-    );
+        // Kick off all requests in parallel
+        const promises = PLATFORMS.map(p =>
+            fetch(`/api/check-username?user=${encodeURIComponent(user)}&platform=${p.id}`)
+                .then(r => r.json())
+                .then(data => updateCard(p, user, data.available))
+                .catch(() => updateCard(p, user, null))
+        );
 
-    await Promise.allSettled(promises);
-    btn.disabled = false;
-    btn.innerText = 'Check Now';
-}
-
-function updateCard(p, user, available) {
-    const badge = document.getElementById(`status-${p.id}`);
-    const card  = document.getElementById(`card-${p.id}`);
-    if (!badge || !card) return;
-
-    if (available === true) {
-        badge.className = 'status-text status-available-text';
-        badge.innerText = 'Available';
-        card.classList.add('clickable');
-        card.title = `${user} appears available on ${p.name}, click to register`;
-        card.style.cursor = 'pointer';
-        card.onclick = () => window.open(p.signupUrl, '_blank');
-    } else if (available === false) {
-        badge.className = 'status-text status-taken-text';
-        badge.innerText = 'Taken';
-        card.classList.add('clickable');
-        card.title = `${user} is taken on ${p.name}, click to view profile`;
-        card.style.cursor = 'pointer';
-        card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
-    } else if (available === 'invalid') {
-        badge.className = 'status-text status-invalid-text';
-        badge.innerText = 'Invalid';
-        card.title = `${user} is invalid on ${p.name} (does not meet character/length rules)`;
-    } else if (available === 'taken_or_invalid') {
-        badge.className = 'status-text status-taken-invalid-text';
-        badge.innerText = 'Taken/Invalid';
-        card.classList.add('clickable');
-        card.title = `${user} is taken or restricted on ${p.name}, click to view profile`;
-        card.style.cursor = 'pointer';
-        card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
-    } else if (available === 'rate_limited') {
-        badge.className = 'status-text status-limited-text';
-        badge.innerText = 'Limited';
-        card.title = `Access to ${p.name} is temporarily restricted or blocked by security. Click to check manually.`;
-        card.style.cursor = 'pointer';
-        card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
-    } else {
-        // null = uncertain
-        badge.className = 'status-badge status-uncertain';
-        badge.innerText = ''; // Clear any text
-        card.classList.add('uncertain-clickable');
-        card.title = `Could not verify, click to check ${p.name} manually`;
-        card.style.cursor = 'pointer';
-        card.onclick = () => window.open(p.profileUrl + user, '_blank');
+        await Promise.allSettled(promises);
+        btn.disabled = false;
+        btn.innerHTML = 'Check Now';
     }
-}
+
+    function updateCard(p, user, available) {
+        const badge = document.getElementById(`status-${p.id}`);
+        const card = document.getElementById(`card-${p.id}`);
+        if (!badge || !card) return;
+
+        if (available === true) {
+            badge.className = 'status-text status-available-text';
+            badge.innerText = 'Available';
+            card.classList.add('clickable');
+            card.title = `${user} appears available on ${p.name}, click to register`;
+            card.style.cursor = 'pointer';
+            card.onclick = () => window.open(p.signupUrl, '_blank');
+        } else if (available === false) {
+            badge.className = 'status-text status-taken-text';
+            badge.innerText = 'Taken';
+            card.classList.add('clickable');
+            card.title = `${user} is taken on ${p.name}, click to view profile`;
+            card.style.cursor = 'pointer';
+            card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
+        } else if (available === 'invalid') {
+            badge.className = 'status-text status-invalid-text';
+            badge.innerText = 'Invalid';
+            card.title = `${user} is invalid on ${p.name} (does not meet character/length rules)`;
+        } else if (available === 'taken_or_invalid') {
+            badge.className = 'status-text status-taken-invalid-text';
+            badge.innerText = 'Taken/Invalid';
+            card.classList.add('clickable');
+            card.title = `${user} is taken or restricted on ${p.name}, click to view profile`;
+            card.style.cursor = 'pointer';
+            card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
+        } else if (available === 'rate_limited') {
+            badge.className = 'status-text status-limited-text';
+            badge.innerText = 'Limited';
+            card.title = `Access to ${p.name} is temporarily restricted or blocked by security. Click to check manually.`;
+            card.style.cursor = 'pointer';
+            card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
+        } else {
+            // null = uncertain
+            badge.className = 'status-badge status-uncertain';
+            badge.innerText = ''; // Clear any text
+            card.classList.add('uncertain-clickable');
+            card.title = `Could not verify, click to check ${p.name} manually`;
+            card.style.cursor = 'pointer';
+            card.onclick = () => window.open(p.profileUrl + user, '_blank');
+        }
+    }
 </script>
 {% endblock %}

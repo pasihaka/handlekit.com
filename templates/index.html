@@ -1,45 +1,60 @@
 {% set title = "Free Online Tools for Developers & Creators | HandleKit" %}
-{% set description = "HandleKit offers free, instant online tools: username availability checker, password generator, image optimizer, QR generator, word counter, and 10+ developer utilities. No sign-up needed." %}
+{% set description = "HandleKit offers free, instant online tools: username availability checker, password generator,
+image optimizer, QR generator, word counter, and 10+ developer utilities. No sign-up needed." %}
 {% extends "layout.html" %}
 
 {% block content %}
 
 <!-- Hero intro -->
 <div style="text-align: center; max-width: 800px; margin: 2rem auto 5rem; position: relative;">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: var(--glow-color); filter: blur(100px); z-index: -1; opacity: 0.5;"></div>
-    <h1 style="font-size: 3.5rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1.5px;">
+    <div
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: var(--glow-color); filter: blur(100px); z-index: -1; opacity: 0.5;">
+    </div>
+    <h1
+        style="font-size: 3.5rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1.5px;">
         Every Tool You Need.<br>
-        <span style="background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">No Sign-Up. Always Free.</span>
+        <span
+            style="background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">No
+            Sign-Up. Always Free.</span>
     </h1>
-    <p style="color: var(--text-sub); font-size: 1.25rem; line-height: 1.6; max-width: 600px; margin: 0 auto; opacity: 0.9;">
-        HandleKit provides a collection of sharp, fast, privacy-first utilities for developers and creators. No barriers, just tools.
+    <p
+        style="color: var(--text-sub); font-size: 1.25rem; line-height: 1.6; max-width: 600px; margin: 0 auto; opacity: 0.9;">
+        HandleKit provides a collection of sharp, fast, privacy-first utilities for developers and creators. No
+        barriers, just tools.
     </p>
 </div>
 
 <!-- Featured tools row -->
 <div style="margin-bottom: 1rem;">
-    <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin-bottom: 1rem;">⭐ Most Popular</p>
+    <p
+        style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin-bottom: 1rem;">
+        ⭐ Most Popular</p>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 3rem;">
+<div
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 3rem;">
 
     <a href="/username-checker" class="tool-card featured-card">
         <i data-lucide="user-check" style="color: var(--accent-color);"></i>
         <h2 style="color: var(--accent-color);">Username Checker</h2>
-        <p>Check availability on GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube simultaneously, results arrive live as they come in.</p>
-        <div class="card-arrow" style="color: var(--accent-color);">Check a username <i data-lucide="arrow-right"></i></div>
+        <p>Check availability on GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube simultaneously, results arrive
+            live as they come in.</p>
+        <div class="card-arrow" style="color: var(--accent-color);">Check a username <i data-lucide="arrow-right"></i>
+        </div>
     </a>
 
     <a href="/password-generator" class="tool-card featured-card">
         <i data-lucide="lock" style="color: #ff9f1c;"></i>
         <h2 style="color: #ff9f1c;">Password Generator</h2>
-        <p>Generate cryptographically secure random passwords or memorable passphrases. Runs entirely in your browser, nothing is ever sent to a server.</p>
+        <p>Generate cryptographically secure random passwords or memorable passphrases. Runs entirely in your browser,
+            nothing is ever sent to a server.</p>
         <div class="card-arrow" style="color: #ff9f1c;">Generate a password <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/100-worst-passwords" class="tool-card featured-card">
         <i data-lucide="shield-alert" style="color: #ff4444;"></i>
         <h2 style="color: #ff4444;">100 Worst Passwords</h2>
-        <p>Is your password on the list hackers check first? See the globally ranked top 100 most common passwords of 2026 and how fast each can be cracked.</p>
+        <p>Is your password on the list hackers check first? See the globally ranked top 100 most common passwords of
+            2026 and how fast each can be cracked.</p>
         <div class="card-arrow" style="color: #ff4444;">Check the list <i data-lucide="arrow-right"></i></div>
     </a>
 
@@ -47,7 +62,9 @@
 
 <!-- All tools section -->
 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-    <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin: 0;">All Tools</p>
+    <p
+        style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin: 0;">
+        All Tools</p>
     <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
     <span style="font-size: 0.72rem; color: var(--text-sub); font-weight: 700;">14 tools</span>
 </div>
@@ -137,21 +154,24 @@
         <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
     </a>
 
-    <a href="/jnd-test" class="tool-card" style="border-color: rgba(201, 28, 35, 0.2); background: rgba(201, 28, 35, 0.03);">
+    <a href="/jnd-test" class="tool-card"
+        style="border-color: rgba(201, 28, 35, 0.2); background: rgba(201, 28, 35, 0.03);">
         <i data-lucide="eye" style="color: #c91c23;"></i>
         <h2 style="color: #c91c23;">JND Color Test</h2>
         <p>Scientific color perception benchmark. Find your visual threshold using Delta-E measurements.</p>
         <div class="card-arrow" style="color: #c91c23;">Measure vision <i data-lucide="arrow-right"></i></div>
     </a>
 
-    <a href="/contrast-sensitivity-test" class="tool-card" style="border-color: rgba(201, 28, 35, 0.2); background: rgba(201, 28, 35, 0.03);">
+    <a href="/contrast-sensitivity-test" class="tool-card"
+        style="border-color: rgba(201, 28, 35, 0.2); background: rgba(201, 28, 35, 0.03);">
         <i data-lucide="aperture" style="color: #c91c23;"></i>
         <h2 style="color: #c91c23;">Contrast Sensitivity</h2>
         <p>Measure your ability to detect faint objects using the official Pelli-Robson Log CS benchmark.</p>
         <div class="card-arrow" style="color: #c91c23;">Start screening <i data-lucide="arrow-right"></i></div>
     </a>
 
-    <a href="/gbp-triage" class="tool-card" style="border-color: rgba(11, 87, 208, 0.2); background: rgba(11, 87, 208, 0.03);">
+    <a href="/gbp-triage" class="tool-card"
+        style="border-color: rgba(11, 87, 208, 0.2); background: rgba(11, 87, 208, 0.03);">
         <i data-lucide="map-pin" style="color: #0b57d0;"></i>
         <h2 style="color: #0b57d0;">GBP Triage Tool</h2>
         <p>Identify evidence gaps and prepare your Google Business Profile reinstatement appeal before you file.</p>
@@ -162,48 +182,76 @@
 </div>
 
 <!-- Homepage FAQ -->
-<div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem; max-width: 860px; margin-left: auto; margin-right: auto;">
+<div
+    style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem; max-width: 860px; margin-left: auto; margin-right: auto;">
     <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
     <div style="display: flex; flex-direction: column; gap: 1.25rem;">
         <div class="info-card-premium">
             <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What is HandleKit?</h3>
-            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">HandleKit is a free collection of browser-based tools for developers, writers, and digital creators. It covers everything from checking username availability across social platforms, to generating secure passwords, converting units, formatting JSON, picking colours, and more, all without needing to create an account or install anything.</p>
+            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>HandleKit</strong> is a free collection of
+                browser-based tools for developers, writers, and digital creators. It covers everything from checking
+                <strong>username availability</strong> across social platforms, to generating <strong>secure passwords</strong>, <strong>converting units</strong>,
+                <strong>formatting JSON</strong>, <strong>picking colours</strong>, and more, all without needing to <strong>create an account</strong> or <strong>install
+                anything</strong>.</p>
         </div>
 
         <div class="info-card-premium">
-            <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Are the tools really free?</h3>
-            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes, completely and permanently free. There are no premium tiers, no trials, no hidden paywalls. HandleKit is supported by non-intrusive advertising, which keeps everything free for everyone. You'll never be asked for a credit card or email address.</p>
+            <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Are the tools really
+                free?</h3>
+            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes, completely and permanently free. There
+                are no premium tiers, no trials, no hidden paywalls. HandleKit is supported by non-intrusive
+                advertising, which keeps everything free for everyone. You'll never be asked for a credit card or email
+                address.</p>
         </div>
 
         <div class="info-card-premium">
             <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Is my data private?</h3>
-            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Privacy is central to how HandleKit is built. Almost all tools, Password Generator, Word Counter, JSON Formatter, URL Encoder, Base64 Encoder, Hash Generator, Color Picker, Text Case Converter, and Unit Converter, run entirely within your browser. Your data never leaves your device. For tools that require a server (Username Checker, Image Optimizer), only the minimum necessary data is sent, and it is not stored. See our <a href="/privacy-policy" style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a> for full details.</p>
+            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>Privacy</strong> is central to how HandleKit is
+                built. Almost all tools—<strong>Password Generator, Word Counter, JSON Formatter, URL Encoder, Base64 Encoder,
+                Hash Generator, Color Picker, Text Case Converter, and Unit Converter</strong>—run entirely within your browser.
+                Your data <strong>never leaves your device</strong>. For tools that require a server (<strong>Username Checker, Image Optimizer</strong>),
+                only the minimum necessary data is sent, and it is <strong>not stored</strong>. See our <a href="/privacy-policy"
+                    style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a> for full details.
+            </p>
         </div>
 
         <div class="info-card-premium">
-            <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Do I need to create an account?</h3>
-            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Never. HandleKit requires zero registration. Open any tool, use it, and leave, or bookmark it for next time. There are no accounts, no logins, and no profiles. This is intentional: every account requirement is a barrier to just getting things done.</p>
+            <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Do I need to create an
+                account?</h3>
+            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Never. HandleKit requires zero registration.
+                Open any tool, use it, and leave, or bookmark it for next time. There are no accounts, no logins, and no
+                profiles. This is intentional: every account requirement is a barrier to just getting things done.</p>
         </div>
 
         <div class="info-card-premium">
-            <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How is HandleKit different from other tool sites?</h3>
-            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Most free tool sites are slow, cluttered, require sign-ups, or gate features behind paywalls. HandleKit is built to be fast, clean, and genuinely useful, with tools that run in the browser rather than sending everything to a server. The design is intentionally premium because we believe good tools should also be a pleasure to use.</p>
+            <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How is HandleKit
+                different from other tool sites?</h3>
+            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Most free tool sites are slow, cluttered,
+                require sign-ups, or gate features behind paywalls. HandleKit is built to be fast, clean, and genuinely
+                useful, with tools that run in the browser rather than sending everything to a server. The design is
+                intentionally premium because we believe good tools should also be a pleasure to use.</p>
         </div>
 
         <div class="info-card-premium">
-            <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Can I suggest a new tool?</h3>
-            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Absolutely, we'd love to hear it. Send your idea to <a href="mailto:contacthandlekit@gmail.com" style="color: var(--accent-color);">contacthandlekit@gmail.com</a> or use the <a href="/contact" style="color: var(--accent-color);">contact page</a>. New tools are added based on what people actually need, so community suggestions are genuinely valued and often built.</p>
+            <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Can I suggest a new tool?
+            </h3>
+            <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Absolutely, we'd love to hear it. Send your
+                idea to <a href="mailto:contacthandlekit@gmail.com"
+                    style="color: var(--accent-color);">contacthandlekit@gmail.com</a> or use the <a href="/contact"
+                    style="color: var(--accent-color);">contact page</a>. New tools are added based on what people
+                actually need, so community suggestions are genuinely valued and often built.</p>
         </div>
     </div>
 </div>
 
 <style>
     .featured-card {
-        border-color: rgba(255,255,255,0.1);
-        background: rgba(255,255,255,0.04);
+        border-color: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
     }
+
     .featured-card:hover {
-        background: rgba(255,255,255,0.07);
+        background: rgba(255, 255, 255, 0.07);
         transform: translateY(-10px);
     }
 </style>

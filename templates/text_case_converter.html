@@ -1,5 +1,6 @@
 {% set title = "Text Case Converter | Free Online Text Transformer | HandleKit" %}
-{% set description = "Instantly convert text between UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, and kebab-case. Free, fast, and works entirely in your browser." %}
+{% set description = "Instantly convert text between UPPERCASE, lowercase, Title Case, Sentence case, camelCase,
+PascalCase, snake_case, and kebab-case. Free, fast, and works entirely in your browser." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
@@ -8,50 +9,44 @@
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
         <i data-lucide="type" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Text Case Converter</h1>
-        <p style="color: var(--text-sub);">Instantly transform your text between 8 different cases, no signup, no limits.</p>
+        <p style="color: var(--text-sub);">Instantly transform your text between 8 different cases, no signup, no
+            limits.</p>
     </div>
 
     <!-- Input -->
     <div style="position: relative; margin-bottom: 1.5rem;">
-        <textarea
-            id="tc-input"
-            placeholder="Paste or type your text here…"
-            oninput="syncOutput()"
-            onfocus="this.style.borderColor='var(--accent-color)'"
-            onblur="this.style.borderColor='var(--border-color)'"
-            style="width: 100%; min-height: 160px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: var(--text-main); font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
-        ></textarea>
+        <textarea id="tc-input" placeholder="Paste or type your text here…" oninput="syncOutput()"
+            onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='var(--border-color)'"
+            style="width: 100%; min-height: 160px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: var(--text-main); font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"></textarea>
         <div style="position: absolute; bottom: 1rem; right: 1.2rem; display: flex; gap: 0.5rem; align-items: center;">
             <span id="tc-char-count" style="font-size: 0.75rem; color: var(--text-sub);">0 chars · 0 words</span>
-            <button onclick="clearAll()" title="Clear" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 7px; padding: 0.3rem 0.7rem; color: var(--text-sub); cursor: pointer; font-size: 0.75rem; font-family: 'Outfit', sans-serif; transition: all 0.2s;">Clear</button>
+            <button onclick="clearAll()" title="Clear"
+                style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 7px; padding: 0.3rem 0.7rem; color: var(--text-sub); cursor: pointer; font-size: 0.75rem; font-family: 'Outfit', sans-serif; transition: all 0.2s;">Clear</button>
         </div>
     </div>
 
     <!-- Case Buttons -->
     <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem;">
-        <button class="tc-btn" onclick="applyCase('upper')"        id="btn-upper">UPPERCASE</button>
-        <button class="tc-btn" onclick="applyCase('lower')"        id="btn-lower">lowercase</button>
-        <button class="tc-btn" onclick="applyCase('title')"        id="btn-title">Title Case</button>
-        <button class="tc-btn" onclick="applyCase('sentence')"     id="btn-sentence">Sentence case</button>
-        <button class="tc-btn" onclick="applyCase('camel')"        id="btn-camel">camelCase</button>
-        <button class="tc-btn" onclick="applyCase('pascal')"       id="btn-pascal">PascalCase</button>
-        <button class="tc-btn" onclick="applyCase('snake')"        id="btn-snake">snake_case</button>
-        <button class="tc-btn" onclick="applyCase('kebab')"        id="btn-kebab">kebab-case</button>
-        <button class="tc-btn" onclick="applyCase('alternating')"  id="btn-alternating">aLtErNaTiNg</button>
+        <button class="tc-btn" onclick="applyCase('upper')" id="btn-upper">UPPERCASE</button>
+        <button class="tc-btn" onclick="applyCase('lower')" id="btn-lower">lowercase</button>
+        <button class="tc-btn" onclick="applyCase('title')" id="btn-title">Title Case</button>
+        <button class="tc-btn" onclick="applyCase('sentence')" id="btn-sentence">Sentence case</button>
+        <button class="tc-btn" onclick="applyCase('camel')" id="btn-camel">camelCase</button>
+        <button class="tc-btn" onclick="applyCase('pascal')" id="btn-pascal">PascalCase</button>
+        <button class="tc-btn" onclick="applyCase('snake')" id="btn-snake">snake_case</button>
+        <button class="tc-btn" onclick="applyCase('kebab')" id="btn-kebab">kebab-case</button>
+        <button class="tc-btn" onclick="applyCase('alternating')" id="btn-alternating">aLtErNaTiNg</button>
     </div>
 
     <!-- Output -->
     <div style="position: relative; margin-bottom: 2rem;">
-        <label style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Output</label>
-        <textarea
-            id="tc-output"
-            readonly
-            placeholder="Converted text will appear here…"
-            onfocus="this.style.borderColor='var(--accent-color)'"
-            onblur="this.style.borderColor='var(--border-color)'"
-            style="width: 100%; min-height: 160px; background: rgba(0,210,255,0.04); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: var(--text-main); font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"
-        ></textarea>
-        <button id="copy-btn" onclick="copyOutput()" style="position: absolute; bottom: 1rem; right: 1.2rem; background: var(--accent-color); border: none; border-radius: 10px; padding: 0.45rem 1.1rem; color: #000; font-weight: 700; font-size: 0.8rem; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;">
+        <label
+            style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Output</label>
+        <textarea id="tc-output" readonly placeholder="Converted text will appear here…"
+            onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='var(--border-color)'"
+            style="width: 100%; min-height: 160px; background: rgba(0,210,255,0.04); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; color: var(--text-main); font-size: 1rem; font-family: 'Outfit', sans-serif; resize: vertical; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.7;"></textarea>
+        <button id="copy-btn" onclick="copyOutput()"
+            style="position: absolute; bottom: 1rem; right: 1.2rem; background: var(--accent-color); border: none; border-radius: 10px; padding: 0.45rem 1.1rem; color: #000; font-weight: 700; font-size: 0.8rem; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;">
             <i data-lucide="copy" style="width: 14px; height: 14px;"></i> Copy
         </button>
     </div>
@@ -59,47 +54,68 @@
     <!-- SEO Content -->
     <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div style="margin-bottom: 3rem;">
-            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is a Text Case Converter?</h2>
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is a Text Case Converter?
+            </h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-                A text case converter is a tool that converts your text to various capitalization formats in an instant. You are a programmer trying to name variables, an author trying to write headlines, or a designer trying to write UI text. The correct case formats can help you save time and avoid potential mistakes.
+                A text case converter is a tool that converts your text to various capitalization formats in an instant.
+                You are a programmer trying to name variables, an author trying to write headlines, or a designer trying
+                to write UI text. The correct case formats can help you save time and avoid potential mistakes.
             </p>
             <p style="color: var(--text-sub); line-height: 1.8;">
-                HandleKit's Text Case Converter offers 9 formats, all processed instantly in your browser without any server communication.
+                HandleKit's Text Case Converter offers 9 formats, all processed instantly in your browser without any
+                server communication.
             </p>
         </div>
 
-        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+        <div class="info-grid mobile-stack"
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">When to Use Each Case</h3>
                 <ul style="color: var(--text-sub); line-height: 1.9; font-size: 0.95rem; padding-left: 1.2rem;">
                     <li><strong style="color: var(--text-main);">UPPERCASE</strong>, warnings, acronyms, headings</li>
-                    <li><strong style="color: var(--text-main);">lowercase</strong>, email addresses, URLs, usernames</li>
-                    <li><strong style="color: var(--text-main);">Title Case</strong>, article titles, headings, names</li>
+                    <li><strong style="color: var(--text-main);">lowercase</strong>, email addresses, URLs, usernames
+                    </li>
+                    <li><strong style="color: var(--text-main);">Title Case</strong>, article titles, headings, names
+                    </li>
                     <li><strong style="color: var(--text-main);">Sentence case</strong>, regular prose, UI labels</li>
-                    <li><strong style="color: var(--text-main);">camelCase</strong>, JavaScript variables, JSON keys</li>
+                    <li><strong style="color: var(--text-main);">camelCase</strong>, JavaScript variables, JSON keys
+                    </li>
                     <li><strong style="color: var(--text-main);">PascalCase</strong>, class names, TypeScript types</li>
-                    <li><strong style="color: var(--text-main);">snake_case</strong>, Python variables, database columns</li>
-                    <li><strong style="color: var(--text-main);">kebab-case</strong>, CSS classes, HTML attributes, URLs</li>
+                    <li><strong style="color: var(--text-main);">snake_case</strong>, Python variables, database columns
+                    </li>
+                    <li><strong style="color: var(--text-main);">kebab-case</strong>, CSS classes, HTML attributes, URLs
+                    </li>
                 </ul>
             </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">How It Works</h3>
-                <ul style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.9rem;">
+                <ul
+                    style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.9rem;">
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
-                        <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color: var(--text-main);">100% private.</strong> Your text never leaves your browser.</span>
+                        <i data-lucide="check-circle"
+                            style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
+                        <span><strong style="color: var(--text-main);">100% private.</strong> Your text never leaves
+                            your browser.</span>
                     </li>
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
-                        <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color: var(--text-main);">Instant results.</strong> No page reloads required.</span>
+                        <i data-lucide="check-circle"
+                            style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
+                        <span><strong style="color: var(--text-main);">Instant results.</strong> No page reloads
+                            required.</span>
                     </li>
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
-                        <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color: var(--text-main);">No limits.</strong> Convert your text of any length, unlimited times.</span>
+                        <i data-lucide="check-circle"
+                            style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
+                        <span><strong style="color: var(--text-main);">No limits.</strong> Convert your text of any
+                            length, unlimited times.</span>
                     </li>
                     <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
-                        <i data-lucide="check-circle" style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
-                        <span><strong style="color: var(--text-main);">Smart detection.</strong> camelCase and snake_case correctly strip punctuation.</span>
+                        <i data-lucide="check-circle"
+                            style="color: var(--accent-color); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px;"></i>
+                        <span><strong style="color: var(--text-main);">Smart detection.</strong> camelCase and
+                            snake_case correctly strip punctuation.</span>
                     </li>
                 </ul>
             </div>
@@ -111,29 +127,64 @@
         <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I convert text to a different case?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Enter your text in the box at the top, then click one of the case buttons: <strong style="color: var(--text-main);">UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case,</strong> or <strong style="color: var(--text-main);">aLtErNaTiNg</strong>. Your text will be converted and appear in the box below. Click <strong style="color: var(--accent-color);">"Copy"</strong> to put it in your clipboard.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I convert text
+                    to a different case?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Enter your text in the box at the top,
+                    then click one of the case buttons: <strong>UPPERCASE, lowercase,
+                        Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case,</strong> or <strong>aLtErNaTiNg</strong>. Your text will be converted and appear in
+                    the box below. Click <strong>"Copy"</strong> to put it in your
+                    clipboard.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the difference between camelCase and PascalCase?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">camelCase</strong> is like Title Case, but with the first letter lowercase and the first letter of every other word uppercase: <strong style="color: var(--accent-color);">myVariableName</strong>. <strong style="color: var(--text-main);">PascalCase</strong> (also called UpperCamelCase) is like Title Case, but with the first letter of every word, including the first word, uppercase: <strong style="color: var(--accent-color);">MyClassName</strong>. Use camelCase for <strong style="color: var(--text-main);">JavaScript variables</strong>, and PascalCase for <strong style="color: var(--text-main);">React components</strong>.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the difference
+                    between camelCase and PascalCase?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong
+                        style="color: var(--text-main);">camelCase</strong> is like Title Case, but with the first
+                    letter lowercase and the first letter of every other word uppercase: <strong
+                        style="color: var(--accent-color);">myVariableName</strong>. <strong
+                        style="color: var(--text-main);">PascalCase</strong> (also called UpperCamelCase) is like Title
+                    Case, but with the first letter of every word, including the first word, uppercase: <strong
+                        style="color: var(--accent-color);">MyClassName</strong>. Use camelCase for <strong
+                        style="color: var(--text-main);">JavaScript variables</strong>, and PascalCase for <strong
+                        style="color: var(--text-main);">React components</strong>.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">When to use snake_case and kebab-case?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--text-main);">snake_case</strong> uses underscores for delimiters: <strong style="color: var(--accent-color);">user_profile_data</strong>. This is the standard naming convention for <strong style="color: var(--text-main);">Python</strong>. <strong style="color: var(--text-main);">kebab-case</strong> uses dashes: <strong style="color: var(--accent-color);">user-profile-widget</strong>, and is standard for <strong style="color: var(--text-main);">URL slugs and CSS classes</strong>.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">When to use snake_case
+                    and kebab-case?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong
+                        style="color: var(--text-main);">snake_case</strong> uses underscores for delimiters: <strong
+                        style="color: var(--accent-color);">user_profile_data</strong>. This is the standard naming
+                    convention for <strong style="color: var(--text-main);">Python</strong>. <strong
+                        style="color: var(--text-main);">kebab-case</strong> uses dashes: <strong
+                        style="color: var(--accent-color);">user-profile-widget</strong>, and is standard for <strong
+                        style="color: var(--text-main);">URL slugs and CSS classes</strong>.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does Title Case capitalize every word?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Not quite - proper Title Case has rules for "minor words". Short prepositions (in, on, at, by), conjunctions (and, or, but), and articles (a, an, the) usually stay in lowercase unless they're the first or last word of the title. Luckily for us, our converter does this correctly by default - "the quick brown fox and the lazy dog" becomes "The Quick Brown Fox and the Lazy Dog".</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does Title Case
+                    capitalize every word?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Not quite - proper Title Case has rules
+                    for "minor words". Short prepositions (in, on, at, by), conjunctions (and, or, but), and articles
+                    (a, an, the) usually stay in lowercase unless they're the first or last word of the title. Luckily
+                    for us, our converter does this correctly by default - "the quick brown fox and the lazy dog"
+                    becomes "The Quick Brown Fox and the Lazy Dog".</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is there a limit on the amount of text that can be converted?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No limit at all - the converter runs locally in your browser with JavaScript, so it's only limited by the capability of your computer or device. You can convert a whole novel if you like - it will take less than a second on any computer built in the past decade or so.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is there a limit on the
+                    amount of text that can be converted?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No limit at all - the converter runs
+                    locally in your browser with JavaScript, so it's only limited by the capability of your computer or
+                    device. You can convert a whole novel if you like - it will take less than a second on any computer
+                    built in the past decade or so.</p>
             </div>
 
         </div>
@@ -141,120 +192,122 @@
 </div>
 
 <style>
-.tc-btn {
-    background: var(--input-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 0.5rem 1rem;
-    color: var(--text-sub);
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-.tc-btn:hover, .tc-btn.active {
-    border-color: var(--accent-color);
-    color: var(--text-main);
-    background: rgba(0,210,255,0.1);
-    transform: translateY(-1px);
-}
+    .tc-btn {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        color: var(--text-sub);
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .tc-btn:hover,
+    .tc-btn.active {
+        border-color: var(--accent-color);
+        color: var(--text-main);
+        background: rgba(0, 210, 255, 0.1);
+        transform: translateY(-1px);
+    }
 </style>
 
 <script>
-let activeCase = null;
+    let activeCase = null;
 
-const TITLE_MINORS = new Set(['a','an','the','and','but','or','nor','for','so','yet',
-    'at','by','in','of','on','to','up','as','if','vs','via','per']);
+    const TITLE_MINORS = new Set(['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'so', 'yet',
+        'at', 'by', 'in', 'of', 'on', 'to', 'up', 'as', 'if', 'vs', 'via', 'per']);
 
-function words(text) {
-    return text.trim().split(/\s+/).filter(w => w.length > 0);
-}
-
-function toIdentifier(text) {
-    // Strip everything that isn't alphanumeric or whitespace, then split
-    return text.replace(/[^a-zA-Z0-9\s]/g, ' ').trim().split(/\s+/).filter(w => w.length > 0);
-}
-
-function convertCase(text, mode) {
-    if (!text.trim()) return text;
-    switch (mode) {
-        case 'upper':    return text.toUpperCase();
-        case 'lower':    return text.toLowerCase();
-        case 'title': {
-            const ws = words(text);
-            return ws.map((w, i) => {
-                const lw = w.toLowerCase();
-                if (i !== 0 && i !== ws.length - 1 && TITLE_MINORS.has(lw)) return lw;
-                return lw.charAt(0).toUpperCase() + lw.slice(1);
-            }).join(' ');
-        }
-        case 'sentence': {
-            const lower = text.toLowerCase();
-            return lower.replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase());
-        }
-        case 'camel': {
-            const parts = toIdentifier(text);
-            return parts.map((w, i) => {
-                const lw = w.toLowerCase();
-                return i === 0 ? lw : lw.charAt(0).toUpperCase() + lw.slice(1);
-            }).join('');
-        }
-        case 'pascal': {
-            return toIdentifier(text).map(w => {
-                const lw = w.toLowerCase();
-                return lw.charAt(0).toUpperCase() + lw.slice(1);
-            }).join('');
-        }
-        case 'snake':
-            return toIdentifier(text).map(w => w.toLowerCase()).join('_');
-        case 'kebab':
-            return toIdentifier(text).map(w => w.toLowerCase()).join('-');
-        case 'alternating':
-            return text.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join('');
-        default: return text;
+    function words(text) {
+        return text.trim().split(/\s+/).filter(w => w.length > 0);
     }
-}
 
-function applyCase(mode) {
-    activeCase = mode;
-    document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('btn-' + mode).classList.add('active');
-    const input = document.getElementById('tc-input').value;
-    document.getElementById('tc-output').value = convertCase(input, mode);
-}
-
-function syncOutput() {
-    const text = document.getElementById('tc-input').value;
-    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).filter(w => w.length > 0).length;
-    document.getElementById('tc-char-count').textContent = `${text.length} chars · ${words} words`;
-    if (activeCase) {
-        document.getElementById('tc-output').value = convertCase(text, activeCase);
+    function toIdentifier(text) {
+        // Strip everything that isn't alphanumeric or whitespace, then split
+        return text.replace(/[^a-zA-Z0-9\s]/g, ' ').trim().split(/\s+/).filter(w => w.length > 0);
     }
-}
 
-function clearAll() {
-    document.getElementById('tc-input').value = '';
-    document.getElementById('tc-output').value = '';
-    document.getElementById('tc-char-count').textContent = '0 chars · 0 words';
-    activeCase = null;
-    document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('active'));
-}
+    function convertCase(text, mode) {
+        if (!text.trim()) return text;
+        switch (mode) {
+            case 'upper': return text.toUpperCase();
+            case 'lower': return text.toLowerCase();
+            case 'title': {
+                const ws = words(text);
+                return ws.map((w, i) => {
+                    const lw = w.toLowerCase();
+                    if (i !== 0 && i !== ws.length - 1 && TITLE_MINORS.has(lw)) return lw;
+                    return lw.charAt(0).toUpperCase() + lw.slice(1);
+                }).join(' ');
+            }
+            case 'sentence': {
+                const lower = text.toLowerCase();
+                return lower.replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase());
+            }
+            case 'camel': {
+                const parts = toIdentifier(text);
+                return parts.map((w, i) => {
+                    const lw = w.toLowerCase();
+                    return i === 0 ? lw : lw.charAt(0).toUpperCase() + lw.slice(1);
+                }).join('');
+            }
+            case 'pascal': {
+                return toIdentifier(text).map(w => {
+                    const lw = w.toLowerCase();
+                    return lw.charAt(0).toUpperCase() + lw.slice(1);
+                }).join('');
+            }
+            case 'snake':
+                return toIdentifier(text).map(w => w.toLowerCase()).join('_');
+            case 'kebab':
+                return toIdentifier(text).map(w => w.toLowerCase()).join('-');
+            case 'alternating':
+                return text.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join('');
+            default: return text;
+        }
+    }
 
-function copyOutput() {
-    const output = document.getElementById('tc-output').value;
-    if (!output) return;
-    navigator.clipboard.writeText(output).then(() => {
-        const btn = document.getElementById('copy-btn');
-        btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
-        btn.style.background = '#00ff88';
-        lucide.createIcons();
-        setTimeout(() => {
-            btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy';
-            btn.style.background = 'var(--accent-color)';
+    function applyCase(mode) {
+        activeCase = mode;
+        document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + mode).classList.add('active');
+        const input = document.getElementById('tc-input').value;
+        document.getElementById('tc-output').value = convertCase(input, mode);
+    }
+
+    function syncOutput() {
+        const text = document.getElementById('tc-input').value;
+        const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        document.getElementById('tc-char-count').textContent = `${text.length} chars · ${words} words`;
+        if (activeCase) {
+            document.getElementById('tc-output').value = convertCase(text, activeCase);
+        }
+    }
+
+    function clearAll() {
+        document.getElementById('tc-input').value = '';
+        document.getElementById('tc-output').value = '';
+        document.getElementById('tc-char-count').textContent = '0 chars · 0 words';
+        activeCase = null;
+        document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('active'));
+    }
+
+    function copyOutput() {
+        const output = document.getElementById('tc-output').value;
+        if (!output) return;
+        navigator.clipboard.writeText(output).then(() => {
+            const btn = document.getElementById('copy-btn');
+            btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
+            btn.style.background = '#00ff88';
             lucide.createIcons();
-        }, 2000);
-    });
-}
+            setTimeout(() => {
+                btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i> Copy';
+                btn.style.background = 'var(--accent-color)';
+                lucide.createIcons();
+            }, 2000);
+        });
+    }
 </script>
 {% endblock %}

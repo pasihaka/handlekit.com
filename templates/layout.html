@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" style="scrollbar-gutter: stable;">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
         // Early theme initialization to prevent flash
-        (function() {
+        (function () {
             const savedTheme = localStorage.getItem('theme');
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', savedTheme || systemTheme);
@@ -14,24 +15,33 @@
     <link rel="canonical" href="{{ request.base_url }}">
     <link rel="icon" type="image/png" sizes="48x48" href="{{ url_for('static', filename='img/favicon-48x48.png') }}">
     <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/favicon-96x96.png') }}">
-    <link rel="icon" type="image/png" sizes="144x144" href="{{ url_for('static', filename='img/favicon-144x144.png') }}">
+    <link rel="icon" type="image/png" sizes="144x144"
+        href="{{ url_for('static', filename='img/favicon-144x144.png') }}">
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/favicon-180x180.png') }}">
 
-    <title>{% block title %}{{ title if title else "HandleKit | Professional Digital Tools for Developers &amp; Creators" }}{% endblock %}</title>
-    <meta name="description" content="{% block description %}{{ description if description else 'Fast, simple, and premium online tools. Check username availability, optimize images with AI, and use essential developer utilities with HandleKit.' }}{% endblock %}">
+    <title>{% block title %}{{ title if title else "HandleKit | Professional Digital Tools for Developers &amp;
+        Creators" }}{% endblock %}</title>
+    <meta name="description"
+        content="{% block description %}{{ description if description else 'Fast, simple, and premium online tools. Check username availability, optimize images with AI, and use essential developer utilities with HandleKit.' }}{% endblock %}">
 
     <!-- OpenGraph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="{{ og_title if og_title else (title if title else 'HandleKit | Premium Digital Tools') }}">
-    <meta property="og:description" content="{{ description if description else 'Check usernames, optimize images, and use developer tools in one sleek, high-performance interface.' }}">
-    <meta property="og:image" content="{{ url_for('static', filename='img/' + (og_image if og_image else 'og-image.png'), _external=True) }}">
+    <meta property="og:title"
+        content="{{ og_title if og_title else (title if title else 'HandleKit | Premium Digital Tools') }}">
+    <meta property="og:description"
+        content="{{ description if description else 'Check usernames, optimize images, and use developer tools in one sleek, high-performance interface.' }}">
+    <meta property="og:image"
+        content="{{ url_for('static', filename='img/' + (og_image if og_image else 'og-image.png'), _external=True) }}">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ og_title if og_title else (title if title else 'HandleKit | Premium Digital Tools') }}">
-    <meta name="twitter:description" content="{{ description if description else 'Professional-grade tools for creators and developers. Always fast, always free.' }}">
-    <meta name="twitter:image" content="{{ url_for('static', filename='img/' + (og_image if og_image else 'og-image.png'), _external=True) }}">
+    <meta name="twitter:title"
+        content="{{ og_title if og_title else (title if title else 'HandleKit | Premium Digital Tools') }}">
+    <meta name="twitter:description"
+        content="{{ description if description else 'Professional-grade tools for creators and developers. Always fast, always free.' }}">
+    <meta name="twitter:image"
+        content="{{ url_for('static', filename='img/' + (og_image if og_image else 'og-image.png'), _external=True) }}">
 
     <!-- PERF: Only preconnect to origins used in the critical path (fonts).
          GTM and AdSense preconnects removed, those scripts load lazily so early
@@ -44,7 +54,8 @@
     <!-- PERF: Load fonts asynchronously to eliminate render-blocking using the media="print" pattern.
          display=swap ensures text remains visible during load. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap"
+        media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap">
     </noscript>
@@ -54,491 +65,617 @@
          At 4.5 KB it is well within the recommended inline budget (<14 KB).
          The external file is kept on disk for caching on repeat visits. -->
     <style>
-:root {
-  color-scheme: dark;
-  --bg-color: #0c0a0a;
-  --card-bg: rgba(22, 18, 18, 0.65);
-  --accent-color: #c91c23;
-  --accent-gradient: linear-gradient(135deg, #da252c 0%, #7d0a10 100%);
-  --text-main: #e6e6e6;
-  --text-sub: #a0a0a0;
-  --text-on-accent: #ffffff;
-  --border-color: rgba(255, 255, 255, 0.06);
-  --glow-color: rgba(201, 28, 35, 0.15);
-  --input-bg: rgba(255, 255, 255, 0.05);
-  --code-bg: rgba(255, 255, 255, 0.08);
-}
+        :root {
+            color-scheme: dark;
+            --bg-color: #0c0a0a;
+            --card-bg: rgba(22, 18, 18, 0.65);
+            --accent-color: #c91c23;
+            --accent-gradient: linear-gradient(135deg, #da252c 0%, #7d0a10 100%);
+            --text-main: #e6e6e6;
+            --text-sub: #a0a0a0;
+            --text-on-accent: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --glow-color: rgba(201, 28, 35, 0.15);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --code-bg: rgba(255, 255, 255, 0.08);
+        }
 
-/* Light Mode Overrides with Higher Specificity */
-html[data-theme='light'],
-html[data-theme='light'] :root {
-  --bg-color: #fdfaf8;
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --text-main: #1a0f0f;
-  --text-sub: #5c4a4a;
-  --text-on-accent: #ffffff;
-  --border-color: rgba(201, 28, 35, 0.12);
-  --glow-color: rgba(201, 28, 35, 0.05);
-  --input-bg: #ffffff;
-  --code-bg: rgba(201, 28, 35, 0.04);
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  /* Stabilize font rendering */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-/* Prevent content jumping when modals open */
-html {
-  background-color: var(--bg-color);
-  overflow-y: scroll;
-}
-@supports (scrollbar-gutter: stable) {
-  html {
-    overflow-y: auto;
-    scrollbar-gutter: stable;
-  }
-}
-html.modal-open {
-  scrollbar-gutter: auto !important;
-  scrollbar-width: none !important; /* Firefox */
-  -ms-overflow-style: none !important;  /* IE and Edge */
-}
-html.modal-open::-webkit-scrollbar {
-  display: none !important; /* Chrome, Safari and Opera */
-}
-/* Reserve space for Lucide icons before they load */
-i[data-lucide] {
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 1;
-}
-.bg-gradient {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 0% 0%, rgba(125, 10, 16, 0.08) 0px, transparent 50vw),
-    radial-gradient(circle at 100% 100%, rgba(201, 28, 35, 0.05) 0px, transparent 50vw);
-  transform: translateZ(0);
-}
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-header {
-  text-align: center;
-  margin-bottom: 4rem;
-  padding-top: 2rem;
-}
-h1 {
-  font-size: 3rem;
-  font-weight: 800;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
-  letter-spacing: -1px;
-}
-.subtitle {
-  color: var(--text-sub);
-  font-size: 1.1rem;
-}
-.top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-color);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  /* Force GPU rendering to prevent jitter in Firefox */
-  transform: translateZ(0); 
-}
-.top-bar-content {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.nav-logo-link {
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  transition: transform 0.2s ease;
-}
-.nav-logo-link:hover {
-  transform: scale(1.02);
-}
-.nav-logo-container {
-  background: var(--code-bg);
-  padding: 0.4rem;
-  border-radius: 10px;
-  border: 1px solid var(--accent-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-}
-.nav-logo-img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-.nav-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.5px;
-}
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-.nav-link {
-  color: var(--text-sub);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: color 0.2s;
-}
-.nav-link:hover {
-  color: var(--accent-color);
-}
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  /* Prevent sub-pixel swinging in Firefox */
-  will-change: transform;
-}
-.hub-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-.tool-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
-  border-radius: 24px;
-  padding: 2rem;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-}
-.tool-card:hover {
-  transform: translateY(-10px);
-  border-color: var(--accent-color);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--glow-color);
-}
-.tool-card i {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  color: var(--accent-color);
-}
-.tool-card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--accent-color);
-}
-.tool-card p {
-  color: var(--text-sub);
-  line-height: 1.6;
-  font-size: 0.95rem;
-}
-.card-arrow {
-  margin-top: auto;
-  padding-top: 1.5rem;
-  color: var(--accent-color);
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-.card-arrow svg {
-  margin-left: 0.5rem;
-  transition: transform 0.3s ease;
-}
-.tool-card:hover .card-arrow svg {
-  transform: translateX(5px);
-}
-.ad-slot {
-  background: rgba(40, 40, 40, 0.3);
-  border: 1px dashed var(--border-color);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-sub);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin: 2rem 0;
-}
-.ad-slot.top-banner { height: 90px; width: 100%; }
-.ad-slot.sidebar    { height: 600px; width: 160px; }
-footer {
-  text-align: center;
-  padding: 4rem 2rem;
-  color: var(--text-sub);
-  border-top: 1px solid var(--border-color);
-  margin-top: 4rem;
-}
-.coffee-btn {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  background: #FFDD00;
-  color: #000;
-  padding: 1rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  z-index: 100;
-  transition: transform 0.3s ease;
-}
-.coffee-btn:hover { transform: scale(1.05); }
-@media (max-width: 768px) {
-  .bg-gradient {
-    height: 150vh;
-    background-image:
-      radial-gradient(circle at 0% 0%, rgba(125, 10, 16, 0.08) 0px, transparent 70vw),
-      radial-gradient(circle at 100% 600px, rgba(201, 28, 35, 0.05) 0px, transparent 70vw);
-  }
-  h1      { font-size: 2.3rem; }
-  .subtitle { font-size: 1.1rem; }
-  header { min-height: 180px !important; margin-bottom: 2.5rem !important; }
-  .header-title { font-size: 2.5rem !important; }
-  .logo-container { width: 60px !important; height: 60px !important; }
-  .logo-img { width: 40px !important; height: 40px !important; }
-  .container { padding: 1rem; }
-  .hub-grid  { grid-template-columns: 1fr; }
-  .mobile-stack { flex-direction: column !important; width: 100%; }
-  .coffee-btn span { display: none !important; }
-  .coffee-btn { 
-    width: 48px !important; 
-    height: 48px !important; 
-    padding: 0 !important; 
-    justify-content: center !important; 
-    border-radius: 50% !important; 
-    bottom: 1.25rem !important; 
-    right: 1.25rem !important; 
-    gap: 0 !important; 
-  }
-  .toolbox-layout { grid-template-columns: 1fr !important; }
-  .toolbox-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .toolbox-nav .tool-tab {
-    flex: 1 1 auto;
-    width: auto !important;
-    margin-bottom: 0 !important;
-    text-align: center;
-    padding: 0.75rem !important;
-  }
-  .nav-links { display: none; }
-  .top-bar { height: 60px; }
-  .nav-title { font-size: 1.25rem; }
-  .container { padding-top: 1rem; }
-  .mobile-menu-trigger { display: flex !important; }
-}
+        /* Light Mode Overrides with Higher Specificity */
+        html[data-theme='light'],
+        html[data-theme='light'] :root {
+            --bg-color: #fdfaf8;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #1a0f0f;
+            --text-sub: #5c4a4a;
+            --text-on-accent: #ffffff;
+            --border-color: rgba(201, 28, 35, 0.12);
+            --glow-color: rgba(201, 28, 35, 0.05);
+            --input-bg: #ffffff;
+            --code-bg: rgba(201, 28, 35, 0.04);
+        }
 
-/* Mobile Dropdown Menu */
-.mobile-dropdown {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 100%;
-  background: var(--card-bg);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border-bottom: 1px solid var(--border-color);
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-.mobile-dropdown.active {
-  max-height: 400px;
-  opacity: 1;
-  padding: 1.5rem 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-.mobile-nav-link {
-  color: var(--text-main);
-  text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: 700;
-  padding: 1rem 2rem;
-  transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.mobile-nav-link:hover {
-  background: rgba(218, 37, 44, 0.1);
-  color: var(--accent-color);
-}
-.mobile-menu-trigger {
-  display: none;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
 
-/* Theme Toggle Button */
-/* Theme Toggle in Header */
-.theme-toggle-nav {
-  background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--accent-color);
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.theme-toggle-nav:hover {
-  border-color: var(--accent-color);
-  background: var(--input-bg);
-  box-shadow: 0 0 10px var(--glow-color);
-}
-[data-theme='light'] .moon-icon,
-[data-theme='dark'] .sun-icon {
-  display: none;
-}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            /* Stabilize font rendering */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-/* Global premium input styling */
-.premium-input {
-  width: 100%;
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
-  padding: 0.9rem 1.25rem;
-  color: var(--text-main);
-  font-size: 1rem;
-  font-family: 'Outfit', sans-serif;
-  outline: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-sizing: border-box;
-}
-.premium-input:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 15px var(--glow-color);
-  background: var(--bg-color);
-}
+        /* Prevent content jumping when modals open */
+        html {
+            background-color: var(--bg-color);
+            overflow-y: scroll;
+        }
 
-/* Global select accessibility & premium styling */
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23da252c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.8rem center;
-  background-size: 1.1rem;
-  padding-right: 2.5rem !important;
-  cursor: pointer;
-}
-select option {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  padding: 12px;
-  font-size: 1rem;
-}
+        @supports (scrollbar-gutter: stable) {
+            html {
+                overflow-y: auto;
+                scrollbar-gutter: stable;
+            }
+        }
 
-/* Tool Info Section Utilities */
-.info-card-premium {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 1.5rem 2rem;
-  margin-bottom: 1.5rem;
-  transition: transform 0.2s;
-}
-.info-card-premium:hover {
-  border-color: var(--accent-color);
-}
-/* Accessibility: High-visibility focus states */
-button:focus-visible, 
-a:focus-visible, 
-select:focus-visible, 
-input:focus-visible, 
-textarea:focus-visible {
-  outline: 3px solid var(--accent-color);
-  outline-offset: 3px;
-  box-shadow: 0 0 0 6px var(--glow-color);
-}
+        html.modal-open {
+            scrollbar-gutter: auto !important;
+            scrollbar-width: none !important;
+            /* Firefox */
+            -ms-overflow-style: none !important;
+            /* IE and Edge */
+        }
+
+        html.modal-open::-webkit-scrollbar {
+            display: none !important;
+            /* Chrome, Safari and Opera */
+        }
+
+        /* Reserve space for Lucide icons before they load */
+        i[data-lucide] {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(125, 10, 16, 0.08) 0px, transparent 50vw),
+                radial-gradient(circle at 100% 100%, rgba(201, 28, 35, 0.05) 0px, transparent 50vw);
+            transform: translateZ(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-top: 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 1.1rem;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            /* Force GPU rendering to prevent jitter in Firefox */
+            transform: translateZ(0);
+        }
+
+        .top-bar-content {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-logo-link:hover {
+            transform: scale(1.02);
+        }
+
+        .nav-logo-container {
+            background: var(--code-bg);
+            padding: 0.4rem;
+            border-radius: 10px;
+            border: 1px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-logo-img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            /* Prevent sub-pixel swinging in Firefox */
+            will-change: transform;
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--glow-color);
+        }
+
+        .tool-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .tool-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .tool-card p {
+            color: var(--text-sub);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .card-arrow {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .card-arrow svg {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover .card-arrow svg {
+            transform: translateX(5px);
+        }
+
+        .ad-slot {
+            background: rgba(40, 40, 40, 0.3);
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 2rem 0;
+        }
+
+        .ad-slot.top-banner {
+            height: 90px;
+            width: 100%;
+        }
+
+        .ad-slot.sidebar {
+            height: 600px;
+            width: 160px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-sub);
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        .coffee-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #FFDD00;
+            color: #000;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .coffee-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .bg-gradient {
+                height: 150vh;
+                background-image:
+                    radial-gradient(circle at 0% 0%, rgba(125, 10, 16, 0.08) 0px, transparent 70vw),
+                    radial-gradient(circle at 100% 600px, rgba(201, 28, 35, 0.05) 0px, transparent 70vw);
+            }
+
+            h1 {
+                font-size: 2.3rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            header {
+                min-height: 180px !important;
+                margin-bottom: 2.5rem !important;
+            }
+
+            .header-title {
+                font-size: 2.5rem !important;
+            }
+
+            .logo-container {
+                width: 60px !important;
+                height: 60px !important;
+            }
+
+            .logo-img {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .hub-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-stack {
+                flex-direction: column !important;
+                width: 100%;
+            }
+
+            .coffee-btn span {
+                display: none !important;
+            }
+
+            .coffee-btn {
+                width: 48px !important;
+                height: 48px !important;
+                padding: 0 !important;
+                justify-content: center !important;
+                border-radius: 50% !important;
+                bottom: 1.25rem !important;
+                right: 1.25rem !important;
+                gap: 0 !important;
+            }
+
+            .toolbox-layout {
+                grid-template-columns: 1fr !important;
+            }
+
+            .toolbox-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .toolbox-nav .tool-tab {
+                flex: 1 1 auto;
+                width: auto !important;
+                margin-bottom: 0 !important;
+                text-align: center;
+                padding: 0.75rem !important;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .top-bar {
+                height: 60px;
+            }
+
+            .nav-title {
+                font-size: 1.25rem;
+            }
+
+            .container {
+                padding-top: 1rem;
+            }
+
+            .mobile-menu-trigger {
+                display: flex !important;
+            }
+        }
+
+        /* Mobile Dropdown Menu */
+        .mobile-dropdown {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .mobile-dropdown.active {
+            max-height: 400px;
+            opacity: 1;
+            padding: 1.5rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .mobile-nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .mobile-nav-link:hover {
+            background: rgba(218, 37, 44, 0.1);
+            color: var(--accent-color);
+        }
+
+        .mobile-menu-trigger {
+            display: none;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Theme Toggle Button */
+        /* Theme Toggle in Header */
+        .theme-toggle-nav {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle-nav:hover {
+            border-color: var(--accent-color);
+            background: var(--input-bg);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        [data-theme='light'] .moon-icon,
+        [data-theme='dark'] .sun-icon {
+            display: none;
+        }
+
+        /* Global premium input styling */
+        .premium-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 0.9rem 1.25rem;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+        }
+
+        .premium-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--glow-color);
+            background: var(--bg-color);
+        }
+
+        /* Global select accessibility & premium styling */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23da252c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+            background-size: 1.1rem;
+            padding-right: 2.5rem !important;
+            cursor: pointer;
+        }
+
+        select option {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        /* Tool Info Section Utilities */
+        .info-card-premium {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .info-card-premium:hover {
+            border-color: var(--accent-color);
+        }
+
+        /* Accessibility: High-visibility focus states */
+        button:focus-visible,
+        a:focus-visible,
+        select:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible {
+            outline: 3px solid var(--accent-color);
+            outline-offset: 3px;
+            box-shadow: 0 0 0 6px var(--glow-color);
+        }
     </style>
 
     <!-- PERF: Pinned Lucide to a specific version to avoid redirects -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js" defer id="lucide-script"></script>
     {% block head_extra %}{% endblock %}
 </head>
+
 <body>
     <div class="top-bar">
         <div class="top-bar-content">
             <a href="/" class="nav-logo-link">
                 <div class="nav-logo-container">
-                    <img class="nav-logo-img" src="{{ url_for('static', filename='img/logo_transparent.webp') }}" alt="Logo">
+                    <img class="nav-logo-img" src="{{ url_for('static', filename='img/logo_transparent.webp') }}"
+                        alt="Logo">
                 </div>
                 <span class="nav-title">HandleKit</span>
             </a>
-            
+
             <div class="nav-links">
                 <a href="/" class="nav-link">Tools</a>
                 <a href="/about" class="nav-link">About</a>
-                <a href="/articles" class="nav-link" style="position: relative;">Research <span style="font-size: 0.6rem; vertical-align: super; background: #00d2ff; color: #fff; padding: 1px 4px; border-radius: 4px; margin-left: 2px;">NEW</span></a>
+                <a href="/blog" class="nav-link">Blog</a>
+                <a href="/articles" class="nav-link" style="position: relative;">Research <span
+                        style="font-size: 0.6rem; vertical-align: super; background: #00d2ff; color: #fff; padding: 1px 4px; border-radius: 4px; margin-left: 2px;">NEW</span></a>
                 <a href="/contact" class="nav-link">Contact</a>
             </div>
 
@@ -562,6 +699,9 @@ textarea:focus-visible {
         <a href="/about" class="mobile-nav-link" onclick="toggleMobileMenu()">
             <i data-lucide="info" style="width: 18px;"></i> About
         </a>
+        <a href="/blog" class="mobile-nav-link" onclick="toggleMobileMenu()">
+            <i data-lucide="newspaper" style="width: 18px;"></i> Blog
+        </a>
         <a href="/articles" class="mobile-nav-link" onclick="toggleMobileMenu()">
             <i data-lucide="book-open" style="width: 18px;"></i> Research
         </a>
@@ -574,33 +714,64 @@ textarea:focus-visible {
     <div class="container" style="padding-top: 100px;">
 
         <main>
-        {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
         </main>
 
         <footer>
-            <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 2rem 4rem; margin-bottom: 2rem;">
+            <div
+                style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 2rem 4rem; margin-bottom: 2rem;">
                 <!-- Resources column -->
                 <div>
-                    <p style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; color: var(--text-sub); margin-bottom: 0.75rem;">Resources</p>
+                    <p
+                        style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; color: var(--text-sub); margin-bottom: 0.75rem;">
+                        Resources</p>
                     <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                        <a href="/username-rules" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Username Rules by Platform</a>
-                        <a href="/100-worst-passwords" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">100 Worst Passwords (2026)</a>
-                        <a href="/words-to-pages" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Words to Pages Calculator</a>
+                        <a href="/username-rules"
+                            style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--accent-color)'"
+                            onmouseout="this.style.color='var(--text-sub)'">Username Rules by Platform</a>
+                        <a href="/100-worst-passwords"
+                            style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--accent-color)'"
+                            onmouseout="this.style.color='var(--text-sub)'">100 Worst Passwords (2026)</a>
+                        <a href="/words-to-pages"
+                            style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--accent-color)'"
+                            onmouseout="this.style.color='var(--text-sub)'">Words to Pages Calculator</a>
                     </div>
                 </div>
                 <!-- Legal / site column -->
                 <div>
-                    <p style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; color: var(--text-sub); margin-bottom: 0.75rem;">Company</p>
+                    <p
+                        style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; color: var(--text-sub); margin-bottom: 0.75rem;">
+                        Company</p>
                     <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-                        <a href="/about" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">About</a>
-                        <a href="/contact" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Contact</a>
-                        <a href="/privacy-policy" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Privacy Policy</a>
-                        <a href="/terms-of-service" style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-sub)'">Terms of Service</a>
+                        <a href="/about"
+                            style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--accent-color)'"
+                            onmouseout="this.style.color='var(--text-sub)'">About</a>
+                        <a href="/blog"
+                            style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--accent-color)'"
+                            onmouseout="this.style.color='var(--text-sub)'">Blog</a>
+                        <a href="/contact"
+                            style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--accent-color)'"
+                            onmouseout="this.style.color='var(--text-sub)'">Contact</a>
+                        <a href="/privacy-policy"
+                            style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--accent-color)'"
+                            onmouseout="this.style.color='var(--text-sub)'">Privacy Policy</a>
+                        <a href="/terms-of-service"
+                            style="color: var(--text-sub); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--accent-color)'"
+                            onmouseout="this.style.color='var(--text-sub)'">Terms of Service</a>
                     </div>
                 </div>
             </div>
             <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
-                <p style="color: var(--text-sub); font-size: 0.8rem;">&copy; 2026 HandleKit. Dedicated to simplifying your workflow.</p>
+                <p style="color: var(--text-sub); font-size: 0.8rem;">&copy; 2026 HandleKit. Dedicated to simplifying
+                    your workflow.</p>
             </div>
             <div class="ad-slot top-banner" style="margin-top: 2rem;">
                 Advertisement Space
@@ -612,60 +783,66 @@ textarea:focus-visible {
 
     <!-- AdSense Script - Standard loading to ensure reviewer bots find the code -->
     {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723"
+        crossorigin="anonymous"></script>
     {% endif %}
 
     <!-- PERF: GTM lazy-loaded after first user interaction / 8 seconds to prevent main-thread blocking -->
     {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
     <script>
-    (function() {
-        var gtmLoaded = false;
-        function loadGTM() {
-            if (gtmLoaded) return;
-            gtmLoaded = true;
-            
-            // Load GTM
-            var gtmScript = document.createElement('script');
-            gtmScript.async = true;
-            gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-D0Y7KJPEEK';
-            document.head.appendChild(gtmScript);
-            
-            gtmScript.onload = function() {
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-D0Y7KJPEEK');
-            };
-        }
-        
-        // Load on any user interaction
-        ['scroll', 'click', 'touchstart', 'keydown', 'mousemove'].forEach(function(evt) {
-            window.addEventListener(evt, loadGTM, { once: true, passive: true });
-        });
-        
-        // Fallback: load after 8 seconds if no interaction occurs
-        setTimeout(loadGTM, 8000);
-    })();
+        (function () {
+            var gtmLoaded = false;
+            function loadGTM() {
+                if (gtmLoaded) return;
+                gtmLoaded = true;
+
+                // Load GTM
+                var gtmScript = document.createElement('script');
+                gtmScript.async = true;
+                gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-D0Y7KJPEEK';
+                document.head.appendChild(gtmScript);
+
+                gtmScript.onload = function () {
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() { dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-D0Y7KJPEEK');
+                };
+            }
+
+            // Load on any user interaction
+            ['scroll', 'click', 'touchstart', 'keydown', 'mousemove'].forEach(function (evt) {
+                window.addEventListener(evt, loadGTM, { once: true, passive: true });
+            });
+
+            // Fallback: load after 8 seconds if no interaction occurs
+            setTimeout(loadGTM, 8000);
+        })();
     </script>
     {% endif %}
 
     <!-- Cookie Consent Banner -->
-    <div id="cookie-consent" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--accent-color); padding: 1.5rem; z-index: 9999; box-shadow: 0 -10px 30px rgba(0,0,0,0.5);">
-        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+    <div id="cookie-consent"
+        style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--accent-color); padding: 1.5rem; z-index: 9999; box-shadow: 0 -10px 30px rgba(0,0,0,0.5);">
+        <div
+            style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
             <p style="color: var(--text-main); font-size: 0.95rem; margin: 0; flex: 1; min-width: 250px;">
-                We use cookies to personalize content and ads, and to analyze our traffic. By clicking "Accept", you consent to our use of cookies. Read our <a href="/privacy-policy" style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a>.
+                We use cookies to personalize content and ads, and to analyze our traffic. By clicking "Accept", you
+                consent to our use of cookies. Read our <a href="/privacy-policy"
+                    style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a>.
             </p>
             <div style="display: flex; gap: 1rem;">
-                <button id="cookie-accept" style="background: var(--accent-gradient); border: none; border-radius: 8px; padding: 0.75rem 2rem; color: var(--text-on-accent); font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">Accept</button>
+                <button id="cookie-accept"
+                    style="background: var(--accent-gradient); border: none; border-radius: 8px; padding: 0.75rem 2rem; color: var(--text-on-accent); font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">Accept</button>
             </div>
         </div>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             if (!localStorage.getItem('cookie_consent')) {
                 document.getElementById('cookie-consent').style.display = 'block';
             }
-            document.getElementById('cookie-accept').addEventListener('click', function() {
+            document.getElementById('cookie-accept').addEventListener('click', function () {
                 localStorage.setItem('cookie_consent', 'true');
                 document.getElementById('cookie-consent').style.display = 'none';
             });
@@ -696,7 +873,7 @@ textarea:focus-visible {
             const menu = document.getElementById('mobileMenu');
             const trigger = document.querySelector('.mobile-menu-trigger i');
             menu.classList.toggle('active');
-            
+
             // Toggle icon between menu and x
             if (menu.classList.contains('active')) {
                 trigger.setAttribute('data-lucide', 'x');
@@ -706,11 +883,12 @@ textarea:focus-visible {
             lucide.createIcons();
         }
 
-        document.getElementById('lucide-script').addEventListener('load', function() {
+        document.getElementById('lucide-script').addEventListener('load', function () {
             requestAnimationFrame(() => {
                 lucide.createIcons();
             });
         });
     </script>
 </body>
+
 </html>

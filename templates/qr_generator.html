@@ -1,25 +1,35 @@
 {% set title = "Professional QR Code Generator | Custom Sizes & High Resolution | HandleKit" %}
-{% set description = "Generate high-quality QR codes with custom pixel sizes. Instant, privacy-first, and high-resolution PNG downloads for professionals. No account required." %}
+{% set description = "Generate high-quality QR codes with custom pixel sizes. Instant, privacy-first, and
+high-resolution PNG downloads for professionals. No account required." %}
 {% set og_image = "qr-og-image.png" %}
 {% extends "layout.html" %}
 
 {% block content %}
 <div class="tool-container" style="max-width: 800px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
-        <i data-lucide="qr-code" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <i data-lucide="qr-code"
+            style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Free QR Code Generator</h1>
         <p style="color: var(--text-sub);">Create custom QR codes instantly. No tracking, no expiration.</p>
     </div>
 
-    <div class="tool-main-layout" style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start;">
-        <div class="input-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem;">
-            <label style="display: block; color: var(--accent-color); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 1rem;">Enter URL or Text</label>
-            <textarea id="qr-text" placeholder="https://handlekit.com" style="width: 100%; height: 120px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; color: var(--text-main); resize: none; outline: none; margin-bottom: 1.5rem; font-size: 1.1rem;"></textarea>
-            
-            <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; align-items: end;">
+    <div class="tool-main-layout"
+        style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start;">
+        <div class="input-section"
+            style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem;">
+            <label
+                style="display: block; color: var(--accent-color); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 1rem;">Enter
+                URL or Text</label>
+            <textarea id="qr-text" placeholder="https://handlekit.com"
+                style="width: 100%; height: 120px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; color: var(--text-main); resize: none; outline: none; margin-bottom: 1.5rem; font-size: 1.1rem;"></textarea>
+
+            <div class="options-grid"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; align-items: end;">
                 <div>
-                    <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Size</label>
-                    <select id="qr-size" aria-label="QR Code Size" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
+                    <label
+                        style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Size</label>
+                    <select id="qr-size" aria-label="QR Code Size"
+                        style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
                         <option value="200">Small (200x200)</option>
                         <option value="400" selected>Medium (400x400)</option>
                         <option value="800">Large (800x800)</option>
@@ -27,12 +37,18 @@
                     </select>
                 </div>
                 <div id="custom-size-container" style="display: none;">
-                    <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Width (px)</label>
-                    <input type="number" id="custom-size-input" value="1200" min="100" max="3000" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
+                    <label
+                        style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Width
+                        (px)</label>
+                    <input type="number" id="custom-size-input" value="1200" min="100" max="3000"
+                        style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
                 </div>
                 <div>
-                    <label style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Correction Level</label>
-                    <select id="qr-correction" aria-label="Error Correction Level" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
+                    <label
+                        style="display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 0.5rem;">Correction
+                        Level</label>
+                    <select id="qr-correction" aria-label="Error Correction Level"
+                        style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 10px; outline: none;">
                         <option value="L">Low (7%)</option>
                         <option value="M" selected>Medium (15%)</option>
                         <option value="Q">Quartile (25%)</option>
@@ -41,16 +57,20 @@
                 </div>
             </div>
 
-            <button id="generate-btn" style="width: 100%; background: var(--accent-gradient); color: var(--text-on-accent); border: none; padding: 1rem; border-radius: 12px; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">
+            <button id="generate-btn"
+                style="width: 100%; background: var(--accent-gradient); color: var(--text-on-accent); border: none; padding: 1rem; border-radius: 12px; font-weight: 700; cursor: pointer; transition: transform 0.2s ease;">
                 Generate QR Code
             </button>
         </div>
 
-        <div class="preview-section" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; text-align: center;">
-            <div id="qrcode-container" style="background: #fff; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto;">
+        <div class="preview-section"
+            style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; text-align: center;">
+            <div id="qrcode-container"
+                style="background: #fff; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto;">
                 <p id="qr-placeholder" style="color: #666; font-size: 0.8rem;">Preview will appear here</p>
             </div>
-            <button id="download-btn" disabled style="width: 100%; background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+            <button id="download-btn" disabled
+                style="width: 100%; background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                 <i data-lucide="download" style="width: 18px;"></i> Download PNG
             </button>
         </div>
@@ -59,33 +79,62 @@
     <!-- SEO Content Sections -->
     <div class="info-sections" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
         <div class="info-card" style="margin-bottom: 3rem;">
-            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">Why QR Codes are Essential for Modern Business</h2>
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">Why QR Codes are Essential for
+                Modern Business</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
-                QR codes have moved from being a specialty code to a ubiquitous tool connecting our physical and virtual worlds. You are either a businessman placing a menu on a table or an artist looking to showcase your work at a networking event. QR codes offer a seamless gateway to access your information instantaneously. Our QR code tool generates Static QR codes. This means our codes are permanent. They will not expire, and you don’t need a third-party service to use our codes.
+                QR codes have moved from being a specialty code to a ubiquitous tool connecting our physical and virtual
+                worlds. You are either a businessman placing a menu on a table or an artist looking to showcase your
+                work at a networking event. QR codes offer a seamless gateway to access your information
+                instantaneously. Our QR code tool generates Static QR codes. This means our codes are permanent. They
+                will not expire, and you don’t need a third-party service to use our codes.
             </p>
         </div>
 
-        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+        <div class="info-grid mobile-stack"
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
             <div class="info-card">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.5rem; font-size: 1.1rem;">Total Privacy</h3>
                 <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
-                    Our tool, HandleKit, does not collect any information about people scanning your QR code. Our code generation happens entirely on your browser. This ensures your information remains private. Our primary concern at HandleKit is privacy.
+                    Our tool, HandleKit, does not collect any information about people scanning your QR code. Our code
+                    generation happens entirely on your browser. This ensures your information remains private. Our
+                    primary concern at HandleKit is privacy.
                 </p>
             </div>
             <div class="info-card">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.5rem; font-size: 1.1rem;">High Resolution & Custom Sizes</h3>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.5rem; font-size: 1.1rem;">High Resolution &
+                    Custom Sizes</h3>
                 <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
-                    Do you need a small code size for a business card or a huge 3000px image for a billboard? Our tool gives you control over image sizes.
+                    Do you need a small code size for a business card or a huge 3000px image for a billboard? Our tool
+                    gives you control over image sizes.
                 </p>
             </div>
         </div>
 
-        <div class="info-card" style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 15px; border: 1px solid var(--border-color);">
-            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">Static vs. Dynamic QR Codes</h2>
+        <div class="info-card"
+            style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 15px; border: 1px solid var(--border-color);">
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">Static vs. Dynamic QR Codes
+            </h2>
             <p style="color: var(--text-sub); line-height: 1.8;">
-                Static QR codes, like the ones we create, contain the target information directly within the code. They are best suited for permanent information, like website addresses or contact information. Dynamic QR codes use a redirect service to allow future changes to the information. Though dynamic codes have their use in tracking, static codes are generally better, faster, and more secure.
+                Static QR codes, like the ones we create, contain the target information directly within the code. They
+                are best suited for permanent information, like website addresses or contact information. Dynamic QR
+                codes use a redirect service to allow future changes to the information. Though dynamic codes have their
+                use in tracking, static codes are generally better, faster, and more secure.
             </p>
         </div>
+    </div>
+
+    <!-- Link Magnet to Blog -->
+    <div style="margin-top: 5rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1.5rem; flex: 1; min-width: 280px;">
+            <div style="background: rgba(201, 28, 35, 0.1); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="book-open" style="color: var(--accent-color); width: 28px; height: 28px;"></i>
+            </div>
+            <div>
+                <h3 style="color: var(--text-main); margin: 0; font-size: 1.2rem; font-weight: 800;">Not sure which QR tool to use?</h3>
+                <p style="color: var(--text-sub); margin: 0.2rem 0 0 0; font-size: 1rem;">Read our <strong>2026 Creator's Guide</strong> to free QR code generators.</p>
+            </div>
+        </div>
+        <a href="/blog/5-free-qr-code-tools-2026" style="border: 1px solid var(--accent-color); color: var(--accent-color); text-decoration: none; padding: 0.9rem 2rem; border-radius: 12px; font-weight: 700; font-size: 0.95rem; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-color)'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='var(--accent-color)';" >Read the Guide</a>
     </div>
 
     <!-- FAQ Section -->
@@ -93,34 +142,70 @@
         <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I create a QR code?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can simply type in your URL or any text in the box provided on the left. Our tool will automatically start generating a preview. You can choose your preferred code size. Small is best for digital media, while medium works in most cases. Large or Custom sizes are best for printing. You can also choose your level of error correction. After this, simply click "Generate QR Code." Once your code has been generated in the preview box, the "Download PNG" button becomes active.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I create a QR
+                    code?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can simply type in your URL or any
+                    text in the box provided on the left. Our tool will automatically start generating a preview. You
+                    can choose your preferred code size. Small is best for digital media, while medium works in most
+                    cases. Large or Custom sizes are best for printing. You can also choose your level of error
+                    correction. After this, simply click "Generate QR Code." Once your code has been generated in the
+                    preview box, the "Download PNG" button becomes active.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What size QR code will I need?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">For screen-based usage, such as social media, 400x400px is more than sufficient. For a business card, 600px minimum. For an A4 print-based flyer, 1000-1200px. For large print usage such as banners, 2000-3000px. Note: For print-based QR codes, a minimum size of 2x2cm is required. Any smaller, and some phone cameras may struggle to read it.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What size QR code will
+                    I need?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">For screen-based usage, such as social
+                    media, 400x400px is more than sufficient. For a business card, 600px minimum. For an A4 print-based
+                    flyer, 1000-1200px. For large print usage such as banners, 2000-3000px. Note: For print-based QR
+                    codes, a minimum size of 2x2cm is required. Any smaller, and some phone cameras may struggle to read
+                    it.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the difference between Static and Dynamic QR codes?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong style="color: var(--accent-color);">Static QR codes</strong> (which we generate here) encode your data directly into the pattern. They never expire and do not require a middleman server. <strong style="color: var(--text-main);">Dynamic QR codes</strong> use short URLs that can be redirected later, but they often require a subscription and can "break" if the provider goes offline.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the difference
+                    between Static and Dynamic QR codes?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>Static QR codes</strong> (which we generate here) encode
+                    your data directly into the pattern. They never expire and do not require a middleman server.
+                    <strong>Dynamic QR codes</strong> use short URLs that can be
+                    redirected later, but they often require a subscription and can "break" if the provider goes
+                    offline.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How does Error Correction work?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">QR codes include <strong style="color: var(--text-main);">built-in redundancy</strong>. The "High" setting allows for up to <strong style="color: var(--accent-color);">30% damage</strong> to the code while still remaining scannable. This is useful if you plan to add a logo to the center or if the code will be printed on a surface that might get scratched.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How does Error
+                    Correction work?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">QR codes include <strong>built-in redundancy</strong>. The "High" setting allows for up
+                    to <strong>30% damage</strong> to the code while still remaining
+                    scannable. This is useful if you plan to add a logo to the center or if the code will be printed on
+                    a surface that might get scratched.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Do the QR codes expire?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, never. The QR codes generated by HandleKit are static QR codes, which means the target URL is actually encoded into the pattern of the QR code. There's no middleware service that needs to be accessed, so nothing can expire or go offline. The QR code you generate today will still be valid ten years from now, provided the target URL exists.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Do the QR codes expire?
+                </h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, never. The QR codes generated by
+                    HandleKit are static QR codes, which means the target URL is actually encoded into the pattern of
+                    the QR code. There's no middleware service that needs to be accessed, so nothing can expire or go
+                    offline. The QR code you generate today will still be valid ten years from now, provided the target
+                    URL exists.</p>
             </div>
 
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Can I encode something other than a URL?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes, absolutely. You can encode any plain text string, a phone number, an email address, a Wi-Fi password (in the format <code style="color:var(--accent-color);">WIFI:T:WPA;S:YourNetwork;P:YourPassword;;</code>), a physical address, or even a short poem. The QR code doesn't care what it's encoding; it just encodes whatever string you give it.</p>
+            <div
+                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Can I encode something
+                    other than a URL?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes, absolutely. You can encode any
+                    plain text string, a phone number, an email address, a Wi-Fi password (in the format <code
+                        style="color:var(--accent-color);">WIFI:T:WPA;S:YourNetwork;P:YourPassword;;</code>), a physical
+                    address, or even a short poem. The QR code doesn't care what it's encoding; it just encodes whatever
+                    string you give it.</p>
             </div>
 
         </div>
@@ -129,11 +214,23 @@
 
 <style>
     @media (max-width: 768px) {
-        .tool-main-layout { grid-template-columns: 1fr !important; }
-        .preview-section { order: -1; }
+        .tool-main-layout {
+            grid-template-columns: 1fr !important;
+        }
+
+        .preview-section {
+            order: -1;
+        }
     }
-    textarea:focus { border-color: var(--accent-color); box-shadow: 0 0 10px var(--glow-color); }
-    #generate-btn:hover { transform: scale(1.02); }
+
+    textarea:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 10px var(--glow-color);
+    }
+
+    #generate-btn:hover {
+        transform: scale(1.02);
+    }
 </style>
 
 <!-- Using qrcode-generator library via CDN -->
@@ -162,7 +259,7 @@
     generateBtn.onclick = () => {
         const text = qrInput.value.trim() || 'https://handlekit.com';
         let size = qrSize.value === 'custom' ? parseInt(customSizeInput.value) : parseInt(qrSize.value);
-        
+
         // Safety bounds
         if (isNaN(size) || size < 10) size = 400;
         if (size > 3000) size = 3000;
@@ -182,20 +279,20 @@
             const modules = qr.getModuleCount();
             const quietZone = 4; // Standard quiet zone for QR codes
             const totalModules = modules + (quietZone * 2);
-            
+
             const canvas = document.createElement('canvas');
             canvas.width = size;
             canvas.height = size;
             const ctx = canvas.getContext('2d');
-            
+
             // Background
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, size, size);
-            
+
             // Draw QR modules
             const cellSize = size / totalModules;
             ctx.fillStyle = '#000000';
-            
+
             for (let row = 0; row < modules; row++) {
                 for (let col = 0; col < modules; col++) {
                     if (qr.isDark(row, col)) {
@@ -208,13 +305,13 @@
                     }
                 }
             }
-            
+
             const dataUrl = canvas.toDataURL('image/png');
             qrContainer.innerHTML = `<img src="${dataUrl}" id="generated-qr" width="${size}" height="${size}" style="max-width: 100%; height: auto; border-radius: 4px;" alt="QR Code">`;
 
             downloadBtn.disabled = false;
             downloadBtn.style.background = 'var(--accent-gradient)';
-            
+
             downloadBtn.onclick = () => {
                 const link = document.createElement('a');
                 link.download = `handlekit-qr-${size}x${size}.png`;
