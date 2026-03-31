@@ -1,5 +1,5 @@
-{% set title = "Username Availability Checker | Search 6 Major Platforms | HandleKit" %}
-{% set description = "An available handle is your identity in the digital world. Search 6 major social platforms at once
+{% set title = "Username Availability Checker | Search 9 Major Platforms | HandleKit" %}
+{% set description = "An available handle is your identity in the digital world. Search 9 major social platforms at once
 and secure your brand before someone else does. Free and private." %}
 {% extends "layout.html" %}
 
@@ -15,7 +15,7 @@ and secure your brand before someone else does. Free and private." %}
             </div>
             <div>
                 <h1 style="margin: 0; color: var(--text-main); font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;">Social Username Checker</h1>
-                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Search 6 major social networks instantly and secure your brand.</p>
+                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Search 9 major social networks instantly and secure your brand.</p>
             </div>
         </div>
 
@@ -65,7 +65,7 @@ and secure your brand before someone else does. Free and private." %}
             </p>
             <p style="color: var(--text-sub); line-height: 1.8;">
                 We let you search the platforms that matter most to you: GitHub and Reddit for communities, Twitter/X
-                for public conversation, TikTok and YouTube for content creators, and Instagram with a link to verify.
+                and Threads for public conversation, TikTok, YouTube, and Twitch for content creators, plus Pinterest and Instagram.
             </p>
         </div>
 
@@ -122,7 +122,7 @@ and secure your brand before someone else does. Free and private." %}
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Which platforms do
                     you check?</h3>
                 <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">We currently support <strong
-                        style="color: var(--text-main);">Instagram, TikTok, Twitter (X), Reddit, and YouTube</strong>.
+                        style="color: var(--text-main);">Instagram, TikTok, Twitter (X), Threads, Reddit, YouTube, Twitch, GitHub, and Pinterest</strong>.
                     We are constantly expanding this list to include more social networks and developer platforms.</p>
             </div>
         </div>
@@ -279,6 +279,9 @@ and secure your brand before someone else does. Free and private." %}
         { name: 'Instagram', id: 'instagram', color: '#E1306C', bg: '#1a1010', label: 'Ig', profileUrl: 'https://instagram.com/', signupUrl: 'https://www.instagram.com/' },
         { name: 'TikTok', id: 'tiktok', color: '#ff0050', bg: '#0a0a0a', label: 'Tk', profileUrl: 'https://tiktok.com/@', signupUrl: 'https://tiktok.com/signup' },
         { name: 'YouTube', id: 'youtube', color: '#FF0000', bg: '#0f0f0f', label: 'YT', profileUrl: 'https://youtube.com/@', signupUrl: 'https://www.youtube.com/create_channel' },
+        { name: 'Twitch', id: 'twitch', color: '#9146FF', bg: '#18181b', label: 'Tw', profileUrl: 'https://www.twitch.tv/', signupUrl: 'https://www.twitch.tv/signup' },
+        { name: 'Pinterest', id: 'pinterest', color: '#E60023', bg: '#1a0d0d', label: 'Pi', profileUrl: 'https://www.pinterest.com/', signupUrl: 'https://www.pinterest.com/signup' },
+        { name: 'Threads', id: 'threads', color: '#000000', bg: '#101010', label: 'Th', profileUrl: 'https://www.threads.net/@', signupUrl: 'https://www.threads.net/signup' },
     ];
 
     const resultsDiv = document.getElementById('results');
