@@ -410,6 +410,14 @@ def articles_list():
 def article_jnd_perception():
     return render_template('article_jnd.html')
 
+@app.route('/blog')
+def blog_list():
+    return render_template('blog_list.html')
+
+@app.route('/blog/5-free-qr-code-tools-2026')
+def blog_post_qr_tools():
+    return render_template('blog/5-free-qr-code-tools-2026.html')
+
 @app.route('/url-encoder')
 def url_encoder():
     return render_template('url_encoder.html')
