@@ -530,6 +530,29 @@
       </section>
     </main>
 
+    <!-- RATING SECTION -->
+    <section class="rating-section" style="margin-top: 4rem; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+      <div id="rating-card" style="background: rgba(10, 65, 116, 0.2); border: 1px solid rgba(10, 65, 116, 0.3); border-radius: 20px; padding: 2.5rem; max-width: 500px; margin: 0 auto; backdrop-filter: blur(8px);">
+          <h3 style="color: white; margin-bottom: 0.5rem; font-size: 1.4rem; font-weight: 700;">How useful was this triage?</h3>
+          <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; font-size: 0.95rem;">Your feedback helps us refine the triage logic.</p>
+          
+          <div class="stars-container" style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; transition: all 0.3s ease;">
+              <i data-lucide="star" class="star-icon" data-value="1" style="width: 28px; height: 28px; cursor: pointer; color: rgba(255,255,255,0.3); transition: all 0.2s;"></i>
+              <i data-lucide="star" class="star-icon" data-value="2" style="width: 28px; height: 28px; cursor: pointer; color: rgba(255,255,255,0.3); transition: all 0.2s;"></i>
+              <i data-lucide="star" class="star-icon" data-value="3" style="width: 28px; height: 28px; cursor: pointer; color: rgba(255,255,255,0.3); transition: all 0.2s;"></i>
+              <i data-lucide="star" class="star-icon" data-value="4" style="width: 28px; height: 28px; cursor: pointer; color: rgba(255,255,255,0.3); transition: all 0.2s;"></i>
+              <i data-lucide="star" class="star-icon" data-value="5" style="width: 28px; height: 28px; cursor: pointer; color: rgba(255,255,255,0.3); transition: all 0.2s;"></i>
+          </div>
+          
+          <div id="rating-thanks" style="display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease;">
+              <div style="background: rgba(var(--accent-rgb), 0.1); color: #00d2ff; padding: 1rem; border-radius: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.6rem;">
+                  <i data-lucide="heart" style="width: 18px; height: 18px; fill: #00d2ff;"></i>
+                  Thank you for your rating!
+              </div>
+          </div>
+      </div>
+    </section>
+
     <footer class="site-footer">
       <div class="site-footer__inner">
         <nav class="footer-nav" aria-label="Footer">
@@ -596,5 +619,75 @@
     }
 }
 </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          lucide.createIcons();
+          
+          const toolId = 'gbp-triage';
+          const stars = document.querySelectorAll('.star-icon');
+          const thanks = document.getElementById('rating-thanks');
+          const container = document.querySelector('.stars-container');
+
+          if (localStorage.getItem('rated-' + toolId)) {
+              container.style.display = 'none';
+              thanks.style.display = 'block';
+              thanks.style.opacity = '1';
+              thanks.style.transform = 'translateY(0)';
+          }
+
+          stars.forEach(star => {
+              star.addEventListener('mouseenter', () => {
+                  const val = parseInt(star.dataset.value);
+                  stars.forEach(s => {
+                      if (parseInt(s.dataset.value) <= val) {
+                          s.style.color = '#ffcc00';
+                          s.style.transform = 'scale(1.2)';
+                      }
+                  });
+              });
+
+              star.addEventListener('mouseleave', () => {
+                  const isRated = localStorage.getItem('rated-' + toolId);
+                  if (!isRated) {
+                    stars.forEach(s => {
+                        s.style.color = 'rgba(255,255,255,0.3)';
+                        s.style.transform = 'scale(1)';
+                    });
+                  }
+              });
+
+              star.addEventListener('click', () => {
+                  const val = parseInt(star.dataset.value);
+                  submitRating(toolId, val);
+              });
+          });
+
+          async function submitRating(tid, rating) {
+              try {
+                  const response = await fetch('/api/rate-tool', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ tool_id: tid, rating: rating })
+                  });
+                  if (response.ok) {
+                      localStorage.setItem('rated-' + tid, 'true');
+                      container.style.opacity = '0';
+                      container.style.transform = 'scale(0.9)';
+                      setTimeout(() => {
+                          container.style.display = 'none';
+                          thanks.style.display = 'block';
+                          setTimeout(() => {
+                              thanks.style.opacity = '1';
+                              thanks.style.transform = 'translateY(0)';
+                          }, 50);
+                      }, 300);
+                  }
+              } catch (err) {
+                  console.error('Rating failed:', err);
+              }
+          }
+      });
+    </script>
 </body>
 </html>
