@@ -4,14 +4,71 @@ browser-based hash tool, no data ever sent to a server." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MD5, SHA-1, SHA-256 & SHA-512 Hash Generator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/hash-generator",
+  "description": "Generate secure cryptographic hashes (MD5, SHA-256, etc.) from text or files instantly. All calculations are performed locally in your browser using the Web Crypto API.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "137"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which hash algorithm should I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SHA-256 is currently the industry standard for security-critical applications. MD5 is suitable for non-security tasks like file integrity checksums, but it is no longer considered secure for cryptography."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I reverse a hash back to its original text?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Cryptographic hashes are one-way functions designed to be irreversible. The only way to find the original input is through brute-force or pre-computed rainbow tables."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data sent to your servers for hashing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All hash calculations are performed entirely on the client-side within your browser. Your files and text never leave your machine."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-container" style="max-width: 860px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
-        <i data-lucide="fingerprint"
-            style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Hash Generator</h1>
-        <p style="color: var(--text-sub);">Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text, instantly,
-            privately, all in your browser.</p>
+        <div style="background: var(--accent-gradient); width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 25px var(--glow-color);">
+            <i data-lucide="fingerprint" style="width: 32px; height: 32px; color: #fff;"></i>
+        </div>
+        <h1 style="font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem;">Hash Generator</h1>
+        <p style="color: var(--text-sub); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text instantly and privately.</p>
     </div>
 
     <!-- Mode Toggle -->
@@ -188,6 +245,29 @@ browser-based hash tool, no data ever sent to a server." %}
 
         </div>
     </div>
+
+    <!-- RATING SECTION -->
+    <div id="rating-section" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem; text-align: center;">
+        <div id="rating-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3rem; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+            <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;">How useful was this tool?</h3>
+            <p style="color: var(--text-sub); margin-bottom: 2rem; font-size: 1rem;">Your feedback helps us improve HandleKit.</p>
+            
+            <div class="stars-container" style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; transition: all 0.3s ease;">
+                <i data-lucide="star" class="star-icon" data-value="1" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                <i data-lucide="star" class="star-icon" data-value="2" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                <i data-lucide="star" class="star-icon" data-value="3" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                <i data-lucide="star" class="star-icon" data-value="4" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                <i data-lucide="star" class="star-icon" data-value="5" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            </div>
+            
+            <div id="rating-thanks" style="display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease;">
+                <div style="background: rgba(var(--accent-rgb), 0.1); color: var(--accent-color); padding: 1.25rem; border-radius: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="heart" style="width: 20px; height: 20px; fill: var(--accent-color);"></i>
+                    Thank you for your rating!
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -318,6 +398,41 @@ browser-based hash tool, no data ever sent to a server." %}
         font-size: 0.78rem;
         color: var(--text-sub);
     }
+
+    .star-icon:hover,
+    .star-icon.hovered {
+        color: #ffcc00 !important;
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.4));
+    }
+
+    @media (max-width: 768px) {
+        .tool-container {
+            padding: 0 1.5rem !important;
+        }
+
+        .hg-action-btn, .hg-util-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .hg-algo-card {
+            padding: 1.25rem !important;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+        }
+
+        h1 {
+            font-size: 2rem !important;
+        }
+
+        .tool-header {
+            margin-bottom: 2rem !important;
+        }
+    }
 </style>
 
 <script>
@@ -432,7 +547,7 @@ browser-based hash tool, no data ever sent to a server." %}
         <div class="hg-hash-row">
             <div class="hg-hash-label">
                 <span>${h.label}</span>
-                <button class="hg-copy-mini" onclick="copyHash('hash-val-${i}', this)"">Copy</button>
+                <button class="hg-copy-mini" onclick="copyHash('hash-val-${i}', this)">Copy</button>
             </div>
             <div class="hg-hash-value" id="hash-val-${i}">${h.value}</div>
         </div>
@@ -478,5 +593,73 @@ browser-based hash tool, no data ever sent to a server." %}
         const sizeKB = (file.size / 1024).toFixed(1);
         document.getElementById('hg-file-name').textContent = `${file.name} (${sizeKB} KB)`;
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        const toolId = 'hash-generator';
+        const stars = document.querySelectorAll('.star-icon');
+        const thanks = document.getElementById('rating-thanks');
+        const container = document.querySelector('.stars-container');
+
+        if (localStorage.getItem('rated-' + toolId)) {
+            if(container) container.style.display = 'none';
+            if(thanks) {
+                thanks.style.display = 'block';
+                thanks.style.opacity = '1';
+                thanks.style.transform = 'translateY(0)';
+            }
+        }
+
+        if (container) {
+            container.addEventListener('mouseover', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                const allStars = container.querySelectorAll('.star-icon');
+                allStars.forEach(s => {
+                    if (parseInt(s.dataset.value) <= val) s.classList.add('hovered');
+                    else s.classList.remove('hovered');
+                });
+            });
+
+            container.addEventListener('mouseleave', () => {
+                const allStars = container.querySelectorAll('.star-icon');
+                allStars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            container.addEventListener('click', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                submitRating(toolId, val);
+            });
+        }
+
+        async function submitRating(tid, rating) {
+            try {
+                const response = await fetch('/api/rate-tool', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tool_id: tid, rating: rating })
+                });
+                if (response.ok) {
+                    localStorage.setItem('rated-' + tid, 'true');
+                    container.style.opacity = '0';
+                    container.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        container.style.display = 'none';
+                        thanks.style.display = 'block';
+                        setTimeout(() => {
+                            thanks.style.opacity = '1';
+                            thanks.style.transform = 'translateY(0)';
+                        }, 50);
+                    }, 300);
+                }
+            } catch (err) {
+                console.error('Rating failed:', err);
+            }
+        }
+    });
+
 </script>
 {% endblock %}

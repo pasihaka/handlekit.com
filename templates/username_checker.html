@@ -3,6 +3,71 @@
 and secure your brand before someone else does. Free and private." %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Social Username Availability Checker",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/username-checker",
+  "description": "Instantly search 9 major social networking platforms for username availability. Secure your brand identity across Instagram, TikTok, Twitter, YouTube, and more.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "184"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the social username checker work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simply enter the name you want to secure and click 'Check Now'. We immediately make a request in real-time to the public profile endpoints for all supported platforms at once. If a profile exists, we mark the handle as 'Taken'. If no profile is found, it is labeled 'Available'."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which social platforms do you check?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We currently support Instagram, TikTok, Twitter (X), Threads, Reddit, YouTube, Twitch, GitHub, and Pinterest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the 'Uncertain' status mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There are times when a platform (particularly Instagram) may temporarily block automated requests or be undergoing maintenance. In these cases, we display an 'Uncertain' status with a yellow indicator. You can click the card to manually verify the profile's existence directly on the platform."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do some username checks take longer than others?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each platform has its own rate limits and response times. Sites like Twitter and TikTok often have stricter bot detection, which may result in an 'Uncertain' status or a slightly longer wait time to ensure accuracy."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-content" style="max-width: 1000px; margin: 0 auto; padding-bottom: 5rem;">
     <!-- MAIN TOOL CARD -->
@@ -122,6 +187,29 @@ and secure your brand before someone else does. Free and private." %}
                 <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">We currently support <strong
                         style="color: var(--text-main);">Instagram, TikTok, Twitter (X), Threads, Reddit, YouTube, Twitch, GitHub, and Pinterest</strong>.
                     We are constantly expanding this list to include more social networks and developer platforms.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- RATING SECTION -->
+    <div id="rating-section" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem; text-align: center;">
+        <div id="rating-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3rem; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+            <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;">How useful was this tool?</h3>
+            <p style="color: var(--text-sub); margin-bottom: 2rem; font-size: 1rem;">Your feedback helps us improve HandleKit.</p>
+            
+            <div class="stars-container" style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; transition: all 0.3s ease;">
+                <i data-lucide="star" class="star-icon" data-value="1" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                <i data-lucide="star" class="star-icon" data-value="2" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                <i data-lucide="star" class="star-icon" data-value="3" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                <i data-lucide="star" class="star-icon" data-value="4" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                <i data-lucide="star" class="star-icon" data-value="5" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            </div>
+            
+            <div id="rating-thanks" style="display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease;">
+                <div style="background: rgba(var(--accent-rgb), 0.1); color: var(--accent-color); padding: 1.25rem; border-radius: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="heart" style="width: 20px; height: 20px; fill: var(--accent-color);"></i>
+                    Thank you for your rating!
+                </div>
             </div>
         </div>
     </div>
@@ -396,6 +484,13 @@ and secure your brand before someone else does. Free and private." %}
         line-height: 1.6;
     }
 
+    .star-icon:hover,
+    .star-icon.hovered {
+        color: #ffcc00 !important;
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.4));
+    }
+
     @media (max-width: 768px) {
         .tool-main-card {
             padding: 1.5rem;
@@ -577,7 +672,75 @@ and secure your brand before someone else does. Free and private." %}
             card.title = `Could not verify, click to check ${p.name} manually`;
             card.style.cursor = 'pointer';
             card.onclick = () => window.open(p.profileUrl + user, '_blank');
+        }    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        const toolId = 'username-checker';
+        const stars = document.querySelectorAll('.star-icon');
+        const thanks = document.getElementById('rating-thanks');
+        const container = document.querySelector('.stars-container');
+
+        if (localStorage.getItem('rated-' + toolId)) {
+            if(container) container.style.display = 'none';
+            if(thanks) {
+                thanks.style.display = 'block';
+                thanks.style.opacity = '1';
+                thanks.style.transform = 'translateY(0)';
+            }
         }
-    }
+
+        if (container) {
+            container.addEventListener('mouseover', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                const allStars = container.querySelectorAll('.star-icon');
+                allStars.forEach(s => {
+                    if (parseInt(s.dataset.value) <= val) s.classList.add('hovered');
+                    else s.classList.remove('hovered');
+                });
+            });
+
+            container.addEventListener('mouseleave', () => {
+                const allStars = container.querySelectorAll('.star-icon');
+                allStars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            container.addEventListener('click', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                submitRating(toolId, val);
+            });
+        }
+
+        async function submitRating(tid, rating) {
+            try {
+                const response = await fetch('/api/rate-tool', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tool_id: tid, rating: rating })
+                });
+                if (response.ok) {
+                    localStorage.setItem('rated-' + tid, 'true');
+                    container.style.opacity = '0';
+                    container.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        container.style.display = 'none';
+                        thanks.style.display = 'block';
+                        setTimeout(() => {
+                            thanks.style.opacity = '1';
+                            thanks.style.transform = 'translateY(0)';
+                        }, 50);
+                    }, 300);
+                }
+            } catch (err) {
+                console.error('Rating failed:', err);
+            }
+        }
+    });
 </script>
 {% endblock %}

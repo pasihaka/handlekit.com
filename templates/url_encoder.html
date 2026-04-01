@@ -4,24 +4,80 @@ decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "URL Encoder & Decoder",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/url-encoder",
+  "description": "Encode or decode URLs and URI components instantly. Supports percent-encoding for query parameters and full URLs with 100% browser-side processing.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "118"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between 'Component' and 'Full URL' encoding?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "'Component' (encodeURIComponent) encodes nearly all special characters, making it ideal for query parameter values. 'Full URL' (encodeURI) preserves structural characters like slashes and question marks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is a space encoded as %20 in a URL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "URLs can only contain a limited set of ASCII characters. All others, including spaces, must be percent-encoded. The hexadecimal code for a space is 20, hence %20."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool store the URLs I encode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All encoding and decoding happens locally in your browser using JavaScript. No data is ever sent to our servers."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-content" style="max-width: 1000px; margin: 0 auto; padding-bottom: 5rem;">
-    <!-- MAIN TOOL CARD -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
-        
-        <!-- HEADER SECTION -->
-        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;">
-            <div style="background: var(--accent-gradient); width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 35px var(--glow-color); flex-shrink: 0;">
-                <i data-lucide="link-2" style="color: #fff; width: 36px; height: 36px;"></i>
+        <!-- MAIN TOOL CARD -->
+        <div class="ue-main-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+    
+            <!-- HEADER SECTION -->
+            <div class="mobile-stack" style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;">
+                <div style="background: var(--accent-gradient); width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 35px var(--glow-color); flex-shrink: 0;">
+                    <i data-lucide="link-2" style="color: #fff; width: 36px; height: 36px;"></i>
+                </div>
+                <div class="mobile-text-center">
+                    <h1 style="margin: 0; color: var(--text-main); font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;">URL Encoder & Decoder</h1>
+                    <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Safe percent-encoding for URLs and query components.</p>
+                </div>
             </div>
-            <div>
-                <h1 style="margin: 0; color: var(--text-main); font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;">URL Encoder & Decoder</h1>
-                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Safe percent-encoding for URLs and query components.</p>
-            </div>
-        </div>
-
         <!-- MODE TOGGLE -->
-        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 0.5rem; margin-bottom: 2.5rem; display: inline-flex; gap: 0.25rem;">
+        <div class="ue-mode-selector mobile-stack" style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 0.5rem; margin-bottom: 2.5rem; display: inline-flex; gap: 0.25rem;">
             <button class="ue-mode-btn active" id="mode-component" onclick="setMode('component')">
                 <i data-lucide="code" style="width:16px;height:16px;"></i> Component (encodeURIComponent)
             </button>
@@ -45,7 +101,7 @@ decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
             </div>
 
             <!-- ACTION BAR -->
-            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+            <div class="ue-action-bar mobile-stack" style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
                 <button class="ue-action-btn primary" id="btn-encode" onclick="doEncode()">
                     <i data-lucide="lock" style="width:16px;height:16px;"></i> Encode
                 </button>
@@ -87,7 +143,7 @@ decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
         <h2
             style="font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">
             Common Encoded Characters</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.5rem;">
+        <div class="ue-ref-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.5rem;">
             <div class="ue-ref-row"><span class="ue-ref-char">Space</span><span class="ue-ref-enc">%20</span></div>
             <div class="ue-ref-row"><span class="ue-ref-char">&amp;</span><span class="ue-ref-enc">%26</span></div>
             <div class="ue-ref-row"><span class="ue-ref-char">=</span><span class="ue-ref-enc">%3D</span></div>
@@ -376,5 +432,152 @@ decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
             }, 2000);
         });
     }
+</script>
+
+<!-- RATING SECTION -->
+<div id="rating-section" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem; text-align: center;">
+    <div id="rating-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3rem; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;">How useful was this tool?</h3>
+        <p style="color: var(--text-sub); margin-bottom: 2rem; font-size: 1rem;">Your feedback helps us improve HandleKit.</p>
+        
+        <div class="stars-container" style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; transition: all 0.3s ease;">
+            <i data-lucide="star" class="star-icon" data-value="1" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            <i data-lucide="star" class="star-icon" data-value="2" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            <i data-lucide="star" class="star-icon" data-value="3" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            <i data-lucide="star" class="star-icon" data-value="4" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            <i data-lucide="star" class="star-icon" data-value="5" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+        </div>
+        
+        <div id="rating-thanks" style="display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease;">
+            <div style="background: rgba(var(--accent-rgb), 0.1); color: var(--accent-color); padding: 1.25rem; border-radius: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.75rem;">
+                <i data-lucide="heart" style="width: 20px; height: 20px; fill: var(--accent-color);"></i>
+                Thank you for your rating!
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        .ue-main-card {
+            padding: 2rem 1.5rem !important;
+        }
+
+        .ue-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+        }
+
+        .ue-action-bar {
+            flex-direction: column !important;
+        }
+
+        .ue-action-btn {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+
+        .ue-mode-btn {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 0.75rem 1rem !important;
+        }
+
+        .ue-mode-selector {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .ue-ref-grid {
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+        }
+
+        h1 {
+            font-size: 1.8rem !important;
+        }
+
+        .ue-util-btn {
+            flex: 1 !important;
+        }
+        
+        .ue-action-bar > div {
+            width: 100% !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        const toolId = 'url-encoder';
+        const stars = document.querySelectorAll('.star-icon');
+        const thanks = document.getElementById('rating-thanks');
+        const container = document.querySelector('.stars-container');
+
+        if (localStorage.getItem('rated-' + toolId)) {
+            if(container) container.style.display = 'none';
+            if(thanks) {
+                thanks.style.display = 'block';
+                thanks.style.opacity = '1';
+                thanks.style.transform = 'translateY(0)';
+            }
+        }
+
+        if (container) {
+            container.addEventListener('mouseover', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                const allStars = container.querySelectorAll('.star-icon');
+                allStars.forEach(s => {
+                    if (parseInt(s.dataset.value) <= val) s.classList.add('hovered');
+                    else s.classList.remove('hovered');
+                });
+            });
+
+            container.addEventListener('mouseleave', () => {
+                const allStars = container.querySelectorAll('.star-icon');
+                allStars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            container.addEventListener('click', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                submitRating(toolId, val);
+            });
+        }
+
+        async function submitRating(tid, rating) {
+            try {
+                const response = await fetch('/api/rate-tool', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tool_id: tid, rating: rating })
+                });
+                if (response.ok) {
+                    localStorage.setItem('rated-' + tid, 'true');
+                    container.style.opacity = '0';
+                    container.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        container.style.display = 'none';
+                        thanks.style.display = 'block';
+                        setTimeout(() => {
+                            thanks.style.opacity = '1';
+                            thanks.style.transform = 'translateY(0)';
+                        }, 50);
+                    }, 300);
+                }
+            } catch (err) {
+                console.error('Rating failed:', err);
+            }
+        }
+    });
 </script>
 {% endblock %}

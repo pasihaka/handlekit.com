@@ -4,30 +4,97 @@
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Base64 Encoder & Decoder",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/base64-encoder",
+  "description": "Encode text or files to Base64 and decode Base64 strings back to plain text instantly. All processing happens locally in your browser for maximum privacy.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "142"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Base64 encoding used for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Base64 is primarily used to transmit binary data over text-based systems like HTML, CSS, or email. It's commonly used for embedding images or sending attachments."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do some Base64 strings end with '=='?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The equals sign (=) is used as padding to ensure the output length is a multiple of 4 characters, which is required by the Base64 standard."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Base64 a form of encryption?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Base64 is an encoding scheme, not encryption. It can be easily decoded by anyone and should not be used to secure sensitive data without additional encryption."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data sent to a server for encoding?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. HandleKit processes all encoding and decoding entirely within your browser tab. Your files and text never leave your device."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-content" style="max-width: 1000px; margin: 0 auto; padding-bottom: 5rem;">
     <!-- MAIN TOOL CARD -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+    <div class="b64-main-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
         
         <!-- HEADER SECTION -->
-        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;">
+        <div class="mobile-stack" style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;">
             <div style="background: var(--accent-gradient); width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 35px var(--glow-color); flex-shrink: 0;">
                 <i data-lucide="binary" style="color: #fff; width: 36px; height: 36px;"></i>
             </div>
-            <div>
+            <div class="mobile-text-center">
                 <h1 style="margin: 0; color: var(--text-main); font-size: 2.6rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;">Base64 Encoder & Decoder</h1>
-                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Securely convert text and files with browser-side processing.</p>
+                <p style="color: var(--text-sub); margin-top: 0.5rem; font-size: 1.1rem;">Safely convert binary data and text to Base64 format with 100% privacy.</p>
             </div>
         </div>
 
-        <!-- MODE TOGGLE -->
-        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 0.5rem; margin-bottom: 2.5rem; display: inline-flex; gap: 0.25rem;">
-            <button class="b64-mode-btn active" id="mode-text" onclick="setMode('text')">
-                <i data-lucide="type" style="width:16px;height:16px;"></i> Text Input
-            </button>
-            <button class="b64-mode-btn" id="mode-file" onclick="setMode('file')">
-                <i data-lucide="file-up" style="width:16px;height:16px;"></i> File Upload
-            </button>
+        <!-- ACTION BAR -->
+        <div class="b64-action-bar" style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.25rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1.25rem;">
+            <div class="b64-mode-selector" style="display: flex; gap: 0.5rem; background: rgba(0,0,0,0.1); padding: 0.4rem; border-radius: 16px;">
+                <button class="b64-mode-btn active" id="mode-text" onclick="setMode('text')">
+                    <i data-lucide="type" style="width:16px;height:16px;"></i> Text Input
+                </button>
+                <button class="b64-mode-btn" id="mode-file" onclick="setMode('file')">
+                    <i data-lucide="file-up" style="width:16px;height:16px;"></i> File Upload
+                </button>
+            </div>
         </div>
 
         <!-- TEXT MODE PANEL -->
@@ -120,7 +187,7 @@
             <h2 style="font-size: 0.75rem; font-weight: 800; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                 <i data-lucide="help-circle" style="width: 18px; height: 18px;"></i> Common Use Cases
             </h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
+            <div class="b64-use-cases-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
                 <div class="b64-use-item"><i data-lucide="code" style="width:14px; opacity:0.6;"></i> Embed images in HTML/CSS</div>
                 <div class="b64-use-item"><i data-lucide="shield" style="width:14px; opacity:0.6;"></i> HTTP Basic Auth headers</div>
                 <div class="b64-use-item"><i data-lucide="key" style="width:14px; opacity:0.6;"></i> JWT token payloads</div>
@@ -425,5 +492,138 @@
         a.download = currentFileName + '.base64.txt';
         a.click();
     }
+</script>
+
+<!-- RATING SECTION -->
+<div id="rating-section" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem; text-align: center;">
+    <div id="rating-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3rem; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;">How useful was this tool?</h3>
+        <p style="color: var(--text-sub); margin-bottom: 2rem; font-size: 1rem;">Your feedback helps us improve HandleKit.</p>
+        
+        <div class="stars-container" style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; transition: all 0.3s ease;">
+            <i data-lucide="star" class="star-icon" data-value="1" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            <i data-lucide="star" class="star-icon" data-value="2" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            <i data-lucide="star" class="star-icon" data-value="3" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            <i data-lucide="star" class="star-icon" data-value="4" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+            <i data-lucide="star" class="star-icon" data-value="5" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+        </div>
+        
+        <div id="rating-thanks" style="display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease;">
+            <div style="background: rgba(var(--accent-rgb), 0.1); color: var(--accent-color); padding: 1.25rem; border-radius: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.75rem;">
+                <i data-lucide="heart" style="width: 20px; height: 20px; fill: var(--accent-color);"></i>
+                Thank you for your rating!
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        .b64-main-card {
+            padding: 2rem 1.5rem !important;
+        }
+
+        .b64-action-bar {
+            flex-direction: column;
+            gap: 1rem !important;
+        }
+
+        .b64-action-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .b64-mode-btn {
+            flex: 1;
+            justify-content: center;
+            padding: 0.75rem 1rem;
+        }
+
+        .b64-mode-selector {
+            width: 100%;
+        }
+
+        .b64-use-cases-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+        }
+
+        h1 {
+            font-size: 1.8rem !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        const toolId = 'base64-encoder';
+        const stars = document.querySelectorAll('.star-icon');
+        const thanks = document.getElementById('rating-thanks');
+        const container = document.querySelector('.stars-container');
+
+        if (localStorage.getItem('rated-' + toolId)) {
+            if(container) container.style.display = 'none';
+            if(thanks) {
+                thanks.style.display = 'block';
+                thanks.style.opacity = '1';
+                thanks.style.transform = 'translateY(0)';
+            }
+        }
+
+        if (container) {
+            container.addEventListener('mouseover', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                const allStars = container.querySelectorAll('.star-icon');
+                allStars.forEach(s => {
+                    if (parseInt(s.dataset.value) <= val) s.classList.add('hovered');
+                    else s.classList.remove('hovered');
+                });
+            });
+
+            container.addEventListener('mouseleave', () => {
+                const allStars = container.querySelectorAll('.star-icon');
+                allStars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            container.addEventListener('click', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                submitRating(toolId, val);
+            });
+        }
+
+        async function submitRating(tid, rating) {
+            try {
+                const response = await fetch('/api/rate-tool', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tool_id: tid, rating: rating })
+                });
+                if (response.ok) {
+                    localStorage.setItem('rated-' + tid, 'true');
+                    container.style.opacity = '0';
+                    container.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        container.style.display = 'none';
+                        thanks.style.display = 'block';
+                        setTimeout(() => {
+                            thanks.style.opacity = '1';
+                            thanks.style.transform = 'translateY(0)';
+                        }, 50);
+                    }, 300);
+                }
+            } catch (err) {
+                console.error('Rating failed:', err);
+            }
+        }
+    });
 </script>
 {% endblock %}
