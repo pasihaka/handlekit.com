@@ -1,8 +1,8 @@
 const SITE = {
   name: "Google Business Profile Suspension Triage & Appeal Prep Checker",
   shortName: "GBP Suspension Triage Checker",
-  domain: "https://www.example.com",
-  ogImage: "https://www.example.com/assets/og-card.png",
+  domain: "https://handlekit.com/gbp-triage",
+  ogImage: "https://handlekit.com/gbp-triage/assets/og-card.png",
 };
 
 // Replace this disclaimer copy if you want to tighten or soften the tone later.
