@@ -847,6 +847,57 @@ def gbp_triage_redirect():
 def gbp_triage_serve(path='index.html'):
     return send_from_directory('static/gbp-tool', path)
 
+@app.route('/api/rate-tool', methods=['POST'])
+def api_rate_tool():
+    data = request.get_json()
+    if not data or 'tool_id' not in data or 'rating' not in data:
+        return jsonify({"success": False, "error": "Missing data"}), 400
+    
+    try:
+        rating = int(data['rating'])
+        if rating < 1 or rating > 5:
+            return jsonify({"success": False, "error": "Invalid rating"}), 400
+            
+        tool_id = data['tool_id']
+        # Simple list of valid tool IDs based on current tools with aggregateRating
+        valid_tools = [
+            'username-checker', 'password-generator', 'base64-encoder', 
+            'url-encoder', 'json-formatter', 'hash-generator', 'gbp-triage'
+        ]
+        if tool_id not in valid_tools:
+            return jsonify({"success": False, "error": "Invalid tool ID"}), 400
+
+        data_dir = 'data'
+        os.makedirs(data_dir, exist_ok=True)
+        file_path = os.path.join(data_dir, 'ratings.json')
+        
+        ratings = []
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                try:
+                    ratings = json.load(f)
+                except:
+                    ratings = []
+        
+        # Simple anti-spam: Hash IP with a secret salt
+        ip = request.remote_addr or 'unknown'
+        # In a real app we'd use a secret key from config, here we use a fixed salt for simplicity
+        ip_hash = hashlib.sha256(f"{ip}-handlekit-salt".encode()).hexdigest()
+
+        ratings.append({
+            "tool_id": tool_id,
+            "rating": rating,
+            "ip_hash": ip_hash,
+            "timestamp": time.time()
+        })
+        
+        with open(file_path, 'w') as f:
+            json.dump(ratings, f)
+            
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 if __name__ == '__main__':
 
     app.run(debug=True, port=5000, threaded=True)
