@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*$py.class
+env/
+venv/
+.venv/
+.env
+.vscode/
+static/gbp-tool/.browser-profile/
+static/gbp-tool/.chrome-profile/
+static/img/optimized/*
+!static/img/optimized/.gitkeep
+
+# Temporary Scripts & Debug Files
+debug_*.py
+test_*.py
+test_*.html
+ig_final_test.py
+verify_ig_logic.py
+compare_twitch_html.py
+save_twitch_bodies.py
+tmp_wordlist.py
+avail_404.html
+zuck_404.html

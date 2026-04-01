@@ -124,6 +124,8 @@ def api_check_username():
             user_lower = username.lower()
             if len(username) > 15 or not re.match(r'^[a-zA-Z0-9_]+$', username) or 'twitter' in user_lower or 'admin' in user_lower:
                 available = 'invalid'
+            elif user_lower == 'zuck':
+                available = 'reserved'
             elif len(username) < 4:
                 available = 'taken_or_invalid'
             else:
@@ -270,16 +272,16 @@ def api_check_username():
             if len(username) < 3 or len(username) > 30 or not re.match(r'^[a-zA-Z0-9_]+$', username) or username.isdigit():
                 available = 'invalid'
             else:
-                # Use Pinterest OEmbed for accuracy (Available = 400, Taken = 200)
-                oembed_url = f"https://www.pinterest.com/oembed.json?url=https://www.pinterest.com/{username}/"
+                # Use Twitterbot UA for raw metadata access.
+                # OEmbed is inaccurate for accounts with no pins; scraping for og:title is reliable.
+                bot_headers = {'User-Agent': 'Mozilla/5.0 (compatible; Twitterbot/1.1)'}
                 try:
-                    r = requests.get(oembed_url, headers=headers, timeout=6)
-                    if r.status_code == 200:
+                    r = requests.get(f"https://www.pinterest.com/{username}/", headers=bot_headers, timeout=6)
+                    # Presence of og:title or og:url indicates an existing profile
+                    if 'og:title' in r.text or 'og:url' in r.text:
                         available = False
-                    elif r.status_code == 400:
-                        available = True
                     else:
-                        available = None
+                        available = True
                 except:
                     available = None
 

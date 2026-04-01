@@ -430,6 +430,12 @@ and secure your brand before someone else does. Free and private." %}
         border: 1px solid rgba(255, 136, 0, 0.2);
     }
 
+    .status-reserved-text {
+        color: #ff9900;
+        background: rgba(255, 153, 0, 0.1);
+        border: 1px solid rgba(255, 153, 0, 0.2);
+    }
+
     /* Uncertain Badge */
     .status-uncertain {
         background: #FFB923;
@@ -658,6 +664,10 @@ and secure your brand before someone else does. Free and private." %}
             card.title = `${user} is taken or restricted on ${p.name}, click to view profile`;
             card.style.cursor = 'pointer';
             card.onclick = () => window.open(p.profileUrl + encodeURIComponent(user), '_blank');
+        } else if (available === 'reserved') {
+            badge.className = 'status-text status-reserved-text';
+            badge.innerText = 'Reserved';
+            card.title = `${user} is reserved on ${p.name} and cannot be registered.`;
         } else if (available === 'rate_limited') {
             badge.className = 'status-text status-limited-text';
             badge.innerText = 'Limited';
