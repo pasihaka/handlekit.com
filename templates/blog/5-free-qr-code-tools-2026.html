@@ -47,12 +47,41 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    @media (max-width: 768px) {
+        .bp-card {
+            padding: 1.5rem 1.25rem !important;
+            border-radius: 16px !important;
+        }
+        .bp-header {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            gap: 1rem !important;
+        }
+        .bp-header h1 {
+            font-size: 1.8rem !important;
+            line-height: 1.2 !important;
+        }
+        .bp-tldr {
+            padding: 1.25rem !important;
+            border-radius: 12px !important;
+        }
+        .bp-step {
+            padding: 1rem !important;
+        }
+        .tool-content {
+            padding-bottom: 2rem !important;
+        }
+    }
+</style>
+
 <div class="tool-content" style="max-width: 850px; margin: 0 auto; padding-bottom: 5rem;">
     <!-- ARTICLE CARD -->
-    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 3.5rem; margin-bottom: 3rem; line-height: 1.8; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+    <div class="bp-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 3.5rem; margin-bottom: 3rem; line-height: 1.8; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
         
         <!-- ARTICLE HEADER -->
-        <div style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2rem;">
+        <div class="bp-header" style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2rem;">
             <div style="background: var(--accent-gradient); width: 64px; height: 64px; border-radius: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--glow-color); flex-shrink: 0;">
                 <i data-lucide="book-open" style="color: #fff; width: 32px; height: 32px;"></i>
             </div>
@@ -62,7 +91,7 @@
         </div>
 
         <!-- TLDR BOX -->
-        <div style="background: rgba(var(--accent-rgb), 0.05); border-left: 4px solid var(--accent-color); padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin-bottom: 3rem;">
+        <div class="bp-tldr" style="background: rgba(var(--accent-rgb), 0.05); border-left: 4px solid var(--accent-color); padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin-bottom: 3rem;">
             <p style="margin: 0; font-size: 1.1rem; color: var(--text-main);">
                 <strong style="color: var(--accent-color); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TLDR:</strong> 
                 A free QR code generator is a simple online tool for creating scannable codes, ideal for quick tests or personal projects. At <strong>HandleKit</strong>, we offer a professional QR generator that provides a low-risk way to link to product guides or websites for your business.
@@ -79,7 +108,7 @@
         <p style="color: var(--text-sub); margin-bottom: 2rem;">Using a free QR code generator is a straightforward, three-step process. You simply input your data, customize the design, and download the final image.</p>
         
         <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 3rem;">
-            <div style="background: var(--code-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
+            <div class="bp-step" style="background: var(--code-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
                 <div style="display: flex; align-items: flex-start; gap: 1rem;">
                     <span style="background: var(--accent-color); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; font-size: 0.9rem;">1</span>
                     <p style="margin: 0; color: var(--text-sub); font-size: 1rem;">
@@ -87,7 +116,7 @@
                     </p>
                 </div>
             </div>
-            <div style="background: var(--code-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
+            <div class="bp-step" style="background: var(--code-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
                 <div style="display: flex; align-items: flex-start; gap: 1rem;">
                     <span style="background: var(--accent-color); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; font-size: 0.9rem;">2</span>
                     <p style="margin: 0; color: var(--text-sub); font-size: 1rem;">
@@ -95,7 +124,7 @@
                     </p>
                 </div>
             </div>
-            <div style="background: var(--code-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
+            <div class="bp-step" style="background: var(--code-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
                 <div style="display: flex; align-items: flex-start; gap: 1rem;">
                     <span style="background: var(--accent-color); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; font-size: 0.9rem;">3</span>
                     <p style="margin: 0; color: var(--text-sub); font-size: 1rem;">
@@ -130,11 +159,11 @@
         
         <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-bottom: 1rem;">
             <ul style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; margin: 0;">
-                <li style="display: flex; align-items: center; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 16px; height: 16px;"></i> I have chosen a reputable generator like HandleKit, QRCode Monkey or QRCG.</li>
-                <li style="display: flex; align-items: center; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 16px; height: 16px;"></i> I have entered the correct, final URL or text.</li>
-                <li style="display: flex; align-items: center; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 16px; height: 16px;"></i> I have customized the design but kept it simple and scannable.</li>
-                <li style="display: flex; align-items: center; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 16px; height: 16px;"></i> I have downloaded the code in a high-resolution format (like PNG).</li>
-                <li style="display: flex; align-items: center; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 16px; height: 16px;"></i> I have scanned the final code myself to confirm it works.</li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 4px;"></i> I have chosen a reputable generator like HandleKit, QRCode Monkey or QRCG.</li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 4px;"></i> I have entered the correct, final URL or text.</li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 4px;"></i> I have customized the design but kept it simple and scannable.</li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 4px;"></i> I have downloaded the code in a high-resolution format (like PNG).</li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;"><i data-lucide="check" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 4px;"></i> I have scanned the final code myself to confirm it works.</li>
             </ul>
         </div>
     </div>
