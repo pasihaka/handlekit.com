@@ -67,20 +67,27 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     .sloan-letter {
         font-family: 'Outfit', 'Inter', sans-serif;
         font-weight: 700;
-        font-size: 8rem;
+        font-size: clamp(2.5rem, 13vw, 5.5rem);
         line-height: 1;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.05em;
         user-select: none;
         color: #000;
-        /* Always black for standard Pelli-Robson */
         transition: opacity 0.3s ease;
+    }
+
+    .triplet-group {
+        display: flex;
+        gap: clamp(0.3rem, 1.5vw, 1rem);
     }
 
     #triplet-container {
         display: flex;
-        gap: 2rem;
+        gap: clamp(0.3rem, 1.5vw, 1rem);
         align-items: center;
         justify-content: center;
+        width: 100%;
+        margin-bottom: 2rem;
+        overflow: hidden;
     }
 
     /* Fullscreen Overlays (History & Global) */
@@ -118,6 +125,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         text-align: center;
         color: var(--text-main);
         box-sizing: border-box;
+        overflow: hidden;
     }
 
     .keyboard {
@@ -127,6 +135,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         width: 100%;
         max-width: 500px;
         margin-top: 2rem;
+        box-sizing: border-box;
     }
 
     .key-btn {
@@ -204,20 +213,47 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 
     @media (max-width: 600px) {
         .sloan-letter {
-            font-size: 4rem;
+            letter-spacing: 0.02em;
         }
 
         #triplet-container {
-            gap: 1rem;
+            gap: 0.3rem;
+            padding: 0 0.5rem;
+        }
+
+        .triplet-group {
+            gap: 0.3rem;
+        }
+
+        .hud-stat {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+        }
+
+        .keyboard {
+            gap: 0.35rem;
+            padding: 0 0.25rem;
         }
 
         .key-btn {
-            padding: 1rem;
-            font-size: 1.2rem;
+            padding: 0.7rem 0.4rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
         }
 
         #test-stage {
             min-height: 400px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .keyboard {
+            gap: 0.25rem;
+        }
+
+        .key-btn {
+            padding: 0.6rem 0.3rem;
+            font-size: 1rem;
         }
     }
 
@@ -296,10 +332,10 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 
             <!-- Active Test UI -->
             <div id="test-ui"
-                style="display: none; width: 100%; height: 100%; min-height: 550px; padding: 60px 20px; flex-direction: column; align-items: center; justify-content: center; position: relative; box-sizing: border-box;">
+                style="display: none; width: 100%; height: 100%; min-height: 550px; padding: 60px 20px; flex-direction: column; align-items: center; justify-content: center; position: relative; box-sizing: border-box; overflow: hidden;">
                 <div class="test-hud">
                     <div class="hud-stat">LOG CS: <span id="hud-log-cs">0.00</span></div>
-                    <div class="hud-stat">STEP: <span id="hud-level">1</span>/16</div>
+                    <div class="hud-stat">LINE: <span id="hud-level">1</span>/8</div>
                 </div>
 
                 <div id="triplet-container"></div>
@@ -308,6 +344,9 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                     <div class="dot" id="dot-0"></div>
                     <div class="dot" id="dot-1"></div>
                     <div class="dot" id="dot-2"></div>
+                    <div class="dot" id="dot-3"></div>
+                    <div class="dot" id="dot-4"></div>
+                    <div class="dot" id="dot-5"></div>
                 </div>
 
                 <div class="keyboard">
@@ -682,6 +721,8 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         nextLevel();
     }
 
+    let tripletCorrectCount = 0; // Tracks correct letters for the current triplet (0-2 or 3-5)
+
     function nextLevel() {
         if (currentStepIdx >= STEPS.length) {
             endTest();
@@ -689,10 +730,11 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         }
 
         currentInputIdx = 0;
-        correctCount = 0;
+        tripletCorrectCount = 0;
         currentTriplet = [];
 
-        for (let i = 0; i < 3; i++) {
+        // Generate 6 letters (3 for each of the two triplets on this line)
+        for (let i = 0; i < 6; i++) {
             currentTriplet.push(SLOAN_LETTERS[Math.floor(Math.random() * SLOAN_LETTERS.length)]);
         }
 
@@ -700,22 +742,41 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     }
 
     function renderLevel() {
-        const step = STEPS[currentStepIdx];
+        const baseStep = STEPS[currentStepIdx];
+        const secondStep = STEPS[currentStepIdx + 1] || baseStep; // Fallback if odd number of steps (rare)
+        
         const container = document.getElementById('triplet-container');
         container.innerHTML = '';
 
-        currentTriplet.forEach((letter) => {
+        // Create Triplet Group 1
+        const group1 = document.createElement('div');
+        group1.className = 'triplet-group';
+        for (let i = 0; i < 3; i++) {
             const el = document.createElement('div');
             el.className = 'sloan-letter';
-            el.innerText = letter;
-            el.style.opacity = step.contrast;
-            container.appendChild(el);
-        });
+            el.innerText = currentTriplet[i];
+            el.style.opacity = baseStep.contrast;
+            group1.appendChild(el);
+        }
+        container.appendChild(group1);
 
-        document.getElementById('hud-log-cs').innerText = step.log.toFixed(2);
-        document.getElementById('hud-level').innerText = currentStepIdx + 1;
+        // Create Triplet Group 2
+        const group2 = document.createElement('div');
+        group2.className = 'triplet-group';
+        for (let i = 3; i < 6; i++) {
+            const el = document.createElement('div');
+            el.className = 'sloan-letter';
+            el.innerText = currentTriplet[i];
+            el.style.opacity = secondStep.contrast;
+            group2.appendChild(el);
+        }
+        container.appendChild(group2);
 
-        for (let i = 0; i < 3; i++) {
+        document.getElementById('hud-log-cs').innerText = baseStep.log.toFixed(2);
+        document.getElementById('hud-level').innerText = (currentStepIdx / 2) + 1;
+
+        // Reset dots
+        for (let i = 0; i < 6; i++) {
             document.getElementById(`dot-${i}`).className = 'dot';
         }
         document.getElementById('dot-0').classList.add('active');
@@ -723,24 +784,38 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 
     function handleInput(letter) {
         const isCorrect = (letter === currentTriplet[currentInputIdx]);
-        if (isCorrect) correctCount++;
+        if (isCorrect) tripletCorrectCount++;
 
         const dot = document.getElementById(`dot-${currentInputIdx}`);
         dot.classList.remove('active');
         dot.classList.add(isCorrect ? 'success' : 'fail');
 
-        currentInputIdx++;
-
-        if (currentInputIdx < 3) {
-            document.getElementById(`dot-${currentInputIdx}`).classList.add('active');
-        } else {
-            if (correctCount >= 2) {
+        // Check Logic for Triplet 1 (Indices 0, 1, 2)
+        if (currentInputIdx === 2) {
+            if (tripletCorrectCount >= 2) {
                 finalScore = STEPS[currentStepIdx].log;
-                currentStepIdx++;
-                setTimeout(nextLevel, 400);
+                // Move to second triplet on same line
+                tripletCorrectCount = 0;
             } else {
-                endTest();
+                return setTimeout(endTest, 400);
             }
+        }
+
+        // Check Logic for Triplet 2 (Indices 3, 4, 5)
+        if (currentInputIdx === 5) {
+            if (tripletCorrectCount >= 2) {
+                finalScore = STEPS[currentStepIdx + 1].log;
+                currentStepIdx += 2;
+                return setTimeout(nextLevel, 400);
+            } else {
+                return setTimeout(endTest, 400);
+            }
+        }
+
+        // Increment and highlighting
+        currentInputIdx++;
+        if (currentInputIdx < 6) {
+            document.getElementById(`dot-${currentInputIdx}`).classList.add('active');
         }
     }
 
