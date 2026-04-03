@@ -1,0 +1,318 @@
+{% set title = "Pelli-Robson Contrast Sensitivity Test: How It Works, Scoring, Clinical Uses, and Limits | HandleKit Articles" %}
+{% set description = "A scientific, SEO-optimized guide to the Pelli-Robson contrast sensitivity test, including how the chart works, scoring, interpretation, clinical relevance, and the limits of online testing." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "headline": "Pelli-Robson Contrast Sensitivity Test: How It Works, Scoring, Clinical Uses, and Limits",
+  "name": "Pelli-Robson Contrast Sensitivity Test: How It Works, Scoring, Clinical Uses, and Limits",
+  "description": "Editorially reviewed educational article about the Pelli-Robson contrast sensitivity test, including how the chart works, log scale scoring, clinical uses, and the limits of online testing.",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "HandleKit Editorial Team"
+  },
+  "editor": {
+    "@type": "Organization",
+    "name": "HandleKit Editorial Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "HandleKit"
+  },
+  "datePublished": "2026-04-03",
+  "dateModified": "2026-04-03",
+  "educationalUse": "patient education",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://handlekit.com/articles/pelli-robson-contrast-sensitivity"
+  },
+  "about": {
+    "@type": "MedicalTest",
+    "name": "Pelli-Robson contrast sensitivity test",
+    "alternateName": "Pelli-Robson chart",
+    "usedToDiagnose": [
+      {
+        "@type": "MedicalCondition",
+        "name": "glaucoma"
+      },
+      {
+        "@type": "MedicalCondition",
+        "name": "cataract"
+      }
+    ]
+  },
+  "citation": [
+    "Kaur K, Gurnani B. Contrast Sensitivity. StatPearls. National Center for Biotechnology Information.",
+    "Pelli DG, Robson JG, Wilkins AJ. The design of a new letter chart for measuring contrast sensitivity. Clinical Vision Sciences. 1988;2:187–199.",
+    "National Eye Institute. Glaucoma: What You Need to Know. NIH; 2023."
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<style>
+    .article-wrap {
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 3rem 20px 6rem;
+        color: var(--text-sub);
+        line-height: 1.85;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+
+    .article-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 3rem;
+    }
+
+    .eyebrow {
+        font-family: var(--font-heading);
+        color: var(--accent-color);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .article-header h1 {
+        font-family: var(--font-heading);
+        font-weight: 900;
+        color: var(--text-main);
+        font-size: 2.8rem;
+        letter-spacing: -2px;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+    }
+
+    .meta {
+        color: #555;
+        font-size: 0.85rem;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    .article-body h2 {
+        color: var(--text-main);
+        font-weight: 800;
+        font-size: 1.9rem;
+        margin-top: 4.5rem;
+        margin-bottom: 1.5rem;
+        font-family: var(--font-heading);
+        letter-spacing: -0.5px;
+    }
+
+    .article-body h2::first-letter {
+        color: var(--accent-color);
+    }
+
+    .article-body p {
+        font-size: 1.1rem;
+        margin-bottom: 1.8rem;
+    }
+
+    .article-body strong {
+        color: var(--text-main);
+        font-weight: 700;
+    }
+
+    .article-body figure {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        border-radius: 20px;
+        margin: 4.5rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .article-body figure img {
+        max-width: 100% !important;
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        background: #fdfdfd;
+        padding: 1rem;
+        transition: all 0.4s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        display: block;
+        box-sizing: border-box;
+    }
+
+    .article-body figure img:hover {
+        filter: brightness(1.05);
+        box-shadow: 0 10px 40px rgba(0, 210, 255, 0.15);
+    }
+
+    .article-body figcaption {
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: #777;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .article-body ul {
+        margin-bottom: 2.5rem;
+        padding-left: 2rem;
+    }
+
+    .article-body ul li {
+        margin-bottom: 1rem;
+        font-size: 1.05rem;
+    }
+
+    .article-body .refs {
+        font-size: 0.9rem;
+        color: #555;
+        line-height: 1.8;
+        margin-top: 3rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 3rem;
+    }
+
+    .article-body .refs li {
+        margin-bottom: 1.2rem;
+    }
+    
+    sup { font-size: 0.8em; }
+    sup a { color: var(--accent-color); text-decoration: none; }
+
+    .trust-box, .takeaways {
+      background: rgba(0, 84, 166, 0.03);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-color);
+      padding: 1.5rem 2rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2.5rem 0;
+    }
+
+    .trust-box h2, .takeaways h2 {
+      border-top: 0 !important;
+      padding-top: 0 !important;
+      margin: 0 0 10px !important;
+      font-size: 1.3rem !important;
+      letter-spacing: normal !important;
+    }
+    
+    .trust-box h2::first-letter, .takeaways h2::first-letter {
+        color: inherit !important;
+    }
+
+    .note {
+      background: rgba(0, 84, 166, 0.03);
+      border-left: 4px solid var(--accent-color);
+      padding: 1.2rem 1.5rem;
+      margin: 2.5rem 0;
+      font-size: 1rem;
+      border-radius: 0 12px 12px 0;
+    }
+
+    @media (max-width: 600px) {
+        .article-wrap { padding: 2rem 16px 4rem; }
+        .article-header { margin-bottom: 2.5rem; padding-bottom: 2rem; }
+        .article-header h1 { font-size: 2.2rem; letter-spacing: -1px; }
+        .article-body h2 { font-size: 1.6rem; margin-top: 3rem; }
+        .article-body figure { padding: 1rem; margin: 3rem 0; border-radius: 12px; }
+        .article-body figure img { padding: 0.5rem; }
+        .article-body p { font-size: 1.05rem; line-height: 1.7; }
+    }
+</style>
+
+<div class="article-wrap">
+    <article class="article-body">
+        <header class="article-header">
+            <span class="eyebrow">Vision Science & Clinical Research</span>
+            <h1>Pelli-Robson Contrast Sensitivity Test: How It Works, Scoring, Clinical Uses, and Limits</h1>
+            <p class="editorial-byline" style="color: #666; font-size: 0.98rem; margin: 1rem 0 0.5rem;"><strong>Author:</strong> HandleKit Editorial Team | <strong>Fact-Checked:</strong> Verified against peer-reviewed medical literature</p>
+            <div class="meta" style="opacity: 0.6; font-size: 0.85rem;">SEO focus: <strong>pelli robson contrast sensitivity test</strong>, <strong>contrast sensitivity test</strong>, <strong>contrast sensitivity eye test</strong>, <strong>pelli robson chart</strong>, and <strong>pelli robson chart scoring</strong>.</div>
+        </header>
+
+        <p class="lede" style="font-size: 1.25rem; color: var(--text-main); font-weight: 500; margin-bottom: 2rem;">The Pelli-Robson contrast sensitivity test is one of the most widely used clinical tools for measuring how well a person sees low-contrast detail. Unlike a standard eye chart, which mainly tests whether very small high-contrast letters can be resolved, the Pelli-Robson chart tests how faint a large letter can become before it disappears into the background.<sup><a href="#ref1">1</a></sup></p>
+
+        <div class="trust-box">
+            <h2>Editorial Methodology</h2>
+            <p>This article was editorially reviewed and rigorously fact-checked against primary and high-trust medical sources, including StatPearls, the National Eye Institute, the original Pelli-Robson design paper, official chart instructions, and peer-reviewed ophthalmology literature cited below.</p>
+        </div>
+
+        <section class="takeaways" aria-labelledby="key-takeaways-heading">
+            <h2 id="key-takeaways-heading">Key Takeaways</h2>
+            <ul>
+                <li>Pelli-Robson results are reported on a logarithmic contrast scale, with each triplet changing by 0.15 log units.</li>
+                <li>The test complements Snellen visual acuity because it measures visibility of low-contrast detail, not just the ability to resolve very small high-contrast letters.</li>
+                <li>It is clinically useful in conditions such as glaucoma and cataract, where patients may report washed-out or foggy vision despite relatively preserved high-contrast acuity.</li>
+            </ul>
+        </section>
+
+        <h2>What the Pelli-Robson contrast sensitivity test measures</h2>
+        <p>Visual acuity and contrast sensitivity are related, but they are not the same thing. A person can read high-contrast black letters on a white chart reasonably well and still struggle in the situations that matter most in daily life: seeing faces in dim light, detecting a curb edge in fog, reading pale text, or driving at night. That gap is why contrast sensitivity testing remains clinically important. Contrast sensitivity measures the ability to detect small differences in luminance between an object and its background, whereas standard acuity testing mainly asks whether very small, high-contrast detail can be resolved. In other words, acuity measures size limits under ideal contrast; contrast sensitivity measures visibility when contrast is poor.<sup><a href="#ref1">1</a></sup><sup><a href="#ref6">6</a></sup></p>
+
+        <figure>
+            <img src="{{ url_for('static', filename='img/articles/csf_vs_va_schematic.jpg') }}" alt="Schematic comparing visual acuity testing and contrast sensitivity function testing" loading="lazy" width="691" height="429">
+            <figcaption><strong>Figure 1.</strong> Schematic comparison of visual acuity and contrast sensitivity function testing. Source image adapted from an open-access figure in Liu et&nbsp;al., <em>Investigative Ophthalmology &amp; Visual Science</em> (2024), available via PMC.<sup><a href="#ref8">8</a></sup></figcaption>
+        </figure>
+
+        <h2>How the Pelli-Robson chart works</h2>
+        <p>The Pelli-Robson contrast sensitivity test became influential because it brought this concept into routine clinical practice in a simple chart format. In the original design paper, Denis Pelli, John Robson, and Arnold Wilkins argued that a practical clinic test should resemble familiar letter charts rather than laboratory grating experiments. Their solution was elegant: keep the letters large and constant in size, but progressively reduce their contrast instead.<sup><a href="#ref2">2</a></sup> That design makes the test fast, intuitive, and clinically useful for detecting losses that may be missed by acuity alone.</p>
+
+        <p>A standard Pelli-Robson chart uses Sloan letters arranged in triplets. Each group of three letters has the same contrast, and each successive triplet is lower in contrast than the one before it. Modern instructions specify a viewing distance of about 1 meter, best distance correction, careful control of chart illumination, and avoidance of glare. The recommended luminance of the white background is about 85 cd/m², with an acceptable range of 60 to 120 cd/m².<sup><a href="#ref3">3</a></sup> Those details matter because contrast sensitivity is highly sensitive to test conditions. A chart that is dimly lit, unevenly illuminated, or viewed from the wrong distance is not measuring the same thing as a properly standardized examination.</p>
+
+        <figure id="fig2">
+      <img src="{{ url_for('static', filename='img/articles/pelli_robson_chart.png') }}" alt="Example of a Pelli-Robson contrast sensitivity chart with large letters that fade by row" loading="lazy" style="max-width: 320px; width: 100%;">
+      <figcaption><strong>Figure 2.</strong> Example of a Pelli-Robson chart. The letters stay the same size while contrast progressively decreases. Source image: EyeWiki / American Academy of Ophthalmology educational material.<sup><a href="#ref9">9</a></sup></figcaption>
+    </figure>
+
+        <h2>Pelli-Robson chart scoring and interpretation</h2>
+        <p>In ordinary clinical use, the patient reads across the chart from the highest-contrast letters toward the faintest ones. Standard Pelli-Robson instructions say not to stop too early; the patient should continue guessing until two of the three letters in a triplet are missed. The score is then assigned from the faintest triplet in which at least two letters were identified correctly.<sup><a href="#ref3">3</a></sup> Because the contrast steps are logarithmic, the result is reported as log contrast sensitivity, usually on a scale that runs from very poor performance near 0.00 to excellent performance around 2.25. Each triplet differs by 0.15 log units, which makes the score clinically interpretable and practical for follow-up testing.<sup><a href="#ref1">1</a></sup><sup><a href="#ref2">2</a></sup></p>
+
+        <p>This scoring system is one reason the Pelli-Robson chart has lasted. It is not just easy to administer; it is also reasonably repeatable. In a classic reliability study, Elliott and colleagues found that scores were repeatable to within about ±0.15 log units, or roughly one contrast step, and suggested that a change of about 0.30 log units is more likely to represent a clinically meaningful shift rather than ordinary test-retest noise.<sup><a href="#ref4">4</a></sup> That does not make the chart perfect, but it gives clinicians a realistic sense of what amount of change deserves attention.</p>
+
+        <p>Normal values are also not completely fixed across age groups. In a normative study summarized in PubMed, mean monocular Pelli-Robson results ranged from about 1.84 log units in adults aged 20 to 39 years to about 1.68 log units in adults aged 60 years and older.<sup><a href="#ref5">5</a></sup> Binocular values are often slightly better than monocular values, and the official instructions note that binocular log contrast sensitivity is normally about 0.15 higher than monocular performance.<sup><a href="#ref3">3</a></sup> This age effect matters because an older patient may report “foggy” or washed-out vision even when their high-contrast acuity still looks good on paper.</p>
+
+        <h2>Clinical uses of the contrast sensitivity eye test</h2>
+        <p>Clinically, the value of contrast sensitivity testing is that it captures aspects of visual function closer to real-world performance. Reviews and comparative studies have linked reduced contrast sensitivity to problems with driving, reading, and navigation, and have noted its usefulness in conditions such as glaucoma, cataract, and optic neuritis.<sup><a href="#ref1">1</a></sup><sup><a href="#ref6">6</a></sup> The National Eye Institute’s patient information on glaucoma also describes reduced contrast sensitivity as a reason colors may look washed out or vision may seem foggy, even before a patient can clearly describe the change.<sup><a href="#ref7">7</a></sup> The important point is that poor contrast sensitivity is not specific to one disease. It is a functional sign that can arise from many ocular and neurologic problems, which is why the test is best understood as part of a broader eye examination rather than as a stand-alone diagnosis.</p>
+
+        <figure id="fig3">
+      <img src="{{ url_for('static', filename='img/articles/nei_glaucoma_contrast_simulation.png') }}" alt="National Eye Institute simulation showing washed-out vision associated with reduced contrast sensitivity in glaucoma" loading="lazy" style="max-width: 640px; width: 100%;">
+      <figcaption><strong>Figure 3.</strong> National Eye Institute educational simulation illustrating how glaucoma-related vision changes can include washed-out, low-contrast vision. Source image cropped from the NEI patient guide <em>Glaucoma: What You Need to Know</em>.<sup><a href="#ref7">7</a></sup></figcaption>
+    </figure>
+
+        <h2>Limits of the Pelli-Robson test</h2>
+        <p>At the same time, the Pelli-Robson test has limitations. It samples contrast vision at one optotype size and therefore reflects only part of the full contrast sensitivity function, not the entire range of spatial vision. Newer quantitative tests can measure contrast sensitivity across multiple spatial frequencies, which is useful in research and in some specialized clinical settings.<sup><a href="#ref8">8</a></sup> The Pelli-Robson chart also depends on letter recognition, so literacy, attention, and cognition can influence results. In pediatric or low-literacy settings, other contrast tests may be more suitable.<sup><a href="#ref6">6</a></sup> None of this makes the Pelli-Robson chart obsolete; it simply defines what it does well and what it does not do.</p>
+
+        <h2>Can a free online contrast sensitivity test replace a clinical chart?</h2>
+        <p>These limitations are especially relevant when contrast sensitivity is measured on screens. Online and tablet-based tests can be useful for screening, remote follow-up, or rough self-monitoring, but they are not automatically equivalent to a calibrated clinical chart. Comparative studies have shown that tablet-based contrast sensitivity testing can correlate with gold-standard methods, yet agreement is imperfect, and some electronic systems perform less well at very low contrast levels.<sup><a href="#ref6">6</a></sup><sup><a href="#ref10">10</a></sup> That is not surprising. Screen luminance, anti-glare coatings, brightness settings, browser zoom, viewing distance, ambient light, and panel technology all affect what the user actually sees. A free online contrast sensitivity test can therefore be informative, but its strongest use is as a structured screening tool or a consistency-based self-check, not as a substitute for a standardized office measurement.</p>
+
+        <div class="note"><strong>Practical takeaway:</strong> A digital contrast sensitivity test is most defensible when it is framed as a screening or monitoring tool, not a diagnosis. Standardized distance, brightness, and glare control remain essential if you want results that are meaningfully comparable over time.<sup><a href="#ref3">3</a></sup><sup><a href="#ref10">10</a></sup></div>
+
+        <h2>Conclusion</h2>
+        <p>The best scientific way to frame the Pelli-Robson contrast sensitivity test is this: it is a robust, clinically proven method for measuring how faint a large letter can be before it disappears into the background. It complements visual acuity rather than replacing it. When performed under standardized conditions, it can reveal meaningful functional loss, track change over time, and explain symptoms that ordinary acuity testing may miss. When adapted to digital platforms, it remains useful, but only if its clinical assumptions about distance, luminance, contrast calibration, and interpretation are respected. That combination of simplicity, physiologic relevance, and practical repeatability is why the Pelli-Robson chart still matters.</p>
+
+        <h2>References</h2>
+        <ol class="refs">
+            <li id="ref1">Kaur K, Gurnani B. <em>Contrast Sensitivity</em>. StatPearls. Updated 2023. National Center for Biotechnology Information. Available at: <a href="https://www.ncbi.nlm.nih.gov/books/NBK580542/">https://www.ncbi.nlm.nih.gov/books/NBK580542/</a></li>
+            <li id="ref2">Pelli DG, Robson JG, Wilkins AJ. The design of a new letter chart for measuring contrast sensitivity. <em>Clinical Vision Sciences</em>. 1988;2:187–199. PDF available at: <a href="https://visualstress.info/1988-72.pdf">https://visualstress.info/1988-72.pdf</a></li>
+            <li id="ref3">Pelli D, Robson J. <em>The Pelli-Robson Chart Instructions</em>. Precision Vision; 2013. Available at: <a href="https://kaypictures.co.uk/wp-content/uploads/2022/04/Pelli-R.pdf">https://kaypictures.co.uk/wp-content/uploads/2022/04/Pelli-R.pdf</a></li>
+            <li id="ref4">Elliott DB, Bullimore MA, Bailey IL. The reliability of the Pelli-Robson contrast sensitivity chart. <em>Ophthalmic Physiol Opt</em>. 1990. PubMed: <a href="https://pubmed.ncbi.nlm.nih.gov/2330208/">https://pubmed.ncbi.nlm.nih.gov/2330208/</a></li>
+            <li id="ref5">Mäntyjärvi M, Laitinen T. Normal values for the Pelli-Robson contrast sensitivity test. <em>J Cataract Refract Surg</em>. 2001. PubMed: <a href="https://pubmed.ncbi.nlm.nih.gov/11226793/">https://pubmed.ncbi.nlm.nih.gov/11226793/</a></li>
+            <li id="ref6">Thayaparan K, Crossland MD, Rubin GS. Clinical assessment of two new contrast sensitivity charts. <em>Br J Ophthalmol</em>. 2007;91(6):749–752. Available at: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1955579/">https://pmc.ncbi.nlm.nih.gov/articles/PMC1955579/</a></li>
+            <li id="ref7">National Eye Institute. <em>Glaucoma: What You Need to Know</em>. NIH; 2023. Available at: <a href="https://www.nei.nih.gov/sites/default/files/2023-08/Glaucoma_WhatYouNeedToKnow_508c.pdf">https://www.nei.nih.gov/sites/default/files/2023-08/Glaucoma_WhatYouNeedToKnow_508c.pdf</a></li>
+            <li id="ref8">Liu J, Huang C, et al. Novel quantitative contrast sensitivity function enhances the prediction of treatment outcome and recurrence in amblyopia. <em>Invest Ophthalmol Vis Sci</em>. 2024;65(5):31. Available at: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11114618/">https://pmc.ncbi.nlm.nih.gov/articles/PMC11114618/</a></li>
+            <li id="ref9">EyeWiki. <em>Pediatric Low Vision</em>. Figure showing Pelli Robson chart. Available at: <a href="https://eyewiki.org/Pediatric_Low_Vision">https://eyewiki.org/Pediatric_Low_Vision</a></li>
+            <li id="ref10">Varadaraj V, Assi L, et al. Evaluation of tablet-based tests of visual acuity and contrast sensitivity in older adults. <em>Transl Vis Sci Technol</em>. 2020. PubMed: <a href="https://pubmed.ncbi.nlm.nih.gov/33185485/">https://pubmed.ncbi.nlm.nih.gov/33185485/</a></li>
+        </ol>
+
+        <p class="footer-note" style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color); font-size: 0.95rem; color: #777;">Educational content only. This article was editorially reviewed and fact-checked against the cited medical literature for educational purposes, but it does not replace a professional eye examination, diagnosis, or treatment plan from an optometrist or ophthalmologist.</p>
+    </article>
+</div>
+{% endblock %}

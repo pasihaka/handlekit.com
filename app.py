@@ -9,6 +9,11 @@ import io
 import uuid
 import hashlib
 import json
+import re
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'), override=True)
+print(f"DEBUG: GOOGLE_API_KEY loaded: {os.environ.get('GOOGLE_API_KEY') is not None}")
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -464,6 +469,10 @@ def articles_list():
 def article_jnd_perception():
     return render_template('article_jnd.html')
 
+@app.route('/articles/pelli-robson-contrast-sensitivity')
+def article_pelli_robson():
+    return render_template('article_pelli_robson.html')
+
 @app.route('/blog')
 def blog_list():
     return render_template('blog_list.html')
@@ -848,6 +857,7 @@ def gbp_triage_redirect():
 @app.route('/gbp-triage/<path:path>')
 def gbp_triage_serve(path='index.html'):
     return send_from_directory('static/gbp-tool', path)
+
 
 @app.route('/api/rate-tool', methods=['POST'])
 def api_rate_tool():

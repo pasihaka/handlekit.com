@@ -1,6 +1,5 @@
 {% set title = "Just Noticeable Difference (JND): Weber's Law & Perception | HandleKit Articles" %}
-{% set description = "A deep dive into JND, Weber's Law, and how human sensory perception works. Learn why relative
-scaling is the key to design, marketing, and science." %}
+{% set description = "A deep dive into JND, Weber's Law, and how human sensory perception works. Learn why relative scaling is the key to design, marketing, and science." %}
 {% set og_image = "jnd-og.png" %}
 {% extends "layout.html" %}
 
@@ -11,7 +10,8 @@ scaling is the key to design, marketing, and science." %}
   "@type": "Article",
   "headline": "Just Noticeable Difference (JND): Definition, Weber's Law, and Real-World Examples",
   "description": "A clear, SEO-friendly guide to Just Noticeable Difference (JND), Weber's Law, and practical applications in perception, design, and marketing.",
-  "author": { "@type": "Organization", "name": "HandleKit Research Lab" },
+  "author": { "@type": "Organization", "name": "HandleKit Editorial Team" },
+  "editor": { "@type": "Organization", "name": "HandleKit Editorial Team" },
   "keywords": ["Just Noticeable Difference", "JND", "Weber's Law", "difference threshold", "psychophysics", "sensory perception"],
   "articleSection": ["Psychology", "Neuroscience", "Perception"],
   "inLanguage": "en",
@@ -32,10 +32,11 @@ scaling is the key to design, marketing, and science." %}
     .article-wrap {
         max-width: 840px;
         margin: 0 auto;
-        padding-top: 3rem;
-        padding-bottom: 6rem;
+        padding: 3rem 20px 6rem;
         color: var(--text-sub);
         line-height: 1.85;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
     }
 
     .article-header {
@@ -63,7 +64,14 @@ scaling is the key to design, marketing, and science." %}
         font-size: 2.8rem;
         letter-spacing: -2px;
         line-height: 1.1;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .editorial-byline {
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
     }
 
     .meta {
@@ -105,7 +113,6 @@ scaling is the key to design, marketing, and science." %}
         font-family: 'Roboto Mono', monospace;
         font-size: 2rem;
         color: var(--text-main);
-        /* Theme-aware color for readability */
         margin: 3rem 0;
         box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     }
@@ -116,23 +123,27 @@ scaling is the key to design, marketing, and science." %}
         padding: 1.5rem;
         border-radius: 20px;
         margin: 4rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .article-body figure img {
+        max-width: 100% !important;
         width: 100%;
         border-radius: 8px;
         background: #fdfdfd;
-        /* Solid light background for readability of black text/lines */
         padding: 1rem;
         transition: all 0.4s ease;
         border: 1px solid rgba(255, 255, 255, 0.05);
         display: block;
+        height: auto;
+        box-sizing: border-box;
     }
 
     .article-body figure img:hover {
         filter: brightness(1.05);
         box-shadow: 0 10px 40px rgba(0, 210, 255, 0.25);
-        /* Cyan glow visible in both Light and Dark modes */
     }
 
     .article-body figcaption {
@@ -166,6 +177,52 @@ scaling is the key to design, marketing, and science." %}
         font-size: 1.05rem;
     }
 
+    .trust-box,
+    .key-takeaways,
+    .footer-note {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 18px;
+        padding: 1.35rem 1.5rem;
+    }
+
+    .trust-box,
+    .key-takeaways {
+        margin: 2rem 0 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .trust-box,
+    .key-takeaways {
+        border-left: 4px solid var(--accent-color);
+    }
+
+    .trust-box-title,
+    .key-takeaways h2 {
+        color: var(--text-main);
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.2px;
+    }
+
+    .key-takeaways h2 {
+        margin-top: 0;
+    }
+
+    .key-takeaways ul {
+        margin-bottom: 0;
+        padding-left: 1.3rem;
+    }
+
+    .key-takeaways li {
+        margin-bottom: 0.8rem;
+    }
+
+    .key-takeaways li:last-child {
+        margin-bottom: 0;
+    }
+
     .article-body .refs {
         list-style: none;
         padding: 0;
@@ -181,7 +238,13 @@ scaling is the key to design, marketing, and science." %}
         margin-bottom: 1.2rem;
     }
 
-    /* Magnet style for articles */
+    .footer-note {
+        margin-top: 2rem;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
     .tool-magnet {
         background: rgba(0, 210, 255, 0.05);
         border: 1px solid rgba(0, 210, 255, 0.2);
@@ -193,6 +256,131 @@ scaling is the key to design, marketing, and science." %}
         flex-wrap: wrap;
         gap: 2rem;
         margin-top: 5rem;
+    }
+
+    /* Simulator Styles */
+    .jnd-simulator {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 4rem 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    .jnd-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .jnd-header h3 {
+        font-family: var(--font-heading);
+        color: var(--text-main);
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        margin-top: 0;
+    }
+    .jnd-header p {
+        font-size: 0.95rem;
+        color: var(--text-sub);
+        margin: 0;
+    }
+    .jnd-displays {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 2.5rem;
+    }
+    .jnd-swatch-container {
+        text-align: center;
+        width: 140px;
+    }
+    .jnd-swatch {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 16px;
+        border: 2px solid var(--border-color);
+        margin-bottom: 1rem;
+        transition: background-color 0.1s;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+    }
+    .jnd-label {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.9rem;
+        color: var(--text-main);
+        font-weight: 600;
+    }
+    .jnd-value {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--accent-color);
+        margin-top: 0.25rem;
+    }
+    .jnd-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 500px;
+        margin: 0 auto 2.5rem;
+    }
+    .jnd-control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .jnd-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        background: var(--input-bg);
+        border-radius: 4px;
+        outline: none;
+    }
+    .jnd-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--accent-color);
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+    .jnd-slider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+    .jnd-results {
+        background: var(--code-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px dashed var(--border-color);
+    }
+    .jnd-stats {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 1rem;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.95rem;
+    }
+    .jnd-status {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    .status-noticeable {
+        background: rgba(0, 210, 255, 0.15);
+        color: #00d2ff;
+        border: 1px solid rgba(0, 210, 255, 0.3);
+    }
+    .status-hidden {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-sub);
+        border: 1px solid var(--border-color);
     }
 
     @media (max-width: 600px) {
@@ -210,20 +398,39 @@ scaling is the key to design, marketing, and science." %}
             text-align: center;
             gap: 1.5rem;
         }
+
+        .jnd-displays { gap: 1rem; }
+        .jnd-swatch-container { width: 120px; }
+        .jnd-stats { flex-direction: column; gap: 0.5rem; }
     }
 </style>
 
 <div class="article-wrap">
-    <header class="article-header">
-        <span class="eyebrow">Psychology & Sensory Perception</span>
-        <h1>Just Noticeable Difference (JND): Definition, Weber's Law, Examples, and Applications</h1>
-        <div class="meta">HandleKit Research Lab • 15 min read • Updated March 2026</div>
-    </header>
+    <article class="article-body">
+        <header class="article-header">
+            <span class="eyebrow">Psychology & Sensory Perception</span>
+            <h1>Just Noticeable Difference (JND): Definition, Weber's Law, Examples, and Applications</h1>
+            <div class="editorial-byline">By HandleKit Editorial Team • Fact-checked against foundational psychophysics literature and standards</div>
+            <div class="meta">15 min read • Updated April 2026</div>
+        </header>
 
-    <div class="article-body">
         <p>Just Noticeable Difference, or JND, describes the smallest change in a stimulus that a person can detect. It
             is one of the key ideas in psychophysics because it links measurable changes in the physical world to what
             people actually notice.</p>
+
+        <div class="trust-box">
+            <div class="trust-box-title">Editorial Methodology</div>
+            <p>This article was editorially reviewed and fact-checked against foundational psychophysics sources, including classic works by Weber and Fechner, modern perception textbooks, and referenced standards such as ISO 226. The goal is to present a clear educational summary grounded in established scientific literature rather than unsupported generalizations.</p>
+        </div>
+
+        <section class="key-takeaways" aria-labelledby="key-takeaways-title">
+            <h2 id="key-takeaways-title">Key Takeaways</h2>
+            <ul>
+                <li>Just Noticeable Difference (JND) is the smallest change in a stimulus that a person can detect reliably.</li>
+                <li>Weber's Law explains that perception is based on proportional change, not just absolute change.</li>
+                <li>JND helps explain practical decisions in sound, brightness, pricing, design, and data compression.</li>
+            </ul>
+        </section>
 
         <h2>What Is Just Noticeable Difference?</h2>
         <p>The Just Noticeable Difference, also referred to as the difference threshold, is the minimum difference in
@@ -242,7 +449,7 @@ scaling is the key to design, marketing, and science." %}
 
         <figure>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Weber-Fechner_law_demo_-_dots.svg/960px-Weber-Fechner_law_demo_-_dots.svg.png"
-                alt="Weber-Fechner Law Demonstration Dots">
+                alt="Weber-Fechner Law Demonstration Dots" loading="lazy" width="800" height="400">
             <figcaption><strong>Figure 1.</strong> Illustration of the Weber-Fechner law in visual perception. The same
                 absolute increase in dots is easier to detect at a lower baseline than at a higher baseline.
             </figcaption>
@@ -259,11 +466,10 @@ scaling is the key to design, marketing, and science." %}
         </div>
 
         <p>In this equation, ΔI represents the Just Noticeable Difference, I represents the original level of
-            stimulation, and k represents the Weber fraction. This equation is important because it reveals the way in
-            which the Just Noticeable Difference changes with the original level of stimulation. In other words, the
-            equation reveals the way in which the Just Noticeable Difference changes with the original level of
-            stimulation. This is evident in Figure 1, which reveals the way in which the Just Noticeable Difference
-            changes with the original level of stimulation.</p>
+            stimulation, and k represents the Weber fraction. The key implication is that detectable change depends on
+            proportion rather than absolute magnitude. A one-unit increase may be obvious when the baseline is low, yet
+            imperceptible when the baseline is already large. Figure 1 illustrates this point: the same absolute
+            increase is easier to notice when the starting level is small than when it is already high.</p>
         <p>Gustav Fechner, a German scientist, extended the ideas of Weber and helped to establish the science of
             psychophysics. The work of Fechner was important as it helped to shift the debate from specific instances to
             a more general theory of the relationship between sensations and the intensity of the stimuli (Fechner,
@@ -279,7 +485,7 @@ scaling is the key to design, marketing, and science." %}
 
         <figure>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Equal_loudness_no_caption.svg/960px-Equal_loudness_no_caption.svg.png"
-                alt="Equal Loudness Contours Curve">
+                alt="Equal Loudness Contours Curve" loading="lazy" width="800" height="400">
             <figcaption><strong>Figure 2.</strong> Equal-loudness contours showing that human hearing sensitivity
                 changes across frequencies. Based on ISO 226:2003.</figcaption>
             <div class="source-link">Source: <a
@@ -291,6 +497,45 @@ scaling is the key to design, marketing, and science." %}
             different frequencies can be seen in the equal loudness contours shown in Figure 2. It can be seen that the
             level of the sound required to be the same loudness at different frequencies differs, and therefore the JND
             in hearing cannot be based solely on a volume setting.</p>
+
+        <div class="jnd-simulator">
+            <div class="jnd-header">
+                <h3>Weber's Law: Visual Contrast Simulator</h3>
+                <p>Adjust the sliders to test your own Just Noticeable Difference threshold.</p>
+            </div>
+            
+            <div class="jnd-displays">
+                <div class="jnd-swatch-container">
+                    <div id="swatch-ref" class="jnd-swatch" style="background-color: hsl(0, 0%, 50%);"></div>
+                    <div class="jnd-label">Reference</div>
+                    <div id="val-ref" class="jnd-value">50.0%</div>
+                </div>
+                <div class="jnd-swatch-container">
+                    <div id="swatch-comp" class="jnd-swatch" style="background-color: hsl(0, 0%, 55%);"></div>
+                    <div class="jnd-label">Comparison</div>
+                    <div id="val-comp" class="jnd-value">55.0%</div>
+                </div>
+            </div>
+
+            <div class="jnd-controls">
+                <div class="jnd-control-group">
+                    <label class="jnd-label" style="font-size: 0.85rem;">Reference Brightness (I)</label>
+                    <input type="range" id="slider-ref" class="jnd-slider" min="10" max="90" step="0.5" value="50">
+                </div>
+                <div class="jnd-control-group">
+                    <label class="jnd-label" style="font-size: 0.85rem;">Comparison Brightness</label>
+                    <input type="range" id="slider-comp" class="jnd-slider" min="10" max="90" step="0.5" value="55">
+                </div>
+            </div>
+
+            <div class="jnd-results">
+                <div class="jnd-stats">
+                    <div>Actual Difference (ΔI): <strong id="val-delta" style="color: var(--text-main);">5.0%</strong></div>
+                    <div>Weber Threshold: <strong id="val-thresh" style="color: var(--text-main);">4.0%</strong></div>
+                </div>
+                <div id="badge-status" class="jnd-status status-noticeable">Noticeable</div>
+            </div>
+        </div>
 
         <h2>Examples of JND in Everyday Life</h2>
         <p>JND is not merely a concept used by teachers. JND influences many decisions that people make on a day-to-day
@@ -336,7 +581,10 @@ scaling is the key to design, marketing, and science." %}
                 Springer.</li>
         </ul>
 
-        <!-- TOOL MAGNET (Link Back) -->
+        <div class="footer-note">
+            This article is for educational purposes only. It was editorially reviewed and fact-checked against the cited sources, but it does not replace professional medical, psychological, auditory, visual, or scientific advice, diagnosis, or individualized evaluation.
+        </div>
+
         <div class="tool-magnet">
             <div style="display: flex; align-items: center; gap: 1.5rem; flex: 1; min-width: 280px; text-align: left;">
                 <div
@@ -355,6 +603,53 @@ scaling is the key to design, marketing, and science." %}
                 onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Try JND
                 Test</a>
         </div>
-    </div>
+    </article>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const sliderRef = document.getElementById('slider-ref');
+        const sliderComp = document.getElementById('slider-comp');
+        const swatchRef = document.getElementById('swatch-ref');
+        const swatchComp = document.getElementById('swatch-comp');
+        const valRef = document.getElementById('val-ref');
+        const valComp = document.getElementById('val-comp');
+        const valDelta = document.getElementById('val-delta');
+        const valThresh = document.getElementById('val-thresh');
+        const badgeStatus = document.getElementById('badge-status');
+
+        const weberFraction = 0.08;
+
+        function updateSimulator() {
+            if (!sliderRef || !sliderComp) return;
+            const refLightness = parseFloat(sliderRef.value);
+            const compLightness = parseFloat(sliderComp.value);
+            
+            swatchRef.style.backgroundColor = `hsl(0, 0%, ${refLightness}%)`;
+            swatchComp.style.backgroundColor = `hsl(0, 0%, ${compLightness}%)`;
+            
+            valRef.textContent = refLightness.toFixed(1) + '%';
+            valComp.textContent = compLightness.toFixed(1) + '%';
+
+            const deltaI = Math.abs(compLightness - refLightness);
+            const threshold = refLightness * weberFraction;
+
+            valDelta.textContent = deltaI.toFixed(1) + '%';
+            valThresh.textContent = threshold.toFixed(1) + '%';
+
+            if (deltaI >= threshold) {
+                badgeStatus.textContent = "Noticeable";
+                badgeStatus.className = "jnd-status status-noticeable";
+            } else {
+                badgeStatus.textContent = "Not Noticeable";
+                badgeStatus.className = "jnd-status status-hidden";
+            }
+        }
+
+        sliderRef.addEventListener('input', updateSimulator);
+        sliderComp.addEventListener('input', updateSimulator);
+
+        updateSimulator();
+    });
+</script>
 {% endblock %}
