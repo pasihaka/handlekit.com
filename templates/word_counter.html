@@ -19,36 +19,11 @@ keyword density. Free, fast, and works entirely in your browser." %}
             </div>
         </div>
 
-        <!-- STATS DASHBOARD -->
-        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 1rem; text-align: center;">
-            <div class="wc-stat-inner">
-                <span class="wc-stat-label">Words</span>
-                <div class="wc-stat-value" id="val-words">0</div>
-            </div>
-            <div class="wc-stat-inner">
-                <span class="wc-stat-label">Characters</span>
-                <div class="wc-stat-value" id="val-chars">0</div>
-            </div>
-            <div class="wc-stat-inner">
-                <span class="wc-stat-label">No Spaces</span>
-                <div class="wc-stat-value" id="val-chars-nospace">0</div>
-            </div>
-            <div class="wc-stat-inner">
-                <span class="wc-stat-label">Sentences</span>
-                <div class="wc-stat-value" id="val-sentences">0</div>
-            </div>
-            <div class="wc-stat-inner">
-                <span class="wc-stat-label">Paragraphs</span>
-                <div class="wc-stat-value" id="val-paragraphs">0</div>
-            </div>
-            <div class="wc-stat-inner" style="background: rgba(var(--accent-rgb), 0.05); border-radius: 12px; padding: 0.5rem;">
-                <span class="wc-stat-label" style="color: var(--accent-color);">Reading Time</span>
-                <div class="wc-stat-value" id="val-read-time" style="color: var(--accent-color);">0 sec</div>
-            </div>
-        </div>
 
-    <!-- Stats Row -->
-    <div class="wc-stats-grid" id="stats-grid">
+
+        <!-- CONSOLIDATED STATS DASHBOARD -->
+        <div class="wc-stats-grid" id="stats-grid" style="margin-bottom: 2.5rem;">
+
         <div class="wc-stat-card" id="stat-words">
             <div class="wc-stat-value" id="val-words">0</div>
             <div class="wc-stat-label">Words</div>
@@ -298,9 +273,9 @@ keyword density. Free, fast, and works entirely in your browser." %}
 <style>
     .wc-stats-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1rem;
-        margin-bottom: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2.5rem;
     }
 
     .wc-stat-card {
@@ -398,17 +373,42 @@ keyword density. Free, fast, and works entirely in your browser." %}
 
     @media (max-width: 600px) {
         .wc-stats-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .wc-stat-card {
+            padding: 0.75rem 0.5rem;
         }
 
         .wc-stat-value {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 0.1rem;
         }
-    }
 
-    @media (max-width: 380px) {
-        .wc-stats-grid {
-            grid-template-columns: 1fr 1fr;
+        .wc-stat-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.5px;
+        }
+
+        .tool-content {
+            padding-bottom: 2rem !important;
+        }
+
+        .tool-content > div {
+            padding: 1.5rem !important;
+            border-radius: 16px !important;
+        }
+
+        .wc-input {
+            min-height: 200px !important;
+            padding: 1rem !important;
+        }
+
+        h1 {
+            font-size: 1.75rem !important;
+            letter-spacing: -1px !important;
         }
     }
 </style>
