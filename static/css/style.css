@@ -238,3 +238,51 @@ footer {
     padding: 0.75rem !important;
   }
 }
+
+/* FAQ Unified Styling */
+.faq-section {
+  margin-top: 4rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 4rem;
+}
+
+.faq-section h2 {
+  color: var(--text-main);
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.faq-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 5rem;
+}
+
+.faq-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.01);
+  transition: border-color 0.3s ease;
+}
+
+.faq-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.faq-card h3 {
+  color: var(--accent-color);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.faq-card p {
+  color: var(--text-sub);
+  line-height: 1.7;
+  margin: 0;
+}

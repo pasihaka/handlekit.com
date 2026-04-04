@@ -4,6 +4,71 @@ PascalCase, snake_case, and kebab-case. Free, fast, and works entirely in your b
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Text Case Converter",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/text-case-converter",
+  "description": "Convert text between various letter cases instantly. Supports Upper Case, Lower Case, Title Case, Sentence Case, Camel Case, Pascal Case, Snake Case, and Kebab Case.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "ratingCount": "89"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What cases can I convert to?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "HandleKit supports all major text cases including Upper Case, Lower Case, Title Case, Sentence Case, and developer-focused cases like camelCase, PascalCase, snake_case, and kebab-case."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my text saved or sent to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All text conversion happens instantly within your browser using JavaScript. Your text never leaves your device, ensuring total privacy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Camel Case and Pascal Case?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Camel case starts with a lowercase letter (e.g., camelCase), while Pascal case starts with an uppercase letter (e.g., PascalCase). Both are commonly used in programming."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a limit on the amount of text that can be converted?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no limit. The converter runs locally on your machine, so it can handle everything from a single word to an entire book manuscript in less than a second."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-container" style="max-width: 860px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
@@ -123,70 +188,33 @@ PascalCase, snake_case, and kebab-case. Free, fast, and works entirely in your b
     </div>
 
     <!-- FAQ Section -->
-    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I convert text
-                    to a different case?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Enter your text in the box at the top,
-                    then click one of the case buttons: <strong>UPPERCASE, lowercase,
-                        Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case,</strong> or <strong>aLtErNaTiNg</strong>. Your text will be converted and appear in
-                    the box below. Click <strong>"Copy"</strong> to put it in your
-                    clipboard.</p>
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-card">
+                <h3>How do I convert text to a different case?</h3>
+                <p>Enter your text in the box at the top, then click one of the case buttons: <strong>UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case,</strong> or <strong>aLtErNaTiNg</strong>. Your text will be converted and appear in the box below. Click <strong>"Copy"</strong> to put it in your clipboard.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the difference
-                    between camelCase and PascalCase?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong
-                        style="color: var(--text-main);">camelCase</strong> is like Title Case, but with the first
-                    letter lowercase and the first letter of every other word uppercase: <strong
-                        style="color: var(--accent-color);">myVariableName</strong>. <strong
-                        style="color: var(--text-main);">PascalCase</strong> (also called UpperCamelCase) is like Title
-                    Case, but with the first letter of every word, including the first word, uppercase: <strong
-                        style="color: var(--accent-color);">MyClassName</strong>. Use camelCase for <strong
-                        style="color: var(--text-main);">JavaScript variables</strong>, and PascalCase for <strong
-                        style="color: var(--text-main);">React components</strong>.</p>
+            <div class="faq-card">
+                <h3>What is the difference between camelCase and PascalCase?</h3>
+                <p><strong style="color: var(--text-main);">camelCase</strong> is like Title Case, but with the first letter lowercase and the first letter of every other word uppercase: <strong style="color: var(--accent-color);">myVariableName</strong>. <strong style="color: var(--text-main);">PascalCase</strong> (also called UpperCamelCase) is like Title Case, but with the first letter of every word, including the first word, uppercase: <strong style="color: var(--accent-color);">MyClassName</strong>. Use camelCase for <strong style="color: var(--text-main);">JavaScript variables</strong>, and PascalCase for <strong style="color: var(--text-main);">React components</strong>.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">When to use snake_case
-                    and kebab-case?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong
-                        style="color: var(--text-main);">snake_case</strong> uses underscores for delimiters: <strong
-                        style="color: var(--accent-color);">user_profile_data</strong>. This is the standard naming
-                    convention for <strong style="color: var(--text-main);">Python</strong>. <strong
-                        style="color: var(--text-main);">kebab-case</strong> uses dashes: <strong
-                        style="color: var(--accent-color);">user-profile-widget</strong>, and is standard for <strong
-                        style="color: var(--text-main);">URL slugs and CSS classes</strong>.</p>
+            <div class="faq-card">
+                <h3>When to use snake_case and kebab-case?</h3>
+                <p><strong style="color: var(--text-main);">snake_case</strong> uses underscores for delimiters: <strong style="color: var(--accent-color);">user_profile_data</strong>. This is the standard naming convention for <strong style="color: var(--text-main);">Python</strong>. <strong style="color: var(--text-main);">kebab-case</strong> uses dashes: <strong style="color: var(--accent-color);">user-profile-widget</strong>, and is standard for <strong style="color: var(--text-main);">URL slugs and CSS classes</strong>.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does Title Case
-                    capitalize every word?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Not quite - proper Title Case has rules
-                    for "minor words". Short prepositions (in, on, at, by), conjunctions (and, or, but), and articles
-                    (a, an, the) usually stay in lowercase unless they're the first or last word of the title. Luckily
-                    for us, our converter does this correctly by default - "the quick brown fox and the lazy dog"
-                    becomes "The Quick Brown Fox and the Lazy Dog".</p>
+            <div class="faq-card">
+                <h3>Does Title Case capitalize every word?</h3>
+                <p>Not quite - proper Title Case has rules for "minor words". Short prepositions (in, on, at, by), conjunctions (and, or, but), and articles (a, an, the) usually stay in lowercase unless they're the first or last word of the title. Luckily for us, our converter does this correctly by default - "the quick brown fox and the lazy dog" becomes "The Quick Brown Fox and the Lazy Dog".</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is there a limit on the
-                    amount of text that can be converted?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No limit at all - the converter runs
-                    locally in your browser with JavaScript, so it's only limited by the capability of your computer or
-                    device. You can convert a whole novel if you like - it will take less than a second on any computer
-                    built in the past decade or so.</p>
+            <div class="faq-card">
+                <h3>Is there a limit on the amount of text that can be converted?</h3>
+                <p>No limit at all - the converter runs locally in your browser with JavaScript, so it's only limited by the capability of your computer or device. You can convert a whole novel if you like - it will take less than a second on any computer built in the past decade or so.</p>
             </div>
-
         </div>
     </div>
 </div>

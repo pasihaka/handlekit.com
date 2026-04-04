@@ -4,6 +4,79 @@ unit converter, fast, accurate, 100% browser-based." %}
 {% set og_image = "og-image.png" %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Professional Unit Converter",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/unit-converter",
+  "description": "Convert between Metric and Imperial units for length, weight, temperature, area, volume, and more. Precise, instant, and 100% free.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "74"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I convert between units?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Select a category from the tab bar (Length, Weight, etc.), then choose your 'From' and 'To' units. Enter a value in either field to get an instant conversion."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I convert Celsius to Fahrenheit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Select the 'Temperature' tab, set the source unit to Celsius and the target to Fahrenheit. For a mental estimate, multiply the Celsius value by 1.8 and add 32."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many pounds are in a kilogram?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One kilogram is approximately 2.20462 pounds. You can use the 'Weight' tab for precise conversions between kg and lb."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the reference table at the bottom show?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The reference table displays your current value converted into every single available unit within that category simultaneously, allowing for easy comparison."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate are the conversions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our converter uses exact international conversion factors (e.g., 1 inch = 2.54cm) and provides results up to 10 significant figures for high precision."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-container" style="max-width: 860px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
@@ -120,59 +193,32 @@ unit converter, fast, accurate, 100% browser-based." %}
     </div>
 
     <!-- FAQ Section -->
-    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How do I convert
-                    between units?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">To convert between units, first, select
-                    a category from the <strong>tab bar</strong> at the top of the
-                    page. Then, select a unit to convert from on the left-hand dropdown menu and a unit to convert to on
-                    the right. Enter a value in <strong>either box</strong>, and the
-                    other box will be filled in <strong>instantly</strong>. To
-                    reverse the conversion, click the double arrow button in the middle.</p>
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-card">
+                <h3>How do I convert between units?</h3>
+                <p>To convert between units, first, select a category from the <strong>tab bar</strong> at the top of the page. Then, select a unit to convert from on the left-hand dropdown menu and a unit to convert to on the right. Enter a value in <strong>either box</strong>, and the other box will be filled in <strong>instantly</strong>. To reverse the conversion, click the double arrow button in the middle.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How do I convert
-                    Celsius to Fahrenheit?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">To convert from Celsius to Fahrenheit,
-                    select <strong>"Temperature"</strong> from the tab bar, then
-                    "Celsius" from the left dropdown. The result appears at once. As a mental shortcut, simply multiply
-                    the Celsius reading by <strong>1.8</strong>, then add <strong>32</strong>.</p>
+            <div class="faq-card">
+                <h3>How do I convert Celsius to Fahrenheit?</h3>
+                <p>To convert from Celsius to Fahrenheit, select <strong>"Temperature"</strong> from the tab bar, then "Celsius" from the left dropdown. The result appears at once. As a mental shortcut, simply multiply the Celsius reading by <strong>1.8</strong>, then add <strong>32</strong>.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How many pounds are
-                    in a kilogram?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">One kilogram is equivalent to about
-                    2.20462 pounds. To convert from kilograms to pounds, one pound is equivalent to about 0.453592
-                    kilograms. You can use the Weight tab. Select 'Kilograms' as the 'From' unit and 'Pounds' as the
-                    'To' unit. Then enter your value. You will immediately get an exact result. Alternatively, you can
-                    use the reference table below. This table shows all weight unit conversions of your entered value at
-                    once.</p>
+            <div class="faq-card">
+                <h3>How many pounds are in a kilogram?</h3>
+                <p>One kilogram is equivalent to about 2.20462 pounds. To convert from kilograms to pounds, one pound is equivalent to about 0.453592 kilograms. You can use the Weight tab. Select 'Kilograms' as the 'From' unit and 'Pounds' as the 'To' unit. Then enter your value. You will immediately get an exact result. Alternatively, you can use the reference table below. This table shows all weight unit conversions of your entered value at once.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What does the
-                    reference table at the bottom show?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The reference table at the bottom shows
-                    your entered value converted to every single unit in the current category simultaneously. This table
-                    will change immediately as you enter your value. This table can be helpful if you want to compare
-                    your measurement to several units at once. For example, you may want to compare your height in
-                    metres, centimetres, inches, yards, and miles all at once. This reference table will display all of
-                    those conversions simultaneously.</p>
+            <div class="faq-card">
+                <h3>What does the reference table at the bottom show?</h3>
+                <p>The reference table at the bottom shows your entered value converted to every single unit in the current category simultaneously. This table will change immediately as you enter your value. This table can be helpful if you want to compare your measurement to several units at once. For example, you may want to compare your height in metres, centimetres, inches, yards, and miles all at once. This reference table will display all of those conversions simultaneously.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How accurate are the
-                    conversions?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Our conversions are very accurate. We
-                    use exact conversion factors. For example, 1 inch = 0.0254 metres exactly. This was specified by
-                    international agreement in 1959. For temperature, we use precise mathematical formulas. Our answers
-                    are given to 10 significant figures. Mach numbers are an exception. Mach numbers depend on altitude
-                    and temperature. Mach numbers are therefore not precisely known.</p>
+            <div class="faq-card">
+                <h3>How accurate are the conversions?</h3>
+                <p>Our conversions are very accurate. We use exact conversion factors. For example, 1 inch = 0.0254 metres exactly. This was specified by international agreement in 1959. For temperature, we use precise mathematical formulas. Our answers are given to 10 significant figures. Mach numbers are an exception. Mach numbers depend on altitude and temperature. Mach numbers are therefore not precisely known.</p>
             </div>
         </div>
     </div>

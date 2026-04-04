@@ -180,69 +180,34 @@ browser-based hash tool, no data ever sent to a server." %}
     </div>
 
     <!-- FAQ Section -->
-    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I generate a
-                    hash?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can input or paste any text in the
-                    input box and click on <strong>"Generate Hashes."</strong> All
-                    four hash values are displayed immediately. <strong>MD5, SHA-1,
-                        SHA-256, and SHA-512</strong> hash values are displayed immediately. Alternatively, you can use
-                    the <strong>"Live"</strong> option to hash as you type in
-                    real-time. If you want to hash a file, you can use the <strong>"File"</strong> option and drag the file into the upload zone.
-                </p>
+            <div class="faq-card">
+                <h3>How do I generate a hash?</h3>
+                <p>You can input or paste any text in the input box and click on <strong>"Generate Hashes."</strong> All four hash values are displayed immediately. <strong>MD5, SHA-1, SHA-256, and SHA-512</strong> hash values are displayed immediately. Alternatively, you can use the <strong>"Live"</strong> option to hash as you type in real-time. If you want to hash a file, you can use the <strong>"File"</strong> option and drag the file into the upload zone.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which hash algorithm
-                    should I use?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong
-                        style="color: var(--accent-color);">SHA-256</strong> is the best choice for most
-                    security-critical applications; it's the de facto standard in the industry today, used in SSL
-                    certificates, Bitcoin, and code signing. <strong style="color: var(--text-main);">MD5</strong> is
-                    acceptable for non-security use cases such as detecting changes in files or generating cache keys.
-                    <strong style="color: #ff4c4c; font-weight: 700;">MD5 has been broken</strong> for any use in a
-                    cryptographic context. If you need a more secure hash function for high-security applications,
-                    consider using <strong style="color: var(--text-main);">SHA-512</strong>.</p>
+            <div class="faq-card">
+                <h3>Which hash algorithm should I use?</h3>
+                <p><strong style="color: var(--accent-color);">SHA-256</strong> is the best choice for most security-critical applications; it's the de facto standard in the industry today, used in SSL certificates, Bitcoin, and code signing. <strong style="color: var(--text-main);">MD5</strong> is acceptable for non-security use cases such as detecting changes in files or generating cache keys. <strong style="color: #ff4c4c; font-weight: 700;">MD5 has been broken</strong> for any use in a cryptographic context. If you need a more secure hash function for high-security applications, consider using <strong style="color: var(--text-main);">SHA-512</strong>.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Can I reverse a hash
-                    back to the original text?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, that's the point of a hash function:
-                    its output is one-way only. There's no way to reverse a hash into the original input using any known
-                    algorithm. The only thing attackers can do is use a "rainbow table" of common password hashes, so
-                    password hashing always includes a random "salt" value that's appended before hashing.</p>
+            <div class="faq-card">
+                <h3>Can I reverse a hash back to the original text?</h3>
+                <p>No, that's the point of a hash function: its output is one-way only. There's no way to reverse a hash into the original input using any known algorithm. The only thing attackers can do is use a "rainbow table" of common password hashes, so password hashing always includes a random "salt" value that's appended before hashing.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Is my text or file sent
-                    to your servers?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No way! SHA-1, SHA-256, and SHA-512 hash
-                    calculations are done on the client-side using the browser's built-in Web Crypto API. MD5 hash
-                    calculations are done using pure JavaScript code running on the client-side. The code works even
-                    when you are offline after the page has loaded.</p>
+            <div class="faq-card">
+                <h3>Is my text or file sent to your servers?</h3>
+                <p>No way! SHA-1, SHA-256, and SHA-512 hash calculations are done on the client-side using the browser's built-in Web Crypto API. MD5 hash calculations are done using pure JavaScript code running on the client-side. The code works even when you are offline after the page has loaded.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I verify a file
-                    download with a hash?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Software developers often publish the
-                    expected hash value for a download along with the file. Simply switch to "File" mode, drag in the
-                    file you downloaded, and compare the hash value we calculated with the expected hash value published
-                    by the software developer. If the two hash values are the same, the file download worked correctly
-                    and has not been tampered with in any way. Even a single bit difference in the file's contents will
-                    produce a completely different hash value.</p>
+            <div class="faq-card">
+                <h3>How do I verify a file download with a hash?</h3>
+                <p>Software developers often publish the expected hash value for a download along with the file. Simply switch to "File" mode, drag in the file you downloaded, and compare the hash value we calculated with the expected hash value published by the software developer. If the two hash values are the same, the file download worked correctly and has not been tampered with in any way. Even a single bit difference in the file's contents will produce a completely different hash value.</p>
             </div>
-
         </div>
     </div>
 

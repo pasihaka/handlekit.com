@@ -231,19 +231,21 @@
         </div>
 
         <!-- FAQ SECTION -->
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">Frequently Asked Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 5rem;">
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">Why do Base64 strings end in "=="?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The equal sign (`=`) is used as <strong>padding</strong>. Since Base64 processes data in 24-bit chunks, if the source data isn't a <strong>multiple of 3 bytes</strong>, padding is added to ensure the output length is a multiple of 4 characters.</p>
-            </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">Is my file size limited for Base64 encoding?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">HandleKit processes files <strong>entirely on your device</strong>. While there's no hard limit, very large files (<strong>50MB+</strong>) may slow down your browser tab. For web assets like small images or favicons, it's near-instant.</p>
-            </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">When should I use Data URIs?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>Data URIs</strong> (Base64 strings used as a `src`) are perfect for tiny icons or decorative elements that you want to bundle directly into your HTML or CSS to reduce the number of HTTP requests.</p>
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-card">
+                    <h3>Why do Base64 strings end in "=="?</h3>
+                    <p>The equal sign (`=`) is used as <strong>padding</strong>. Since Base64 processes data in 24-bit chunks, if the source data isn't a <strong>multiple of 3 bytes</strong>, padding is added to ensure the output length is a multiple of 4 characters.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Is my file size limited for Base64 encoding?</h3>
+                    <p>HandleKit processes files <strong>entirely on your device</strong>. While there's no hard limit, very large files (<strong>50MB+</strong>) may slow down your browser tab. For web assets like small images or favicons, it's near-instant.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>When should I use Data URIs?</h3>
+                    <p><strong>Data URIs</strong> (Base64 strings used as a `src`) are perfect for tiny icons or decorative elements that you want to bundle directly into your HTML or CSS to reduce the number of HTTP requests.</p>
+                </div>
             </div>
         </div>
     </div>

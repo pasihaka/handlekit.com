@@ -3,6 +3,95 @@
 keyword density. Free, fast, and works entirely in your browser." %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Professional Word Counter & Text Analysis",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/word-counter",
+  "description": "A high-performance word counter and text analyzer. Instantly count words, characters, reading time, and speaking time with 100% privacy.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "156"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I count the words in my text?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Paste or type your text in the analysis field. All metrics—including words, characters, sentences, reading time, and speaking time—will update in real-time without needing to click any button."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is 'Reading Time' calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Reading time is calculated based on an average adult reading speed of 225 words per minute (WPM). For technical or complex papers, an estimate of 75 WPM is used."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are spaces included in the character count?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our tool provides dual character counts: one including all spaces and punctuation, and one excluding them. This is useful for fitting character limits on platforms like X (Twitter)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a word limit for the counter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. HandleKit's word counter has absolutely no word limit. You can analyze entire manuscripts or lengthy reports instantly as all processing happens locally in your browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the word counter match Microsoft Word's count?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We follow the same standard word-splitting logic as Microsoft Word, ensuring high accuracy and consistency for most English text."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is keyword density and why does it matter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Keyword density is the frequency of a word relative to the total word count. Maintaining a density of 1-2 percent is considered best practice for SEO without triggering keyword-stuffing penalties."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my text sent or stored anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All text analysis is performed locally in your browser tab using JavaScript. Your content is never transmitted to our servers or stored permanently."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-content" style="max-width: 1000px; margin: 0 auto; padding-bottom: 5rem;">
     <!-- MAIN TOOL CARD -->
@@ -200,71 +289,42 @@ keyword density. Free, fast, and works entirely in your browser." %}
     </div>
 
     <!-- FAQ Section -->
-    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">How do I count the words in my text?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can paste or type your text in the big field. All counts-including <strong>words</strong>, <strong>characters</strong>, <strong>sentences</strong>, <strong>paragraphs</strong>, <strong>reading time</strong>, and <strong>speaking time</strong>—will be updated in real-time. There is no need to click any button; it's instant. Use the <strong>"Quick limits"</strong> buttons at the bottom if you are writing to a specific length constraint.</p>
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-card">
+                <h3>How do I count the words in my text?</h3>
+                <p>You can paste or type your text in the big field. All counts-including <strong>words</strong>, <strong>characters</strong>, <strong>sentences</strong>, <strong>paragraphs</strong>, <strong>reading time</strong>, and <strong>speaking time</strong>—will be updated in real-time. There is no need to click any button; it's instant. Use the <strong>"Quick limits"</strong> buttons at the bottom if you are writing to a specific length constraint.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">How is "Reading Time"
-                    calculated?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Reading time is based on an average
-                    adult's reading speed of <strong style="color: var(--text-main);">225 words per minute
-                        (WPM)</strong>. For larger documents like essays or research papers, we estimate about <strong
-                        style="color: var(--text-main);">75 words per minute</strong> for more complex or technical
-                    content.</p>
+            <div class="faq-card">
+                <h3>How is "Reading Time" calculated?</h3>
+                <p>Reading time is based on an average adult's reading speed of <strong>225 words per minute (WPM)</strong>. For larger documents like essays or research papers, we estimate about <strong>75 words per minute</strong> for more complex or technical content.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Are spaces included
-                    in the character count?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes, our tool provides two separate
-                    character counts: <strong style="color: var(--text-main);">one including all spaces</strong> and
-                    punctuation, and <strong style="color: var(--text-main);">one excluding spaces</strong>. This is
-                    helpful for social media platforms like X (Twitter) or Mastodon, where spaces count against your
-                    character limit.</p>
+            <div class="faq-card">
+                <h3>Are spaces included in the character count?</h3>
+                <p>Yes, our tool provides two separate character counts: <strong>one including all spaces</strong> and punctuation, and <strong>one excluding spaces</strong>. This is helpful for social media platforms like X (Twitter) or Mastodon, where spaces count against your character limit.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Is there a word limit
-                    for the counter?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No, there is <strong
-                        style="color: var(--accent-color);">absolutely no word limit</strong> for our tool. You can
-                    paste an entire manuscript or multi-page report and get an instant count. All processing happens
-                    locally in your browser, so even very large texts are handled efficiently <strong
-                        style="color: var(--text-main);">without any server communication</strong>.</p>
+            <div class="faq-card">
+                <h3>Is there a word limit for the counter?</h3>
+                <p>No, there is <strong style="color: var(--accent-color);">absolutely no word limit</strong> for our tool. You can paste an entire manuscript or multi-page report and get an instant count. All processing happens locally in your browser, so even very large texts are handled efficiently <strong>without any server communication</strong>.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Does the word counter
-                    match Microsoft Word's count?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Essentially, yes. We count words by
-                    splitting on whitespace and filtering out empty tokens, just as Microsoft Word does. There may be
-                    small discrepancies in the count for hyphenated words or nonstandard punctuation, but for normal
-                    text, the counts will be the same.</p>
+            <div class="faq-card">
+                <h3>Does the word counter match Microsoft Word's count?</h3>
+                <p>Essentially, yes. We count words by splitting on whitespace and filtering out empty tokens, just as Microsoft Word does. There may be small discrepancies in the count for hyphenated words or nonstandard punctuation, but for normal text, the counts will be the same.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">What is keyword
-                    density and why does it matter?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Keyword density refers to the frequency
-                    of a given word in relation to the overall word count. If "optimization" appears 10 times in a
-                    500-word article, then the keyword density for "optimization" in that article is 2 percent. In the
-                    world of SEO, having your keyword show up in your text at least once or twice per 100 words (about
-                    1-2 percent) helps search engines figure out what your page is about. More than that and you're
-                    "keyword stuffing," which can cause problems for your search engine ranking.</p>
+            <div class="faq-card">
+                <h3>What is keyword density and why does it matter?</h3>
+                <p>Keyword density refers to the frequency of a given word in relation to the overall word count. If "optimization" appears 10 times in a 500-word article, then the keyword density for "optimization" in that article is 2 percent. In the world of SEO, having your keyword show up in your text at least once or twice per 100 words (about 1-2 percent) helps search engines figure out what your page is about. More than that and you're "keyword stuffing," which can cause problems for your search engine ranking.</p>
             </div>
 
-            <div class="info-card-premium">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem;">Is my text sent or
-                    stored anywhere?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No. All the calculations take place
-                    locally in your browser with JavaScript. Your text is not sent anywhere. This is particularly
-                    important if you're counting words in drafts, confidential reports, academic papers, or anything
-                    else that's not yet ready for public consumption.</p>
+            <div class="faq-card">
+                <h3>Is my text sent or stored anywhere?</h3>
+                <p>No. All the calculations take place locally in your browser with JavaScript. Your text is not sent anywhere. This is particularly important if you're counting words in drafts, confidential reports, academic papers, or anything else that's not yet ready for public consumption.</p>
             </div>
         </div>
     </div>

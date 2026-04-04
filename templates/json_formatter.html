@@ -205,19 +205,21 @@ collapsible tree view, and one-click copy. Free, fast, 100% browser-based." %}
         </div>
 
         <!-- FAQ SECTION -->
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">Frequently Asked Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 5rem;">
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">How do I check if my JSON is valid?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Simply paste your code into the source box and click <strong>"Validate"</strong>. Our engine will parse the structure according to <strong>RFC 8259</strong> standards and highlight any <strong>syntax errors</strong>, such as <strong>trailing commas</strong> or <strong>mismatched braces</strong>.</p>
-            </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">Can I format JSON for Python or Java?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Yes! While JSON originated from JavaScript, it is language-independent. The formatted output is compatible with all modern programming languages including <strong>Python (json module)</strong>, <strong>Java (Jackson/Gson)</strong>, Go, and PHP.</p>
-            </div>
-            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.01);">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1.1rem; font-weight: 700;">Does this tool support JSONL (JSON Lines)?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Currently, this tool specializes in standard structured JSON objects/arrays. For <strong>JSONL (JSON Lines)</strong>, we recommend processing lines individually to maintain the line-delimited format required for log analysis.</p>
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-card">
+                    <h3>How do I check if my JSON is valid?</h3>
+                    <p>Simply paste your code into the source box and click <strong>"Validate"</strong>. Our engine will parse the structure according to <strong>RFC 8259</strong> standards and highlight any <strong>syntax errors</strong>, such as <strong>trailing commas</strong> or <strong>mismatched braces</strong>.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Can I format JSON for Python or Java?</h3>
+                    <p>Yes! While JSON originated from JavaScript, it is language-independent. The formatted output is compatible with all modern programming languages including <strong>Python (json module)</strong>, <strong>Java (Jackson/Gson)</strong>, Go, and PHP.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Does this tool support JSONL (JSON Lines)?</h3>
+                    <p>Currently, this tool specializes in standard structured JSON objects/arrays. For <strong>JSONL (JSON Lines)</strong>, we recommend processing lines individually to maintain the line-delimited format required for log analysis.</p>
+                </div>
             </div>
         </div>
     </div>

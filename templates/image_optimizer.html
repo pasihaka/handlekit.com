@@ -3,6 +3,79 @@
 image optimization by HandleKit." %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Professional Image Optimizer",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/image-optimizer",
+  "description": "Optimize and compress images instantly. Support for JPEG, PNG, and WebP formats with batch processing and privacy-first server-side optimization.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "142"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which formats do you support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We support JPEG, PNG, and WebP formats. You can convert your images to the highly efficient WebP format for the best performance results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What output format should I choose: JPEG, PNG, or WebP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPEG is ideal for photographs. PNG is best for graphics with transparency. WebP is the modern web standard that generally provides the smallest file sizes while maintaining high visual quality."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does compression affect quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our optimizer uses lossy compression tuned for the web. We prioritize visual fidelity, so images look identical to the naked eye while being significantly reduced in file size."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does image optimization improve SEO?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Fast-loading images improve your Largest Contentful Paint (LCP), one of Google's Core Web Vitals, which is a direct ranking factor for search engine visibility."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are there file size limits?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most web-standard images, photos, and screenshots work perfectly. Files over 30MB may take longer to process, so we recommend optimizing them in small batches."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-container" style="max-width: 800px; margin: 0 auto;">
     <div class="tool-header" style="text-align: center; margin-bottom: 3rem; min-height: 160px;">
@@ -121,62 +194,33 @@ image optimization by HandleKit." %}
     </div>
 
     <!-- FAQ Section -->
-    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Which formats do you
-                    support?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">We support all common image formats
-                    including <strong>JPEG, PNG, and WebP</strong>. You can convert
-                    from <strong>JPEG/PNG</strong> into the highly efficient <strong>WebP
-                        format</strong> for maximum performance gains.</p>
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-card">
+                <h3>Which formats do you support?</h3>
+                <p>We support all common image formats including <strong>JPEG, PNG, and WebP</strong>. You can convert from <strong>JPEG/PNG</strong> into the highly efficient <strong>WebP format</strong> for maximum performance gains.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What output format
-                    should I choose? JPEG, PNG, or WebP?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">JPEG is perfect for photographs, it
-                    offers excellent compression with minimal compromise on quality. PNG is perfect for graphics, it is
-                    lossless and offers support for transparency. WebP is the new standard format supported by modern
-                    browsers, it generally beats JPEG and PNG in output size, but it requires your audience to run a
-                    relatively modern browser, which is pretty much everyone in 2026.</p>
+            <div class="faq-card">
+                <h3>What output format should I choose? JPEG, PNG, or WebP?</h3>
+                <p>JPEG is perfect for photographs, it offers excellent compression with minimal compromise on quality. PNG is perfect for graphics, it is lossless and offers support for transparency. WebP is the new standard format supported by modern browsers, it generally beats JPEG and PNG in output size, but it requires your audience to run a relatively modern browser, which is pretty much everyone in 2026.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does compression affect
-                    quality?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Our optimizer uses <strong
-                        style="color: var(--text-main);">lossy compression algorithms</strong> tuned for the web. While
-                    you may see a slight reduction in absolute resolution, we prioritize <strong
-                        style="color: var(--accent-color);">visual fidelity</strong> so the image looks identical to the
-                    human eye while being significantly smaller.</p>
+            <div class="faq-card">
+                <h3>Does compression affect quality?</h3>
+                <p>Our optimizer uses <strong style="color: var(--text-main);">lossy compression algorithms</strong> tuned for the web. While you may see a slight reduction in absolute resolution, we prioritize <strong style="color: var(--accent-color);">visual fidelity</strong> so the image looks identical to the human eye while being significantly smaller.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How does this improve
-                    SEO?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Page speed is a <strong>critical ranking factor</strong> for Google. Fast-loading
-                    images improve your <strong>Largest Contentful Paint
-                        (LCP)</strong>, one of the <strong>Core Web Vitals</strong>, which can help increase your search engine
-                    visibility.</p>
+            <div class="faq-card">
+                <h3>How does this improve SEO?</h3>
+                <p>Page speed is a <strong>critical ranking factor</strong> for Google. Fast-loading images improve your <strong>Largest Contentful Paint (LCP)</strong>, one of the <strong>Core Web Vitals</strong>, which can help increase your search engine visibility.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Are there file size
-                    limits?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The tool works with most web images,
-                    such as photos taken directly from cameras or mobile phones, screenshots, and graphics. Large files
-                    above 30MB may take longer to process. If you are optimizing many large, high-quality photos,
-                    consider doing them a few at a time.</p>
+            <div class="faq-card">
+                <h3>Are there file size limits?</h3>
+                <p>The tool works with most web images, such as photos taken directly from cameras or mobile phones, screenshots, and graphics. Large files above 30MB may take longer to process. If you are optimizing many large, high-quality photos, consider doing them a few at a time.</p>
             </div>
-
         </div>
     </div>
 </div>

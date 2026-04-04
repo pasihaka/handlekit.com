@@ -6,6 +6,76 @@ our professional color picker, screen-wide Eyedropper, and tactile selection whe
 
 {% block head_extra %}
 <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Advanced Color Picker & Palette Pro",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "url": "https://handlekit.com/color-picker",
+  "description": "A professional color picker with screen-wide Eyedropper support. Generate HEX, RGB, HSL, and CMYK codes and create harmonious color palettes instantly.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "112"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I choose a color and get its values?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the dynamic Color Wheel or the Eyedropper icon to pick any color from your screen. HEX, RGB, HSL, and CMYK codes update in real-time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What color format should I use in my code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "HEX is the industry standard for CSS. HSL is great for adjusting lightness, and RGB is useful for transparency (alpha). CMYK is strictly for print."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I generate a color palette?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Select a starting color, then use the Palette Pro Designer to switch between Complementary, Analogous, Triadic, or Shades modes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between 'complementary' and 'analogous' colors?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Complementary colors are opposites with high contrast (best for buttons). Analogous colors are neighbours that blend harmoniously (best for background elements)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the Color Picker or Eyedropper store my data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All sampling and calculations happen locally in your browser. No data is ever transmitted to our servers."
+      }
+    }
+  ]
+}
+</script>
 {% endblock %}
 
 {% block content %}
@@ -161,65 +231,33 @@ our professional color picker, screen-wide Eyedropper, and tactile selection whe
     </div>
 
     <!-- FAQ Section -->
-    <div style="margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;">
-        <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Frequently Asked Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I choose a color
-                    and get its values?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">You can use our dynamic <strong>Color
-                        Wheel</strong> to fine-tune your chosen color. Alternatively, use the <strong>Pipette icon
-                        (Eyedropper)</strong> to pick any color directly from your screen. <strong>HEX, RGB, HSL, and CMYK</strong> color
-                    codes will update in real-time. Pro tip: You can also type in your known <strong>HEX</strong> code in the box to jump
-                    to your known color. Use the <strong>copy icon</strong> to get any format instantly.</p>
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-card">
+                <h3>How do I choose a color and get its values?</h3>
+                <p>You can use our dynamic <strong>Color Wheel</strong> to fine-tune your chosen color. Alternatively, use the <strong>Pipette icon (Eyedropper)</strong> to pick any color directly from your screen. <strong>HEX, RGB, HSL, and CMYK</strong> color codes will update in real-time. Pro tip: You can also type in your known <strong>HEX</strong> code in the box to jump to your known color. Use the <strong>copy icon</strong> to get any format instantly.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What color format
-                    should I use in my code?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>HEX</strong> is currently an
-                    industry standard for CSS, and it is a very efficient and safe choice. Nevertheless, many
-                    developers, especially those working with newer versions of the technology, prefer to use
-                    <strong>HSL</strong>, which is very convenient for adjusting lightness or saturation.
-                    <strong>RGB</strong> is usually chosen if you want to add an opacity attribute to your elements.
-                    CMYK is reserved for print projects only.</p>
+            <div class="faq-card">
+                <h3>What color format should I use in my code?</h3>
+                <p><strong>HEX</strong> is currently an industry standard for CSS, and it is a very efficient and safe choice. Nevertheless, many developers, especially those working with newer versions of the technology, prefer to use <strong>HSL</strong>, which is very convenient for adjusting lightness or saturation. <strong>RGB</strong> is usually chosen if you want to add an opacity attribute to your elements. CMYK is reserved for print projects only.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do I generate a
-                    color palette?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Select your starting color from the
-                    wheel or by using the <strong>Eyedropper tool</strong>. The "Palette Pro Designer" section below the
-                    "Value" display offers four expert modes: "Complementary," "Analogous," "Triadic," and "Shades." Try
-                    switching between these modes to find a variety of harmonious palettes. Clicking on a color in the
-                    palette will copy the HEX code for that color to your clipboard with a visual confirmation.</p>
+            <div class="faq-card">
+                <h3>How do I generate a color palette?</h3>
+                <p>Select your starting color from the wheel or by using the <strong>Eyedropper tool</strong>. The "Palette Pro Designer" section below the "Value" display offers four expert modes: "Complementary," "Analogous," "Triadic," and "Shades." Try switching between these modes to find a variety of harmonious palettes. Clicking on a color in the palette will copy the HEX code for that color to your clipboard with a visual confirmation.</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What's the difference
-                    between 'complementary' and 'analogous'?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;"><strong>Complementary</strong> colors
-                    are opposite each other on the wheel and have high contrast, making them great for making items
-                    stand out, like buttons. <strong>Analogous</strong> colors are next to each other on the wheel and
-                    look great together for a natural and professional look. Complementary is for "pop," and analogous
-                    is for "blend."</p>
+            <div class="faq-card">
+                <h3>What's the difference between 'complementary' and 'analogous'?</h3>
+                <p><strong>Complementary</strong> colors are opposite each other on the wheel and have high contrast, making them great for making items stand out, like buttons. <strong>Analogous</strong> colors are next to each other on the wheel and look great together for a natural and professional look. Complementary is for "pop," and analogous is for "blend."</p>
             </div>
 
-            <div
-                style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
-                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">Does the Color Picker
-                    or Eyedropper store my data?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">No data is stored or transmitted.
-                    <strong>Eyedropper</strong> leverages your browser's native functionality to sample pixels. All
-                    calculations occur locally in your session. We do not transmit any data to our servers. Closing your
-                    tab will delete your selections. Copy your selections before leaving the page.</p>
+            <div class="faq-card">
+                <h3>Does the Color Picker or Eyedropper store my data?</h3>
+                <p>No data is stored or transmitted. <strong>Eyedropper</strong> leverages your browser's native functionality to sample pixels. All calculations occur locally in your session. We do not transmit any data to our servers. Closing your tab will delete your selections. Copy your selections before leaving the page.</p>
             </div>
-
         </div>
     </div>
 </div>

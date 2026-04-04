@@ -158,12 +158,16 @@ def api_check_username():
                 bot_headers = {'User-Agent': 'Mozilla/5.0 (compatible; Twitterbot/1.1)'}
                 try:
                     r = requests.get(f"https://www.instagram.com/{username}/", headers=bot_headers, timeout=6)
-                    # Taken: Check for handle in OG Title, OG URL, or encoded in text
+                    content = r.text.lower()
                     handle_lower = username.lower()
-                    if f'instagram.com/{handle_lower}' in r.text.lower() or f'@{handle_lower}' in r.text.lower() or f'&#064;{handle_lower}' in r.text.lower():
+                    
+                    # CASE 1: Taken (Handle found in metadata or common markers)
+                    if f'instagram.com/{handle_lower}' in content or f'@{handle_lower}' in content or f'&#064;{handle_lower}' in content or 'property="og:title"' in content:
                         available = False
-                    elif r.status_code == 404 or (r.status_code == 200 and 'property="og:url"' not in r.text):
+                    # CASE 2: Available (Explicit 404 status or specific "Not Found" message)
+                    elif r.status_code == 404 or "this page isn't available" in content or "link you followed may be broken" in content:
                         available = True
+                    # CASE 3: Uncertain (Generic 200, but no profile info — e.g. login wall or challenge page)
                     else:
                         available = None
                 except:
@@ -480,6 +484,15 @@ def blog_list():
 @app.route('/blog/5-free-qr-code-tools-2026')
 def blog_post_qr_tools():
     return render_template('blog/5-free-qr-code-tools-2026.html')
+
+@app.route('/blog/how-to-generate-barcode-2026')
+def blog_post_barcode():
+    return render_template('blog/how-to-generate-barcode-2026.html')
+
+@app.route('/barcode-generator')
+def barcode_generator():
+    return render_template('barcode_generator.html')
+
 
 @app.route('/url-encoder')
 def url_encoder():

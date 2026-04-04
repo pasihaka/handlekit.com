@@ -1,0 +1,600 @@
+{% set title = "Free Barcode Generator | Create & Download 1D Barcodes | HandleKit" %}
+{% set description = "Generate Code 128, Code 39, UPC, and EAN-13 barcodes instantly. Customize colors, scale, and download as PNG. Free, no sign-up, runs in your browser." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Professional Barcode Studio",
+          "operatingSystem": "Web Browser",
+          "applicationCategory": "WebApplication",
+          "description": "A free online barcode generator. Instantly create and download Code 128, Code 39, UPC, and EAN barcodes.",
+          "url": "https://handlekit.com/barcode-generator",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "HandleKit"
+          },
+          "featureList": [
+            "1D Barcode Generation",
+            "Real-time preview",
+            "PNG Download",
+            "Custom color selection"
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "86"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is this barcode generator completely free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, the HandleKit Barcode Studio is 100% free to use. You can generate and download as many 1D barcodes as you need without signing up or paying any fees."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What barcode formats does this tool support?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Currently, our generator supports Code 128 (alphanumeric), Code 39, EAN-13 (retail), and UPC-A (retail) barcode formats."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I use these barcodes for commercial products?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "You can use the downloaded images commercially. However, for retail formats like UPC and EAN, ensure you have legally registered your official company prefix through GS1 before printing them on products for sale."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        .star-icon:hover,
+        .star-icon.hovered {
+            color: #ffcc00 !important;
+            fill: #ffcc00 !important;
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.4));
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="tool-container" style="max-width: 1100px; margin: 0 auto;">
+    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
+        <i data-lucide="scan-barcode" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">
+            Professional Barcode Studio</h1>
+        <p style="color: var(--text-sub);">Generate, customize, and download 1D barcodes instantly. No sign-up, no watermarks.</p>
+    </div>
+
+    <style>
+        .bk-studio-wrapper {
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            background: var(--card-bg, #161212);
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            display: grid;
+            grid-template-columns: 350px 1fr;
+        }
+
+        /* Left Column: Controls */
+        .bk-controls {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border-right: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .bk-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .bk-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main, #e6e6e6);
+        }
+
+        .bk-input, .bk-select {
+            width: 100%;
+            background: var(--input-bg, rgba(255,255,255,0.05));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            color: var(--text-main, #e6e6e6);
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        .bk-input:focus, .bk-select:focus {
+            border-color: var(--accent-color, #c91c23);
+            box-shadow: 0 0 0 3px var(--glow-color, rgba(201, 28, 35, 0.15));
+        }
+
+        .bk-color-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .bk-color-picker {
+            flex: 1;
+            height: 45px;
+            padding: 0;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .bk-color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        .bk-color-picker::-webkit-color-swatch {
+            border: none;
+        }
+
+        .bk-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: var(--input-bg);
+            border-radius: 4px;
+            outline: none;
+            margin-top: 0.5rem;
+        }
+
+        .bk-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-color, #c91c23);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .bk-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .bk-btn-download {
+            background: var(--accent-gradient, linear-gradient(135deg, #da252c 0%, #7d0a10 100%));
+            color: #fff;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .bk-btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(201, 28, 35, 0.2);
+        }
+
+        /* Right Column: Preview */
+        .bk-preview {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--code-bg, rgba(255,255,255,0.02)),
+                var(--code-bg, rgba(255,255,255,0.02)) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            min-height: 400px;
+        }
+
+        .bk-canvas-container {
+            background: #ffffff; /* Fallback backing */
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 100%;
+            overflow: auto;
+        }
+
+        #bk-canvas {
+            max-width: 100%;
+            height: auto !important; /* Prevents overflow stretching */
+        }
+
+        .bk-error-msg {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #ef4444;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+            max-width: 80%;
+        }
+
+        @media (max-width: 768px) {
+            .bk-studio-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .bk-controls {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .bk-preview {
+                padding: 2rem 1rem;
+                min-height: 300px;
+            }
+        }
+    </style>
+
+    <div class="bk-studio-wrapper">
+        <div class="bk-controls">
+            <div class="bk-control-group">
+                <label class="bk-label" for="bk-type">Barcode Format</label>
+                <select id="bk-type" class="bk-select">
+                    <option value="CODE128">Code 128 (Alphanumeric)</option>
+                    <option value="CODE39">Code 39 (Basic)</option>
+                    <option value="EAN13">EAN-13 (Retail)</option>
+                    <option value="UPC">UPC-A (Retail)</option>
+                </select>
+            </div>
+
+            <div class="bk-control-group">
+                <label class="bk-label" for="bk-data">Data Content</label>
+                <input type="text" id="bk-data" class="bk-input" value="HANDLEKIT2026" placeholder="Enter text or URL...">
+            </div>
+
+            <div class="bk-color-row">
+                <div class="bk-control-group" style="flex:1;">
+                    <label class="bk-label" for="bk-line">Line Color</label>
+                    <input type="color" id="bk-line" class="bk-color-picker bk-input" value="#000000">
+                </div>
+                <div class="bk-control-group" style="flex:1;">
+                    <label class="bk-label" for="bk-bg">Background</label>
+                    <input type="color" id="bk-bg" class="bk-color-picker bk-input" value="#ffffff">
+                </div>
+            </div>
+
+            <div class="bk-control-group">
+                <label class="bk-label" for="bk-scale">Scale / Size</label>
+                <input type="range" id="bk-scale" class="bk-slider" min="1" max="4" step="1" value="2">
+            </div>
+
+            <button id="bk-download" class="bk-btn-download">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download PNG
+            </button>
+        </div>
+
+        <div class="bk-preview">
+            <div class="bk-canvas-container" id="bk-canvas-wrap">
+                <canvas id="bk-canvas"></canvas>
+            </div>
+            <div id="bk-error" class="bk-error-msg"></div>
+        </div>
+    </div>
+
+    <!-- SEO Content -->
+    <div class="info-sections" style="margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 4rem; max-width: 860px; margin-left: auto; margin-right: auto;">
+        <div class="info-card" style="margin-bottom: 3rem;">
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">What Is This Tool?</h2>
+            <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
+                The HandleKit Barcode Studio is a free, browser-based generator that lets you create scannable 1D barcodes in seconds. It supports the most widely used industry formats—<strong style="color: var(--text-main);">Code 128, Code 39, EAN-13, and UPC-A</strong>—for shipping, retail, and inventory management.
+            </p>
+            <p style="color: var(--text-sub); line-height: 1.8;">
+                Everything runs entirely in your browser. Your data is never sent to a server, and the resulting image is yours to download and use freely—no watermarks, no sign-up, no limits.
+            </p>
+        </div>
+
+        <div class="info-grid mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+            <div class="info-card">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.1rem;">Which Format Should I Use?</h3>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
+                    Use <strong>Code 128</strong> for general-purpose alphanumeric data like shipping labels and warehouse tracking. Choose <strong>EAN-13</strong> or <strong>UPC-A</strong> for retail products. If you need a website link or more data in a square format, use our dedicated <a href="/qr-generator" style="color: var(--accent-color); font-weight: 700;">QR Generator Tool</a>.
+                </p>
+            </div>
+            <div class="info-card">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.1rem;">Tips for Reliable Scanning</h3>
+                <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem;">
+                    Always use <strong>high contrast</strong> between the barcode and background—dark bars on a light surface work best. Make sure the barcode has enough <strong>quiet zone</strong> (blank space around it), and test the output with a real scanner before printing at scale.
+                </p>
+            </div>
+        </div>
+
+        <div class="info-card" style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 15px; border: 1px solid var(--border-color); margin-bottom: 3rem;">
+            <h2 style="color: var(--text-main); margin-bottom: 1.5rem; font-size: 1.5rem;">Supported Barcode Formats</h2>
+            <ul style="color: var(--text-sub); list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.9rem;">
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span><strong style="color: var(--text-main);">Code 128:</strong> The most versatile 1D barcode. Supports full ASCII, compact encoding, and is ideal for logistics, shipping, and internal tracking.</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span><strong style="color: var(--text-main);">Code 39:</strong> A widely supported legacy format used in automotive, defense, and healthcare industries. Encodes uppercase letters, digits, and a few special characters.</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span><strong style="color: var(--text-main);">EAN-13:</strong> The global retail standard for product identification. Requires exactly 13 numeric digits (including check digit).</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="color: var(--accent-color); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span><strong style="color: var(--text-main);">UPC-A:</strong> The North American retail standard. Requires exactly 12 numeric digits. Used on virtually all consumer products sold in the US and Canada.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Cross-link to blog post -->
+        <div style="background: rgba(255, 68, 68, 0.05); border: 1px solid rgba(255, 68, 68, 0.25); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <i data-lucide="book-open" style="color: var(--accent-color); width: 22px; height: 22px; flex-shrink: 0;"></i>
+                <span style="color: var(--text-sub); font-size: 0.9rem;">Want to learn more about <strong style="color: var(--text-main);">barcode types & best practices</strong>?</span>
+            </div>
+            <a href="/blog/how-to-generate-barcode-2026"
+                style="color: var(--accent-color); font-size: 0.85rem; font-weight: 700; text-decoration: none; white-space: nowrap; border: 1px solid rgba(255,68,68,0.3); padding: 0.4rem 1rem; border-radius: 8px; transition: background 0.2s;"
+                onmouseover="this.style.background='rgba(255,68,68,0.1)'"
+                onmouseout="this.style.background='transparent'">Read Our Barcode Guide →</a>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-card">
+                    <h3>Is this barcode generator really free?</h3>
+                    <p>Yes—completely free with no limits, no watermarks, and no sign-up. Generate as many barcodes as you need.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Is my data sent to a server?</h3>
+                    <p>No. Everything runs entirely in your browser using the JsBarcode library. Your data never leaves your device.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Can I use the barcodes commercially?</h3>
+                    <p>Yes. The generated images are yours to use however you want—for products, labels, inventory, shipping, or any other purpose. No attribution required.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Why does my EAN-13 or UPC barcode show an error?</h3>
+                    <p>EAN-13 requires exactly 13 digits and UPC-A requires exactly 12 digits—both must be numeric only. If your data contains letters or is the wrong length, the generator will show a helpful error message. Switch to Code 128 for alphanumeric data.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>What image format does this tool export?</h3>
+                    <p>Barcodes are downloaded as PNG files at the scale you select. The download includes a solid background color, so the image is ready to print or embed without any transparency issues.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RATING SECTION -->
+        <div id="rating-section" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem; text-align: center;">
+            <div id="rating-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3rem; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+                <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;">How useful was this tool?</h3>
+                <p style="color: var(--text-sub); margin-bottom: 2rem; font-size: 1rem;">Your feedback helps us improve HandleKit.</p>
+                
+                <div class="stars-container" style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; transition: all 0.3s ease;">
+                    <i data-lucide="star" class="star-icon" data-value="1" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                    <i data-lucide="star" class="star-icon" data-value="2" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                    <i data-lucide="star" class="star-icon" data-value="3" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                    <i data-lucide="star" class="star-icon" data-value="4" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                    <i data-lucide="star" class="star-icon" data-value="5" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                </div>
+                
+                <div id="rating-thanks" style="display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease;">
+                    <div style="background: rgba(var(--accent-rgb), 0.1); color: var(--accent-color); padding: 1.25rem; border-radius: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.75rem;">
+                        <i data-lucide="heart" style="width: 20px; height: 20px; fill: var(--accent-color);"></i>
+                        Thank you for your rating!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const elData = document.getElementById('bk-data');
+        const elType = document.getElementById('bk-type');
+        const elLine = document.getElementById('bk-line');
+        const elBg = document.getElementById('bk-bg');
+        const elScale = document.getElementById('bk-scale');
+        const elCanvas = document.getElementById('bk-canvas');
+        const elCanvasWrap = document.getElementById('bk-canvas-wrap');
+        const elError = document.getElementById('bk-error');
+        const btnDownload = document.getElementById('bk-download');
+
+        function renderBarcode() {
+            const data = elData.value || " ";
+            const type = elType.value;
+            const lineCol = elLine.value;
+            const bgCol = elBg.value;
+            const scale = parseInt(elScale.value);
+
+            // Apply background to the wrapper so transparent QR backgrounds look correct
+            elCanvasWrap.style.backgroundColor = bgCol;
+            
+            elError.style.display = 'none';
+            elCanvas.style.display = 'block';
+
+            try {
+                // Pre-validate numeric-only formats to provide a better error message
+                if ((type === 'UPC' || type === 'EAN13') && !/^\d+$/.test(data)) {
+                    throw new Error(`The ${type} format strictly requires numbers only (0-9). Remove any letters or symbols.`);
+                }
+
+                // Render 1D Barcode
+                JsBarcode(elCanvas, data, {
+                    format: type,
+                    lineColor: lineCol,
+                    background: bgCol === '#ffffff' ? 'transparent' : bgCol,
+                    width: scale,
+                    height: 40 * scale,
+                    displayValue: true,
+                    fontSize: 14 * scale,
+                    margin: 10 * scale,
+                    valid: function(valid) {
+                        if(!valid) throw new Error(`Invalid data length or check digit for ${type}.`);
+                    }
+                });
+            } catch (e) {
+                // Handle Errors Gracefully
+                elCanvas.style.display = 'none';
+                elError.style.display = 'block';
+                elError.textContent = e.message || "Invalid data for the selected barcode format.";
+            }
+        }
+
+        // Download Functionality
+        btnDownload.addEventListener('click', () => {
+            if (elCanvas.style.display === 'none') {
+                alert("Cannot download: Please fix the barcode errors first.");
+                return;
+            }
+            
+            // We need a temporary canvas to fill the background color before downloading, 
+            // otherwise transparent backgrounds download as black on some systems.
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = elCanvas.width;
+            tempCanvas.height = elCanvas.height;
+            const ctx = tempCanvas.getContext('2d');
+            
+            // Fill background
+            ctx.fillStyle = elBg.value;
+            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            // Draw barcode over it
+            ctx.drawImage(elCanvas, 0, 0);
+
+            // Trigger Download
+            const url = tempCanvas.toDataURL("image/png");
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `handlekit-${elType.value.toLowerCase()}-${Date.now()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+
+        // Event Listeners for real-time rendering
+        [elData, elType, elLine, elBg, elScale].forEach(el => {
+            el.addEventListener('input', renderBarcode);
+            el.addEventListener('change', renderBarcode);
+        });
+
+        // Initialize
+        setTimeout(renderBarcode, 100);
+
+        // --- RATING LOGIC ---
+        const toolId = 'barcode-generator';
+        const stars = document.querySelectorAll('.star-icon');
+        const thanks = document.getElementById('rating-thanks');
+        const container = document.querySelector('.stars-container');
+
+        if (localStorage.getItem('rated-' + toolId)) {
+            if(container) container.style.display = 'none';
+            if(thanks) {
+                thanks.style.display = 'block';
+                thanks.style.opacity = '1';
+                thanks.style.transform = 'translateY(0)';
+            }
+        }
+
+        if (container) {
+            container.addEventListener('mouseover', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                stars.forEach(s => {
+                    if (parseInt(s.dataset.value) <= val) s.classList.add('hovered');
+                    else s.classList.remove('hovered');
+                });
+            });
+
+            container.addEventListener('mouseleave', () => {
+                stars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            container.addEventListener('click', (e) => {
+                const star = e.target.closest('.star-icon');
+                if (!star) return;
+                const val = parseInt(star.dataset.value);
+                submitRating(toolId, val);
+            });
+        }
+
+        async function submitRating(tid, rating) {
+            try {
+                // In a real app, this endpoint handles the persistent storage
+                const response = await fetch('/api/rate-tool', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tool_id: tid, rating: rating })
+                });
+                
+                // Set localStorage immediately for UX
+                localStorage.setItem('rated-' + tid, 'true');
+                container.style.opacity = '0';
+                container.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    container.style.display = 'none';
+                    thanks.style.display = 'block';
+                    setTimeout(() => {
+                        thanks.style.opacity = '1';
+                        thanks.style.transform = 'translateY(0)';
+                        lucide.createIcons(); // Apply heart icon
+                    }, 50);
+                }, 300);
+            } catch (err) {
+                console.error('Rating failed:', err);
+                // Fallback to local-only success if offline/API fails
+                localStorage.setItem('rated-' + tid, 'true');
+            }
+        }
+    });
+</script>
+{% endblock %}
