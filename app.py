@@ -481,9 +481,6 @@ def article_pelli_robson():
 def blog_list():
     return render_template('blog_list.html')
 
-@app.route('/blog/5-free-qr-code-tools-2026')
-def blog_post_qr_tools():
-    return render_template('blog/5-free-qr-code-tools-2026.html')
 
 @app.route('/blog/how-to-generate-barcode-2026')
 def blog_post_barcode():
