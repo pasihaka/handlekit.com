@@ -77,6 +77,54 @@
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
     </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this barcode generator really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes—completely free with no limits, no watermarks, and no sign-up. Generate as many barcodes as you need."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data sent to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Everything runs entirely in your browser using the JsBarcode library. Your data never leaves your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use the barcodes commercially?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The generated images are yours to use however you want—for products, labels, inventory, shipping, or any other purpose. No attribution required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my EAN-13 or UPC barcode show an error?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EAN-13 requires exactly 13 digits and UPC-A requires exactly 12 digits—both must be numeric only. If your data contains letters or is the wrong length, the generator will show a helpful error message. Switch to Code 128 for alphanumeric data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What image format does this tool export?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Barcodes are downloaded as PNG files at the scale you select. The download includes a solid background color, so the image is ready to print or embed without any transparency issues."
+      }
+    }
+  ]
+}
+</script>
 {% endblock %}
 
 {% block content %}

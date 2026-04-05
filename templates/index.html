@@ -3,6 +3,62 @@
 image optimizer, QR generator, word counter, and 10+ developer utilities. No sign-up needed." %}
 {% extends "layout.html" %}
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is HandleKit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "HandleKit is a free collection of browser-based tools for developers, writers, and digital creators. It covers everything from checking username availability across social platforms, to generating secure passwords, converting units, formatting JSON, picking colours, and more, all without needing to create an account or install anything."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the tools really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely and permanently free. There are no premium tiers, no trials, no hidden paywalls. HandleKit is supported by non-intrusive advertising, which keeps everything free for everyone. You'll never be asked for a credit card or email address."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data private?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Privacy is central to how HandleKit is built. Almost all tools— Password Generator, Word Counter, JSON Formatter, URL Encoder, Base64 Encoder, Hash Generator, Color Picker, Text Case Converter, and Unit Converter —run entirely within your browser. Your data never leaves your device. For tools that require a server ( Username Checker, Image Optimizer ), only the minimum necessary data is sent, and it is not stored. See our Privacy Policy for full details."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to create an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Never. HandleKit requires zero registration. Open any tool, use it, and leave, or bookmark it for next time. There are no accounts, no logins, and no profiles. This is intentional: every account requirement is a barrier to just getting things done."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is HandleKit different from other tool sites?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most free tool sites are slow, cluttered, require sign-ups, or gate features behind paywalls. HandleKit is built to be fast, clean, and genuinely useful, with tools that run in the browser rather than sending everything to a server. The design is intentionally premium because we believe good tools should also be a pleasure to use."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I suggest a new tool?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely, we'd love to hear it. Send your idea to contacthandlekit@gmail.com or use the contact page. New tools are added based on what people actually need, so community suggestions are genuinely valued and often built."
+      }
+    }
+  ]
+}
+</script>
 {% block content %}
 
 <!-- Hero intro -->
@@ -66,7 +122,7 @@ image optimizer, QR generator, word counter, and 10+ developer utilities. No sig
         style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin: 0;">
         All Tools</p>
     <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
-    <span style="font-size: 0.72rem; color: var(--text-sub); font-weight: 700;">16 tools</span>
+    <span style="font-size: 0.72rem; color: var(--text-sub); font-weight: 700;">17 tools</span>
 </div>
 
 <div class="hub-grid">
@@ -117,6 +173,13 @@ image optimizer, QR generator, word counter, and 10+ developer utilities. No sig
         <h2>Color Picker</h2>
         <p>Pick any color and get its HEX, RGB, HSL and CMYK values. Generate beautiful palettes instantly.</p>
         <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
+    </a>
+
+    <a href="/color-guessing-game" class="tool-card">
+        <i data-lucide="gamepad-2"></i>
+        <h2>Color Guessing Game</h2>
+        <p>Test your visual memory. Memorize a hue and see how closely you can recreate it using HSL sliders.</p>
+        <div class="card-arrow">Play now <i data-lucide="arrow-right"></i></div>
     </a>
 
     <a href="/url-encoder" class="tool-card">

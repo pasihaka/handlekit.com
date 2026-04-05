@@ -455,6 +455,10 @@ def text_case_converter():
 def color_picker():
     return render_template('color_picker.html')
 
+@app.route('/color-guessing-game')
+def color_guessing_game():
+    return render_template('color_guessing_game.html')
+
 @app.route('/jnd-test')
 def jnd_test():
     return render_template('jnd_test.html')
@@ -641,6 +645,112 @@ def api_jnd_leaderboard():
         
         # Sort by score desc, then level desc
         sorted_results = sorted(results, key=lambda x: (x['score'], x['level']), reverse=True)
+        return jsonify(sorted_results[:10])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/color-guessing/submit', methods=['POST'])
+def api_color_submit():
+    data = request.get_json()
+    if not data or 'score' not in data:
+        return jsonify({"success": False, "error": "Missing data"}), 400
+    
+    data_dir = 'data'
+    os.makedirs(data_dir, exist_ok=True)
+    file_path = os.path.join(data_dir, 'color_guessing_global.json')
+    
+    try:
+        results = []
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                results = json.load(f)
+        
+        results.append({
+            "nickname": data.get('nickname', 'Anonymous'),
+            "score": int(data['score']),
+            "timestamp": time.time()
+        })
+        
+        with open(file_path, 'w') as f:
+            json.dump(results, f)
+            
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/color-guessing/stats', methods=['GET'])
+def api_color_stats():
+    file_path = 'data/color_guessing_global.json'
+    if not os.path.exists(file_path):
+        return jsonify({"buckets": [], "total": 0, "percentiles": {}})
+    
+    try:
+        with open(file_path, 'r') as f:
+            results = json.load(f)
+        
+        if not results:
+            return jsonify({"buckets": [], "total": 0, "percentiles": {}})
+            
+        scores = sorted([r['score'] for r in results])
+        total = len(scores)
+        
+        percentiles = {
+            "0": scores[0],
+            "25": scores[int(total * 0.25)],
+            "50": scores[int(total * 0.50)],
+            "75": scores[int(total * 0.75)],
+            "100": scores[-1]
+        }
+        
+        # Max score is 5000, bucket size 250
+        bucket_size = 250
+        max_score = 5000
+        
+        buckets = {}
+        for s in scores:
+            b_idx = (s // bucket_size) * bucket_size
+            buckets[b_idx] = buckets.get(b_idx, 0) + 1
+            
+        final_buckets = []
+        num_buckets = (max_score // bucket_size) + 1
+        for i in range(num_buckets):
+            b_min = i * bucket_size
+            final_buckets.append({
+                "min": b_min,
+                "max": b_min + bucket_size,
+                "count": buckets.get(b_min, 0)
+            })
+        
+        score_val = request.args.get('score')
+        higher_count = 0
+        if score_val is not None:
+            try:
+                score_val = int(score_val)
+                higher_count = sum(1 for s in scores if s > score_val)
+            except: pass
+
+        return jsonify({
+            "buckets": final_buckets,
+            "total": total,
+            "max_score": max_score,
+            "bucket_size": bucket_size,
+            "percentiles": percentiles,
+            "higher_count": higher_count
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/color-guessing/leaderboard', methods=['GET'])
+def api_color_leaderboard():
+    file_path = 'data/color_guessing_global.json'
+    if not os.path.exists(file_path):
+        return jsonify([])
+    
+    try:
+        with open(file_path, 'r') as f:
+            all_results = json.load(f)
+        
+        sorted_results = sorted(all_results, key=lambda x: x['score'], reverse=True)
         return jsonify(sorted_results[:10])
     except Exception as e:
         return jsonify({"error": str(e)}), 500

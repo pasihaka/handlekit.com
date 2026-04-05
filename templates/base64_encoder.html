@@ -34,34 +34,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is Base64 encoding used for?",
+      "name": "Why do Base64 strings end in \"==\"?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Base64 is primarily used to transmit binary data over text-based systems like HTML, CSS, or email. It's commonly used for embedding images or sending attachments."
+        "text": "The equal sign (`=`) is used as padding. Since Base64 processes data in 24-bit chunks, if the source data isn't a multiple of 3 bytes, padding is added to ensure the output length is a multiple of 4 characters."
       }
     },
     {
       "@type": "Question",
-      "name": "Why do some Base64 strings end with '=='?",
+      "name": "Is my file size limited for Base64 encoding?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The equals sign (=) is used as padding to ensure the output length is a multiple of 4 characters, which is required by the Base64 standard."
+        "text": "HandleKit processes files entirely on your device. While there's no hard limit, very large files ( 50MB+ ) may slow down your browser tab. For web assets like small images or favicons, it's near-instant."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Base64 a form of encryption?",
+      "name": "When should I use Data URIs?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Base64 is an encoding scheme, not encryption. It can be easily decoded by anyone and should not be used to secure sensitive data without additional encryption."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my data sent to a server for encoding?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. HandleKit processes all encoding and decoding entirely within your browser tab. Your files and text never leave your device."
+        "text": "Data URIs (Base64 strings used as a `src`) are perfect for tiny icons or decorative elements that you want to bundle directly into your HTML or CSS to reduce the number of HTTP requests."
       }
     }
   ]

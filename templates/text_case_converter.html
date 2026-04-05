@@ -34,26 +34,34 @@ PascalCase, snake_case, and kebab-case. Free, fast, and works entirely in your b
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What cases can I convert to?",
+      "name": "How do I convert text to a different case?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "HandleKit supports all major text cases including Upper Case, Lower Case, Title Case, Sentence Case, and developer-focused cases like camelCase, PascalCase, snake_case, and kebab-case."
+        "text": "Enter your text in the box at the top, then click one of the case buttons: UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case, or aLtErNaTiNg. Your text will be converted and appear in the box below. Click \"Copy\" to put it in your clipboard."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my text saved or sent to a server?",
+      "name": "What is the difference between camelCase and PascalCase?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All text conversion happens instantly within your browser using JavaScript. Your text never leaves your device, ensuring total privacy."
+        "text": "camelCase is like Title Case, but with the first letter lowercase and the first letter of every other word uppercase: myVariableName. PascalCase (also called UpperCamelCase) is like Title Case, but with the first letter of every word, including the first word, uppercase: MyClassName. Use camelCase for JavaScript variables, and PascalCase for React components."
       }
     },
     {
       "@type": "Question",
-      "name": "What is the difference between Camel Case and Pascal Case?",
+      "name": "When to use snake_case and kebab-case?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Camel case starts with a lowercase letter (e.g., camelCase), while Pascal case starts with an uppercase letter (e.g., PascalCase). Both are commonly used in programming."
+        "text": "snake_case uses underscores for delimiters: user_profile_data. This is the standard naming convention for Python. kebab-case uses dashes: user-profile-widget, and is standard for URL slugs and CSS classes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Title Case capitalize every word?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not quite - proper Title Case has rules for \"minor words\". Short prepositions (in, on, at, by), conjunctions (and, or, but), and articles (a, an, the) usually stay in lowercase unless they're the first or last word of the title. Luckily for us, our converter does this correctly by default - \"the quick brown fox and the lazy dog\" becomes \"The Quick Brown Fox and the Lazy Dog\"."
       }
     },
     {
@@ -61,7 +69,7 @@ PascalCase, snake_case, and kebab-case. Free, fast, and works entirely in your b
       "name": "Is there a limit on the amount of text that can be converted?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "There is no limit. The converter runs locally on your machine, so it can handle everything from a single word to an entire book manuscript in less than a second."
+        "text": "No limit at all - the converter runs locally in your browser with JavaScript, so it's only limited by the capability of your computer or device. You can convert a whole novel if you like - it will take less than a second on any computer built in the past decade or so."
       }
     }
   ]

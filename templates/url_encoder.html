@@ -34,10 +34,18 @@ decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is the difference between 'Component' and 'Full URL' encoding?",
+      "name": "How do I encode a URL?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "'Component' (encodeURIComponent) encodes nearly all special characters, making it ideal for query parameter values. 'Full URL' (encodeURI) preserves structural characters like slashes and question marks."
+        "text": "You can paste the URL or text in the input field and select'Component' for query parameter value encoding (or'Full URL' for complete URL encoding). After that, click'Encode', and the percent-encoded URL will be displayed in the output field. The result can be immediatey captured using the'Copy' button."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between 'Component' and 'Full URL' modes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "'Component' (encodeURIComponent) percent-encodes nearly all special characters in a URL. This is useful for encoding a search query or a value for a query parameter.'Full URL' (encodeURI) leaves structural characters in a URL unchanged, so forward slashes and question marks are left as-is."
       }
     },
     {
@@ -45,15 +53,23 @@ decodeURIComponent, and full URL encoding. Free, fast, 100% browser-based." %}
       "name": "Why is a space encoded as %20 in a URL?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "URLs can only contain a limited set of ASCII characters. All others, including spaces, must be percent-encoded. The hexadecimal code for a space is 20, hence %20."
+        "text": "There are only a limited set of ASCII characters that a URL can contain. All other characters, including a space, are percent-encoded: replaced with a percent sign (%) followed by two digits representing the code for that character in hexadecimal. The code for a space is 32 in decimal and 20 in hexadecimal, hence %20."
       }
     },
     {
       "@type": "Question",
-      "name": "Does this tool store the URLs I encode?",
+      "name": "When do I need to decode a URL?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All encoding and decoding happens locally in your browser using JavaScript. No data is ever sent to our servers."
+        "text": "You need to decode a URL when you receive a percent-encoded string (e.g., from a server log) and need to read the human-readable value. Simply paste the string in the input field and click'Decode' to restore the original characters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool store the URLs that I paste?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The encoding and decoding process happens on the client side using JavaScript in your browser. We do not store any URLs that you paste into this page. If you are working with URLs that contain sensitive data, you can use this page with confidence."
       }
     }
   ]

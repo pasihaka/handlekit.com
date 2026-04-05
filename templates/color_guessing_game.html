@@ -1,0 +1,666 @@
+{% set title = "HandleKit Color Guessing Game | Test Your Color Memory" %}
+{% set description = "Test your color memory with the HandleKit Color Guessing Game. Memorize a hue, adjust the HSL sliders, and see how closely your brain matches the exact color." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "VideoGame",
+      "name": "HandleKit Color Guessing Game",
+      "alternateName": ["HandleKit Color Memory", "Color Match Game"],
+      "description": "Test your visual memory. A free online puzzle game where you memorize a hue and recreate it using human-perception color sliders.",
+      "url": "https://handlekit.com/color-guessing-game",
+      "applicationCategory": "GameApplication",
+      "genre": ["Puzzle", "Memory", "Educational"],
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript. Works on all modern browsers.",
+      "gamePlatform": ["Web Browser", "Mobile Web"],
+      "playMode": "SinglePlayer",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "HandleKit",
+        "url": "https://handlekit.com"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do you play the color guessing game?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The game consists of 5 rounds. A random color will flash on your screen, with the flash time getting shorter every round. Once the color disappears, use the Hue, Saturation, and Lightness sliders to recreate it from memory. Submit your guess to earn points!"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is the guess the color score calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Instead of basic RGB math, our game uses advanced color science. It converts your guess into the CIELAB color space and calculates the perceptual distance (Delta E) to the target color. This means the game scores you based on how the human eye actually perceives color differences, rewarding near-perfect visual matches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a good score on the color memory test?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A perfect game is 5,000 points (1,000 points per round). Scoring over 4,000 points ranks you as a Master Painter (roughly the top 15% of players). If you can break 4,500 points, you have elite Pantone Vision and sit in the top 1% globally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the game feature a global leaderboard?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! At the end of your 5 rounds, you will see a chart comparing your score to the global distribution. You can submit your nickname and final score to our database to see where you rank among top gamers worldwide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the color guessing game free to play?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, the HandleKit Color Guessing Game is completely free to play online with no downloads, apps, or sign-ups required."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<style>
+    .color-game-wrapper {
+        max-width: 800px;
+        margin: 0 auto 4rem;
+        background: var(--card-bg, #161212);
+        border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .cg-header {
+        text-align: center;
+        padding: 2rem;
+        border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.1));
+        background: rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .cg-header-text { text-align: left; }
+    .cg-header h1 { color: var(--text-main, #e6e6e6); margin: 0 0 0.2rem 0; font-size: 1.5rem; font-weight: 800; }
+    .cg-header p { color: var(--text-sub, #a0a0a0); margin: 0; font-size: 0.9rem; }
+    
+    .cg-round-badge {
+        background: var(--accent-color, #c91c23);
+        color: #fff;
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 0.9rem;
+        display: none; /* Hidden on start screen */
+    }
+
+    .cg-body {
+        padding: 3rem 2rem;
+        min-height: 480px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .cg-screen { display: none; width: 100%; text-align: center; animation: fadeIn 0.4s ease; }
+    .cg-screen.active { display: flex; flex-direction: column; align-items: center; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .cg-color-block {
+        width: 200px; height: 200px;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        margin: 0 auto 2rem;
+        border: 4px solid #ffffff;
+        transition: background-color 0.1s;
+    }
+
+    .cg-timer { font-size: 4rem; font-weight: 900; color: var(--text-main); font-family: 'Roboto Mono', monospace; }
+
+    .cg-controls { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem; }
+    .cg-slider-group { display: flex; flex-direction: column; text-align: left; gap: 0.5rem; }
+    .cg-label { color: var(--text-main); font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; }
+    .cg-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: var(--input-bg, rgba(255,255,255,0.05)); border-radius: 4px; outline: none; }
+    .cg-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #ffffff; border: 2px solid var(--accent-color, #c91c23); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    #cg-hue { background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%); }
+
+    .cg-btn {
+        background: var(--accent-gradient, linear-gradient(135deg, #da252c 0%, #7d0a10 100%));
+        color: #ffffff; border: none; padding: 1rem 2.5rem; border-radius: 50px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cg-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(201, 28, 35, 0.3); }
+    .cg-btn-outline { background: transparent; border: 2px solid var(--accent-color); color: var(--text-main); }
+
+    /* Results & Leaderboard */
+    .cg-score-display { font-size: 4rem; font-weight: 900; color: var(--accent-color, #c91c23); margin-bottom: 0.2rem; line-height: 1; }
+    .cg-percentile { color: #10b981; font-weight: 800; font-size: 1.1rem; margin-bottom: 2rem; background: rgba(16, 185, 129, 0.1); padding: 0.5rem 1rem; border-radius: 8px;}
+    
+    .cg-leaderboard { width: 100%; max-width: 400px; text-align: left; margin-bottom: 2rem; background: var(--input-bg, rgba(255,255,255,0.02)); border-radius: 12px; padding: 1.5rem; }
+    .cg-leaderboard h4 { color: var(--text-main); margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+    .cg-lb-row { display: flex; justify-content: space-between; padding: 0.5rem 0; color: var(--text-sub); border-bottom: 1px dashed rgba(255,255,255,0.05); }
+    .cg-lb-row:last-child { border: none; }
+    .cg-lb-score { font-weight: 800; color: var(--text-main); }
+
+    .cg-button-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+</style>
+
+<div class="color-game-wrapper">
+    <div class="cg-header">
+        <div class="cg-header-text">
+            <h1>Color Guessing Game</h1>
+            <p>5 Rounds. Test your visual memory.</p>
+        </div>
+        <div id="round-indicator" class="cg-round-badge">Round 1/5</div>
+    </div>
+
+    <div class="cg-body">
+        <div id="screen-start" class="cg-screen active">
+            <div class="cg-color-block" style="background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);"></div>
+            <h3 style="color: var(--text-main);">Can you remember a hue?</h3>
+            <p style="color: var(--text-sub); margin-bottom: 2rem; max-width: 400px;">You will play 5 rounds. The flash time gets shorter every round. Match the color as closely as possible to climb the leaderboard.</p>
+            <button class="cg-btn" onclick="startRound()">Play Now</button>
+        </div>
+
+        <div id="screen-memorize" class="cg-screen">
+            <h3 style="color: var(--text-main); margin-top: 0;">Memorize this color!</h3>
+            <div id="target-color" class="cg-color-block"></div>
+            <div id="countdown" class="cg-timer">3.0</div>
+        </div>
+
+        <div id="screen-guess" class="cg-screen">
+            <div id="guess-preview" class="cg-color-block"></div>
+            <div class="cg-controls">
+                <div class="cg-slider-group">
+                    <div class="cg-label"><span>Hue (Color Family)</span> <span id="val-h">180°</span></div>
+                    <input type="range" id="cg-hue" class="cg-slider" min="0" max="360" value="180">
+                </div>
+                <div class="cg-slider-group">
+                    <div class="cg-label"><span>Saturation (Intensity)</span> <span id="val-s">50%</span></div>
+                    <input type="range" id="cg-sat" class="cg-slider" min="0" max="100" value="50">
+                </div>
+                <div class="cg-slider-group">
+                    <div class="cg-label"><span>Lightness (Brightness)</span> <span id="val-l">50%</span></div>
+                    <input type="range" id="cg-lig" class="cg-slider" min="0" max="100" value="50">
+                </div>
+            </div>
+            <button class="cg-btn" onclick="submitRound()">Submit Guess</button>
+        </div>
+
+        <div id="screen-round-result" class="cg-screen">
+            <h3 style="color: var(--text-main); margin-top: 0;">Round Complete</h3>
+            <div style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 1.5rem;">
+                <div><div id="rr-target" style="width: 80px; height: 80px; border-radius: 12px; border: 2px solid #fff;"></div><small style="color: var(--text-sub)">Target</small></div>
+                <div><div id="rr-guess" style="width: 80px; height: 80px; border-radius: 12px; border: 2px solid #fff;"></div><small style="color: var(--text-sub)">Yours</small></div>
+            </div>
+            <div class="cg-score-display" style="font-size: 3rem;"><span id="round-score">0</span></div>
+            <p id="round-feedback" style="color: var(--text-sub); margin-bottom: 2rem; font-weight: 600; font-size: 1.1rem;"></p>
+            <button class="cg-btn" onclick="startRound()">Next Round</button>
+        </div>
+
+        <div id="screen-final" class="cg-screen" style="position: relative;">
+            <button onclick="resetGame()"
+                    style="position:absolute; top:1.2rem; right:1.2rem; background: var(--input-bg); border:1px solid var(--border-color); color: var(--text-sub); width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; z-index: 10;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+
+            <h3 style="color: var(--text-main); margin-top: 0;">Game Over! Total Points:</h3>
+            <div class="cg-score-display"><span id="final-avg-score">0</span></div>
+            <div id="percentile-badge" class="cg-percentile" style="margin-bottom: 2rem;">You scored better than 82% of players!</div>
+
+            <!-- Global Score Distribution Section -->
+            <div id="cg-global-dist-section" style="width: 100%; margin-bottom: 2rem; min-height: 180px; opacity: 0; transition: opacity 0.3s ease; display: none;">
+                <div style="color: var(--text-sub); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.2rem; font-weight: 800; text-align: left;">
+                    Global Score Distribution
+                </div>
+                <div style="position: relative; height: 160px; width: 100%;">
+                    <canvas id="cgGlobalDistChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Global Leaderboard Section -->
+            <div id="cg-global-leaderboard-section" style="width: 100%; margin-bottom: 1.5rem; display: none; text-align: left;">
+                <div style="color: var(--text-sub); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 0.8rem;">
+                    Top Gamers Global
+                </div>
+                <div id="cg-top-gamers-list"></div>
+            </div>
+
+            <!-- Pre-Submit Inline Input -->
+            <div id="cg-submit-container" style="margin-bottom: 1.5rem;">
+                <div style="display: flex; gap: 0.5rem; justify-content: center; max-width: 320px; margin: 0 auto;">
+                    <input type="text" id="cg-player-nickname" placeholder="YOUR CALLSIGN" maxlength="20"
+                        style="width: 100%; background: var(--input-bg); border:1px solid var(--border-color); border-radius:12px; color: var(--text-main); padding:0.75rem 1rem; font-family:'Outfit',sans-serif; font-size:0.85rem; outline:none; transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='var(--accent-color, #c91c23)'" onblur="this.style.borderColor='var(--border-color)'"
+                        onkeydown="if(event.key==='Enter') window.submitCGToLeaderboard()">
+                    <button class="cg-btn" onclick="window.submitCGToLeaderboard()" style="padding: 0.75rem 1.5rem; white-space: nowrap;">Submit Score</button>
+                </div>
+                <div id="cg-submit-status" style="color: #00ff88; font-size: 0.8rem; margin-top: 0.5rem; display: none;">Score submitted!</div>
+            </div>
+
+            <div class="cg-button-row" id="cg-post-submit-actions" style="display: none;">
+                <button class="cg-btn cg-btn-outline" onclick="shareScore()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                    Challenge a Friend
+                </button>
+                <button class="cg-btn" onclick="resetGame()">Play Again</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="faq-section">
+    <h2 style="color: var(--text-main); margin-bottom: 2rem; font-family: var(--font-heading);">Frequently Asked Questions</h2>
+    <div class="faq-container">
+        <div class="faq-card">
+            <h3>How do you play the color guessing game?</h3>
+            <p>The game consists of 5 rounds. A random color will flash on your screen, with the flash time getting shorter every round. Once the color disappears, use the Hue, Saturation, and Lightness sliders to recreate it from memory. Submit your guess to earn points!</p>
+        </div>
+
+        <div class="faq-card">
+            <h3>How is the guess the color score calculated?</h3>
+            <p>Instead of basic RGB math, our game uses advanced color science. It converts your guess into the CIELAB color space and calculates the perceptual distance (Delta E) to the target color. This means the game scores you based on how the human eye actually perceives color differences, rewarding near-perfect visual matches.</p>
+        </div>
+
+        <div class="faq-card">
+            <h3>What is a good score on the color memory test?</h3>
+            <p>A perfect game is 5,000 points (1,000 points per round). Scoring over 4,000 points ranks you as a "Master Painter" (roughly the top 15% of players). If you can break 4,500 points, you have elite "Pantone Vision" and sit in the top 1% globally.</p>
+        </div>
+
+        <div class="faq-card">
+            <h3>Does the game feature a global leaderboard?</h3>
+            <p>Yes! At the end of your 5 rounds, you will see a chart comparing your score to the global distribution. You can submit your nickname and final score to our database to see where you rank among top gamers worldwide.</p>
+        </div>
+
+        <div class="faq-card">
+            <h3>Is the color guessing game free to play?</h3>
+            <p>Yes, the HandleKit Color Guessing Game is completely free to play online with no downloads, apps, or sign-ups required.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Game State
+    const MAX_ROUNDS = 5;
+    let currentRound = 0;
+    let roundScores = [];
+    let targetHSL = { h: 0, s: 0, l: 0 };
+    let countdownInt;
+
+    // DOM Links (Same as before)
+    const screens = { start: document.getElementById('screen-start'), memorize: document.getElementById('screen-memorize'), guess: document.getElementById('screen-guess'), roundResult: document.getElementById('screen-round-result'), final: document.getElementById('screen-final') };
+    const ui = { roundInd: document.getElementById('round-indicator'), targetBlock: document.getElementById('target-color'), timer: document.getElementById('countdown'), previewBlock: document.getElementById('guess-preview'), rrTarget: document.getElementById('rr-target'), rrGuess: document.getElementById('rr-guess'), roundScore: document.getElementById('round-score'), finalAvg: document.getElementById('final-avg-score'), percentile: document.getElementById('percentile-badge'), lbContent: document.getElementById('lb-content'), sliders: { h: document.getElementById('cg-hue'), s: document.getElementById('cg-sat'), l: document.getElementById('cg-lig') }, vals: { h: document.getElementById('val-h'), s: document.getElementById('val-s'), l: document.getElementById('val-l') } };
+
+    function showScreen(name) { Object.values(screens).forEach(s => s.classList.remove('active')); screens[name].classList.add('active'); }
+
+    // --- NEW COLOR SCIENCE MATH PIPELINE ---
+
+    // 1. HSL to RGB
+    function hslToRgb(h, s, l) {
+        h /= 360; s /= 100; l /= 100;
+        let r, g, b;
+        if (s === 0) r = g = b = l; 
+        else {
+            const hue2rgb = (p, q, t) => {
+                if(t < 0) t += 1; if(t > 1) t -= 1;
+                if(t < 1/6) return p + (q - p) * 6 * t;
+                if(t < 1/2) return q;
+                if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1/3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1/3);
+        }
+        return [r * 255, g * 255, b * 255];
+    }
+
+    // 2. RGB to CIELAB (The Human Perception Standard)
+    function rgbToLab(rgb) {
+        let r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+        r = (r > 0.04045) ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
+        g = (g > 0.04045) ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
+        b = (b > 0.04045) ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
+
+        let x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
+        let y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.00000;
+        let z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+
+        x = (x > 0.008856) ? Math.pow(x, 1/3) : (7.787 * x) + 16/116;
+        y = (y > 0.008856) ? Math.pow(y, 1/3) : (7.787 * y) + 16/116;
+        z = (z > 0.008856) ? Math.pow(z, 1/3) : (7.787 * z) + 16/116;
+
+        return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)];
+    }
+
+    // 3. Calculate Perceptual Distance (CIE76 Delta E)
+    function getDeltaE(labA, labB) {
+        const deltaL = labA[0] - labB[0];
+        const deltaA = labA[1] - labB[1];
+        const deltaB = labA[2] - labB[2];
+        return Math.sqrt(deltaL*deltaL + deltaA*deltaA + deltaB*deltaB);
+    }
+
+    // --- END MATH PIPELINE ---
+
+    function updatePreview() {
+        const h = ui.sliders.h.value, s = ui.sliders.s.value, l = ui.sliders.l.value;
+        ui.vals.h.textContent = h + '°'; ui.vals.s.textContent = s + '%'; ui.vals.l.textContent = l + '%';
+        ui.previewBlock.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
+        ui.sliders.s.style.background = `linear-gradient(to right, hsl(${h}, 0%, ${l}%), hsl(${h}, 100%, ${l}%))`;
+        ui.sliders.l.style.background = `linear-gradient(to right, #000, hsl(${h}, ${s}%, 50%), #fff)`;
+    }
+
+    Object.values(ui.sliders).forEach(el => el.addEventListener('input', updatePreview));
+
+    window.startRound = function() {
+        currentRound++;
+        if(currentRound > MAX_ROUNDS) return showFinalResults();
+
+        ui.roundInd.style.display = 'block';
+        ui.roundInd.textContent = `Round ${currentRound}/${MAX_ROUNDS}`;
+
+        targetHSL = { h: Math.floor(Math.random() * 360), s: Math.floor(Math.random() * 60) + 20, l: Math.floor(Math.random() * 60) + 20 };
+        ui.targetBlock.style.backgroundColor = `hsl(${targetHSL.h}, ${targetHSL.s}%, ${targetHSL.l}%)`;
+        
+        showScreen('memorize');
+        
+        let timeLeft = 3.5 - (currentRound * 0.5); 
+        ui.timer.textContent = timeLeft.toFixed(1);
+        
+        countdownInt = setInterval(() => {
+            timeLeft -= 0.1;
+            if(timeLeft > 0.05) {
+                ui.timer.textContent = timeLeft.toFixed(1);
+            } else {
+                clearInterval(countdownInt);
+                ui.sliders.h.value = Math.floor(Math.random() * 360);
+                ui.sliders.s.value = Math.floor(Math.random() * 100);
+                ui.sliders.l.value = Math.floor(Math.random() * 100);
+                updatePreview();
+                showScreen('guess');
+            }
+        }, 100);
+    };
+
+    window.submitRound = function() {
+        const guessH = parseInt(ui.sliders.h.value);
+        const guessS = parseInt(ui.sliders.s.value);
+        const guessL = parseInt(ui.sliders.l.value);
+        
+        // Convert to LAB color space
+        const targetLAB = rgbToLab(hslToRgb(targetHSL.h, targetHSL.s, targetHSL.l));
+        const guessLAB = rgbToLab(hslToRgb(guessH, guessS, guessL));
+
+        // Calculate Perceptual Distance
+        const deltaE = getDeltaE(targetLAB, guessLAB);
+
+        // --- THE DIALED.GG SIGMOID CURVE ---
+        // Midpoint = 38, Steepness = 1.6
+        // We multiply by 100 instead of 10 to get a percentage score
+        let accuracyPercent = 100 / (1 + Math.pow(deltaE / 38, 1.6));
+        if (deltaE < 2.5) accuracyPercent = 100;
+        
+        // Convert to Arcade Points
+        let roundPoints = Math.round(accuracyPercent * 10);
+        roundScores.push(roundPoints);
+        
+        // Generate Humorous Feedback
+        let feedbackText = "";
+        if (roundPoints === 1000) {
+            feedbackText = "Are you a mantis shrimp? Flawless match! 🦐✨";
+        } else if (roundPoints >= 900) {
+            feedbackText = "Bob Ross would be proud. 🎨🌲";
+        } else if (roundPoints >= 750) {
+            feedbackText = "Close! But your printer might disagree. 🖨️";
+        } else if (roundPoints >= 500) {
+            feedbackText = "Did you have your screen brightness down? 🔅";
+        } else {
+            feedbackText = "Are we even looking at the same color? 🕶️";
+        }
+        
+        // Update UI
+        ui.rrTarget.style.backgroundColor = `hsl(${targetHSL.h}, ${targetHSL.s}%, ${targetHSL.l}%)`;
+        ui.rrGuess.style.backgroundColor = `hsl(${guessH}, ${guessS}%, ${guessL}%)`;
+        ui.roundScore.textContent = `+${roundPoints}`; 
+        document.getElementById('round-feedback').textContent = feedbackText;
+
+        showScreen('roundResult');
+    };
+
+    let cgChartInstance = null;
+    let finalTotalScore = 0;
+
+    function showFinalResults() {
+        ui.roundInd.style.display = 'none';
+        
+        // Sum the points
+        finalTotalScore = roundScores.reduce((a, b) => a + b, 0);
+        
+        // Display the score with the max possible in a subtle style
+        ui.finalAvg.innerHTML = `${finalTotalScore} <span style="font-size: 0.5em; color: var(--text-sub);">/ 5000</span>`;
+
+        // Load Global Stats (which will naturally hide/show rank text and distribution)
+        ui.percentile.textContent = "Analyzing Global Rank...";
+        
+        // Reset state for play agains
+        document.getElementById('cg-submit-container').style.display = 'block';
+        document.getElementById('cg-post-submit-actions').style.display = 'none';
+        document.getElementById('cg-submit-status').style.display = 'none';
+        document.getElementById('cg-global-dist-section').style.display = 'none';
+        document.getElementById('cg-global-leaderboard-section').style.display = 'none';
+        document.getElementById('cg-global-dist-section').style.opacity = '0';
+
+        loadCGGlobalStats(finalTotalScore);
+        
+        showScreen('final');
+    }
+
+    async function loadCGGlobalStats(score) {
+        try {
+            const res = await fetch(`/api/color-guessing/stats?score=${score}`);
+            const data = await res.json();
+            
+            // Assign a Status Rank + Percentile
+            let rankText = "";
+            if (score >= 4500) rankText = "🏆 Pantone Vision (Top 1%)";
+            else if (score >= 4000) rankText = "🎨 Master Painter (Top 15%)";
+            else if (score >= 3000) rankText = "🖌️ Digital Artist (Top 40%)";
+            else if (score >= 2000) rankText = "👀 Casual Observer";
+            else rankText = "🙈 Needs Practice";
+
+            let percentileText = `Rank Achieved: ${rankText}`;
+            if (data.total > 10) {
+                const beatPercent = Math.max(1, Math.round(( (data.total - data.higher_count) / data.total ) * 100));
+                percentileText += ` • Better than ${beatPercent}% of players globally!`;
+            } else if (data.total > 0) {
+                percentileText += ` • (Global Leaderboard Early Access)`;
+            }
+
+            ui.percentile.textContent = percentileText;
+
+            // Render Chart
+            if (data.buckets && data.buckets.length > 0) {
+                document.getElementById('cg-global-dist-section').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('cg-global-dist-section').style.opacity = '1';
+                }, 50);
+
+                const ctx = document.getElementById('cgGlobalDistChart').getContext('2d');
+                if (cgChartInstance) cgChartInstance.destroy();
+
+                const gradient = ctx.createLinearGradient(0, 0, 0, 160);
+                gradient.addColorStop(0, 'rgba(201, 28, 35, 0.4)');
+                gradient.addColorStop(1, 'rgba(201, 28, 35, 0.0)');
+
+                const labels = data.buckets.map(b => b.min);
+                const counts = data.buckets.map(b => b.count);
+
+                // Define the plugin locally
+                const userScoreLinePlugin = {
+                    id: 'userScoreLine',
+                    afterDraw: chart => {
+                        if (chart.tooltip?._active?.length) return;
+                        const xAxis = chart.scales.x;
+                        const yAxis = chart.scales.y;
+                        const bucketSize = data.bucket_size || 250;
+                        const scoreBucketIdx = Math.floor(score / bucketSize);
+                        
+                        let xPos = xAxis.getPixelForValue(0); // Default fallback
+                        
+                        // Use getPixelForValue instead of getPixelForTick to bypass mobile responsive tick skipping
+                        if (scoreBucketIdx >= 0 && scoreBucketIdx < labels.length - 1) {
+                            const currentPos = xAxis.getPixelForValue(scoreBucketIdx);
+                            const nextPos = xAxis.getPixelForValue(scoreBucketIdx + 1);
+                            
+                            const remainderPercentage = (score % bucketSize) / bucketSize;
+                            xPos = currentPos + (nextPos - currentPos) * remainderPercentage;
+                        } else if (scoreBucketIdx >= labels.length - 1) {
+                            xPos = xAxis.getPixelForValue(labels.length - 1);
+                        }
+
+                        chart.ctx.save();
+                        chart.ctx.beginPath();
+                        chart.ctx.moveTo(xPos, yAxis.top);
+                        chart.ctx.lineTo(xPos, yAxis.bottom);
+                        chart.ctx.lineWidth = 2;
+                        chart.ctx.strokeStyle = '#fff';
+                        chart.ctx.setLineDash([5, 5]);
+                        chart.ctx.stroke();
+
+                        chart.ctx.fillStyle = '#fff';
+                        chart.ctx.textAlign = 'center';
+                        chart.ctx.font = 'bold 10px Outfit';
+                        chart.ctx.fillText('YOU', xPos, yAxis.top - 5);
+                        chart.ctx.restore();
+                    }
+                };
+
+                cgChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Players',
+                            data: counts,
+                            borderColor: '#c91c23',
+                            backgroundColor: gradient,
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: '#c91c23'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, tooltip: { enabled: true } },
+                        scales: {
+                            x: { display: true, grid: { display: false, color: 'rgba(255,255,255,0.05)' } },
+                            y: { display: false, beginAtZero: true }
+                        },
+                        interaction: { mode: 'index', intersect: false }
+                    },
+                    plugins: [userScoreLinePlugin] // Inject it here!
+                });
+            }
+        } catch (e) {
+            console.error("Failed to load global stats", e);
+        }
+    }
+
+    async function fetchCGLeaderboard() {
+        try {
+            const res = await fetch('/api/color-guessing/leaderboard');
+            const data = await res.json();
+            
+            if (data.length > 0) {
+                const lbSection = document.getElementById('cg-global-leaderboard-section');
+                const lbList = document.getElementById('cg-top-gamers-list');
+                
+                lbSection.style.display = 'block';
+                lbList.innerHTML = data.map((entry, i) => {
+                    return `<div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.05)); font-size: 0.85rem;">
+                        <div><span style="color: var(--text-sub); margin-right: 10px;">${i+1}</span> <strong style="color: var(--text-main);">${entry.nickname}</strong></div>
+                        <div style="font-family: 'Outfit'; font-weight: 700; color: var(--accent-color);">${entry.score} pts</div>
+                    </div>`;
+                }).join('');
+            }
+        } catch(e) {
+            console.error("Failed to fetch leaderboard", e);
+        }
+    }
+
+    window.submitCGToLeaderboard = async function() {
+        const nickname = document.getElementById('cg-player-nickname').value.trim() || 'Anonymous';
+        
+        try {
+            const res = await fetch('/api/color-guessing/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nickname, score: finalTotalScore })
+            });
+
+            if (res.ok) {
+                document.getElementById('cg-submit-container').style.display = 'none';
+                document.getElementById('cg-post-submit-actions').style.display = 'flex';
+                
+                fetchCGLeaderboard();
+            } else {
+                alert("Failed to submit score. Try again later.");
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Error connecting to server.");
+        }
+    };
+
+    window.shareScore = function() {
+        const text = `I just scored ${finalTotalScore}/5000 points on the HandleKit Color Memory Test! Can your brain beat my visual memory? 🧠🎨`;
+        
+        if (navigator.share) {
+            navigator.share({ title: 'Color Guessing Game', text: text, url: window.location.href });
+        } else {
+            navigator.clipboard.writeText(`${text} Play here: ${window.location.href}`);
+            alert("Challenge link copied to clipboard! Paste it to your friends.");
+        }
+    };
+
+    window.resetGame = function() {
+        currentRound = 0;
+        roundScores = [];
+        showScreen('start');
+    };
+    
+    updatePreview();
+</script>
+{% endblock %}

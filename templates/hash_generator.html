@@ -34,26 +34,42 @@ browser-based hash tool, no data ever sent to a server." %}
   "mainEntity": [
     {
       "@type": "Question",
+      "name": "How do I generate a hash?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can input or paste any text in the input box and click on \"Generate Hashes.\" All four hash values are displayed immediately. MD5, SHA-1, SHA-256, and SHA-512 hash values are displayed immediately. Alternatively, you can use the \"Live\" option to hash as you type in real-time. If you want to hash a file, you can use the \"File\" option and drag the file into the upload zone."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Which hash algorithm should I use?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SHA-256 is currently the industry standard for security-critical applications. MD5 is suitable for non-security tasks like file integrity checksums, but it is no longer considered secure for cryptography."
+        "text": "SHA-256 is the best choice for most security-critical applications; it's the de facto standard in the industry today, used in SSL certificates, Bitcoin, and code signing. MD5 is acceptable for non-security use cases such as detecting changes in files or generating cache keys. MD5 has been broken for any use in a cryptographic context. If you need a more secure hash function for high-security applications, consider using SHA-512."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I reverse a hash back to its original text?",
+      "name": "Can I reverse a hash back to the original text?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Cryptographic hashes are one-way functions designed to be irreversible. The only way to find the original input is through brute-force or pre-computed rainbow tables."
+        "text": "No, that's the point of a hash function: its output is one-way only. There's no way to reverse a hash into the original input using any known algorithm. The only thing attackers can do is use a \"rainbow table\" of common password hashes, so password hashing always includes a random \"salt\" value that's appended before hashing."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my data sent to your servers for hashing?",
+      "name": "Is my text or file sent to your servers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All hash calculations are performed entirely on the client-side within your browser. Your files and text never leave your machine."
+        "text": "No way! SHA-1, SHA-256, and SHA-512 hash calculations are done on the client-side using the browser's built-in Web Crypto API. MD5 hash calculations are done using pure JavaScript code running on the client-side. The code works even when you are offline after the page has loaded."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I verify a file download with a hash?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Software developers often publish the expected hash value for a download along with the file. Simply switch to \"File\" mode, drag in the file you downloaded, and compare the hash value we calculated with the expected hash value published by the software developer. If the two hash values are the same, the file download worked correctly and has not been tampered with in any way. Even a single bit difference in the file's contents will produce a completely different hash value."
       }
     }
   ]
