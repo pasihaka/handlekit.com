@@ -24,6 +24,10 @@ CORS(app)
 def index():
     return render_template('index.html')
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 @app.route('/health')
 def health():
     return jsonify({"status": "ok", "timestamp": time.time()}), 200
@@ -489,6 +493,10 @@ def blog_list():
 @app.route('/blog/how-to-generate-barcode-2026')
 def blog_post_barcode():
     return render_template('blog/how-to-generate-barcode-2026.html')
+
+@app.route('/blog/science-of-color-memory')
+def blog_post_color_memory():
+    return render_template('blog/science-of-color-memory.html')
 
 @app.route('/barcode-generator')
 def barcode_generator():

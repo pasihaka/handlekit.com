@@ -1,7 +1,65 @@
-{% set title = "Words to Pages Converter & Speech Time Calculator | HandleKit" %}
-{% set description = "Instantly convert word counts to pages (single and double spaced). Calculate exact reading and
-speaking times for essays, scripts, and speeches." %}
+{% set title = "Words to Pages Converter & Speaking Time Calculator | HandleKit" %}
+{% set description = "Instantly convert word counts to pages with custom fonts (Arial, Times New Roman, Courier) and font sizes (10pt-16pt). Calculate exact reading and speaking times." %}
 {% extends "layout.html" %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Words to Pages Converter",
+      "alternateName": "Word Count to Pages Calculator",
+      "description": "Instantly convert any word count into pages with custom fonts, font sizes, and layout options. Also calculates reading and speaking times.",
+      "url": "https://handlekit.com/words-to-pages",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript. Works on all modern browsers.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "HandleKit",
+        "url": "https://handlekit.com"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How accurate is the page count?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The calculation dynamically adjusts based on your chosen font family and font size. Estimates are calibrated against industry-standard metrics for fonts like Times New Roman and Arial, accounting for character widths and line spacing. For a quick baseline, 12pt Times New Roman yields about 500 words per page (single spaced)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Standard Book size?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The 'Standard Book' option uses a 6x9 inch format (15.24 x 22.86 cm), which is the most common size for trade paperbacks. This is an essential reference if you are planning to self-publish a book or a novella."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many words are in a 5 minute speech?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The average adult speaks at roughly 130 words per minute in a presentation setting. Therefore, a 5-minute speech is approximately 650 words long."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="tool-container" style="max-width: 900px; margin: 0 auto;">
@@ -9,7 +67,7 @@ speaking times for essays, scripts, and speeches." %}
         <i data-lucide="book-open"
             style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
         <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Words to Pages Converter</h1>
-        <p style="color: var(--text-sub);">Instantly convert any word count into pages, reading time, and speaking time.
+        <p style="color: var(--text-sub);">Instantly convert any word count into pages with custom fonts, font sizes, and layout options.
         </p>
     </div>
 
@@ -25,18 +83,56 @@ speaking times for essays, scripts, and speeches." %}
                 style="font-size: 2.5rem; font-weight: 800; text-align: center; height: auto; padding: 1rem;">
         </div>
 
-        <div style="width: 100%; max-width: 400px; text-align: center;">
-            <label for="page-size"
-                style="display: block; color: var(--text-sub); margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600;">Page
-                Size & Layout</label>
-            <select id="page-size" onchange="calculatePages()"
-                style="width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-main); font-size: 1rem; outline: none; cursor: pointer; font-family: 'Outfit', sans-serif;">
-                <option value="a4" selected>A4 (210 x 297 mm)</option>
-                <option value="letter">US Letter (8.5 x 11 in)</option>
-                <option value="book">Standard Book (6 x 9 in)</option>
-                <option value="legal">Legal (8.5 x 14 in)</option>
-                <option value="a5">A5 (148 x 210 mm)</option>
-            </select>
+        <div
+            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; width: 100%; max-width: 600px;">
+            <div style="text-align: left;">
+                <label for="page-size"
+                    style="display: block; color: var(--text-sub); margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Page
+                    Size</label>
+                <select id="page-size" onchange="calculatePages()"
+                    style="width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-main); font-size: 0.95rem; outline: none; cursor: pointer; font-family: 'Outfit', sans-serif;">
+                    <option value="a4" selected>A4 (210 x 297 mm)</option>
+                    <option value="letter">US Letter (8.5 x 11 in)</option>
+                    <option value="book">Standard Book (6 x 9 in)</option>
+                    <option value="legal">Legal (8.5 x 14 in)</option>
+                    <option value="a5">A5 (148 x 210 mm)</option>
+                </select>
+            </div>
+            <div style="text-align: left;">
+                <label for="font-family"
+                    style="display: block; color: var(--text-sub); margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Font
+                    Family</label>
+                <select id="font-family" onchange="calculatePages()"
+                    style="width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-main); font-size: 0.95rem; outline: none; cursor: pointer; font-family: 'Outfit', sans-serif;">
+                    <option value="times" selected>Times New Roman</option>
+                    <option value="arial">Arial</option>
+                    <option value="courier">Courier New</option>
+                    <option value="calibri">Calibri</option>
+                    <option value="georgia">Georgia</option>
+                </select>
+            </div>
+            <div style="text-align: left;">
+                <label for="font-size"
+                    style="display: block; color: var(--text-sub); margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Font
+                    Size</label>
+                <select id="font-size" onchange="calculatePages()"
+                    style="width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-main); font-size: 0.95rem; outline: none; cursor: pointer; font-family: 'Outfit', sans-serif;">
+                    <option value="10">10pt</option>
+                    <option value="11">11pt</option>
+                    <option value="12" selected>12pt</option>
+                    <option value="13">13pt</option>
+                    <option value="14">14pt</option>
+                    <option value="16">16pt</option>
+                </select>
+            </div>
+            <div style="text-align: left; opacity: 0.6; pointer-events: none;">
+                <label
+                    style="display: block; color: var(--text-sub); margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Margins</label>
+                <div
+                    style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-sub); font-size: 0.95rem;">
+                    Standard (1")
+                </div>
+            </div>
         </div>
     </div>
 
@@ -88,21 +184,21 @@ speaking times for essays, scripts, and speeches." %}
                 Count?</h2>
             <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
                 The number of pages your text will fill depends on the document size, font family, font size, margins,
-                and spacing. While a standard A4 page is the global baseline, professional authors and legal teams often
-                require more specific estimates.
+                and spacing. While a standard A4 page is the global baseline, professional authors, screenwriters, and legal teams often
+                require more specific estimates using fonts like <strong>Courier New</strong> or <strong>Arial</strong>.
             </p>
             <ul
                 style="color: var(--text-sub); line-height: 2; font-size: 1rem; padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                <li><strong>A4 & US Letter:</strong> The standard for essays and business reports (~500 words per page).
+                <li><strong>A4 & US Letter:</strong> The standard for essays and business reports (~500 words @ 12pt).
                 </li>
-                <li><strong>Standard Book (6" x 9"):</strong> The most common trim size for trade paperbacks (~300 words
+                <li><strong>Standard Book (6" x 9"):</strong> common trim size for trade paperbacks (~300 words
                     per page).</li>
-                <li><strong>Legal:</strong> Used for contracts and legal filings (~600 words per page).</li>
-                <li><strong>A5:</strong> Ideal for brochures, booklets, and small journals (~250 words per page).</li>
+                <li><strong>Monospace / Scripts:</strong> Fonts like <strong>Courier New</strong> take significantly more space (~375 words per page @ 12pt).</li>
+                <li><strong>Legal & Dense:</strong> Using 10pt font can increase capacity to ~640 words per page.</li>
             </ul>
             <p style="color: var(--text-sub); line-height: 1.8;">
-                Using our converter, you can toggle between these common industry standards to get the most accurate
-                page count for your specific project, whether it's a 1000-word essay or a 50,000-word novel.
+                Our converter allows you to toggle between these industry standards and customize your <strong>font family</strong> and <strong>font size</strong> to get the most accurate
+                page count for your specific project.
             </p>
         </div>
 
@@ -111,13 +207,11 @@ speaking times for essays, scripts, and speeches." %}
             <div class="info-card-premium">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How accurate is the
                     page count?</h3>
-                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The calculation is based on standard
-                    font sizing (<strong style="color: var(--text-main);">12pt</strong>) and average margin settings.
-                    For <strong style="color: var(--text-main);">Single Spacing</strong>, we estimate about <strong
-                        style="color: var(--accent-color);">500 words per page</strong>, and for <strong
-                        style="color: var(--text-main);">Double Spacing</strong>, it's approximately <strong
-                        style="color: var(--accent-color);">275 words</strong>. Individual document formatting will vary
-                    slightly.</p>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">The calculation dynamically adjusts based on your
+                    chosen <strong style="color: var(--text-main);">font family</strong> and <strong style="color: var(--text-main);">font size</strong>.
+                    Estimates are calibrated against industry-standard metrics for fonts like Times New Roman and Arial, accounting for character widths and line spacing.
+                    For a quick baseline, <strong style="color: var(--text-main);">12pt Times New Roman</strong> yields about <strong
+                        style="color: var(--accent-color);">500 words per page</strong> (single spaced).</p>
             </div>
             <div class="info-card-premium">
                 <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">What is the "Standard
@@ -219,29 +313,55 @@ speaking times for essays, scripts, and speeches." %}
 <script>
     const PAGE_CONSTANTS = {
         'a4': { single: 500, double: 250 },
-        'letter': { single: 450, double: 225 },
+        'letter': { single: 480, double: 240 },
         'book': { single: 300, double: 150 },
-        'legal': { single: 600, double: 300 },
+        'legal': { single: 620, double: 310 },
         'a5': { single: 250, double: 125 }
+    };
+
+    const FONT_MULTIPLIERS = {
+        'times': 1.0,
+        'arial': 0.92,
+        'courier': 0.75,
+        'calibri': 1.05,
+        'georgia': 0.94
+    };
+
+    const SIZE_MULTIPLIERS = {
+        '10': 1.28,
+        '11': 1.15,
+        '12': 1.0,
+        '13': 0.90,
+        '14': 0.78,
+        '16': 0.62
     };
 
     function calculatePages() {
         const wordInput = document.getElementById('word-input');
         const pageSize = document.getElementById('page-size').value;
-        const config = PAGE_CONSTANTS[pageSize];
+        const fontFamily = document.getElementById('font-family').value;
+        const fontSize = document.getElementById('font-size').value;
+
+        const baseConfig = PAGE_CONSTANTS[pageSize];
+        const fontFactor = FONT_MULTIPLIERS[fontFamily];
+        const sizeFactor = SIZE_MULTIPLIERS[fontSize];
+
+        // Derived capacity
+        const effectiveSingle = Math.round(baseConfig.single * fontFactor * sizeFactor);
+        const effectiveDouble = Math.round(baseConfig.double * fontFactor * sizeFactor);
 
         // Update labels
-        document.getElementById('label-single').textContent = `~${config.single} words per page`;
-        document.getElementById('label-double').textContent = `~${config.double} words per page`;
+        document.getElementById('label-single').textContent = `~${effectiveSingle} words per page`;
+        document.getElementById('label-double').textContent = `~${effectiveDouble} words per page`;
 
         let words = parseInt(wordInput.value);
         if (isNaN(words) || words < 0) {
             words = 0;
         }
 
-        // Pages
-        const singlePages = Math.round((words / config.single) * 10) / 10;
-        const doublePages = Math.round((words / config.double) * 10) / 10;
+        // Pages (rounded to 1 decimal)
+        const singlePages = Math.round((words / effectiveSingle) * 10) / 10;
+        const doublePages = Math.round((words / effectiveDouble) * 10) / 10;
 
         document.getElementById('val-single').textContent = singlePages;
         document.getElementById('val-double').textContent = doublePages;
@@ -253,11 +373,20 @@ speaking times for essays, scripts, and speeches." %}
 
     function formatTime(words, wpm) {
         if (words === 0) return "0 min";
-        const sec = Math.round((words / wpm) * 60);
-        if (sec < 60) return sec + " sec";
+        const totalSeconds = Math.round((words / wpm) * 60);
 
-        const m = Math.floor(sec / 60);
-        const s = sec % 60;
+        if (totalSeconds < 60) return totalSeconds + " sec";
+
+        const m = Math.floor(totalSeconds / 60);
+        const s = totalSeconds % 60;
+
+        if (m >= 60) {
+            const h = Math.floor(m / 60);
+            const remainingM = m % 60;
+            if (remainingM === 0) return h + "h";
+            return h + "h " + remainingM + "m";
+        }
+
         if (s === 0) return m + "m";
         return m + "m " + s + "s";
     }

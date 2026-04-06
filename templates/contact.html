@@ -2,6 +2,28 @@
 {% set description = "Get in touch with HandleKit. Send us your feedback, bug reports, or partnership inquiries." %}
 {% extends "layout.html" %}
 
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact HandleKit",
+  "description": "Get in touch with the HandleKit support and editorial team.",
+  "url": "https://handlekit.com/contact",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "HandleKit",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "contacthandlekit@gmail.com", 
+      "availableLanguage": "English"
+    }
+  }
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="tool-content" style="max-width: 800px; margin: 0 auto;">
     <div class="info-card-premium" style="padding: 3rem; line-height: 1.7;">
