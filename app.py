@@ -667,7 +667,7 @@ def api_color_submit():
         
         results.append({
             "nickname": data.get('nickname', 'Anonymous'),
-            "score": int(data['score']),
+            "score": float(data['score']),
             "timestamp": time.time()
         })
         
@@ -702,19 +702,19 @@ def api_color_stats():
             "100": scores[-1]
         }
         
-        # Max score is 5000, bucket size 250
-        bucket_size = 250
-        max_score = 5000
+        # Max score is 50, bucket size 2.5
+        bucket_size = 2.5
+        max_score = 50
         
         buckets = {}
         for s in scores:
-            b_idx = (s // bucket_size) * bucket_size
+            b_idx = float((s // bucket_size) * bucket_size)
             buckets[b_idx] = buckets.get(b_idx, 0) + 1
             
         final_buckets = []
-        num_buckets = (max_score // bucket_size) + 1
+        num_buckets = int(max_score // bucket_size) + 1
         for i in range(num_buckets):
-            b_min = i * bucket_size
+            b_min = float(i * bucket_size)
             final_buckets.append({
                 "min": b_min,
                 "max": b_min + bucket_size,
@@ -725,7 +725,7 @@ def api_color_stats():
         higher_count = 0
         if score_val is not None:
             try:
-                score_val = int(score_val)
+                score_val = float(score_val)
                 higher_count = sum(1 for s in scores if s > score_val)
             except: pass
 

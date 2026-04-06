@@ -56,7 +56,7 @@
           "name": "What is a good score on the color memory test?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "A perfect game is 5,000 points (1,000 points per round). Scoring over 4,000 points ranks you as a Master Painter (roughly the top 15% of players). If you can break 4,500 points, you have elite Pantone Vision and sit in the top 1% globally."
+            "text": "A perfect game is 50 points (10 points per round). Scoring over 40 points ranks you as a Master Painter (roughly the top 15% of players). If you can break 45 points, you have elite Pantone Vision and sit in the top 1% globally."
           }
         },
         {
@@ -170,6 +170,140 @@
     .cg-lb-score { font-weight: 800; color: var(--text-main); }
 
     .cg-button-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* New Full-Bleed Overlay Styles */
+    .cg-screen.active.full-bleed-result,
+    .cg-screen.active.full-bleed-mode {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cg-screen.active.full-bleed-result {
+        flex-direction: row;
+        align-items: stretch;
+        background: #000;
+    }
+
+    .cg-screen.active.full-bleed-mode {
+        flex-direction: column;
+        transition: background-color 0.1s linear;
+    }
+
+    /* Memorize screen timer */
+    .mem-center {
+        font-size: 8rem;
+        font-weight: 900;
+        mix-blend-mode: difference;
+        color: #fff;
+        font-family: 'Roboto Mono', monospace;
+    }
+    .mem-title {
+        font-size: 2rem;
+        font-weight: 800;
+        mix-blend-mode: difference;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+    }
+
+    /* Guess screen bottom panel */
+    .guess-bottom-panel {
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 100%;
+        background: transparent;
+        padding: 2rem;
+        border-top: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .blend-text {
+        color: #fff;
+        mix-blend-mode: difference;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .rr-half {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+    }
+    
+    .rr-hex {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 3rem;
+        font-weight: 900;
+        mix-blend-mode: difference;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+    }
+
+    .rr-half small {
+        mix-blend-mode: difference;
+        color: #ffffff;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 800;
+    }
+
+    .rr-center-modal {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: rgba(0, 0, 0, 0.4);
+        padding: 3rem 4rem;
+        border-radius: 24px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    
+    /* Round Summary Squares */
+    .cg-round-summaries {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    .cg-summary-box {
+        text-align: center;
+    }
+    .cg-summary-square {
+        width: 50px; height: 50px;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .cg-summary-score {
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-main);
+    }
+
+    @media (max-width: 768px) {
+        .cg-screen.active.full-bleed-result { flex-direction: column; }
+        .rr-hex { font-size: 2rem; }
+        .rr-center-modal { width: 90%; padding: 2rem 1.5rem; }
+    }
 </style>
 
 <div class="color-game-wrapper">
@@ -189,40 +323,49 @@
             <button class="cg-btn" onclick="startRound()">Play Now</button>
         </div>
 
-        <div id="screen-memorize" class="cg-screen">
-            <h3 style="color: var(--text-main); margin-top: 0;">Memorize this color!</h3>
-            <div id="target-color" class="cg-color-block"></div>
-            <div id="countdown" class="cg-timer">3.0</div>
+        <div id="screen-memorize" class="cg-screen full-bleed-mode">
+            <div class="mem-title">Memorize this color!</div>
+            <div id="countdown" class="mem-center">3.0</div>
         </div>
 
-        <div id="screen-guess" class="cg-screen">
-            <div id="guess-preview" class="cg-color-block"></div>
-            <div class="cg-controls">
-                <div class="cg-slider-group">
-                    <div class="cg-label"><span>Hue (Color Family)</span> <span id="val-h">180°</span></div>
-                    <input type="range" id="cg-hue" class="cg-slider" min="0" max="360" value="180">
+        <div id="screen-guess" class="cg-screen full-bleed-mode">
+            <div class="guess-bottom-panel">
+                <div class="cg-controls" style="margin-bottom: 0;">
+                    <div class="cg-slider-group">
+                        <div class="cg-label"><span class="blend-text">Hue</span> <span id="val-h" class="blend-text">180°</span></div>
+                        <input type="range" id="cg-hue" class="cg-slider" min="0" max="360" value="180">
+                    </div>
+                    <div class="cg-slider-group">
+                        <div class="cg-label"><span class="blend-text">Saturation</span> <span id="val-s" class="blend-text">50%</span></div>
+                        <input type="range" id="cg-sat" class="cg-slider" min="0" max="100" value="50">
+                    </div>
+                    <div class="cg-slider-group">
+                        <div class="cg-label"><span class="blend-text">Lightness</span> <span id="val-l" class="blend-text">50%</span></div>
+                        <input type="range" id="cg-lig" class="cg-slider" min="0" max="100" value="50">
+                    </div>
                 </div>
-                <div class="cg-slider-group">
-                    <div class="cg-label"><span>Saturation (Intensity)</span> <span id="val-s">50%</span></div>
-                    <input type="range" id="cg-sat" class="cg-slider" min="0" max="100" value="50">
-                </div>
-                <div class="cg-slider-group">
-                    <div class="cg-label"><span>Lightness (Brightness)</span> <span id="val-l">50%</span></div>
-                    <input type="range" id="cg-lig" class="cg-slider" min="0" max="100" value="50">
-                </div>
+                <button class="cg-btn" onclick="submitRound()">Submit Guess</button>
             </div>
-            <button class="cg-btn" onclick="submitRound()">Submit Guess</button>
         </div>
 
-        <div id="screen-round-result" class="cg-screen">
-            <h3 style="color: var(--text-main); margin-top: 0;">Round Complete</h3>
-            <div style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 1.5rem;">
-                <div><div id="rr-target" style="width: 80px; height: 80px; border-radius: 12px; border: 2px solid #fff;"></div><small style="color: var(--text-sub)">Target</small></div>
-                <div><div id="rr-guess" style="width: 80px; height: 80px; border-radius: 12px; border: 2px solid #fff;"></div><small style="color: var(--text-sub)">Yours</small></div>
+        <div id="screen-round-result" class="cg-screen full-bleed-result">
+            <div id="rr-target-half" class="rr-half">
+                <div id="rr-target-hex" class="rr-hex">#000000</div>
+                <small>Target</small>
             </div>
-            <div class="cg-score-display" style="font-size: 3rem;"><span id="round-score">0</span></div>
-            <p id="round-feedback" style="color: var(--text-sub); margin-bottom: 2rem; font-weight: 600; font-size: 1.1rem;"></p>
-            <button class="cg-btn" onclick="startRound()">Next Round</button>
+            <div id="rr-guess-half" class="rr-half">
+                <div id="rr-guess-hex" class="rr-hex">#ffffff</div>
+                <small>Your Guess</small>
+            </div>
+            <div class="rr-center-modal">
+                <h3 style="color: #fff; margin-top: 0; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Round Complete</h3>
+                <div class="cg-score-display" style="font-size: 4.5rem; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+                    +<span id="round-score">0</span>
+                    <span style="font-size: 1.5rem; color: rgba(255,255,255,0.7);">/ 10</span>
+                </div>
+                <p id="round-feedback" style="color: #fff; margin-bottom: 2rem; font-weight: 600; font-size: 1.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);"></p>
+                <button class="cg-btn" onclick="startRound()" style="width: 100%;">Next Round</button>
+            </div>
         </div>
 
         <div id="screen-final" class="cg-screen" style="position: relative;">
@@ -233,6 +376,7 @@
 
             <h3 style="color: var(--text-main); margin-top: 0;">Game Over! Total Points:</h3>
             <div class="cg-score-display"><span id="final-avg-score">0</span></div>
+            <div id="cg-round-summaries" class="cg-round-summaries"></div>
             <div id="percentile-badge" class="cg-percentile" style="margin-bottom: 2rem;">You scored better than 82% of players!</div>
 
             <!-- Global Score Distribution Section -->
@@ -265,7 +409,7 @@
                 <div id="cg-submit-status" style="color: #00ff88; font-size: 0.8rem; margin-top: 0.5rem; display: none;">Score submitted!</div>
             </div>
 
-            <div class="cg-button-row" id="cg-post-submit-actions" style="display: none;">
+            <div class="cg-button-row" id="cg-post-submit-actions" style="display: flex;">
                 <button class="cg-btn cg-btn-outline" onclick="shareScore()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                     Challenge a Friend
@@ -291,7 +435,7 @@
 
         <div class="faq-card">
             <h3>What is a good score on the color memory test?</h3>
-            <p>A perfect game is 5,000 points (1,000 points per round). Scoring over 4,000 points ranks you as a "Master Painter" (roughly the top 15% of players). If you can break 4,500 points, you have elite "Pantone Vision" and sit in the top 1% globally.</p>
+            <p>A perfect game is 50 points (10 points per round). Scoring over 40 points ranks you as a "Master Painter" (roughly the top 15% of players). If you can break 45 points, you have elite "Pantone Vision" and sit in the top 1% globally.</p>
         </div>
 
         <div class="faq-card">
@@ -311,12 +455,31 @@
     const MAX_ROUNDS = 5;
     let currentRound = 0;
     let roundScores = [];
+    let roundHistory = [];
     let targetHSL = { h: 0, s: 0, l: 0 };
     let countdownInt;
 
+    function rgbToHex(r, g, b) {
+        return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase();
+    }
+
     // DOM Links (Same as before)
     const screens = { start: document.getElementById('screen-start'), memorize: document.getElementById('screen-memorize'), guess: document.getElementById('screen-guess'), roundResult: document.getElementById('screen-round-result'), final: document.getElementById('screen-final') };
-    const ui = { roundInd: document.getElementById('round-indicator'), targetBlock: document.getElementById('target-color'), timer: document.getElementById('countdown'), previewBlock: document.getElementById('guess-preview'), rrTarget: document.getElementById('rr-target'), rrGuess: document.getElementById('rr-guess'), roundScore: document.getElementById('round-score'), finalAvg: document.getElementById('final-avg-score'), percentile: document.getElementById('percentile-badge'), lbContent: document.getElementById('lb-content'), sliders: { h: document.getElementById('cg-hue'), s: document.getElementById('cg-sat'), l: document.getElementById('cg-lig') }, vals: { h: document.getElementById('val-h'), s: document.getElementById('val-s'), l: document.getElementById('val-l') } };
+    const ui = { 
+        roundInd: document.getElementById('round-indicator'), 
+        timer: document.getElementById('countdown'), 
+        rrTargetHalf: document.getElementById('rr-target-half'), 
+        rrGuessHalf: document.getElementById('rr-guess-half'),
+        rrTargetHex: document.getElementById('rr-target-hex'),
+        rrGuessHex: document.getElementById('rr-guess-hex'),
+        roundScore: document.getElementById('round-score'), 
+        finalAvg: document.getElementById('final-avg-score'), 
+        percentile: document.getElementById('percentile-badge'), 
+        summaries: document.getElementById('cg-round-summaries'),
+        lbContent: document.getElementById('lb-content'),
+        sliders: { h: document.getElementById('cg-hue'), s: document.getElementById('cg-sat'), l: document.getElementById('cg-lig') }, 
+        vals: { h: document.getElementById('val-h'), s: document.getElementById('val-s'), l: document.getElementById('val-l') } 
+    };
 
     function showScreen(name) { Object.values(screens).forEach(s => s.classList.remove('active')); screens[name].classList.add('active'); }
 
@@ -373,7 +536,7 @@
     function updatePreview() {
         const h = ui.sliders.h.value, s = ui.sliders.s.value, l = ui.sliders.l.value;
         ui.vals.h.textContent = h + '°'; ui.vals.s.textContent = s + '%'; ui.vals.l.textContent = l + '%';
-        ui.previewBlock.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
+        screens.guess.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
         ui.sliders.s.style.background = `linear-gradient(to right, hsl(${h}, 0%, ${l}%), hsl(${h}, 100%, ${l}%))`;
         ui.sliders.l.style.background = `linear-gradient(to right, #000, hsl(${h}, ${s}%, 50%), #fff)`;
     }
@@ -381,6 +544,17 @@
     Object.values(ui.sliders).forEach(el => el.addEventListener('input', updatePreview));
 
     window.startRound = function() {
+        if (currentRound === 0) {
+            const el = document.documentElement;
+            if (el.requestFullscreen) {
+                el.requestFullscreen().catch(e => console.log("Fullscreen error:", e));
+            } else if (el.webkitRequestFullscreen) {
+                el.webkitRequestFullscreen();
+            } else if (el.msRequestFullscreen) {
+                el.msRequestFullscreen();
+            }
+        }
+
         currentRound++;
         if(currentRound > MAX_ROUNDS) return showFinalResults();
 
@@ -388,7 +562,7 @@
         ui.roundInd.textContent = `Round ${currentRound}/${MAX_ROUNDS}`;
 
         targetHSL = { h: Math.floor(Math.random() * 360), s: Math.floor(Math.random() * 60) + 20, l: Math.floor(Math.random() * 60) + 20 };
-        ui.targetBlock.style.backgroundColor = `hsl(${targetHSL.h}, ${targetHSL.s}%, ${targetHSL.l}%)`;
+        screens.memorize.style.backgroundColor = `hsl(${targetHSL.h}, ${targetHSL.s}%, ${targetHSL.l}%)`;
         
         showScreen('memorize');
         
@@ -401,9 +575,16 @@
                 ui.timer.textContent = timeLeft.toFixed(1);
             } else {
                 clearInterval(countdownInt);
-                ui.sliders.h.value = Math.floor(Math.random() * 360);
-                ui.sliders.s.value = Math.floor(Math.random() * 100);
-                ui.sliders.l.value = Math.floor(Math.random() * 100);
+                
+                // "Ballpark" assist: Offset Hue by up to ±60°, and Sat/Lig by up to ±40%
+                let hOff = Math.floor(Math.random() * 121) - 60;
+                let sOff = Math.floor(Math.random() * 81) - 40;
+                let lOff = Math.floor(Math.random() * 81) - 40;
+                
+                ui.sliders.h.value = (targetHSL.h + hOff + 360) % 360;
+                ui.sliders.s.value = Math.max(0, Math.min(100, targetHSL.s + sOff));
+                ui.sliders.l.value = Math.max(0, Math.min(100, targetHSL.l + lOff));
+                
                 updatePreview();
                 showScreen('guess');
             }
@@ -424,32 +605,40 @@
 
         // --- THE DIALED.GG SIGMOID CURVE ---
         // Midpoint = 38, Steepness = 1.6
-        // We multiply by 100 instead of 10 to get a percentage score
         let accuracyPercent = 100 / (1 + Math.pow(deltaE / 38, 1.6));
         if (deltaE < 2.5) accuracyPercent = 100;
         
-        // Convert to Arcade Points
-        let roundPoints = Math.round(accuracyPercent * 10);
+        // Convert to 10 Point Scale
+        let roundPoints = parseFloat((accuracyPercent / 10).toFixed(2));
         roundScores.push(roundPoints);
+        
+        const tRGB = hslToRgb(targetHSL.h, targetHSL.s, targetHSL.l);
+        const gRGB = hslToRgb(guessH, guessS, guessL);
+        const targetHex = rgbToHex(Math.round(tRGB[0]), Math.round(tRGB[1]), Math.round(tRGB[2]));
+        const guessHex = rgbToHex(Math.round(gRGB[0]), Math.round(gRGB[1]), Math.round(gRGB[2]));
+
+        roundHistory.push({ targetHex, guessHex, score: roundPoints });
         
         // Generate Humorous Feedback
         let feedbackText = "";
-        if (roundPoints === 1000) {
+        if (roundPoints === 10) {
             feedbackText = "Are you a mantis shrimp? Flawless match! 🦐✨";
-        } else if (roundPoints >= 900) {
+        } else if (roundPoints >= 9) {
             feedbackText = "Bob Ross would be proud. 🎨🌲";
-        } else if (roundPoints >= 750) {
+        } else if (roundPoints >= 7.5) {
             feedbackText = "Close! But your printer might disagree. 🖨️";
-        } else if (roundPoints >= 500) {
+        } else if (roundPoints >= 5) {
             feedbackText = "Did you have your screen brightness down? 🔅";
         } else {
             feedbackText = "Are we even looking at the same color? 🕶️";
         }
         
         // Update UI
-        ui.rrTarget.style.backgroundColor = `hsl(${targetHSL.h}, ${targetHSL.s}%, ${targetHSL.l}%)`;
-        ui.rrGuess.style.backgroundColor = `hsl(${guessH}, ${guessS}%, ${guessL}%)`;
-        ui.roundScore.textContent = `+${roundPoints}`; 
+        ui.rrTargetHalf.style.backgroundColor = targetHex;
+        ui.rrGuessHalf.style.backgroundColor = guessHex;
+        ui.rrTargetHex.textContent = targetHex;
+        ui.rrGuessHex.textContent = guessHex;
+        ui.roundScore.textContent = roundPoints.toFixed(2); 
         document.getElementById('round-feedback').textContent = feedbackText;
 
         showScreen('roundResult');
@@ -459,20 +648,33 @@
     let finalTotalScore = 0;
 
     function showFinalResults() {
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(e => console.log("Exit fullscreen error:", e));
+        }
+
         ui.roundInd.style.display = 'none';
         
         // Sum the points
-        finalTotalScore = roundScores.reduce((a, b) => a + b, 0);
+        finalTotalScore = parseFloat(roundScores.reduce((a, b) => a + b, 0).toFixed(2));
         
         // Display the score with the max possible in a subtle style
-        ui.finalAvg.innerHTML = `${finalTotalScore} <span style="font-size: 0.5em; color: var(--text-sub);">/ 5000</span>`;
+        ui.finalAvg.innerHTML = `${finalTotalScore.toFixed(2)} <span style="font-size: 0.5em; color: var(--text-sub);">/ 50</span>`;
+
+        // Render visual round summaries
+        if (ui.summaries) {
+            ui.summaries.innerHTML = roundHistory.map(rh => `
+                <div class="cg-summary-box">
+                    <div class="cg-summary-square" style="background: linear-gradient(135deg, ${rh.targetHex} 50%, ${rh.guessHex} 50%);"></div>
+                    <div class="cg-summary-score">${rh.score.toFixed(2)}</div>
+                </div>
+            `).join('');
+        }
 
         // Load Global Stats (which will naturally hide/show rank text and distribution)
         ui.percentile.textContent = "Analyzing Global Rank...";
         
         // Reset state for play agains
         document.getElementById('cg-submit-container').style.display = 'block';
-        document.getElementById('cg-post-submit-actions').style.display = 'none';
         document.getElementById('cg-submit-status').style.display = 'none';
         document.getElementById('cg-global-dist-section').style.display = 'none';
         document.getElementById('cg-global-leaderboard-section').style.display = 'none';
@@ -490,10 +692,10 @@
             
             // Assign a Status Rank + Percentile
             let rankText = "";
-            if (score >= 4500) rankText = "🏆 Pantone Vision (Top 1%)";
-            else if (score >= 4000) rankText = "🎨 Master Painter (Top 15%)";
-            else if (score >= 3000) rankText = "🖌️ Digital Artist (Top 40%)";
-            else if (score >= 2000) rankText = "👀 Casual Observer";
+            if (score >= 45) rankText = "🏆 Pantone Vision (Top 1%)";
+            else if (score >= 40) rankText = "🎨 Master Painter (Top 15%)";
+            else if (score >= 30) rankText = "🖌️ Digital Artist (Top 40%)";
+            else if (score >= 20) rankText = "👀 Casual Observer";
             else rankText = "🙈 Needs Practice";
 
             let percentileText = `Rank Achieved: ${rankText}`;
@@ -530,7 +732,7 @@
                         if (chart.tooltip?._active?.length) return;
                         const xAxis = chart.scales.x;
                         const yAxis = chart.scales.y;
-                        const bucketSize = data.bucket_size || 250;
+                        const bucketSize = data.bucket_size || 2.5;
                         const scoreBucketIdx = Math.floor(score / bucketSize);
                         
                         let xPos = xAxis.getPixelForValue(0); // Default fallback
@@ -632,7 +834,6 @@
 
             if (res.ok) {
                 document.getElementById('cg-submit-container').style.display = 'none';
-                document.getElementById('cg-post-submit-actions').style.display = 'flex';
                 
                 fetchCGLeaderboard();
             } else {
@@ -645,12 +846,13 @@
     };
 
     window.shareScore = function() {
-        const text = `I just scored ${finalTotalScore}/5000 points on the HandleKit Color Memory Test! Can your brain beat my visual memory? 🧠🎨`;
+        let emojis = roundScores.map(s => s >= 9 ? '🟩' : s >= 7 ? '🟨' : s >= 4 ? '🟧' : '🟥').join('');
+        const textToShare = `Handlekit — ${finalTotalScore.toFixed(2)}/50 ${emojis}\nhttps://handlekit.com/color-guessing-game`;
         
         if (navigator.share) {
-            navigator.share({ title: 'Color Guessing Game', text: text, url: window.location.href });
+            navigator.share({ text: textToShare }).catch(console.error);
         } else {
-            navigator.clipboard.writeText(`${text} Play here: ${window.location.href}`);
+            navigator.clipboard.writeText(textToShare);
             alert("Challenge link copied to clipboard! Paste it to your friends.");
         }
     };
@@ -658,6 +860,7 @@
     window.resetGame = function() {
         currentRound = 0;
         roundScores = [];
+        roundHistory = [];
         showScreen('start');
     };
     
