@@ -10,6 +10,7 @@ import uuid
 import hashlib
 import json
 import re
+import sqlite3
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'), override=True)
@@ -19,6 +20,90 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.url_map.strict_slashes = False
 CORS(app)
+
+DATABASE = 'data/handlekit.db'
+
+def get_db():
+    db = sqlite3.connect(DATABASE)
+    db.row_factory = sqlite3.Row
+    return db
+
+def db_init():
+    os.makedirs('data', exist_ok=True)
+    db = get_db()
+    # JND Scores
+    db.execute('''CREATE TABLE IF NOT EXISTS jnd_scores (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nickname TEXT,
+        score INTEGER,
+        level INTEGER,
+        delta_e REAL,
+        mode TEXT,
+        difficulty TEXT,
+        timestamp REAL,
+        is_public INTEGER DEFAULT 0
+    )''')
+    try:
+        db.execute('ALTER TABLE jnd_scores ADD COLUMN is_public INTEGER DEFAULT 0')
+    except: pass
+    try:
+        db.execute('ALTER TABLE jnd_scores ADD COLUMN delta_e REAL')
+    except: pass
+    try:
+        db.execute('ALTER TABLE jnd_scores ADD COLUMN mode TEXT')
+    except: pass
+    # Color Guessing Scores
+    db.execute('''CREATE TABLE IF NOT EXISTS color_scores (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nickname TEXT,
+        score REAL,
+        timestamp REAL,
+        is_public INTEGER DEFAULT 0
+    )''')
+    try:
+        db.execute('ALTER TABLE color_scores ADD COLUMN is_public INTEGER DEFAULT 0')
+    except: pass
+    # Contrast Scores
+    db.execute('''CREATE TABLE IF NOT EXISTS contrast_scores (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nickname TEXT,
+        log_cs REAL,
+        timestamp REAL
+    )''')
+    # Tool Ratings
+    db.execute('''CREATE TABLE IF NOT EXISTS tool_ratings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        tool_id TEXT,
+        rating INTEGER,
+        ip_hash TEXT,
+        timestamp REAL
+    )''')
+    db.commit()
+    db.close()
+
+def sanitize_string(text, max_len=50):
+    if not text: return "Anonymous"
+    # Strip HTML tags
+    clean = re.sub(r'<[^>]*?>', '', text)
+    # Trim and limit length
+    return clean.strip()[:max_len]
+
+# Ensure DB is ready on startup
+db_init()
+
+# Simple In-Memory Rate Limiting
+rate_limit_store = {}
+
+def is_rate_limited(ip, limit=10, period=60):
+    now = time.time()
+    if ip not in rate_limit_store:
+        rate_limit_store[ip] = []
+    # Filter out old requests
+    rate_limit_store[ip] = [t for t in rate_limit_store[ip] if now - t < period]
+    if len(rate_limit_store[ip]) >= limit:
+        return True
+    rate_limit_store[ip].append(now)
+    return False
 
 @app.route('/')
 def index():
@@ -538,170 +623,51 @@ def api_generate_hashes():
         "sha256": sha256_hash
     })
 
-@app.route('/api/jnd/submit', methods=['POST'])
-def api_jnd_submit():
-    data = request.get_json()
-    if not data or 'score' not in data:
-        return jsonify({"success": False, "error": "Missing data"}), 400
-    
-    data_dir = 'data'
-    os.makedirs(data_dir, exist_ok=True)
-    file_path = os.path.join(data_dir, 'jnd_quest_global.json')
-    
-    try:
-        results = []
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as f:
-                results = json.load(f)
-        
-        results.append({
-            "nickname": data.get('nickname', 'Anonymous'),
-            "score": int(data['score']),
-            "level": int(data.get('level', 1)),
-            "difficulty": data.get('difficulty', 'pro'),
-            "timestamp": time.time()
-        })
-        
-        with open(file_path, 'w') as f:
-            json.dump(results, f)
-            
-        return jsonify({"success": True})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/jnd/stats', methods=['GET'])
-def api_jnd_stats():
-    difficulty = request.args.get('difficulty', 'standard')
-    file_path = 'data/jnd_quest_global.json'
-    if not os.path.exists(file_path):
-        return jsonify({"buckets": [], "total": 0, "percentiles": {}})
-    
-    try:
-        with open(file_path, 'r') as f:
-            all_results = json.load(f)
-        
-        # Filter by difficulty
-        results = [r for r in all_results if r.get('difficulty') == difficulty]
-        
-        if not results:
-            return jsonify({"buckets": [], "total": 0, "percentiles": {}, "difficulty": difficulty})
-            
-        scores = sorted([r['score'] for r in results])
-        total = len(scores)
-        
-        # Percentiles (0th, 25th, 50th, 75th, 100th)
-        percentiles = {
-            "0": scores[0],
-            "25": scores[int(total * 0.25)],
-            "50": scores[int(total * 0.50)],
-            "75": scores[int(total * 0.75)],
-            "100": scores[-1]
-        }
-        
-        max_score = scores[-1]
-        bucket_size = max(50, (max_score // 15) + 1)
-        
-        buckets = {}
-        for s in scores:
-            b_idx = (s // bucket_size) * bucket_size
-            buckets[b_idx] = buckets.get(b_idx, 0) + 1
-            
-        final_buckets = []
-        num_buckets = (max_score // bucket_size) + 1
-        for i in range(num_buckets):
-            b_min = i * bucket_size
-            final_buckets.append({
-                "min": b_min,
-                "max": b_min + bucket_size,
-                "count": buckets.get(b_min, 0)
-            })
-        
-        # Calculate higher_than if score sent
-        score_val = request.args.get('score')
-        higher_count = 0
-        if score_val is not None:
-            try:
-                score_val = int(score_val)
-                higher_count = sum(1 for s in scores if s > score_val)
-            except: pass
-
-        return jsonify({
-            "buckets": final_buckets,
-            "total": total,
-            "max_score": max_score,
-            "bucket_size": bucket_size,
-            "percentiles": percentiles,
-            "difficulty": difficulty,
-            "higher_count": higher_count
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route('/api/jnd/leaderboard', methods=['GET'])
-def api_jnd_leaderboard():
-    difficulty = request.args.get('difficulty', 'standard')
-    file_path = 'data/jnd_quest_global.json'
-    if not os.path.exists(file_path):
-        return jsonify([])
-    
-    try:
-        with open(file_path, 'r') as f:
-            all_results = json.load(f)
-        
-        # Filter by difficulty
-        results = [r for r in all_results if r.get('difficulty') == difficulty]
-        
-        # Sort by score desc, then level desc
-        sorted_results = sorted(results, key=lambda x: (x['score'], x['level']), reverse=True)
-        return jsonify(sorted_results[:10])
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/color-guessing/submit', methods=['POST'])
 def api_color_submit():
     data = request.get_json()
     if not data or 'score' not in data:
-        return jsonify({"success": False, "error": "Missing data"}), 400
-    
-    data_dir = 'data'
-    os.makedirs(data_dir, exist_ok=True)
-    file_path = os.path.join(data_dir, 'color_guessing_global.json')
+        return jsonify({"success": False, "error": "Invalid data"}), 400
     
     try:
-        results = []
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as f:
-                results = json.load(f)
+        session_id = data.get('id')
+        nickname = sanitize_string(data.get('nickname'))
+        score = float(data['score'])
         
-        results.append({
-            "nickname": data.get('nickname', 'Anonymous'),
-            "score": float(data['score']),
-            "timestamp": time.time()
-        })
+        # Public only if nickname is provided and not Anonymous
+        is_public = 1 if (nickname and nickname != "Anonymous") else 0
         
-        with open(file_path, 'w') as f:
-            json.dump(results, f)
+        db = get_db()
+        if session_id:
+            db.execute('UPDATE color_scores SET nickname = ?, is_public = ? WHERE id = ?',
+                       (nickname, is_public, session_id))
+            new_id = session_id
+        else:
+            cursor = db.execute('INSERT INTO color_scores (nickname, score, timestamp, is_public) VALUES (?, ?, ?, ?)',
+                       (nickname, score, time.time(), is_public))
+            new_id = cursor.lastrowid
             
-        return jsonify({"success": True})
+        db.commit()
+        db.close()
+        return jsonify({"success": True, "id": new_id})
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+        print(f"Color Submit Error: {e}")
+        return jsonify({"success": False, "error": "Server error"}), 500
 
 @app.route('/api/color-guessing/stats', methods=['GET'])
 def api_color_stats():
-    file_path = 'data/color_guessing_global.json'
-    if not os.path.exists(file_path):
-        return jsonify({"buckets": [], "total": 0, "percentiles": {}})
-    
     try:
-        with open(file_path, 'r') as f:
-            results = json.load(f)
+        db = get_db()
+        cursor = db.execute('SELECT score FROM color_scores ORDER BY score ASC')
+        scores = [row['score'] for row in cursor.fetchall()]
+        db.close()
         
-        if not results:
+        if not scores:
             return jsonify({"buckets": [], "total": 0, "percentiles": {}})
             
-        scores = sorted([r['score'] for r in results])
         total = len(scores)
-        
         percentiles = {
             "0": scores[0],
             "25": scores[int(total * 0.25)],
@@ -710,7 +676,6 @@ def api_color_stats():
             "100": scores[-1]
         }
         
-        # Max score is 50, bucket size 2.5
         bucket_size = 2.5
         max_score = 50
         
@@ -745,194 +710,200 @@ def api_color_stats():
             "percentiles": percentiles,
             "higher_count": higher_count
         })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return jsonify({"error": "Server error"}), 500
 
 @app.route('/api/color-guessing/leaderboard', methods=['GET'])
 def api_color_leaderboard():
-    file_path = 'data/color_guessing_global.json'
-    if not os.path.exists(file_path):
-        return jsonify([])
-    
     try:
-        with open(file_path, 'r') as f:
-            all_results = json.load(f)
-        
-        sorted_results = sorted(all_results, key=lambda x: x['score'], reverse=True)
-        return jsonify(sorted_results[:10])
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        db = get_db()
+        cursor = db.execute('SELECT nickname, score FROM color_scores WHERE is_public = 1 ORDER BY score DESC LIMIT 10')
+        results = [dict(row) for row in cursor.fetchall()]
+        db.close()
+        return jsonify(results)
+    except Exception:
+        return jsonify({"error": "Server error"}), 500
 
-@app.route('/api/reaction/submit', methods=['POST'])
-def api_reaction_submit():
+@app.route('/api/jnd/submit', methods=['POST'])
+def api_jnd_submit():
+    ip = request.remote_addr or 'unknown'
+    if is_rate_limited(ip):
+        return jsonify({"success": False, "error": "Too many requests"}), 429
+        
     data = request.get_json()
-    if not data or ('score' not in data and 'latency' not in data):
-        return jsonify({"success": False, "error": "Missing data"}), 400
-    
-    data_dir = 'data'
-    os.makedirs(data_dir, exist_ok=True)
-    file_path = os.path.join(data_dir, 'reaction_global.json')
+    if not data or 'level' not in data:
+        return jsonify({"success": False, "error": "Invalid data"}), 400
     
     try:
-        results = []
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as f:
-                results = json.load(f)
+        session_id = data.get('id')
+        nickname = sanitize_string(data.get('nickname'))
+        mode = sanitize_string(request.json.get('mode', 'arcade'), 20)
+        score = int(data.get('score', 0))
+        level = int(data.get('level', 1))
+        delta_e = float(data.get('delta_e', 0.0))
+        difficulty = sanitize_string(data.get('difficulty', 'pro'), 20)
         
-        results.append({
-            "nickname": data.get('nickname', 'Anonymous'),
-            "score": int(data.get('score', 0)),
-            "latency": int(data.get('latency', 0)),
-            "level": int(data.get('level', 1)),
-            "difficulty": data.get('difficulty', 'standard'),
-            "timestamp": time.time()
-        })
+        # Diagnostic mode is never public
+        is_public = 1 if (nickname and nickname != "Anonymous" and mode == 'arcade') else 0
         
-        with open(file_path, 'w') as f:
-            json.dump(results, f)
+        db = get_db()
+        if session_id:
+            db.execute('UPDATE jnd_scores SET nickname = ?, is_public = ? WHERE id = ?',
+                       (nickname, is_public, session_id))
+            new_id = session_id
+        else:
+            cursor = db.execute('''INSERT INTO jnd_scores 
+                (nickname, score, level, delta_e, mode, difficulty, timestamp, is_public) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                (nickname, score, level, delta_e, mode, difficulty, time.time(), is_public))
+            new_id = cursor.lastrowid
             
-        return jsonify({"success": True})
+        db.commit()
+        db.close()
+        return jsonify({"success": True, "id": new_id})
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+        print(f"JND Submit Error: {e}")
+        return jsonify({"success": False, "error": "Server error"}), 500
 
-@app.route('/api/reaction/stats', methods=['GET'])
-def api_reaction_stats():
-    file_path = 'data/reaction_global.json'
-    if not os.path.exists(file_path):
-        return jsonify({"buckets": [], "total": 0})
-    
+@app.route('/api/jnd/stats', methods=['GET'])
+def api_jnd_stats():
     try:
-        with open(file_path, 'r') as f:
-            all_results = json.load(f)
+        mode = request.args.get('mode', 'arcade')
+        db = get_db()
         
-        # We analyze Latency (ms) for the distribution chart
-        results = [r for r in all_results if r.get('latency', 0) > 0]
+        if mode == 'diagnostic':
+            # Diagnostic Stats: Focus on Delta E
+            cursor = db.execute('SELECT delta_e FROM jnd_scores WHERE mode = ? AND delta_e > 0 ORDER BY delta_e ASC', (mode,))
+            dataset = [row['delta_e'] for row in cursor.fetchall()]
+        else:
+            # Arcade Stats: Focus on Levels
+            cursor = db.execute('SELECT level FROM jnd_scores WHERE mode = ? OR mode IS NULL ORDER BY level ASC', ('arcade',))
+            dataset = [row['level'] for row in cursor.fetchall()]
         
-        if not results:
-            return jsonify({"buckets": [], "total": 0})
+        db.close()
+        
+        if not dataset:
+            return jsonify({"buckets": [], "total": 0, "better_count": 0})
             
-        latencies = sorted([r['latency'] for r in results])
-        total = len(latencies)
-        
-        # Standardized range for high-quality graphing: 0ms to 800ms
-        bucket_size = 10 
-        max_range = 800
-        
-        buckets = {}
-        for l in latencies:
-            b_idx = (l // bucket_size) * bucket_size
-            if b_idx <= max_range:
-                buckets[b_idx] = buckets.get(b_idx, 0) + 1
-            
+        total = len(dataset)
         final_buckets = []
-        for b_min in range(0, max_range + bucket_size, bucket_size):
-            final_buckets.append({
-                "x": b_min,
-                "y": buckets.get(b_min, 0)
-            })
+        
+        if mode == 'diagnostic':
+            # Delta E buckets (0.00 to 0.50, steps of 0.01)
+            bucket_map = {}
+            for val in dataset:
+                b_idx = round(val, 2)
+                bucket_map[b_idx] = bucket_map.get(b_idx, 0) + 1
             
-        # Global Percentiles
-        percentiles = {
-            "25": latencies[int(total * 0.25)],
-            "50": latencies[int(total * 0.50)],
-            "75": latencies[int(total * 0.75)]
-        }
+            for i in range(0, 51):
+                b_val = i / 100.0
+                final_buckets.append({
+                    "min": b_val.toFixed(2) if hasattr(b_val, 'toFixed') else f"{b_val:.2f}",
+                    "count": bucket_map.get(b_val, 0)
+                })
+            
+            val_to_compare = request.args.get('delta_e')
+            better_count = 0 
+            if val_to_compare:
+                try:
+                    v = float(val_to_compare)
+                    better_count = sum(1 for d in dataset if d < v) # BETTER means LOWER delta_e
+                except: pass
+            
+            return jsonify({
+                "buckets": final_buckets,
+                "total": total,
+                "better_count": better_count
+            })
+        else:
+            # Level buckets
+            max_level = max(dataset) if dataset else 20
+            bucket_map = {}
+            for l in dataset:
+                bucket_map[l] = bucket_map.get(l, 0) + 1
+            
+            max_graph_level = max(30, max_level + 5)
+            for i in range(1, max_graph_level + 1):
+                final_buckets.append({
+                    "min": i,
+                    "count": bucket_map.get(i, 0)
+                })
+            
+            val_to_compare = request.args.get('level')
+            better_count = 0
+            if val_to_compare:
+                try:
+                    v = int(val_to_compare)
+                    better_count = sum(1 for l in dataset if l > v) # BETTER means HIGHER level
+                except: pass
 
         return jsonify({
             "buckets": final_buckets,
             "total": total,
-            "percentiles": percentiles
+            "better_count": better_count
         })
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"JND Stats Error: {e}")
+        return jsonify({"error": "Server error"}), 500
 
-@app.route('/api/reaction/leaderboard', methods=['GET'])
-def api_reaction_leaderboard():
-    file_path = 'data/reaction_global.json'
-    if not os.path.exists(file_path):
-        return jsonify([])
-    
+@app.route('/api/jnd/leaderboard', methods=['GET'])
+def api_jnd_leaderboard():
     try:
-        with open(file_path, 'r') as f:
-            results = json.load(f)
-        
-        # For arcade leaderboard: sort by score desc
-        # For best time leaderboard: sort by latency asc
-        sort_by = request.args.get('sort', 'score')
-        
-        if sort_by == 'score':
-            sorted_results = sorted(results, key=lambda x: x['score'], reverse=True)
-        else:
-            # Latency (best time) - only show those with actual latency
-            l_results = [r for r in results if r.get('latency', 0) > 0]
-            sorted_results = sorted(l_results, key=lambda x: x['latency'])
-            
-        return jsonify(sorted_results[:10])
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        db = get_db()
+        # Only show PUBLIC scores on the leaderboard, ranked by Level
+        cursor = db.execute('SELECT nickname, level FROM jnd_scores WHERE is_public = 1 ORDER BY level DESC, id ASC LIMIT 10')
+        results = [dict(row) for row in cursor.fetchall()]
+        db.close()
+        return jsonify(results)
+    except Exception:
+        return jsonify({"error": "Server error"}), 500
 
 @app.route('/api/contrast/submit', methods=['POST'])
 def api_contrast_submit():
+    ip = request.remote_addr or 'unknown'
+    if is_rate_limited(ip):
+        return jsonify({"success": False, "error": "Too many requests"}), 429
+        
     data = request.get_json()
     if not data or 'log_cs' not in data:
-        return jsonify({"success": False, "error": "Missing data"}), 400
-    
-    data_dir = 'data'
-    os.makedirs(data_dir, exist_ok=True)
-    file_path = os.path.join(data_dir, 'contrast_global.json')
+        return jsonify({"success": False, "error": "Invalid data"}), 400
     
     try:
-        results = []
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as f:
-                results = json.load(f)
+        nickname = sanitize_string(data.get('nickname'))
+        log_cs = float(data['log_cs'])
         
-        results.append({
-            "nickname": data.get('nickname', 'Anonymous'),
-            "log_cs": float(data['log_cs']),
-            "timestamp": time.time()
-        })
-        
-        with open(file_path, 'w') as f:
-            json.dump(results, f)
-            
+        db = get_db()
+        db.execute('INSERT INTO contrast_scores (nickname, log_cs, timestamp) VALUES (?, ?, ?)',
+                   (nickname, log_cs, time.time()))
+        db.commit()
+        db.close()
         return jsonify({"success": True})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+    except Exception:
+        return jsonify({"success": False, "error": "Server error"}), 500
 
 @app.route('/api/contrast/leaderboard', methods=['GET'])
 def api_contrast_leaderboard():
-    file_path = 'data/contrast_global.json'
-    if not os.path.exists(file_path):
-        return jsonify([])
     try:
-        with open(file_path, 'r') as f:
-            all_results = json.load(f)
-        # Sort by score desc
-        sorted_results = sorted(all_results, key=lambda x: x['log_cs'], reverse=True)
-        return jsonify(sorted_results[:10])
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        db = get_db()
+        cursor = db.execute('SELECT nickname, log_cs FROM contrast_scores ORDER BY log_cs DESC LIMIT 10')
+        results = [dict(row) for row in cursor.fetchall()]
+        db.close()
+        return jsonify(results)
+    except Exception:
+        return jsonify({"error": "Server error"}), 500
 
 @app.route('/api/contrast/stats', methods=['GET'])
 def api_contrast_stats():
-    file_path = 'data/contrast_global.json'
-    if not os.path.exists(file_path):
-        return jsonify({"buckets": [], "total": 0})
-    
     try:
-        with open(file_path, 'r') as f:
-            all_results = json.load(f)
+        db = get_db()
+        cursor = db.execute('SELECT log_cs FROM contrast_scores ORDER BY log_cs ASC')
+        scores = [row['log_cs'] for row in cursor.fetchall()]
+        db.close()
         
-        if not all_results:
+        if not scores:
             return jsonify({"buckets": [], "total": 0})
             
-        scores = sorted([r['log_cs'] for r in all_results])
         total = len(scores)
-        
-        # Pelli-Robson Log CS ranges from 0.0 to 2.25 in 0.05 increments
         bucket_size = 0.05
         max_val = 2.4
         
@@ -951,7 +922,6 @@ def api_contrast_stats():
                 "y": buckets.get(key, 0)
             })
             
-        # Calculate higher/lower if score sent
         score_val = request.args.get('score')
         higher_count = 0
         lower_count = 0
@@ -973,8 +943,8 @@ def api_contrast_stats():
                 "75": scores[int(total * 0.75)]
             }
         })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return jsonify({"error": "Server error"}), 500
 
 
 @app.route('/gbp-triage')
@@ -989,54 +959,37 @@ def gbp_triage_serve(path='index.html'):
 
 @app.route('/api/rate-tool', methods=['POST'])
 def api_rate_tool():
+    ip = request.remote_addr or 'unknown'
+    if is_rate_limited(ip, limit=5):
+        return jsonify({"success": False, "error": "Too many requests"}), 429
+        
     data = request.get_json()
     if not data or 'tool_id' not in data or 'rating' not in data:
-        return jsonify({"success": False, "error": "Missing data"}), 400
+        return jsonify({"success": False, "error": "Invalid data"}), 400
     
     try:
         rating = int(data['rating'])
         if rating < 1 or rating > 5:
             return jsonify({"success": False, "error": "Invalid rating"}), 400
             
-        tool_id = data['tool_id']
-        # Simple list of valid tool IDs based on current tools with aggregateRating
+        tool_id = sanitize_string(data['tool_id'], 50)
         valid_tools = [
             'username-checker', 'password-generator', 'base64-encoder', 
             'url-encoder', 'json-formatter', 'hash-generator', 'gbp-triage'
         ]
         if tool_id not in valid_tools:
-            return jsonify({"success": False, "error": "Invalid tool ID"}), 400
+            return jsonify({"success": False, "error": "Invalid tool"}), 400
 
-        data_dir = 'data'
-        os.makedirs(data_dir, exist_ok=True)
-        file_path = os.path.join(data_dir, 'ratings.json')
-        
-        ratings = []
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as f:
-                try:
-                    ratings = json.load(f)
-                except:
-                    ratings = []
-        
-        # Simple anti-spam: Hash IP with a secret salt
-        ip = request.remote_addr or 'unknown'
-        # In a real app we'd use a secret key from config, here we use a fixed salt for simplicity
         ip_hash = hashlib.sha256(f"{ip}-handlekit-salt".encode()).hexdigest()
 
-        ratings.append({
-            "tool_id": tool_id,
-            "rating": rating,
-            "ip_hash": ip_hash,
-            "timestamp": time.time()
-        })
-        
-        with open(file_path, 'w') as f:
-            json.dump(ratings, f)
-            
+        db = get_db()
+        db.execute('INSERT INTO tool_ratings (tool_id, rating, ip_hash, timestamp) VALUES (?, ?, ?, ?)',
+                   (tool_id, rating, ip_hash, time.time()))
+        db.commit()
+        db.close()
         return jsonify({"success": True})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+    except Exception:
+        return jsonify({"success": False, "error": "Server error"}), 500
 
 if __name__ == '__main__':
 

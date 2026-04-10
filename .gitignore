@@ -23,3 +23,8 @@ tmp_wordlist.py
 avail_404.html
 zuck_404.html
 failover_debug.txt
+
+# Database and Data
+data/*.db
+data/*.json
+!data/.gitkeep

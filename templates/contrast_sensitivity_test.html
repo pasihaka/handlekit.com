@@ -909,6 +909,10 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             return;
         }
 
+        const escapeHTML = (str) => str.replace(/[&<>"']/g, m => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[m]);
+
         let html = `
             <table style="width: 100%; border-collapse: collapse; color: #fff; font-family: 'Roboto Mono', monospace; font-size: 0.9rem;">
                 <thead>
@@ -921,10 +925,11 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 <tbody>`;
 
         history.forEach(entry => {
+            const nick = escapeHTML(entry.nickname || 'Pilot');
             html += `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                     <td style="padding: 1.2rem 1rem; font-weight: 900; font-size: 1.1rem;">${parseFloat(entry.score).toFixed(2)}</td>
-                    <td style="padding: 1.2rem 1rem; color: #666; font-size: 0.8rem;">${entry.nickname}</td>
+                    <td style="padding: 1.2rem 1rem; color: #666; font-size: 0.8rem;">${nick}</td>
                     <td style="padding: 1.2rem 1rem; text-align: right; color: #444; font-size: 0.75rem;">${entry.date}</td>
                 </tr>`;
         });
@@ -952,14 +957,19 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             const leaderboard = await res.json();
 
             // Render Leaderboard
+            const escapeHTML = (str) => str.replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[m]);
+
             const list = document.getElementById('global-rank-list');
             let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">';
             leaderboard.forEach((r, i) => {
+                const nick = escapeHTML(r.nickname || "Anonymous");
                 const isMe = (r.nickname === localStorage.getItem('jnd_nickname') && Math.abs(r.log_cs - finalScore) < 0.001);
                 html += `
                     <tr style="${isMe ? 'background: rgba(201, 28, 35, 0.1);' : ''}; border-bottom: 1px solid rgba(255,255,255,0.03);">
                         <td style="padding: 0.7rem 0.5rem; color: #444; width: 40px;">#${i + 1}</td>
-                        <td style="padding: 0.7rem 0.5rem; color: #fff; font-weight: 700;">${r.nickname}</td>
+                        <td style="padding: 0.7rem 0.5rem; color: #fff; font-weight: 700;">${nick}</td>
                         <td style="padding: 0.7rem 0.5rem; text-align: right; color: var(--accent-color); font-weight: 800;">${r.log_cs.toFixed(2)}</td>
                     </tr>`;
             });
