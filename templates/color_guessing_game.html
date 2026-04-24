@@ -318,7 +318,7 @@
     <div class="cg-body">
         <div id="screen-start" class="cg-screen active">
             <div class="cg-color-block" style="background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);"></div>
-            <h3 style="color: var(--text-main);">Can you remember a hue?</h3>
+            <h2 style="color: var(--text-main);">Can you remember a hue?</h2>
             <p style="color: var(--text-sub); margin-bottom: 2rem; max-width: 400px;">You will play 5 rounds. The flash time gets shorter every round. Match the color as closely as possible to climb the leaderboard.</p>
             <button class="cg-btn" onclick="startRound()">Play Now</button>
         </div>
@@ -358,7 +358,7 @@
                 <small>Your Guess</small>
             </div>
             <div class="rr-center-modal">
-                <h3 style="color: #fff; margin-top: 0; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Round Complete</h3>
+                <h2 style="color: #fff; margin-top: 0; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Round Complete</h2>
                 <div class="cg-score-display" style="font-size: 4.5rem; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
                     +<span id="round-score">0</span>
                     <span style="font-size: 1.5rem; color: rgba(255,255,255,0.7);">/ 10</span>
@@ -374,7 +374,7 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
 
-            <h3 style="color: var(--text-main); margin-top: 0;">Game Over! Total Points:</h3>
+            <h2 style="color: var(--text-main); margin-top: 0;">Game Over! Total Points:</h2>
             <div class="cg-score-display"><span id="final-avg-score">0</span></div>
             <div id="cg-round-summaries" class="cg-round-summaries"></div>
             <div id="percentile-badge" class="cg-percentile" style="margin-bottom: 2rem;">You scored better than 82% of players!</div>
@@ -449,6 +449,37 @@
         </div>
     </div>
 </div>
+
+<!-- Science Summary Magnet -->
+<div class="container" style="max-width: 800px; margin: 0 auto; margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 5rem; padding-bottom: 5rem;">
+    <div class="science-magnet">
+        <div style="flex: 2; min-width: 300px;">
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 2rem; font-weight: 800; letter-spacing: -1px;">
+                The Science of Color</h2>
+            <p style="color: var(--text-sub); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                Why is it so hard to remember a specific hue? Dive into the psychophysics of 
+                <strong>visual working memory</strong>, categorical encoding, and why RGB screens 
+                actually lie to your eyes.
+            </p>
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                <a href="/blog/science-of-color-memory"
+                    style="background: var(--accent-gradient); color: white; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 0.8rem; transition: transform 0.2s;"
+                    onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    Read the Research <i data-lucide="book-open"></i>
+                </a>
+                <div style="display: flex; align-items: center; gap: 0.5rem; color: #666; font-size: 0.9rem; font-weight: 600;">
+                    <i data-lucide="clock" style="width: 16px; height: 16px;"></i> 8 min read
+                </div>
+            </div>
+        </div>
+        <div style="flex: 1; min-width: 250px; display: flex; justify-content: center;">
+            <div style="position: relative; width: 100%; max-width: 300px; aspect-ratio: 1; background: rgba(0,210,255,0.03); border-radius: 50%; border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;" class="spin-slow">
+                <i data-lucide="palette" style="width: 100px; height: 100px; color: var(--accent-color); opacity: 0.2;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     // Game State

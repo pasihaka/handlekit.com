@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
 from flask_cors import CORS
+from flask_compress import Compress
 import os
 import requests
 import random
@@ -20,6 +21,7 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.url_map.strict_slashes = False
 CORS(app)
+Compress(app)
 
 DATABASE = 'data/handlekit.db'
 

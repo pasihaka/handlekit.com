@@ -286,3 +286,44 @@ footer {
   line-height: 1.7;
   margin: 0;
 }
+
+/* Science & Navigation Magnets */
+.science-magnet {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 3rem;
+}
+
+@media (max-width: 600px) {
+    .science-magnet {
+        padding: 1.5rem;
+        gap: 2rem;
+    }
+
+    .science-magnet h2 {
+        font-size: 1.6rem !important;
+    }
+
+    .science-magnet p {
+        font-size: 1rem !important;
+    }
+
+    .science-magnet>div {
+        min-width: 100% !important;
+    }
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spin-slow {
+    animation: spin-slow 20s linear infinite;
+}

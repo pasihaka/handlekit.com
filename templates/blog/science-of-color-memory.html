@@ -177,12 +177,35 @@
             Instead of punishing you with unfair computer math, our game converts your guess into the CIELAB color space and calculates your exact Delta E. If your guess is visually indistinguishable to the human eye, you get a perfect score!
         </p>
 
-        <!-- CTA BLOCK -->
-        <div style="background: var(--card-bg, #161212); border: 1px solid var(--accent-color, #c91c23); border-radius: 16px; padding: 2rem; text-align: center; margin: 2rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-            <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.5rem; font-weight: 800;">Are you a Master Painter or Color Blind?</h3>
-            <p style="color: var(--text-sub); margin-bottom: 1.5rem;">Play 5 rounds against the clock and see how you rank on the Global Leaderboard.</p>
-            <a href="/color-guessing-game" style="background: linear-gradient(135deg, #da252c 0%, #7d0a10 100%); color: #fff; text-decoration: none; padding: 1rem 2rem; border-radius: 50px; font-weight: 800; display: inline-block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Play the Color Guessing Game →</a>
+        <!-- Tool Hub Magnet -->
+        <div style="margin-top: 3rem; margin-bottom: 3rem;">
+            <div class="science-magnet" style="padding: 2.5rem;">
+                <div style="flex: 2; min-width: 280px;">
+                    <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.8rem; font-weight: 800; letter-spacing: -1px;">
+                        Test Your Visual Memory</h2>
+                    <p style="color: var(--text-sub); font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem;">
+                        Ready to see where you rank? Play 5 rounds against the clock and see if you have 
+                        <strong>Pantone Vision</strong> on our Global Leaderboard.
+                    </p>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <a href="/color-guessing-game"
+                            style="background: var(--accent-gradient); color: white; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 0.8rem; transition: transform 0.2s;"
+                            onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            Play the Game <i data-lucide="play-circle"></i>
+                        </a>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #666; font-size: 0.85rem; font-weight: 600;">
+                            <i data-lucide="users" style="width: 14px; height: 14px;"></i> Global Leaderboard
+                        </div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 200px; display: flex; justify-content: center;">
+                    <div style="position: relative; width: 100%; max-width: 220px; aspect-ratio: 1; background: rgba(0,210,255,0.03); border-radius: 50%; border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;" class="spin-slow">
+                        <i data-lucide="gamepad-2" style="width: 70px; height: 70px; color: var(--accent-color); opacity: 0.2;"></i>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <h2 style="color: var(--text-main); font-size: 1.6rem; font-weight: 800; margin-top: 3rem; margin-bottom: 1.25rem; letter-spacing: -0.5px;">Why Color Memory Matters</h2>
         <p style="color: var(--text-sub); margin-bottom: 1.5rem;">
