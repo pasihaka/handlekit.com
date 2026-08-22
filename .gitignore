@@ -19,7 +19,11 @@ ig_final_test.py
 verify_ig_logic.py
 compare_twitch_html.py
 save_twitch_bodies.py
-tmp_wordlist.py
+tmp_*.py
+audit_*
+fix.py
+generate_md.py
+report*
 avail_404.html
 zuck_404.html
 failover_debug.txt

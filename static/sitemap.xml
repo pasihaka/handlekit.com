@@ -157,6 +157,12 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://handlekit.com/articles/why-srgb-is-dying-wide-gamut-oklab</loc>
+        <lastmod>2026-08-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://handlekit.com/gbp-triage/</loc>
         <lastmod>2026-04-24</lastmod>
         <changefreq>monthly</changefreq>

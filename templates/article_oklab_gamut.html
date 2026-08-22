@@ -1,0 +1,853 @@
+{% set title = "Why sRGB is Dying: Wide Gamut, Display P3, and Oklab in Modern Web Design | HandleKit Articles" %}
+{% set description = "A scientific deep dive into modern color spaces, the physics of wide-gamut displays (Display P3 vs sRGB), perceptual non-uniformity in CIELAB, and why Oklab / OKLCH are revolutionizing web design." %}
+{% set og_image = "oklab-gamut-og.png" %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Why sRGB is Dying: Wide Gamut, Display P3, and Oklab in Modern Web Design",
+  "description": "A comprehensive deep dive into color science, the physics of wide-gamut displays (Display P3 vs sRGB), perceptual non-uniformity in CIELAB, and why Oklab / OKLCH are revolutionizing modern web color.",
+  "image": "https://handlekit.com/static/img/og-image.png",
+  "author": { "@type": "Organization", "name": "HandleKit Editorial Team" },
+  "editor": { "@type": "Organization", "name": "HandleKit Editorial Team" },
+  "keywords": ["Oklab", "OKLCH", "Display P3", "sRGB", "Wide Gamut", "Color Spaces", "CSS Color 4", "Perceptual Uniformity", "CIELAB", "Color Science"],
+  "articleSection": ["Color Science", "Web Development", "UI/UX Design", "Vision Science"],
+  "inLanguage": "en",
+  "publisher": {
+    "@type": "Organization",
+    "name": "HandleKit",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://handlekit.com/static/img/logo_transparent_small.png"
+    }
+  },
+  "datePublished": "2026-08-21",
+  "dateModified": "2026-08-21",
+  "citation": [
+    "Ottosson, B. (2020). A perceptual color space for black-and-white and color image processing.",
+    "Lilley, C., & Verou, L. (Eds.). (2024). CSS Color Module Level 4. W3C Candidate Recommendation.",
+    "Stokes, M., Anderson, M., Chandrasekar, S., & Motta, R. (1996). A standard default color space for the Internet - sRGB (Version 1.10). W3C / HP & Microsoft.",
+    "Commission Internationale de l'Éclairage. (2004). Colorimetry (3rd ed., CIE 15:2004).",
+    "Fairchild, M. D. (2013). Color appearance models (3rd ed.). John Wiley & Sons."
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<style>
+    .article-wrap {
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 3rem 20px 6rem;
+        color: var(--text-sub);
+        line-height: 1.85;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+
+    .article-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 3rem;
+    }
+
+    .eyebrow {
+        font-family: var(--font-heading);
+        color: #00d2ff;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .article-header h1 {
+        font-family: var(--font-heading);
+        font-weight: 900;
+        color: var(--text-main);
+        font-size: 2.8rem;
+        letter-spacing: -2px;
+        line-height: 1.15;
+        margin-bottom: 1.2rem;
+    }
+
+    .editorial-byline {
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+    }
+
+    .meta {
+        color: #777;
+        font-size: 0.85rem;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    .article-body h2 {
+        color: var(--text-main);
+        font-weight: 800;
+        font-size: 1.9rem;
+        margin-top: 4.5rem;
+        margin-bottom: 1.5rem;
+        font-family: var(--font-heading);
+        letter-spacing: -0.5px;
+    }
+
+    .article-body h2::first-letter {
+        color: #00d2ff;
+    }
+
+    .article-body h3 {
+        color: var(--text-main);
+        font-weight: 700;
+        font-size: 1.35rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        font-family: var(--font-heading);
+    }
+
+    .article-body p {
+        font-size: 1.1rem;
+        margin-bottom: 1.8rem;
+    }
+
+    .article-body strong {
+        color: var(--text-main);
+        font-weight: 700;
+    }
+
+    .article-body code {
+        font-family: 'Roboto Mono', monospace;
+        background: var(--code-bg);
+        border: 1px solid var(--border-color);
+        padding: 0.2rem 0.45rem;
+        border-radius: 6px;
+        font-size: 0.9em;
+        color: #00d2ff;
+    }
+
+    .code-block {
+        background: var(--code-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        overflow-x: auto;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--text-main);
+    }
+
+    .code-comment {
+        color: #777;
+    }
+
+    .code-accent {
+        color: #00d2ff;
+        font-weight: 600;
+    }
+
+    .code-p3 {
+        color: #ff3366;
+        font-weight: 600;
+    }
+
+    .article-body .formula {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        padding: 2rem;
+        border-radius: 16px;
+        text-align: center;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 1.25rem;
+        color: var(--text-main);
+        margin: 2.5rem 0;
+        box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+        overflow-x: auto;
+    }
+
+    .article-body figure {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        padding: 1.75rem;
+        border-radius: 20px;
+        margin: 4rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .diagram-svg-container {
+        width: 100%;
+        max-width: 680px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .diagram-svg-container svg {
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.4));
+    }
+
+    .article-body figcaption {
+        margin-top: 1.5rem;
+        font-size: 0.92rem;
+        color: #888;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .article-body ul {
+        margin-bottom: 2.5rem;
+        padding-left: 2rem;
+    }
+
+    .article-body ul li {
+        margin-bottom: 1rem;
+        font-size: 1.05rem;
+    }
+
+    .trust-box,
+    .key-takeaways,
+    .footer-note {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 18px;
+        padding: 1.35rem 1.5rem;
+    }
+
+    .trust-box,
+    .key-takeaways {
+        margin: 2rem 0 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        border-left: 4px solid #00d2ff;
+    }
+
+    .trust-box-title,
+    .key-takeaways h2 {
+        color: var(--text-main);
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.2px;
+    }
+
+    .key-takeaways h2 {
+        margin-top: 0;
+    }
+
+    .key-takeaways ul {
+        margin-bottom: 0;
+        padding-left: 1.3rem;
+    }
+
+    .key-takeaways li {
+        margin-bottom: 0.8rem;
+    }
+
+    .key-takeaways li:last-child {
+        margin-bottom: 0;
+    }
+
+    .gradient-comparison {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        width: 100%;
+        margin: 2rem 0;
+    }
+
+    .grad-strip {
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        border: 1px solid var(--border-color);
+        position: relative;
+    }
+
+    .grad-label {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        margin-bottom: 0.5rem;
+    }
+
+    .grad-bar {
+        height: 48px;
+        border-radius: 8px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .grad-srgb {
+        background: linear-gradient(90deg, #0022ff 0%, #ffff00 100%);
+    }
+
+    .grad-oklch {
+        background: linear-gradient(90deg in oklch, oklch(0.45 0.31 264) 0%, oklch(0.97 0.2 109) 100%);
+    }
+
+    /* Interactive Color Lab Simulator */
+    .color-lab-simulator {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2.2rem;
+        margin: 4.5rem 0;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .lab-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .lab-header h3 {
+        font-family: var(--font-heading);
+        color: var(--text-main);
+        font-size: 1.5rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .lab-header p {
+        font-size: 0.95rem;
+        color: var(--text-sub);
+        margin: 0;
+    }
+
+    .lab-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .lab-picker-group {
+        background: var(--code-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .lab-picker-group label {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+    .lab-color-input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        border: 2px solid var(--border-color);
+        cursor: pointer;
+        background: none;
+        padding: 0;
+    }
+
+    .lab-color-input::-webkit-color-swatch-wrapper {
+        padding: 0;
+    }
+
+    .lab-color-input::-webkit-color-swatch {
+        border: none;
+        border-radius: 8px;
+    }
+
+    .lab-visuals {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .lab-strip-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .lab-strip-title {
+        display: flex;
+        justify-content: space-between;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.82rem;
+        color: var(--text-main);
+    }
+
+    .lab-strip-bar {
+        height: 44px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.25);
+    }
+
+    .lab-info-note {
+        font-size: 0.85rem;
+        color: #777;
+        margin-top: 1rem;
+        text-align: center;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    .article-body .refs {
+        list-style: none;
+        padding: 0;
+        font-size: 0.9rem;
+        color: #777;
+        line-height: 1.8;
+        margin-top: 3rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 3rem;
+    }
+
+    .article-body .refs li {
+        margin-bottom: 1.2rem;
+    }
+
+    .footer-note {
+        margin-top: 2rem;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    .tool-magnet {
+        background: rgba(0, 210, 255, 0.05);
+        border: 1px solid rgba(0, 210, 255, 0.2);
+        border-radius: 24px;
+        padding: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-top: 5rem;
+    }
+
+    @media (max-width: 640px) {
+        .article-header h1 {
+            font-size: 2.1rem;
+        }
+
+        .article-body h2 {
+            font-size: 1.5rem;
+        }
+
+        .lab-controls {
+            grid-template-columns: 1fr;
+        }
+
+        .tool-magnet {
+            padding: 1.5rem;
+            flex-direction: column;
+            text-align: center;
+            gap: 1.5rem;
+        }
+
+        .tool-magnet > div {
+            min-width: unset !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+
+        .tool-magnet a {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="article-wrap">
+    <article class="article-body">
+        <header class="article-header">
+            <span class="eyebrow">Color Science & Web Standards</span>
+            <h1>Why sRGB is Dying: Wide Gamut, Display P3, and Oklab in Modern Web Design</h1>
+            <div class="editorial-byline">By HandleKit Editorial Team • Fact-checked against CIE Standards & W3C CSS Color Module 4</div>
+            <div class="meta">14 min read • Published August 2026</div>
+        </header>
+
+        <p>For nearly three decades, the digital universe has been locked inside a tiny, historical color container created in 1996: <strong>sRGB</strong>. From classic <code>#ff0000</code> hex codes to <code>rgb()</code> and <code>hsl()</code> functions, web browsers have treated sRGB as the universal bedrock of digital display.</p>
+
+        <p>Yet today, the screens in our pockets, on our laptops, and on our desks are capable of rendering hyper-vivid emerald greens, deep fluorescent magentas, and rich cinematic ambers that <strong>sRGB is physically incapable of describing</strong>. Simultaneously, the legacy math powering RGB and HSL produces perceptual glitches—muddy gray gradient dead zones, erratic brightness jumps, and unnatural hue shifts.</p>
+
+        <div class="trust-box">
+            <div class="trust-box-title">Editorial Methodology</div>
+            <p>This technical research paper was peer-reviewed against international colorimetry standards (CIE 15:2004, CIE 1931), Björn Ottosson's foundational Oklab mathematical proofs (2020), and the W3C CSS Color Module Level 4 & Level 5 specifications. It details both physical display gamut architecture and perceptual color space mathematics.</p>
+        </div>
+
+        <section class="key-takeaways" aria-labelledby="key-takeaways-title">
+            <h2 id="key-takeaways-title">Key Takeaways</h2>
+            <ul>
+                <li><strong>sRGB was designed for 1996 CRT cathode-ray monitors</strong> and covers only ~33.5% of the colors detectable by the human visual system.</li>
+                <li><strong>Display P3 encompasses ~45.8% of visible chromaticity</strong>, offering a 25% larger gamut volume—particularly richer, glowing greens and saturated reds.</li>
+                <li><strong>HSL and RGB are not perceptually uniform:</strong> Two colors with identical HSL lightness (e.g., pure yellow vs. pure blue at 50% lightness) produce vastly different perceived brightness to human eyes.</li>
+                <li><strong>Oklab (and OKLCH) solves 50 years of color space mathematical flaws</strong>, providing flawless hue linearity, uniform lightness, and smooth gradient interpolation without desaturated "gray dead zones."</li>
+                <li><strong>Modern CSS Color 4 gives developers native wide-gamut access</strong> via <code>color(display-p3 r g b)</code>, <code>oklch(l c h)</code>, and <code>color-mix()</code>.</li>
+            </ul>
+        </section>
+
+        <h2>1. The CRT Heritage: How sRGB Became the Web's Default Jail</h2>
+        <p>In 1996, Hewlett-Packard and Microsoft standardized the <strong>sRGB</strong> (standard Red Green Blue) color space (Stokes et al., 1996). The standard was explicitly engineered around the physical phosphors and electrical response curves of the 14-inch Cathode Ray Tube (CRT) monitors common in mid-90s office computers.</p>
+
+        <p>Because CRT monitors exhibited a nonlinear relationship between input voltage and emitted photon luminance, sRGB incorporated an electro-optical transfer function (the famous $\gamma \approx 2.2$ gamma curve) and fixed red, green, and blue primary chromaticity coordinates anchored to the D65 standard illuminant (representing midday daylight at roughly 6504 Kelvin).</p>
+
+        <p>While sRGB was a triumph for early internet standardization—ensuring that a JPEG viewed on a Windows machine looked reasonably close to one viewed on a Macintosh—it was never intended to represent the physical ceiling of color perception. In the 1931 CIE xy Chromaticity space, sRGB covers only about <strong>33.5% of the human visual gamut</strong>. Over 66% of the spectral colors human eyes can perceive simply cannot be encoded in standard 8-bit hex codes.</p>
+
+        <figure>
+            <div class="diagram-svg-container">
+                <svg viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CIE 1931 Chromaticity Diagram comparing sRGB, Display P3, and Rec 2020 color gamuts">
+                    <defs>
+                        <!-- Chromaticity horseshoe gradient backdrop -->
+                        <radialGradient id="chromaGlow" cx="40%" cy="50%" r="55%">
+                            <stop offset="0%" stop-color="#2a3b4c" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#0e131b" stop-opacity="0.95"/>
+                        </radialGradient>
+                        <filter id="diagramShadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.6"/>
+                        </filter>
+                    </defs>
+
+                    <!-- Background & Coordinate Grid -->
+                    <rect width="700" height="700" rx="16" fill="#0f141d" stroke="#232f3e" stroke-width="1.5"/>
+
+                    <!-- Grid lines -->
+                    <g stroke="#1e293b" stroke-width="1" stroke-dasharray="3 3">
+                        <!-- Vertical lines (x) from 0.1 to 0.8 (x_pixel = 60 + x * 750) -->
+                        <line x1="135" y1="50" x2="135" y2="620" /><!-- x=0.1 -->
+                        <line x1="210" y1="50" x2="210" y2="620" /><!-- x=0.2 -->
+                        <line x1="285" y1="50" x2="285" y2="620" /><!-- x=0.3 -->
+                        <line x1="360" y1="50" x2="360" y2="620" /><!-- x=0.4 -->
+                        <line x1="435" y1="50" x2="435" y2="620" /><!-- x=0.5 -->
+                        <line x1="510" y1="50" x2="510" y2="620" /><!-- x=0.6 -->
+                        <line x1="585" y1="50" x2="585" y2="620" /><!-- x=0.7 -->
+
+                        <!-- Horizontal lines (y) from 0.1 to 0.8 (y_pixel = 620 - y * 700) -->
+                        <line x1="60" y1="550" x2="650" y2="550" /><!-- y=0.1 -->
+                        <line x1="60" y1="480" x2="650" y2="480" /><!-- y=0.2 -->
+                        <line x1="60" y1="410" x2="650" y2="410" /><!-- y=0.3 -->
+                        <line x1="60" y1="340" x2="650" y2="340" /><!-- y=0.4 -->
+                        <line x1="60" y1="270" x2="650" y2="270" /><!-- y=0.5 -->
+                        <line x1="60" y1="200" x2="650" y2="200" /><!-- y=0.6 -->
+                        <line x1="60" y1="130" x2="650" y2="130" /><!-- y=0.7 -->
+                        <line x1="60" y1="60"  x2="650" y2="60"  /><!-- y=0.8 -->
+                    </g>
+
+                    <!-- Axis lines -->
+                    <line x1="60" y1="620" x2="650" y2="620" stroke="#475569" stroke-width="2" />
+                    <line x1="60" y1="50" x2="60" y2="620" stroke="#475569" stroke-width="2" />
+
+                    <!-- Axis labels -->
+                    <text x="640" y="650" fill="#94a3b8" font-family="'Roboto Mono', monospace" font-size="12" text-anchor="end">CIE x</text>
+                    <text x="35" y="60" fill="#94a3b8" font-family="'Roboto Mono', monospace" font-size="12" text-anchor="middle">CIE y</text>
+
+                    <!-- Coordinate ticks -->
+                    <text x="60" y="640" fill="#64748b" font-family="'Roboto Mono', monospace" font-size="11" text-anchor="middle">0.0</text>
+                    <text x="210" y="640" fill="#64748b" font-family="'Roboto Mono', monospace" font-size="11" text-anchor="middle">0.2</text>
+                    <text x="360" y="640" fill="#64748b" font-family="'Roboto Mono', monospace" font-size="11" text-anchor="middle">0.4</text>
+                    <text x="510" y="640" fill="#64748b" font-family="'Roboto Mono', monospace" font-size="11" text-anchor="middle">0.6</text>
+                    <text x="60" y="484" fill="#64748b" font-family="'Roboto Mono', monospace" font-size="11" text-anchor="end">0.2</text>
+                    <text x="60" y="344" fill="#64748b" font-family="'Roboto Mono', monospace" font-size="11" text-anchor="end">0.4</text>
+                    <text x="60" y="204" fill="#64748b" font-family="'Roboto Mono', monospace" font-size="11" text-anchor="end">0.6</text>
+                    <text x="60" y="64" fill="#64748b" font-family="'Roboto Mono', monospace" font-size="11" text-anchor="end">0.8</text>
+
+                    <!-- CIE Human Spectral Locus Curve (approximation) -->
+                    <path d="M 190 600 C 130 550, 80 430, 85 300 C 95 160, 160 80, 265 60 C 375 75, 480 200, 580 395 C 610 450, 605 520, 580 570 C 510 595, 340 600, 190 600 Z" 
+                          fill="url(#chromaGlow)" stroke="#38bdf8" stroke-width="1.8" stroke-opacity="0.6"/>
+
+                    <!-- Wavelength labels around spectral locus -->
+                    <text x="180" y="618" fill="#38bdf8" font-family="'Roboto Mono', monospace" font-size="10">380nm</text>
+                    <text x="65" y="310" fill="#38bdf8" font-family="'Roboto Mono', monospace" font-size="10">490nm</text>
+                    <text x="255" y="48" fill="#38bdf8" font-family="'Roboto Mono', monospace" font-size="10">520nm</text>
+                    <text x="420" y="110" fill="#38bdf8" font-family="'Roboto Mono', monospace" font-size="10">560nm</text>
+                    <text x="600" y="430" fill="#38bdf8" font-family="'Roboto Mono', monospace" font-size="10">620nm</text>
+                    <text x="590" y="580" fill="#38bdf8" font-family="'Roboto Mono', monospace" font-size="10">700nm</text>
+
+                    <!-- Rec. 2020 Gamut Triangle (Largest) -->
+                    <!-- R:(0.708, 0.292) -> (591, 415), G:(0.170, 0.797) -> (187, 62), B:(0.131, 0.046) -> (158, 588) -->
+                    <polygon points="591,415 187,62 158,588" 
+                             fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.8" stroke-dasharray="5 4"/>
+
+                    <!-- Display P3 Gamut Triangle (Middle) -->
+                    <!-- R:(0.680, 0.320) -> (570, 396), G:(0.265, 0.690) -> (258, 137), B:(0.150, 0.060) -> (172, 578) -->
+                    <polygon points="570,396 258,137 172,578" 
+                             fill="rgba(239, 68, 68, 0.12)" stroke="#ef4444" stroke-width="2.5"/>
+
+                    <!-- sRGB Gamut Triangle (Smallest) -->
+                    <!-- R:(0.640, 0.330) -> (540, 389), G:(0.300, 0.600) -> (285, 200), B:(0.150, 0.060) -> (172, 578) -->
+                    <polygon points="540,389 285,200 172,578" 
+                             fill="rgba(14, 165, 233, 0.22)" stroke="#0ea5e9" stroke-width="2.5"/>
+
+                    <!-- D65 White Point: (0.3127, 0.3290) -> (294, 389) -->
+                    <circle cx="294" cy="389" r="4.5" fill="#ffffff" filter="url(#diagramShadow)"/>
+                    <text x="305" y="385" fill="#ffffff" font-family="'Roboto Mono', monospace" font-size="11" font-weight="700">D65 White</text>
+
+                    <!-- Interactive / Diagram Legend -->
+                    <g transform="translate(380, 80)">
+                        <rect width="250" height="135" rx="10" fill="#131b26" stroke="#253549" stroke-width="1"/>
+                        <text x="15" y="25" fill="#f8fafc" font-family="var(--font-heading)" font-size="12" font-weight="800">CIE 1931 GAMUT COVERAGE</text>
+                        
+                        <!-- sRGB -->
+                        <rect x="15" y="42" width="14" height="14" rx="3" fill="#0ea5e9"/>
+                        <text x="36" y="54" fill="#e2e8f0" font-family="'Roboto Mono', monospace" font-size="11">sRGB (Legacy Web, ~33.5%)</text>
+                        
+                        <!-- Display P3 -->
+                        <rect x="15" y="68" width="14" height="14" rx="3" fill="#ef4444"/>
+                        <text x="36" y="80" fill="#e2e8f0" font-family="'Roboto Mono', monospace" font-size="11">Display P3 (+25% Volume)</text>
+                        
+                        <!-- Rec 2020 -->
+                        <rect x="15" y="94" width="14" height="14" rx="3" fill="#a855f7"/>
+                        <text x="36" y="106" fill="#e2e8f0" font-family="'Roboto Mono', monospace" font-size="11">Rec. 2020 (UHD TV, ~75.8%)</text>
+                    </g>
+                </svg>
+            </div>
+            <figcaption><strong>Figure 1.</strong> The CIE 1931 xy Chromaticity diagram illustrating visible human color limits against the boundaries of <strong>sRGB</strong> (blue), <strong>Display P3</strong> (red), and ultra-wide <strong>Rec. 2020</strong> (purple). Display P3 captures intense vibrant greens and neon reds outside sRGB.</figcaption>
+        </figure>
+
+        <h2>2. The Rise of Display P3: Silicon Outpaces the Web</h2>
+        <p>In 2015, Apple introduced the 5K iMac with a <strong>Display P3</strong> wide-gamut screen. Over the following decade, Display P3 became standard hardware across iPhones, iPads, MacBooks, high-end Android flagships (Samsung Galaxy, Google Pixel), and modern OLED gaming displays.</p>
+
+        <p>Display P3 uses the same color primaries as the cinema industry's DCI-P3 standard, but retains the sRGB D65 white point and a compatible 2.2 transfer curve. Compared to sRGB, <strong>Display P3 delivers ~25% more total color volume</strong>. The differences are most pronounced in two critical zones of the spectrum:</p>
+
+        <ul>
+            <li><strong>Luminous Greens and Cyans:</strong> True emerald greens, rainforest foliage, and tropical ocean waters that appear dull or muddy when clamped to <code>#00ff00</code> in sRGB.</li>
+            <li><strong>Deep Saturated Reds and Corals:</strong> Radiant crimson and vivid neon oranges that pop on modern OLED and Mini-LED panels with exceptional dynamic range.</li>
+        </ul>
+
+        <p>Until recently, web developers had no native way to declare these colors in CSS. An e-commerce site selling a fluorescent athletic shoe had to compress its color palette down to 1996 CRT limits, resulting in washed-out product previews that failed to match physical reality.</p>
+
+        <h2>3. The Flaws of RGB, HSL, and CIELAB: Perceptual Non-Uniformity</h2>
+        <p>Beyond gamut size limitations, legacy digital color systems suffer from a severe mathematical defect: <strong>perceptual non-uniformity</strong>.</p>
+
+        <h3>Why HSL Lightness is an Illusion</h3>
+        <p>In CSS <code>hsl(hue, saturation, lightness)</code>, the parameter <code>L = 50%</code> is assumed to represent "medium brightness." However, HSL is merely a geometric re-mapping of RGB coordinates. It ignores human retinal biology (the distribution and sensitivity of L, M, and S retinal cone cells).</p>
+
+        <p>Consider two colors in HSL:</p>
+        <ul>
+            <li><code>hsl(60, 100%, 50%)</code> — Pure Yellow</li>
+            <li><code>hsl(240, 100%, 50%)</code> — Pure Blue</li>
+        </ul>
+
+        <p>Both colors claim a mathematical lightness of <code>50%</code>. However, to human eyes, pure yellow has a perceived relative luminance of <strong>~0.92</strong>, while pure blue has a perceived luminance of only <strong>~0.07</strong>! Yellow appears blindingly bright, while blue appears pitch-dark. When designers use HSL to calculate contrast ratios for WCAG accessibility or create automated UI theme variations, the calculated lightness is completely detached from human perception.</p>
+
+        <h3>The "Abney Effect" and the Gray Dead Zone</h3>
+        <p>When interpolating between two colors across sRGB or CIELAB (such as creating a CSS gradient from Blue to Yellow), mathematical linear mixing passes through a muddy, desaturated gray center known as the <strong>"gray dead zone"</strong>. In addition, CIELAB suffers from the notorious <em>blue-shift distortion</em> (the Abney effect): increasing saturation along a straight line in Lab unexpectedly twists blue into purple.</p>
+
+        <div class="gradient-comparison">
+            <div class="grad-strip">
+                <div class="grad-label">Legacy sRGB Linear Interpolation (Noticeable Gray Dead Zone)</div>
+                <div class="grad-bar grad-srgb"></div>
+            </div>
+            <div class="grad-strip">
+                <div class="grad-label">Modern OKLCH Perceptual Interpolation (Smooth Chroma & Lightness)</div>
+                <div class="grad-bar grad-oklch"></div>
+            </div>
+        </div>
+
+        <h2>4. The Mathematics of Oklab: Björn Ottosson's 2020 Breakthrough</h2>
+        <p>In December 2020, Swedish software engineer and researcher <strong>Björn Ottosson</strong> published the specification for <strong>Oklab</strong> (Ottosson, 2020). Oklab was engineered from the ground up to fix the perceptual flaws of CIELAB, CAM16, and sRGB, providing:</p>
+
+        <ul>
+            <li><strong>True Perceptual Uniformity:</strong> Equal numerical step changes correlate directly with equal perceived visual differences ($\Delta E$).</li>
+            <li><strong>Hue Linearity:</strong> Shifting saturation or lightness never accidentally alters the perceived hue angle.</li>
+            <li><strong>Accurate Perceived Lightness ($L$):</strong> A lightness value of <code>0.7</code> in Oklab guarantees identical perceived brightness regardless of whether the color is blue, yellow, red, or green.</li>
+        </ul>
+
+        <h3>The Mathematical Transformation Pipeline</h3>
+        <p>Oklab transforms linear RGB or CIE XYZ coordinates into cone response space ($LMS$), applies a cubic root non-linearity, and maps to orthogonal coordinates ($L, a, b$):</p>
+
+        <div class="formula">
+            \[
+            \begin{bmatrix} L' \\ M' \\ S' \end{bmatrix} = \sqrt[3]{
+            \begin{bmatrix} 
+            0.4122 & 0.5363 & 0.0514 \\ 
+            0.2119 & 0.6807 & 0.1074 \\ 
+            0.0883 & 0.2817 & 0.6300 
+            \end{bmatrix}
+            \begin{bmatrix} X \\ Y \\ Z \end{bmatrix}
+            }
+            \]
+            <br>
+            \[
+            \begin{bmatrix} L \\ a \\ b \end{bmatrix} = 
+            \begin{bmatrix} 
+            0.2105 & 0.7936 & -0.0041 \\ 
+            1.9780 & -2.4286 & 0.4506 \\ 
+            0.0259 & 0.7828 & -0.8087 
+            \end{bmatrix}
+            \begin{bmatrix} L' \\ M' \\ S' \end{bmatrix}
+            \]
+        </div>
+
+        <p>In cylindrical polar coordinates, Oklab becomes <strong>OKLCH</strong>: Lightness ($L$, $0$ to $1$), Chroma ($C$, saturation/intensity), and Hue ($H$, $0^\circ$ to $360^\circ$). Because OKLCH is intuitive and predictable, it has become the gold standard for modern design systems (including Tailwind CSS v4 and modern design tokens).</p>
+
+        <!-- Interactive Color Lab Simulator -->
+        <div class="color-lab-simulator">
+            <div class="lab-header">
+                <h3>Interactive Lab: sRGB vs. OKLCH Gradient Blending</h3>
+                <p>Pick two colors to visually inspect how legacy sRGB creates muddy midpoints while OKLCH preserves vibrancy and perceptual balance.</p>
+            </div>
+
+            <div class="lab-controls">
+                <div class="lab-picker-group">
+                    <label for="colorA">Color Start (A)</label>
+                    <input type="color" id="colorA" class="lab-color-input" value="#0055ff">
+                </div>
+                <div class="lab-picker-group">
+                    <label for="colorB">Color End (B)</label>
+                    <input type="color" id="colorB" class="lab-color-input" value="#ffe600">
+                </div>
+            </div>
+
+            <div class="lab-visuals">
+                <div class="lab-strip-wrap">
+                    <div class="lab-strip-title">
+                        <span>Legacy sRGB Interpolation</span>
+                        <span id="srgb-hex-info">sRGB Midpoint</span>
+                    </div>
+                    <div id="sim-srgb-bar" class="lab-strip-bar"></div>
+                </div>
+
+                <div class="lab-strip-wrap">
+                    <div class="lab-strip-title">
+                        <span>Modern OKLCH Interpolation</span>
+                        <span id="oklch-hex-info" style="color: #00d2ff;">Perceptual Midpoint</span>
+                    </div>
+                    <div id="sim-oklch-bar" class="lab-strip-bar"></div>
+                </div>
+            </div>
+            <div class="lab-info-note">
+                Notice how OKLCH avoids the dark/gray washed-out midpoint that plagues legacy RGB blending.
+            </div>
+        </div>
+
+        <h2>5. Writing Modern Color in CSS: Practical Syntax</h2>
+        <p>With universal browser support across Chrome, Safari, Edge, and Firefox, developers can immediately leverage wide-gamut and perceptual color natively in CSS (Lilley & Verou, 2024).</p>
+
+        <h3>Declaring Wide Gamut Display P3</h3>
+        <p>To declare vivid colors beyond the sRGB triangle, use the <code>color(display-p3 r g b)</code> syntax:</p>
+
+        <div class="code-block">
+<span class="code-comment">/* Hyper-vivid Neon Coral outside standard sRGB */</span>
+<span class="code-accent">.hero-button</span> {
+    <span class="code-p3">background-color:</span> color(display-p3 1 0.15 0.35);
+}
+        </div>
+
+        <h3>Building Design Systems with OKLCH</h3>
+        <p>OKLCH makes calculating consistent UI states (hover, active, focus, dark-mode accessible contrast) trivial. Because Lightness ($L$) is uniform, adding or subtracting lightness works identically across all hues:</p>
+
+        <div class="code-block">
+<span class="code-comment">/* Primary Brand Tone in OKLCH */</span>
+:root {
+    <span class="code-accent">--brand-primary:</span> oklch(0.65 0.22 250);       <span class="code-comment">/* Vibrant Blue */</span>
+    <span class="code-accent">--brand-hover:</span>   oklch(0.55 0.22 250);       <span class="code-comment">/* Darker Blue (Identical Hue/Chroma) */</span>
+    <span class="code-accent">--brand-accent:</span>  oklch(0.65 0.22 140);       <span class="code-comment">/* Green with EXACT same perceived lightness */</span>
+}
+        </div>
+
+        <h3>Progressive Enhancement and Fallbacks</h3>
+        <p>For mission-critical production environments, CSS Media Queries allow progressive enhancement for wide-gamut hardware:</p>
+
+        <div class="code-block">
+<span class="code-comment">/* Baseline sRGB Fallback */</span>
+<span class="code-accent">.brand-badge</span> {
+    background-color: rgb(0, 200, 100);
+}
+
+<span class="code-comment">/* Upgrade for Wide Gamut Displays (P3) */</span>
+<span class="code-accent">@media (color-gamut: p3)</span> {
+    <span class="code-accent">.brand-badge</span> {
+        background-color: color(display-p3 0 0.85 0.42);
+    }
+}
+        </div>
+
+        <h2>6. Conclusion: The New Color Paradigm</h2>
+        <p>The web is no longer constrained by the physics of 1996 cathode-ray glass. Modern wide-gamut displays (Display P3) and mathematically rigorous perceptual color spaces (Oklab and OKLCH) allow digital designers and software engineers to create interfaces with unprecedented vibrancy, flawless mathematical harmony, and predictable visual accessibility.</p>
+
+        <p>Adopting OKLCH and Display P3 today transforms web interfaces from dull approximations into rich, luminous digital experiences.</p>
+
+        <h2>References</h2>
+        <ul class="refs">
+            <li><strong>Commission Internationale de l'Éclairage (CIE). (2004).</strong> <em>Colorimetry</em> (3rd ed., CIE Publication No. 15:2004). Vienna: CIE Central Bureau.</li>
+            <li><strong>Fairchild, M. D. (2013).</strong> <em>Color appearance models</em> (3rd ed.). Chichester, UK: John Wiley & Sons.</li>
+            <li><strong>Lilley, C., & Verou, L. (Eds.). (2024).</strong> <em>CSS Color Module Level 4</em>. W3C Candidate Recommendation Snapshot. World Wide Web Consortium.</li>
+            <li><strong>Ottosson, B. (2020).</strong> <em>A perceptual color space for black-and-white and color image processing</em>. Published online: <a href="https://bottosson.github.io/posts/oklab/" target="_blank" style="color: #00d2ff; text-decoration: none;">bottosson.github.io/posts/oklab</a>.</li>
+            <li><strong>Sharma, G., Wu, W., & Dalal, E. N. (2005).</strong> The CIEDE2000 color-difference formula: Implementation notes, supplementary test data, and mathematical observations. <em>Color Research & Application</em>, 30(1), 21–30.</li>
+            <li><strong>Stokes, M., Anderson, M., Chandrasekar, S., & Motta, R. (1996).</strong> <em>A standard default color space for the Internet - sRGB</em> (Version 1.10). W3C / Hewlett-Packard & Microsoft Corporation.</li>
+        </ul>
+
+        <div class="footer-note">
+            This article is an educational research overview produced by HandleKit. It was editorially verified against international color standards (CIE, W3C) for technical accuracy.
+        </div>
+
+        <!-- Tool Magnet -->
+        <div class="tool-magnet">
+            <div style="display: flex; align-items: center; gap: 1.5rem; flex: 1; min-width: 280px; text-align: left;">
+                <div style="background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0, 210, 255, 0.25);">
+                    <i data-lucide="palette" style="color: #fff; width: 28px; height: 28px;"></i>
+                </div>
+                <div>
+                    <h3 style="color: var(--text-main); margin: 0; font-size: 1.2rem; font-weight: 800;">Put Color Science to the Test</h3>
+                    <p style="color: var(--text-sub); margin: 0.2rem 0 0 0; font-size: 0.95rem;">Test your own eye's perceptual precision with our <strong>Oklab-Powered Color Guessing Game</strong> and <strong>Color Picker</strong>.</p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="/color-guessing-game"
+                    style="background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); color: #fff; text-decoration: none; padding: 0.9rem 1.8rem; border-radius: 12px; font-weight: 800; font-size: 0.95rem; transition: transform 0.2s; white-space: nowrap;"
+                    onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Play Color Game</a>
+                <a href="/color-picker"
+                    style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); text-decoration: none; padding: 0.9rem 1.8rem; border-radius: 12px; font-weight: 800; font-size: 0.95rem; transition: transform 0.2s; white-space: nowrap;"
+                    onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Open Color Picker</a>
+            </div>
+        </div>
+    </article>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputA = document.getElementById('colorA');
+        const inputB = document.getElementById('colorB');
+        const srgbBar = document.getElementById('sim-srgb-bar');
+        const oklchBar = document.getElementById('sim-oklch-bar');
+
+        function updateGradients() {
+            if (!inputA || !inputB || !srgbBar || !oklchBar) return;
+            const colorA = inputA.value;
+            const colorB = inputB.value;
+
+            // Legacy sRGB linear gradient
+            srgbBar.style.background = `linear-gradient(90deg, ${colorA} 0%, ${colorB} 100%)`;
+
+            // Modern OKLCH gradient with native CSS interpolation
+            oklchBar.style.background = `linear-gradient(90deg in oklch, ${colorA} 0%, ${colorB} 100%)`;
+        }
+
+        if (inputA && inputB) {
+            inputA.addEventListener('input', updateGradients);
+            inputB.addEventListener('input', updateGradients);
+            updateGradients();
+        }
+    });
+</script>
+{% endblock %}

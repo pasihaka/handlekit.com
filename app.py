@@ -572,6 +572,11 @@ def article_jnd_perception():
 def article_pelli_robson():
     return render_template('article_pelli_robson.html')
 
+@app.route('/articles/why-srgb-is-dying-wide-gamut-oklab')
+@app.route('/articles/oklab-color-spaces-wide-gamut')
+def article_oklab_gamut():
+    return render_template('article_oklab_gamut.html')
+
 @app.route('/blog')
 def blog_list():
     return render_template('blog_list.html')

@@ -122,6 +122,22 @@
         border-color: #00d2ff;
     }
 
+    .oklab-article .card-tag {
+        color: #a855f7;
+    }
+
+    .oklab-article .read-link {
+        color: #a855f7;
+    }
+
+    .oklab-article .card-glow {
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
+    }
+
+    .oklab-article:hover {
+        border-color: #a855f7;
+    }
+
     .card-glow {
         position: absolute;
         top: -50%;
@@ -140,6 +156,17 @@
     </header>
 
     <div class="articles-grid">
+        <!-- Oklab & Wide Gamut Article -->
+        <a href="/articles/why-srgb-is-dying-wide-gamut-oklab" class="article-card oklab-article">
+            <div class="card-glow"></div>
+            <span class="card-tag">Color Science & Web Standards</span>
+            <h2>Why sRGB is Dying: Wide Gamut, Display P3 & Oklab</h2>
+            <p>Explore the physics of wide-gamut displays, perceptual non-uniformity in legacy RGB, and why Oklab / OKLCH are revolutionizing modern web color.</p>
+            <div class="read-link">
+                Read Full Guide <i data-lucide="arrow-right"></i>
+            </div>
+        </a>
+
         <!-- JND Article -->
         <a href="/articles/jnd-perception" class="article-card jnd-article">
             <div class="card-glow"></div>
