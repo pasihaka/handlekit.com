@@ -69,6 +69,11 @@
     <!-- PERF: Pinned Lucide to a specific version to avoid redirects -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js" defer id="lucide-script"></script>
     {% block head_extra %}{% endblock %}
+
+    <!-- AdSense Script - Placed in head to ensure reviewer bots find the code -->
+    {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723" crossorigin="anonymous"></script>
+    {% endif %}
 </head>
 
 <body>
@@ -192,11 +197,7 @@
 
     <!-- Back to top coffee btn removed from floating to keep clean, footer link remains -->
 
-    <!-- AdSense Script - Standard loading to ensure reviewer bots find the code -->
-    {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6877385521672723"
-        crossorigin="anonymous"></script>
-    {% endif %}
+
 
     <!-- PERF: GTM lazy-loaded after first user interaction / 8 seconds to prevent main-thread blocking -->
     {% if not ('127.0.0.1' in request.host or 'localhost' in request.host) %}
