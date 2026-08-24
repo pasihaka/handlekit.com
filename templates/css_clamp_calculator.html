@@ -1,0 +1,578 @@
+{% set title = "CSS Clamp Calculator | Fluid Typography Generator | HandleKit" %}
+{% set description = "Generate fluid typography rules instantly using the CSS clamp() function. Calculate responsive font sizes without the complex linear interpolation math." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "CSS Clamp Calculator",
+          "operatingSystem": "Web Browser",
+          "applicationCategory": "DeveloperApplication",
+          "description": "Calculate linear interpolation for fluid typography and generate CSS clamp() rules.",
+          "url": "https://handlekit.com/css-clamp-calculator",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "HandleKit"
+          }
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the CSS clamp() function?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The CSS clamp() function takes three values: a minimum value, a preferred value, and a maximum value. It allows an element (like font-size or padding) to scale fluidly based on the viewport width, but prevents it from getting too small or too large."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why use clamp() for fluid typography?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fluid typography ensures text scales smoothly on all devices. Instead of using dozens of rigid media queries for every screen size, clamp() calculates the exact font size automatically, creating a much cleaner CSS file and a better user experience."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why output in rem instead of px?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Using 'rem' units for font sizing is essential for web accessibility. It allows users who have changed their browser's default font size (due to visual impairments) to scale up your text properly. Using 'px' ignores the user's browser settings."
+          }
+        }
+      ]
+    }
+    </script>
+    <style>
+        .star-icon:hover,
+        .star-icon.hovered {
+            color: #ffcc00 !important;
+            fill: #ffcc00 !important;
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.4));
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="tool-container" style="max-width: 1100px; margin: 0 auto;">
+    <div class="tool-header" style="text-align: center; margin-bottom: 3rem;">
+        <i data-lucide="scaling" style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1rem;"></i>
+        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">
+            CSS Clamp Calculator</h1>
+        <p style="color: var(--text-sub);">Generate responsive fluid typography rules instantly. No math required.</p>
+    </div>
+
+    <style>
+        .clamp-wrapper {
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            background: var(--card-bg, #161212);
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            display: grid;
+            grid-template-columns: 350px 1fr;
+        }
+
+        .clamp-controls {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border-right: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .clamp-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .clamp-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .clamp-row > div {
+            flex: 1;
+        }
+
+        .clamp-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main, #e6e6e6);
+        }
+
+        .clamp-input {
+            width: 100%;
+            background: var(--input-bg, rgba(255,255,255,0.05));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            color: var(--text-main, #e6e6e6);
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: monospace;
+            outline: none;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        .clamp-input:focus {
+            border-color: var(--accent-color, #c91c23);
+            box-shadow: 0 0 0 3px var(--glow-color, rgba(201, 28, 35, 0.15));
+        }
+
+        .clamp-preview {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--code-bg, rgba(255,255,255,0.02)),
+                var(--code-bg, rgba(255,255,255,0.02)) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+
+        .output-box {
+            background: #000;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            margin-bottom: 2rem;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+        }
+
+        .code-output {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 1.15rem;
+            color: #a5d6ff;
+            word-break: normal;
+            overflow-wrap: anywhere;
+            margin: 0;
+            padding-right: 5rem;
+            line-height: 1.5;
+        }
+
+        .code-func { color: #d2a8ff; }
+        .code-num { color: #79c0ff; }
+        
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .graph-container {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 200px;
+            position: relative;
+        }
+
+        .graph-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+        
+        .graph-line {
+            stroke: var(--accent-color);
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        
+        .graph-guide {
+            stroke: rgba(255,255,255,0.2);
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+        }
+
+        .graph-label {
+            fill: var(--text-sub);
+            font-size: 12px;
+            font-family: sans-serif;
+        }
+        
+        .graph-point {
+            fill: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .clamp-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .clamp-controls {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .clamp-preview {
+                padding: 1.5rem;
+            }
+            .code-output {
+                font-size: 1rem;
+            }
+        }
+    </style>
+
+    <div class="clamp-wrapper">
+        <div class="clamp-controls">
+            <h3 style="color: var(--text-main); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.2rem;">Viewport Bounds</h3>
+            <div class="clamp-row">
+                <div class="clamp-control-group">
+                    <label class="clamp-label" for="min-vw">Min Width (px)</label>
+                    <input type="number" id="min-vw" class="clamp-input" value="320">
+                </div>
+                <div class="clamp-control-group">
+                    <label class="clamp-label" for="max-vw">Max Width (px)</label>
+                    <input type="number" id="max-vw" class="clamp-input" value="1200">
+                </div>
+            </div>
+
+            <h3 style="color: var(--text-main); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem;">Font Size Bounds</h3>
+            <div class="clamp-row">
+                <div class="clamp-control-group">
+                    <label class="clamp-label" for="min-fs">Min Size (px)</label>
+                    <input type="number" id="min-fs" class="clamp-input" value="16">
+                </div>
+                <div class="clamp-control-group">
+                    <label class="clamp-label" for="max-fs">Max Size (px)</label>
+                    <input type="number" id="max-fs" class="clamp-input" value="24">
+                </div>
+            </div>
+
+            <h3 style="color: var(--text-main); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem;">Root Settings</h3>
+            <div class="clamp-control-group">
+                <label class="clamp-label" for="root-fs">Browser Root Font Size (px)</label>
+                <input type="number" id="root-fs" class="clamp-input" value="16" title="Default is 16px. Used to calculate rem values.">
+            </div>
+            
+            <div style="margin-top: 1rem; background: rgba(var(--accent-rgb), 0.1); border: 1px solid rgba(var(--accent-rgb), 0.2); padding: 1rem; border-radius: 8px;">
+                <p style="color: var(--text-sub); font-size: 0.85rem; margin: 0; line-height: 1.5;">
+                    The resulting output uses <strong>rem</strong> values. This ensures your typography remains accessible for users who have changed their browser's default font size.
+                </p>
+            </div>
+        </div>
+
+        <div class="clamp-preview">
+            <h3 style="color: var(--text-main); margin-top: 0; margin-bottom: 1rem; font-size: 1.2rem;">Generated CSS Rule</h3>
+            <div class="output-box">
+                <button class="copy-btn" id="btn-copy">
+                    <i data-lucide="copy" style="width: 16px; height: 16px;"></i> Copy
+                </button>
+                <p class="code-output" id="output-code"></p>
+            </div>
+            
+            <h3 style="color: var(--text-main); margin-top: 1rem; margin-bottom: 1rem; font-size: 1.2rem;">Behavior Graph</h3>
+            <div class="graph-container">
+                <svg class="graph-svg" id="graph-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <!-- Graph gets drawn here by JS -->
+                </svg>
+                <!-- Labels overlaid -->
+                <div id="label-min" style="position: absolute; left: 1rem; bottom: 0.5rem; color: var(--text-sub); font-size: 0.75rem; font-family: monospace;"></div>
+                <div id="label-max" style="position: absolute; right: 1rem; top: 0.5rem; color: var(--text-sub); font-size: 0.75rem; font-family: monospace;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO Content -->
+    <div class="info-sections" style="margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 4rem; max-width: 860px; margin-left: auto; margin-right: auto;">
+        
+        <div class="info-card" style="margin-bottom: 3rem;">
+            <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.5rem;">The Math Behind Fluid Typography</h2>
+            <p style="color: var(--text-sub); line-height: 1.8; margin-bottom: 1rem;">
+                When building responsive websites, writing dozens of media queries to tweak font sizes or padding is tedious and bloats your CSS. The modern approach is to use the <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px;">clamp()</code> function.
+            </p>
+            <p style="color: var(--text-sub); line-height: 1.8;">
+                The clamp function takes a minimum value, a preferred value (usually a mix of relative and absolute units like viewport width), and a maximum value. The tricky part is calculating that <strong>preferred value</strong> so the font scales perfectly between your minimum and maximum screen widths.
+            </p>
+            <p style="color: var(--text-sub); line-height: 1.8;">
+                This calculator uses linear interpolation math to find the exact slope and y-intercept of the line connecting your minimum and maximum font sizes to your viewport widths, generating the perfect CSS rule instantly.
+            </p>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-card">
+                    <h3>What is the CSS clamp() function?</h3>
+                    <p>The CSS clamp() function takes three values: a minimum value, a preferred value, and a maximum value. It allows an element (like font-size or padding) to scale fluidly based on the viewport width, but prevents it from getting too small or too large.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Why use clamp() for fluid typography?</h3>
+                    <p>Fluid typography ensures text scales smoothly on all devices. Instead of using dozens of rigid media queries for every screen size, clamp() calculates the exact font size automatically, creating a much cleaner CSS file and a better user experience.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Why output in rem instead of px?</h3>
+                    <p>Using <code>rem</code> units for font sizing is essential for web accessibility. It allows users who have changed their browser's default font size (due to visual impairments) to scale up your text properly. Using <code>px</code> ignores the user's browser settings.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Can I use this for padding or margins?</h3>
+                    <p>Absolutely! The underlying math is the same. You can plug the generated clamp() output into <code>padding</code>, <code>margin</code>, <code>gap</code>, or any other length-based CSS property to make your layouts fully fluid.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RATING SECTION -->
+        <div id="rating-section" style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 4rem; text-align: center;">
+            <div id="rating-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 3rem; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+                <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;">How useful was this tool?</h3>
+                <p style="color: var(--text-sub); margin-bottom: 2rem; font-size: 1rem;">Your feedback helps us improve HandleKit.</p>
+                
+                <div class="stars-container" style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; transition: all 0.3s ease;">
+                    <i data-lucide="star" class="star-icon" data-value="1" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                    <i data-lucide="star" class="star-icon" data-value="2" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                    <i data-lucide="star" class="star-icon" data-value="3" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                    <i data-lucide="star" class="star-icon" data-value="4" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                    <i data-lucide="star" class="star-icon" data-value="5" style="width: 32px; height: 32px; cursor: pointer; color: var(--text-sub); transition: all 0.2s;"></i>
+                </div>
+                
+                <div id="rating-thanks" style="display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease;">
+                    <div style="background: rgba(var(--accent-rgb), 0.1); color: var(--accent-color); padding: 1.25rem; border-radius: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.75rem;">
+                        <i data-lucide="heart" style="width: 20px; height: 20px; fill: var(--accent-color);"></i>
+                        Thank you for your rating!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const minVwEl = document.getElementById('min-vw');
+    const maxVwEl = document.getElementById('max-vw');
+    const minFsEl = document.getElementById('min-fs');
+    const maxFsEl = document.getElementById('max-fs');
+    const rootFsEl = document.getElementById('root-fs');
+    
+    const outputEl = document.getElementById('output-code');
+    const svgEl = document.getElementById('graph-svg');
+    const lblMin = document.getElementById('label-min');
+    const lblMax = document.getElementById('label-max');
+    const btnCopy = document.getElementById('btn-copy');
+
+    function round(num, decimals = 4) {
+        return Number(Math.round(num + 'e' + decimals) + 'e-' + decimals);
+    }
+
+    function calculate() {
+        let minV = parseFloat(minVwEl.value);
+        let maxV = parseFloat(maxVwEl.value);
+        let minF = parseFloat(minFsEl.value);
+        let maxF = parseFloat(maxFsEl.value);
+        let root = parseFloat(rootFsEl.value);
+
+        // Sanity checks
+        if (isNaN(minV)) minV = 320;
+        if (isNaN(maxV)) maxV = 1200;
+        if (isNaN(minF)) minF = 16;
+        if (isNaN(maxF)) maxF = 24;
+        if (isNaN(root) || root <= 0) root = 16;
+        
+        if (minV >= maxV) maxV = minV + 1; // Prevent div by zero
+
+        // Linear interpolation math
+        // slope (m) = (y2 - y1) / (x2 - x1)
+        const slope = (maxF - minF) / (maxV - minV);
+        
+        // y-intercept (b) = y1 - (x1 * m)
+        const yIntercept = minF - (minV * slope);
+
+        // Convert to rem and vw
+        const slopeVw = round(slope * 100);
+        const interceptRem = round(yIntercept / root);
+        const minRem = round(minF / root);
+        const maxRem = round(maxF / root);
+
+        let preferredStr = "";
+        if (interceptRem === 0) {
+            preferredStr = `<span class="code-num">${slopeVw}vw</span>`;
+        } else if (interceptRem > 0) {
+            preferredStr = `<span class="code-num">${interceptRem}rem</span> + <span class="code-num">${slopeVw}vw</span>`;
+        } else {
+            preferredStr = `<span class="code-num">${slopeVw}vw</span> - <span class="code-num">${Math.abs(interceptRem)}rem</span>`;
+        }
+
+        const outStr = `<span class="code-func">clamp</span>(<span class="code-num">${minRem}rem</span>, ${preferredStr}, <span class="code-num">${maxRem}rem</span>);`;
+        outputEl.innerHTML = outStr;
+        
+        // Output clean text to dataset for copying
+        const cleanPreferred = interceptRem === 0 ? `${slopeVw}vw` : (interceptRem > 0 ? `${interceptRem}rem + ${slopeVw}vw` : `${slopeVw}vw - ${Math.abs(interceptRem)}rem`);
+        outputEl.dataset.raw = `clamp(${minRem}rem, ${cleanPreferred}, ${maxRem}rem);`;
+
+        drawGraph(minV, maxV, minF, maxF);
+    }
+
+    function drawGraph(minV, maxV, minF, maxF) {
+        // SVG is 100x100 viewBox. We map coordinates.
+        // X-axis: 0 to 100 representing viewport
+        // Let's add some margin to the graph internally (e.g. 20 to 80)
+        
+        const xMin = 20;
+        const xMax = 80;
+        
+        // Determine y bounds for visual scaling
+        let rangeF = Math.abs(maxF - minF);
+        if (rangeF === 0) rangeF = 10;
+        
+        const yMinVisual = minF - (rangeF * 0.2);
+        const yMaxVisual = maxF + (rangeF * 0.2);
+        
+        // Function to map Y value to SVG coordinate (SVG Y is inverted)
+        function mapY(val) {
+            const ratio = (val - yMinVisual) / (yMaxVisual - yMinVisual);
+            return 100 - (ratio * 100);
+        }
+
+        const y1 = mapY(minF);
+        const y2 = mapY(maxF);
+
+        // Clamp lines
+        // Left horizontal line
+        const pathData = `
+            M 0,${y1} 
+            L ${xMin},${y1} 
+            L ${xMax},${y2} 
+            L 100,${y2}
+        `;
+        
+        svgEl.innerHTML = `
+            <!-- Guides -->
+            <line x1="${xMin}" y1="0" x2="${xMin}" y2="100" class="graph-guide" />
+            <line x1="${xMax}" y1="0" x2="${xMax}" y2="100" class="graph-guide" />
+            
+            <line x1="0" y1="${y1}" x2="100" y2="${y1}" class="graph-guide" style="stroke-dasharray: 2 6; opacity: 0.5;" />
+            <line x1="0" y1="${y2}" x2="100" y2="${y2}" class="graph-guide" style="stroke-dasharray: 2 6; opacity: 0.5;" />
+
+            <!-- Main Line -->
+            <path d="${pathData}" class="graph-line" />
+            
+            <!-- Points -->
+            <circle cx="${xMin}" cy="${y1}" r="3" class="graph-point" />
+            <circle cx="${xMax}" cy="${y2}" r="3" class="graph-point" />
+        `;
+        
+        lblMin.innerText = `${minV}px\n${minF}px`;
+        lblMax.innerText = `${maxV}px\n${maxF}px`;
+    }
+
+    [minVwEl, maxVwEl, minFsEl, maxFsEl, rootFsEl].forEach(el => {
+        el.addEventListener('input', calculate);
+    });
+
+    btnCopy.addEventListener('click', () => {
+        const text = outputEl.dataset.raw;
+        if(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btnCopy.innerHTML;
+                btnCopy.innerHTML = `<i data-lucide="check" style="width: 16px; height: 16px;"></i> Copied!`;
+                lucide.createIcons();
+                setTimeout(() => {
+                    btnCopy.innerHTML = original;
+                    lucide.createIcons();
+                }, 2000);
+            });
+        }
+    });
+
+    calculate();
+
+    // --- RATING LOGIC ---
+    const toolId = 'css-clamp-calc';
+    const stars = document.querySelectorAll('.star-icon');
+    const thanks = document.getElementById('rating-thanks');
+    const container = document.querySelector('.stars-container');
+
+    if (localStorage.getItem('rated-' + toolId)) {
+        if(container) container.style.display = 'none';
+        if(thanks) {
+            thanks.style.display = 'block';
+            thanks.style.opacity = '1';
+            thanks.style.transform = 'translateY(0)';
+        }
+    }
+
+    if (container) {
+        container.addEventListener('mouseover', (e) => {
+            const star = e.target.closest('.star-icon');
+            if (!star) return;
+            const val = parseInt(star.dataset.value);
+            stars.forEach(s => {
+                if (parseInt(s.dataset.value) <= val) s.classList.add('hovered');
+                else s.classList.remove('hovered');
+            });
+        });
+
+        container.addEventListener('mouseleave', () => {
+            stars.forEach(s => s.classList.remove('hovered'));
+        });
+
+        container.addEventListener('click', (e) => {
+            const star = e.target.closest('.star-icon');
+            if (!star) return;
+            const val = parseInt(star.dataset.value);
+            
+            // Immediately show thanks for UX
+            localStorage.setItem('rated-' + toolId, 'true');
+            container.style.opacity = '0';
+            container.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                container.style.display = 'none';
+                thanks.style.display = 'block';
+                setTimeout(() => {
+                    thanks.style.opacity = '1';
+                    thanks.style.transform = 'translateY(0)';
+                }, 50);
+            }, 300);
+        });
+    }
+});
+</script>
+{% endblock %}

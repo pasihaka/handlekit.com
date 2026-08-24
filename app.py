@@ -542,6 +542,10 @@ def words_to_pages():
 def text_case_converter():
     return render_template('text_case_converter.html')
 
+@app.route('/css-clamp-calculator')
+def css_clamp_calculator():
+    return render_template('css_clamp_calculator.html')
+
 @app.route('/color-picker')
 def color_picker():
     return render_template('color_picker.html')
