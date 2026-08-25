@@ -424,13 +424,13 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                         Submit to Leaderboard
                     </button>
 
-                    <button onclick="shareResult()"
-                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;"
-                        onmouseover="this.style.background='rgba(255,255,255,0.08)'"
-                        onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-                        <i data-lucide="share-2" style="width: 16px; height: 16px;"></i>
-                        Challenge Friend
-                    </button>
+                        <button onclick="shareResult()"
+                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;"
+                            onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                            onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                            <i data-lucide="share-2" style="width: 16px; height: 16px;"></i>
+                            Share Result
+                        </button>
 
                     <div style="display: flex; gap: 0.8rem;">
                         <button onclick="openGlobalLeaderboard()"
@@ -502,12 +502,12 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 <div
                     style="color:#fff; font-size:1.3rem; font-weight:900; letter-spacing:-0.5px; margin-bottom:0.4rem;">
                     Submit to Leaderboard</div>
-                <div style="color:#555; font-size:0.8rem; line-height: 1.4;">Enter your callsign to claim your global
-                    rank in the Vision Lab.</div>
+                <div style="color:#555; font-size:0.8rem; line-height: 1.4;">Enter your Subject ID to claim your global
+                    rank.</div>
             </div>
 
             <div style="position: relative; margin-bottom: 1.2rem;">
-                <input type="text" id="player-nickname" placeholder="YOUR CALLSIGN" maxlength="20"
+                <input type="text" id="player-nickname" placeholder="YOUR SUBJECT ID" maxlength="20"
                     style="width:100%; box-sizing:border-box; background:#000; border:2px solid #222; border-radius:14px; color:#fff; padding:1.2rem; font-family:'Roboto Mono',monospace; font-size:1rem; font-weight: 700; outline:none; transition:all 0.3s; letter-spacing: 2px;"
                     onfocus="this.style.borderColor='var(--accent-color)'; this.style.boxShadow='0 0 15px rgba(201,28,35,0.2)'"
                     onblur="this.style.borderColor='#222'; this.style.boxShadow='none'">
@@ -562,7 +562,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 </button>
                 <button onclick="closeCompetitionOverlays()"
                     style="background: var(--accent-gradient); color: #fff; border: none; padding: 1rem 3rem; border-radius: 50px; font-size: 0.85rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">
-                    Return to Mission
+                    Close Dashboard
                 </button>
             </div>
         </div>
@@ -573,7 +573,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         <div class="hub-content-box">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
                 <h2 style="font-size: 2.5rem; font-weight: 900; letter-spacing: -1.5px; color: #fff; margin: 0;">Top
-                    Commanders</h2>
+                    Results</h2>
                 <button onclick="closeCompetitionOverlays()"
                     style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.05); border: none; color: #444; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
                     onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.1)'"
@@ -602,7 +602,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 style="margin-top: 3rem; display: flex; justify-content: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">
                 <button onclick="closeCompetitionOverlays()"
                     style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.2rem 4rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;">
-                    Back to Laboratory
+                    Close Dashboard
                 </button>
             </div>
         </div>
@@ -899,6 +899,8 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         document.getElementById('result-screen').style.display = 'flex';
         document.getElementById('final-log-cs').innerText = finalScore !== null ? finalScore.toFixed(2) : "< 0.00";
 
+        if (finalScore === null) finalScore = 0;
+
         const summary = document.getElementById('result-summary');
         if (finalScore >= 2.0) {
             summary.innerHTML = '<p style="color: #00ff88;"><strong>Excellent.</strong> High-tier contrast sensitivity. Normal for healthy young adults.</p>';
@@ -910,9 +912,9 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             summary.innerHTML = '<p style="color: #ff4444;"><strong>Impaired.</strong> Significant loss of contrast detected. Consider an eye exam.</p>';
         }
 
-        submitResult().then(async () => {
-            saveLocalResult();
+        saveLocalResult();
 
+        submitResult().then(async () => {
             // Populate initial global percentile feedback on result screen
             try {
                 const res = await fetch(`/api/contrast/stats?score=${finalScore}`);
@@ -938,7 +940,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         history.unshift({
             score: finalScore,
             date: new Date().toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false }),
-            nickname: localStorage.getItem('jnd_nickname') || 'Pilot'
+            nickname: localStorage.getItem('jnd_nickname') || 'Subject'
         });
         localStorage.setItem('contrast_history', JSON.stringify(history.slice(0, 50)));
     }
@@ -968,14 +970,14 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 <thead>
                     <tr style="color: var(--accent-color); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;">
                         <th style="padding: 1rem; text-align: left;">LOG CS</th>
-                        <th style="padding: 1rem; text-align: left;">PILOT</th>
+                        <th style="padding: 1rem; text-align: left;">SUBJECT</th>
                         <th style="padding: 1rem; text-align: right;">DATE</th>
                     </tr>
                 </thead>
                 <tbody>`;
 
         history.forEach(entry => {
-            const nick = escapeHTML(entry.nickname || 'Pilot');
+            const nick = escapeHTML(entry.nickname || 'Subject');
             html += `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                     <td style="padding: 1.2rem 1rem; font-weight: 900; font-size: 1.1rem;">${parseFloat(entry.score).toFixed(2)}</td>
@@ -1237,7 +1239,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                     higherThanPct = Math.round(((data.total - data.higher_count) / data.total) * 100);
                     const feedback = document.getElementById('feedback-text');
                     feedback.innerHTML = higherThanPct > 50
-                        ? `EXCELLENT. You performed better than ${higherThanPct}% of pilots in our global database! 🔥`
+                        ? `EXCELLENT. You performed better than ${higherThanPct}% of users in our global database! 🔥`
                         : `GOOD EFFORT. You are in the top ${100 - higherThanPct}% of global contrast masters! 👁️`;
                 }
 
