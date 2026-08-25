@@ -748,6 +748,8 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     let finalScore = 0;
     let higherThanPct = 0;
 
+    let isInputBlocked = false;
+
     function startTest(e) {
         if (e) e.stopPropagation();
 
@@ -756,8 +758,9 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         currentTriplet = [];
         currentInputIdx = 0;
         correctCount = 0;
-        finalScore = 0;
+        finalScore = null;
         higherThanPct = 0;
+        isInputBlocked = false;
 
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('result-screen').style.display = 'none';
@@ -787,6 +790,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         currentInputIdx = 0;
         tripletCorrectCount = 0;
         currentTriplet = [];
+        isInputBlocked = false;
 
         // Generate 6 letters (3 for each of the two triplets on this line)
         for (let i = 0; i < 6; i++) {
@@ -838,6 +842,8 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     }
 
     function handleInput(letter) {
+        if (isInputBlocked) return;
+        
         const isCorrect = (letter === currentTriplet[currentInputIdx]);
         if (isCorrect) tripletCorrectCount++;
 
@@ -845,26 +851,28 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         dot.classList.remove('active');
         dot.classList.add(isCorrect ? 'success' : 'fail');
 
+        // Early failure detection: if they miss 2 in the same triplet, they instantly fail.
+        // A triplet is indices 0,1,2 or 3,4,5.
+        const tripletIndex = currentInputIdx % 3; // 0, 1, or 2
+        const mistakes = (tripletIndex + 1) - tripletCorrectCount;
+        
+        if (mistakes >= 2) {
+            isInputBlocked = true;
+            return setTimeout(endTest, 400);
+        }
+
         // Check Logic for Triplet 1 (Indices 0, 1, 2)
         if (currentInputIdx === 2) {
-            if (tripletCorrectCount >= 2) {
-                finalScore = STEPS[currentStepIdx].log;
-                // Move to second triplet on same line
-                tripletCorrectCount = 0;
-            } else {
-                return setTimeout(endTest, 400);
-            }
+            finalScore = STEPS[currentStepIdx].log;
+            tripletCorrectCount = 0; // reset for next triplet
         }
 
         // Check Logic for Triplet 2 (Indices 3, 4, 5)
         if (currentInputIdx === 5) {
-            if (tripletCorrectCount >= 2) {
-                finalScore = STEPS[currentStepIdx + 1].log;
-                currentStepIdx += 2;
-                return setTimeout(nextLevel, 400);
-            } else {
-                return setTimeout(endTest, 400);
-            }
+            isInputBlocked = true;
+            finalScore = STEPS[currentStepIdx + 1].log;
+            currentStepIdx += 2;
+            return setTimeout(nextLevel, 400);
         }
 
         // Increment and highlighting
@@ -874,11 +882,22 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         }
     }
 
+    // Add physical keyboard support
+    document.addEventListener('keydown', (e) => {
+        if (document.getElementById('test-ui').style.display === 'flex') {
+            const key = e.key.toUpperCase();
+            if (SLOAN_LETTERS.includes(key)) {
+                handleInput(key);
+            }
+        }
+    });
+
     function endTest() {
+        isInputBlocked = true;
         console.log("Ending test with score:", finalScore);
         document.getElementById('test-ui').style.display = 'none';
         document.getElementById('result-screen').style.display = 'flex';
-        document.getElementById('final-log-cs').innerText = finalScore.toFixed(2);
+        document.getElementById('final-log-cs').innerText = finalScore !== null ? finalScore.toFixed(2) : "< 0.00";
 
         const summary = document.getElementById('result-summary');
         if (finalScore >= 2.0) {
