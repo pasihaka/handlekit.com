@@ -1027,7 +1027,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                     </tr>`;
             });
             html += '</table>';
-            list.innerHTML = leaderboard.length > 0 ? html : '<div style="color: #444; text-align: center;">Retrieving data...</div>';
+            list.innerHTML = leaderboard.length > 0 ? html : '<div style="color: #444; text-align: center;">No data yet. Be the first to claim a rank!</div>';
 
             // Load Distribution Chart
             const statsRes = await fetch(`/api/contrast/stats?score=${finalScore}`);
