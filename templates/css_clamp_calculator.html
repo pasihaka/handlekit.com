@@ -76,6 +76,29 @@
             filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.4));
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+    
+        .prop-btn {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .prop-btn:hover {
+            color: var(--text-main);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .prop-btn.active {
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent-color);
+            border-color: rgba(var(--accent-rgb), 0.5);
+            font-weight: bold;
+        }
+
     </style>
 {% endblock %}
 
@@ -267,6 +290,29 @@
                 font-size: 1rem;
             }
         }
+    
+        .prop-btn {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .prop-btn:hover {
+            color: var(--text-main);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .prop-btn.active {
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent-color);
+            border-color: rgba(var(--accent-rgb), 0.5);
+            font-weight: bold;
+        }
+
     </style>
 
     <div class="clamp-wrapper">
@@ -274,11 +320,13 @@
             <h3 style="color: var(--text-main); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.2rem;">Viewport Bounds</h3>
             <div class="clamp-row">
                 <div class="clamp-control-group">
-                    <label class="clamp-label" for="min-vw">Min Width (px)</label>
+                                        <label class="clamp-label" for="min-vw" style="display: flex; justify-content: space-between;">Min Width (px) <span id="min-vw-val" style="color: var(--accent-color);">320</span></label>
+                    <input type="range" id="min-vw-slider" min="320" max="1920" step="10" value="320" style="width: 100%; margin-bottom: 0.5rem; accent-color: var(--accent-color);">
                     <input type="number" id="min-vw" class="clamp-input" value="320">
                 </div>
                 <div class="clamp-control-group">
-                    <label class="clamp-label" for="max-vw">Max Width (px)</label>
+                                        <label class="clamp-label" for="max-vw" style="display: flex; justify-content: space-between;">Max Width (px) <span id="max-vw-val" style="color: var(--accent-color);">1200</span></label>
+                    <input type="range" id="max-vw-slider" min="320" max="1920" step="10" value="1200" style="width: 100%; margin-bottom: 0.5rem; accent-color: var(--accent-color);">
                     <input type="number" id="max-vw" class="clamp-input" value="1200">
                 </div>
             </div>
@@ -286,13 +334,25 @@
             <h3 style="color: var(--text-main); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem;">Font Size Bounds</h3>
             <div class="clamp-row">
                 <div class="clamp-control-group">
-                    <label class="clamp-label" for="min-fs">Min Size (px)</label>
+                                        <label class="clamp-label" for="min-fs" style="display: flex; justify-content: space-between;">Min Size (px) <span id="min-fs-val" style="color: var(--accent-color);">16</span></label>
+                    <input type="range" id="min-fs-slider" min="8" max="150" step="1" value="16" style="width: 100%; margin-bottom: 0.5rem; accent-color: var(--accent-color);">
                     <input type="number" id="min-fs" class="clamp-input" value="16">
                 </div>
                 <div class="clamp-control-group">
-                    <label class="clamp-label" for="max-fs">Max Size (px)</label>
+                                        <label class="clamp-label" for="max-fs" style="display: flex; justify-content: space-between;">Max Size (px) <span id="max-fs-val" style="color: var(--accent-color);">24</span></label>
+                    <input type="range" id="max-fs-slider" min="8" max="150" step="1" value="24" style="width: 100%; margin-bottom: 0.5rem; accent-color: var(--accent-color);">
                     <input type="number" id="max-fs" class="clamp-input" value="24">
                 </div>
+            </div>
+
+            
+            <h3 style="color: var(--text-main); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem;">Target CSS Property</h3>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;" id="prop-toggles">
+                <button class="prop-btn active" data-prop="font-size">Font Size</button>
+                <button class="prop-btn" data-prop="padding">Padding</button>
+                <button class="prop-btn" data-prop="margin">Margin</button>
+                <button class="prop-btn" data-prop="gap">Gap</button>
+                <button class="prop-btn" data-prop="width">Width</button>
             </div>
 
             <h3 style="color: var(--text-main); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem;">Root Settings</h3>
@@ -309,12 +369,49 @@
         </div>
 
         <div class="clamp-preview">
-            <h3 style="color: var(--text-main); margin-top: 0; margin-bottom: 1rem; font-size: 1.2rem;">Generated CSS Rule</h3>
-            <div class="output-box">
-                <button class="copy-btn" id="btn-copy">
-                    <i data-lucide="copy" style="width: 16px; height: 16px;"></i> Copy
-                </button>
-                <p class="code-output" id="output-code"></p>
+            <h3 style="color: var(--text-main); margin-top: 0; margin-bottom: 1rem; font-size: 1.2rem;">Generated CSS</h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                
+                <div>
+                    <div style="color: var(--text-sub); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: bold;">Raw Clamp()</div>
+                    <div class="output-box" style="padding: 1.25rem;">
+                        <button class="copy-btn" onclick="copyText('out-raw', this)">
+                            <i data-lucide="copy" style="width: 16px; height: 16px;"></i> Copy
+                        </button>
+                        <p class="code-output" id="out-raw" style="font-size: 1rem;"></p>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="color: var(--text-sub); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: bold;">Standard CSS</div>
+                    <div class="output-box" style="padding: 1.25rem;">
+                        <button class="copy-btn" onclick="copyText('out-css', this)">
+                            <i data-lucide="copy" style="width: 16px; height: 16px;"></i> Copy
+                        </button>
+                        <p class="code-output" id="out-css" style="font-size: 1rem; color: #7ee787;"></p>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="color: var(--text-sub); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: bold;">Tailwind CSS</div>
+                    <div class="output-box" style="padding: 1.25rem;">
+                        <button class="copy-btn" onclick="copyText('out-tw', this)">
+                            <i data-lucide="copy" style="width: 16px; height: 16px;"></i> Copy
+                        </button>
+                        <p class="code-output" id="out-tw" style="font-size: 1rem; color: #79c0ff;"></p>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="color: var(--text-sub); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: bold;">CSS Variable</div>
+                    <div class="output-box" style="padding: 1.25rem;">
+                        <button class="copy-btn" onclick="copyText('out-var', this)">
+                            <i data-lucide="copy" style="width: 16px; height: 16px;"></i> Copy
+                        </button>
+                        <p class="code-output" id="out-var" style="font-size: 1rem; color: #d2a8ff;"></p>
+                    </div>
+                </div>
+
             </div>
             
             <h3 style="color: var(--text-main); margin-top: 1rem; margin-bottom: 1rem; font-size: 1.2rem;">Behavior Graph</h3>
@@ -415,6 +512,32 @@ document.addEventListener("DOMContentLoaded", function() {
         return Number(Math.round(num + 'e' + decimals) + 'e-' + decimals);
     }
 
+    let targetProperty = "font-size";
+
+    const propBtns = document.querySelectorAll('.prop-btn');
+    propBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            propBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            targetProperty = this.dataset.prop;
+            calculate();
+        });
+    });
+
+    window.copyText = function(elementId, btn) {
+        const el = document.getElementById(elementId);
+        const text = el.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check" style="width: 16px; height: 16px;"></i> Copied!';
+            lucide.createIcons();
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                lucide.createIcons();
+            }, 2000);
+        });
+    };
+
     function calculate() {
         let minV = parseFloat(minVwEl.value);
         let maxV = parseFloat(maxVwEl.value);
@@ -448,21 +571,18 @@ document.addEventListener("DOMContentLoaded", function() {
         const minRemBound = Math.min(minRem, maxRem);
         const maxRemBound = Math.max(minRem, maxRem);
 
-        let preferredStr = "";
-        if (interceptRem === 0) {
-            preferredStr = `<span class="code-num">${slopeVw}vw</span>`;
-        } else if (interceptRem > 0) {
-            preferredStr = `<span class="code-num">${interceptRem}rem</span> + <span class="code-num">${slopeVw}vw</span>`;
-        } else {
-            preferredStr = `<span class="code-num">${slopeVw}vw</span> - <span class="code-num">${Math.abs(interceptRem)}rem</span>`;
-        }
-
-        const outStr = `<span class="code-func">clamp</span>(<span class="code-num">${minRemBound}rem</span>, ${preferredStr}, <span class="code-num">${maxRemBound}rem</span>);`;
-        outputEl.innerHTML = outStr;
-        
-        // Output clean text to dataset for copying
         const cleanPreferred = interceptRem === 0 ? `${slopeVw}vw` : (interceptRem > 0 ? `${interceptRem}rem + ${slopeVw}vw` : `${slopeVw}vw - ${Math.abs(interceptRem)}rem`);
-        outputEl.dataset.raw = `clamp(${minRemBound}rem, ${cleanPreferred}, ${maxRemBound}rem);`;
+        const rawClamp = `clamp(${minRemBound}rem, ${cleanPreferred}, ${maxRemBound}rem)`;
+        
+        document.getElementById('out-raw').innerText = rawClamp;
+        document.getElementById('out-css').innerText = `${targetProperty}: ${rawClamp};`;
+        
+        const twMap = { "font-size": "text", "padding": "p", "margin": "m", "gap": "gap", "width": "w" };
+        const twPrefix = twMap[targetProperty];
+        const twClamp = rawClamp.replace(/\s+/g, '');
+        document.getElementById('out-tw').innerText = `${twPrefix}-[${twClamp}]`;
+        
+        document.getElementById('out-var').innerText = `--fluid-${targetProperty}: ${rawClamp};`;
 
         drawGraph(minV, maxV, minF, maxF);
     }
