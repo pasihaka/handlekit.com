@@ -502,11 +502,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const maxFsEl = document.getElementById('max-fs');
     const rootFsEl = document.getElementById('root-fs');
     
-    const outputEl = document.getElementById('output-code');
     const svgEl = document.getElementById('graph-svg');
     const lblMin = document.getElementById('label-min');
     const lblMax = document.getElementById('label-max');
-    const btnCopy = document.getElementById('btn-copy');
 
     function round(num, decimals = 4) {
         return Number(Math.round(num + 'e' + decimals) + 'e-' + decimals);
@@ -643,24 +641,41 @@ document.addEventListener("DOMContentLoaded", function() {
         lblMax.innerText = `${maxV}px\n${maxF}px`;
     }
 
-    [minVwEl, maxVwEl, minFsEl, maxFsEl, rootFsEl].forEach(el => {
-        el.addEventListener('input', calculate);
-    });
+    rootFsEl.addEventListener('input', calculate);
 
-    btnCopy.addEventListener('click', () => {
-        const text = outputEl.dataset.raw;
-        if(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const original = btnCopy.innerHTML;
-                btnCopy.innerHTML = `<i data-lucide="check" style="width: 16px; height: 16px;"></i> Copied!`;
-                lucide.createIcons();
-                setTimeout(() => {
-                    btnCopy.innerHTML = original;
-                    lucide.createIcons();
-                }, 2000);
-            });
-        }
-    });
+    const minVwSlider = document.getElementById('min-vw-slider');
+    const maxVwSlider = document.getElementById('max-vw-slider');
+    const minFsSlider = document.getElementById('min-fs-slider');
+    const maxFsSlider = document.getElementById('max-fs-slider');
+
+    const minVwVal = document.getElementById('min-vw-val');
+    const maxVwVal = document.getElementById('max-vw-val');
+    const minFsVal = document.getElementById('min-fs-val');
+    const maxFsVal = document.getElementById('max-fs-val');
+
+    function sync(slider, input, valDisplay) {
+        slider.addEventListener('input', () => {
+            input.value = slider.value;
+            valDisplay.innerText = slider.value;
+            calculate();
+        });
+        input.addEventListener('input', () => {
+            slider.value = input.value;
+            valDisplay.innerText = input.value;
+            calculate();
+        });
+    }
+
+    if (minVwSlider && maxVwSlider && minFsSlider && maxFsSlider) {
+        sync(minVwSlider, minVwEl, minVwVal);
+        sync(maxVwSlider, maxVwEl, maxVwVal);
+        sync(minFsSlider, minFsEl, minFsVal);
+        sync(maxFsSlider, maxFsEl, maxFsVal);
+    } else {
+        [minVwEl, maxVwEl, minFsEl, maxFsEl].forEach(el => el.addEventListener('input', calculate));
+    }
+
+
 
     calculate();
 
