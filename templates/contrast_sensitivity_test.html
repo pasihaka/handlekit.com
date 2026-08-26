@@ -502,12 +502,12 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 <div
                     style="color:#fff; font-size:1.3rem; font-weight:900; letter-spacing:-0.5px; margin-bottom:0.4rem;">
                     Submit to Leaderboard</div>
-                <div style="color:#555; font-size:0.8rem; line-height: 1.4;">Enter your Subject ID to claim your global
+                <div style="color:#555; font-size:0.8rem; line-height: 1.4;">Enter your Nickname to claim your global
                     rank.</div>
             </div>
 
             <div style="position: relative; margin-bottom: 1.2rem;">
-                <input type="text" id="player-nickname" placeholder="YOUR SUBJECT ID" maxlength="20"
+                <input type="text" id="player-nickname" placeholder="YOUR NICKNAME" maxlength="20"
                     style="width:100%; box-sizing:border-box; background:#000; border:2px solid #222; border-radius:14px; color:#fff; padding:1.2rem; font-family:'Roboto Mono',monospace; font-size:1rem; font-weight: 700; outline:none; transition:all 0.3s; letter-spacing: 2px;"
                     onfocus="this.style.borderColor='var(--accent-color)'; this.style.boxShadow='0 0 15px rgba(201,28,35,0.2)'"
                     onblur="this.style.borderColor='#222'; this.style.boxShadow='none'">
@@ -746,6 +746,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     let currentInputIdx = 0;
     let correctCount = 0;
     let finalScore = 0;
+    let currentSessionId = null;
     let higherThanPct = 0;
 
     let isInputBlocked = false;
@@ -940,7 +941,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         history.unshift({
             score: finalScore,
             date: new Date().toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false }),
-            nickname: localStorage.getItem('jnd_nickname') || 'Subject'
+            nickname: localStorage.getItem('jnd_nickname') || 'Anonymous'
         });
         localStorage.setItem('contrast_history', JSON.stringify(history.slice(0, 50)));
     }
@@ -970,14 +971,14 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 <thead>
                     <tr style="color: var(--accent-color); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;">
                         <th style="padding: 1rem; text-align: left;">LOG CS</th>
-                        <th style="padding: 1rem; text-align: left;">SUBJECT</th>
+                        <th style="padding: 1rem; text-align: left;">NICKNAME</th>
                         <th style="padding: 1rem; text-align: right;">DATE</th>
                     </tr>
                 </thead>
                 <tbody>`;
 
         history.forEach(entry => {
-            const nick = escapeHTML(entry.nickname || 'Subject');
+            const nick = escapeHTML(entry.nickname || 'Anonymous');
             html += `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                     <td style="padding: 1.2rem 1rem; font-weight: 900; font-size: 1.1rem;">${parseFloat(entry.score).toFixed(2)}</td>
@@ -1162,7 +1163,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             const response = await fetch('/api/contrast/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nickname, log_cs: finalScore })
+                body: JSON.stringify({ id: currentSessionId, nickname, log_cs: finalScore })
             });
 
             if (response.ok) {
@@ -1225,7 +1226,14 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                 log_cs: finalScore,
                 nickname: 'Guest'
             })
-        }).catch(err => console.error("Submit failed", err));
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.success && data.id) {
+                currentSessionId = data.id;
+            }
+        })
+        .catch(err => console.error("Submit failed", err));
     }
 
     let chart = null;

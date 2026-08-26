@@ -29,6 +29,9 @@ DATABASE = 'data/handlekit.db'
 class MockCursor:
     def __init__(self, rs):
         self.rs = rs
+    @property
+    def lastrowid(self):
+        return getattr(self.rs, 'last_insert_rowid', None)
     def fetchall(self):
         class MockRow(dict): pass
         rows = []
@@ -917,15 +920,22 @@ def api_contrast_submit():
         return jsonify({"success": False, "error": "Invalid data"}), 400
     
     try:
+        session_id = data.get('id')
         nickname = sanitize_string(data.get('nickname'))
         log_cs = float(data['log_cs'])
         
         db = get_db()
-        db.execute('INSERT INTO contrast_scores (nickname, log_cs, timestamp) VALUES (?, ?, ?)',
-                   (nickname, log_cs, time.time()))
+        if session_id:
+            db.execute('UPDATE contrast_scores SET nickname = ?, log_cs = ? WHERE id = ?',
+                       (nickname, log_cs, session_id))
+            new_id = session_id
+        else:
+            cursor = db.execute('INSERT INTO contrast_scores (nickname, log_cs, timestamp) VALUES (?, ?, ?)',
+                       (nickname, log_cs, time.time()))
+            new_id = cursor.lastrowid
         db.commit()
         db.close()
-        return jsonify({"success": True})
+        return jsonify({"success": True, "id": new_id})
     except Exception:
         return jsonify({"success": False, "error": "Server error"}), 500
 
