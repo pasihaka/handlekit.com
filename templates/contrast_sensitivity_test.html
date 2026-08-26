@@ -1017,12 +1017,13 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">';
             leaderboard.forEach((r, i) => {
                 const nick = escapeHTML(r.nickname || "Anonymous");
-                const isMe = (r.nickname === localStorage.getItem('jnd_nickname') && Math.abs(r.log_cs - finalScore) < 0.001);
+                const safeScore = r.log_cs !== null && r.log_cs !== undefined ? Number(r.log_cs) : 0;
+                const isMe = (r.nickname === localStorage.getItem('jnd_nickname') && Math.abs(safeScore - finalScore) < 0.001);
                 html += `
                     <tr style="${isMe ? 'background: rgba(201, 28, 35, 0.1);' : ''}; border-bottom: 1px solid rgba(255,255,255,0.03);">
                         <td style="padding: 0.7rem 0.5rem; color: #444; width: 40px;">#${i + 1}</td>
                         <td style="padding: 0.7rem 0.5rem; color: #fff; font-weight: 700;">${nick}</td>
-                        <td style="padding: 0.7rem 0.5rem; text-align: right; color: var(--accent-color); font-weight: 800;">${r.log_cs.toFixed(2)}</td>
+                        <td style="padding: 0.7rem 0.5rem; text-align: right; color: var(--accent-color); font-weight: 800;">${safeScore.toFixed(2)}</td>
                     </tr>`;
             });
             html += '</table>';
