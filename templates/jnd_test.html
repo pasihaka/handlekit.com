@@ -853,12 +853,31 @@
     </div>
 
 
-    <div style="margin-top: 4rem; padding-top: 2rem;">
-        <h3 style="color: var(--text-main); font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem;">Related Vision Tests</h3>
-        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.8rem;">
-            <li><a href="/contrast-sensitivity-test" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">Interactive: Pelli-Robson Contrast Sensitivity Test <i data-lucide="arrow-right" style="width: 14px; height: 14px; vertical-align: middle;"></i></a></li>
-            <li><a href="/articles/pelli-robson-contrast-sensitivity" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">Article: The Science of Contrast Sensitivity <i data-lucide="arrow-right" style="width: 14px; height: 14px; vertical-align: middle;"></i></a></li>
-        </ul>
+    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <h3 style="color: var(--text-main); font-size: 1.5rem; font-weight: 800; margin-bottom: 2rem; text-align: center;">Explore the Science of Vision</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <a href="/contrast-sensitivity-test" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
+                <i data-lucide="eye" style="color: var(--accent-color); width: 32px; height: 32px;"></i>
+                <div>
+                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Contrast Sensitivity Test</h4>
+                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Measure your functional vision threshold with this clinical-style Pelli-Robson chart.</p>
+                </div>
+            </a>
+            <a href="/color-guessing-game" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
+                <i data-lucide="palette" style="color: #00ff88; width: 32px; height: 32px;"></i>
+                <div>
+                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Color Memory Game</h4>
+                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Test your short-term visual memory. Can you perfectly recreate a color you saw 5 seconds ago?</p>
+                </div>
+            </a>
+            <a href="/articles/pelli-robson-contrast-sensitivity" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
+                <i data-lucide="book-open" style="color: #ff9f1c; width: 32px; height: 32px;"></i>
+                <div>
+                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">The Science of Contrast</h4>
+                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Learn how log-contrast scoring works and why it's more accurate than a Snellen chart.</p>
+                </div>
+            </a>
+        </div>
     </div>
     
 </div>
