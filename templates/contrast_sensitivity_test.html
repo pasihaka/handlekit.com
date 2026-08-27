@@ -4,7 +4,39 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 {% extends "layout.html" %}
 
 {% block head_extra %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js">
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+    
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            if (window.lucide) lucide.createIcons();
+        }, 2000);
+    }
+    
+    // Check if running in embed mode
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embed') === 'true') {
+            const navbar = document.querySelector('.navbar');
+            if(navbar) navbar.style.display = 'none';
+            const footer = document.querySelector('footer');
+            if(footer) footer.style.display = 'none';
+            document.body.style.background = 'transparent';
+        }
+    });
+
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,6 +61,38 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     }
   ]
 }
+
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+    
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            if (window.lucide) lucide.createIcons();
+        }, 2000);
+    }
+    
+    // Check if running in embed mode
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embed') === 'true') {
+            const navbar = document.querySelector('.navbar');
+            if(navbar) navbar.style.display = 'none';
+            const footer = document.querySelector('footer');
+            if(footer) footer.style.display = 'none';
+            document.body.style.background = 'transparent';
+        }
+    });
+
 </script>
 <style>
     :root {
@@ -314,6 +378,38 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     }
   ]
 }
+
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+    
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            if (window.lucide) lucide.createIcons();
+        }, 2000);
+    }
+    
+    // Check if running in embed mode
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embed') === 'true') {
+            const navbar = document.querySelector('.navbar');
+            if(navbar) navbar.style.display = 'none';
+            const footer = document.querySelector('footer');
+            if(footer) footer.style.display = 'none';
+            document.body.style.background = 'transparent';
+        }
+    });
+
 </script>
 {% endblock %}
 
@@ -419,13 +515,22 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                         Submit to Leaderboard
                     </button>
 
+                    <div style="display: flex; gap: 0.8rem;">
                         <button onclick="shareResult()"
-                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;"
+                            style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;"
                             onmouseover="this.style.background='rgba(255,255,255,0.08)'"
                             onmouseout="this.style.background='rgba(255,255,255,0.05)'">
                             <i data-lucide="share-2" style="width: 16px; height: 16px;"></i>
-                            Share Result
+                            Share
                         </button>
+                        <button onclick="openEmbedModal()"
+                            style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;"
+                            onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                            onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                            <i data-lucide="code" style="width: 16px; height: 16px;"></i>
+                            Embed
+                        </button>
+                    </div>
 
                     <div style="display: flex; gap: 0.8rem;">
                         <button onclick="openGlobalLeaderboard()"
@@ -530,6 +635,19 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     </div>
 
     <!-- Competition Overlays (Now Viewport Root) -->
+    <!-- Embed Modal -->
+    <div id="embed-modal" class="test-hub-overlay" style="display: none; align-items: center; justify-content: center;">
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; width: 90%; max-width: 500px; position: relative;">
+            <button onclick="document.getElementById('embed-modal').style.display='none'" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: var(--text-sub); cursor: pointer;"><i data-lucide="x"></i></button>
+            <h2 style="color: var(--text-main); margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem;">Embed on Your Site</h2>
+            <p style="color: var(--text-sub); margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5;">Copy the code below to embed this contrast sensitivity test on your own website, blog, or clinical resource page.</p>
+            <textarea id="embed-code" readonly style="width: 100%; height: 100px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; color: var(--accent-color); padding: 1rem; font-family: monospace; font-size: 0.85rem; margin-bottom: 1rem; resize: none;"><iframe src="https://handlekit.com/contrast-sensitivity-test?embed=true" width="100%" height="700" style="border:none; border-radius:12px;"></iframe></textarea>
+            <button onclick="copyEmbedCode()" id="copy-embed-btn" style="width: 100%; background: var(--accent-gradient); color: #fff; border: none; padding: 1rem; border-radius: 12px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Code
+            </button>
+        </div>
+    </div>
+
     <!-- Global Leaderboard Overlay -->
     <div id="lab-global-rank-overlay" class="test-hub-overlay">
         <div class="hub-content-box">
@@ -635,6 +753,14 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             <h2>Frequently Asked Questions</h2>
             <div class="faq-container">
                 <div class="faq-card">
+                    <h3>What is a normal contrast sensitivity score?</h3>
+                    <p>For a healthy young adult, a normal score is typically 1.95 Log CS or higher. A score between 1.65 and 1.95 is still considered functional and normal for the general population. Anything below 1.50 Log CS may indicate significant contrast impairment.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>How does age affect contrast sensitivity?</h3>
+                    <p>Contrast sensitivity naturally declines with age. While a 20-year-old might easily score a 2.10, a healthy 70-year-old might score around a 1.65 due to natural yellowing of the lens and reduction in pupil size. However, sudden drops in score at any age should be checked by a doctor.</p>
+                </div>
+                <div class="faq-card">
                     <h3>Is this a clinical diagnosis?</h3>
                     <p>No. This online test is a screening and calibration utility. While it accurately follows clinical step-progression, it is not a substitute for a professional eye exam by an optometrist or ophthalmologist.</p>
                 </div>
@@ -679,12 +805,31 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             </div>
         </div>
     
-    <div style="margin-top: 4rem; padding-top: 2rem;">
-        <h3 style="color: var(--text-main); font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem;">Related Vision Tests</h3>
-        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.8rem;">
-            <li><a href="/jnd-test" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">Interactive: Just Noticeable Difference (JND) Color Test <i data-lucide="arrow-right" style="width: 14px; height: 14px; vertical-align: middle;"></i></a></li>
-            <li><a href="/articles/jnd-perception" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">Article: Exploring Weber's Law and Color Perception <i data-lucide="arrow-right" style="width: 14px; height: 14px; vertical-align: middle;"></i></a></li>
-        </ul>
+    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <h3 style="color: var(--text-main); font-size: 1.5rem; font-weight: 800; margin-bottom: 2rem; text-align: center;">Explore the Science of Vision</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <a href="/jnd-test" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
+                <i data-lucide="activity" style="color: var(--accent-color); width: 32px; height: 32px;"></i>
+                <div>
+                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">JND Vision Test</h4>
+                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Find your Just Noticeable Difference threshold in this fast-paced interactive color test.</p>
+                </div>
+            </a>
+            <a href="/color-guessing-game" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
+                <i data-lucide="palette" style="color: #00ff88; width: 32px; height: 32px;"></i>
+                <div>
+                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Color Memory Game</h4>
+                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Test your short-term visual memory. Can you perfectly recreate a color you saw 5 seconds ago?</p>
+                </div>
+            </a>
+            <a href="/articles/jnd-perception" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
+                <i data-lucide="book-open" style="color: #ff9f1c; width: 32px; height: 32px;"></i>
+                <div>
+                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">The Physics of Perception</h4>
+                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Read about Weber's Law and how our brains process subtle differences in light and color.</p>
+                </div>
+            </a>
+        </div>
     </div>
     
 </div>
@@ -875,13 +1020,13 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 
         const summary = document.getElementById('result-summary');
         if (finalScore >= 2.0) {
-            summary.innerHTML = '<p style="color: #00ff88;"><strong>Excellent.</strong> High-tier contrast sensitivity. Normal for healthy young adults.</p>';
+            summary.innerHTML = '<p style="color: #00ff88; margin-bottom: 0.5rem;"><strong>Excellent.</strong> High-tier contrast sensitivity.</p><p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; font-weight: normal;"><strong>Real-World Impact:</strong> You have exceptional functional vision. You likely have zero issues driving at night, reading faded menus in dim restaurants, or seeing subtle facial expressions.</p>';
         } else if (finalScore >= 1.65) {
-            summary.innerHTML = '<p><strong>Normal.</strong> You have functional contrast sensitivity sufficient for most daily tasks.</p>';
+            summary.innerHTML = '<p style="margin-bottom: 0.5rem;"><strong>Normal.</strong> You have functional contrast sensitivity.</p><p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; font-weight: normal;"><strong>Real-World Impact:</strong> Your vision is perfectly sufficient for daily tasks. You can comfortably handle reading and driving in various lighting conditions.</p>';
         } else if (finalScore >= 1.35) {
-            summary.innerHTML = '<p style="color: #ff9f1c;"><strong>Low-Normal.</strong> Some challenges in low-light or low-contrast environments.</p>';
+            summary.innerHTML = '<p style="color: #ff9f1c; margin-bottom: 0.5rem;"><strong>Low-Normal.</strong> Early warning of contrast loss.</p><p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; font-weight: normal;"><strong>Real-World Impact:</strong> You might occasionally struggle with night driving, reading in dim light, or seeing curbs and stairs in foggy or low-light environments.</p>';
         } else {
-            summary.innerHTML = '<p style="color: #ff4444;"><strong>Impaired.</strong> Significant loss of contrast detected. Consider an eye exam.</p>';
+            summary.innerHTML = '<p style="color: #ff4444; margin-bottom: 0.5rem;"><strong>Impaired.</strong> Significant loss of contrast detected.</p><p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; font-weight: normal;"><strong>Real-World Impact:</strong> You likely find it difficult to read low-contrast text, pour clear liquids into clear glasses, or recognize faces in dim environments. Consider an eye exam.</p>';
         }
 
         
@@ -1231,5 +1376,37 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     window.addEventListener('DOMContentLoaded', () => {
         if (window.lucide) lucide.createIcons();
     });
+
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+    
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            if (window.lucide) lucide.createIcons();
+        }, 2000);
+    }
+    
+    // Check if running in embed mode
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embed') === 'true') {
+            const navbar = document.querySelector('.navbar');
+            if(navbar) navbar.style.display = 'none';
+            const footer = document.querySelector('footer');
+            if(footer) footer.style.display = 'none';
+            document.body.style.background = 'transparent';
+        }
+    });
+
 </script>
 {% endblock %}
