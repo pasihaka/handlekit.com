@@ -1,5 +1,5 @@
 {% set title = "Words to Pages Converter & Speaking Time Calculator | HandleKit" %}
-{% set description = "Instantly convert word counts to pages with custom fonts (Arial, Times New Roman, Courier) and font sizes (10pt-16pt). Calculate exact reading and speaking times." %}
+{% set description = "Instantly convert word counts to pages with custom fonts, font sizes, and custom margins. Calculate exact reading and speaking times for any document format." %}
 {% extends "layout.html" %}
 
 {% block head_extra %}
@@ -11,7 +11,7 @@
       "@type": "WebApplication",
       "name": "Words to Pages Converter",
       "alternateName": "Word Count to Pages Calculator",
-      "description": "Instantly convert any word count into pages with custom fonts, font sizes, and layout options. Also calculates reading and speaking times.",
+      "description": "Instantly convert any word count into pages with custom fonts, font sizes, and custom page margins. Also calculates reading and speaking times.",
       "url": "https://handlekit.com/words-to-pages",
       "applicationCategory": "ProductivityApplication",
       "operatingSystem": "Any",
@@ -36,6 +36,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "The calculation dynamically adjusts based on your chosen font family and font size. Estimates are calibrated against industry-standard metrics for fonts like Times New Roman and Arial, accounting for character widths and line spacing. For a quick baseline, 12pt Times New Roman yields about 500 words per page (single spaced)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do custom margins affect the page count?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Margins determine the printable area of your page. A standard 1-inch margin is required for most academic papers. Narrowing your margins to 0.5 inches can fit roughly 30% more words on a standard Letter page. You can use our Custom margins input to match any specific publisher or academic guidelines."
           }
         },
         {
@@ -125,12 +133,20 @@
                     <option value="16">16pt</option>
                 </select>
             </div>
-            <div style="text-align: left; opacity: 0.6; pointer-events: none;">
+            <div style="text-align: left;">
                 <label
                     style="display: block; color: var(--text-sub); margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Margins</label>
-                <div
-                    style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-sub); font-size: 0.95rem;">
-                    Standard (1")
+                <select id="margin-select" onchange="calculatePages()"
+                    style="width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); font-family: inherit; font-size: 0.95rem; cursor: pointer; margin-bottom: 0.5rem;">
+                    <option value="0.5">Narrow (0.5")</option>
+                    <option value="1.0" selected>Standard (1")</option>
+                    <option value="1.5">Wide (1.5")</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <div id="custom-margin-wrapper" style="display: none; position: relative;">
+                    <input type="number" id="margin-custom" min="0" step="0.1" value="1.0" oninput="calculatePages()"
+                        style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.2rem; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: var(--text-main); font-family: inherit; font-size: 0.95rem;">
+                    <span style="position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--text-sub); pointer-events: none; font-size: 0.9rem; font-weight: 700;">in</span>
                 </div>
             </div>
         </div>
@@ -220,6 +236,10 @@
                     <strong style="color: var(--text-main);">6" x 9" format (15.24 x 22.86 cm)</strong>, which is the
                     most common size for trade paperbacks. This is an essential reference if you are planning to
                     self-publish a book or a novella.</p>
+            </div>
+            <div class="info-card-premium" style="grid-column: 1 / -1;">
+                <h3 style="color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem;">How do custom margins affect the page count?</h3>
+                <p style="color: var(--text-sub); line-height: 1.7; margin: 0;">Margins determine the printable area of your page. A standard <strong style="color: var(--text-main);">1-inch margin</strong> is required for most academic papers (like APA or MLA format). Narrowing your margins to <strong style="color: var(--text-main);">0.5 inches</strong> can fit roughly 30% more words on a standard Letter page. You can use our Custom margins input to match any specific publisher or academic guidelines.</p>
             </div>
             <div class="info-card">
                 <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Speech Speaking Times</h3>
@@ -336,19 +356,53 @@
         '16': 0.62
     };
 
+    const PAGE_DIMENSIONS = {
+        'a4': { w: 8.27, h: 11.69 },
+        'letter': { w: 8.5, h: 11.0 },
+        'book': { w: 6.0, h: 9.0 },
+        'legal': { w: 8.5, h: 14.0 },
+        'a5': { w: 5.83, h: 8.27 }
+    };
+
+    function getPrintableArea(dims, margin) {
+        let w = Math.max(0.1, dims.w - 2 * margin);
+        let h = Math.max(0.1, dims.h - 2 * margin);
+        return w * h;
+    }
+
     function calculatePages() {
         const wordInput = document.getElementById('word-input');
         const pageSize = document.getElementById('page-size').value;
         const fontFamily = document.getElementById('font-family').value;
         const fontSize = document.getElementById('font-size').value;
+        
+        const marginSelect = document.getElementById('margin-select').value;
+        let marginVal = 1.0;
+        
+        if (marginSelect === 'custom') {
+            document.getElementById('custom-margin-wrapper').style.display = 'block';
+            let val = parseFloat(document.getElementById('margin-custom').value);
+            if (!isNaN(val) && val >= 0) {
+                // Safeguard against absurd values (e.g. margin larger than page width/2)
+                const maxAllowed = Math.min(PAGE_DIMENSIONS[pageSize].w, PAGE_DIMENSIONS[pageSize].h) / 2.0 - 0.5; 
+                marginVal = Math.min(Math.max(val, 0), maxAllowed);
+            }
+        } else {
+            document.getElementById('custom-margin-wrapper').style.display = 'none';
+            marginVal = parseFloat(marginSelect);
+        }
 
         const baseConfig = PAGE_CONSTANTS[pageSize];
         const fontFactor = FONT_MULTIPLIERS[fontFamily];
         const sizeFactor = SIZE_MULTIPLIERS[fontSize];
+        
+        const standardArea = getPrintableArea(PAGE_DIMENSIONS[pageSize], 1.0);
+        const newArea = getPrintableArea(PAGE_DIMENSIONS[pageSize], marginVal);
+        const marginFactor = newArea / standardArea;
 
         // Derived capacity
-        const effectiveSingle = Math.round(baseConfig.single * fontFactor * sizeFactor);
-        const effectiveDouble = Math.round(baseConfig.double * fontFactor * sizeFactor);
+        const effectiveSingle = Math.round(baseConfig.single * fontFactor * sizeFactor * marginFactor);
+        const effectiveDouble = Math.round(baseConfig.double * fontFactor * sizeFactor * marginFactor);
 
         // Update labels
         document.getElementById('label-single').textContent = `~${effectiveSingle} words per page`;
