@@ -347,12 +347,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 
                 <div
                     style="display: flex; gap: 2rem; justify-content: center; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; margin-top: 1rem;">
-                    <button onclick="openHistory()"
-                        style="background: transparent; border: none; color: #444; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.2s;"
-                        onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#444'">
-                        <i data-lucide="history" style="width: 14px; height: 14px;"></i>
-                        Game History
-                    </button>
+                    
                     <button onclick="openGlobalLeaderboard()"
                         style="background: transparent; border: none; color: #444; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.2s;"
                         onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#444'">
@@ -439,12 +434,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
                             onmouseout="this.style.background='rgba(255,255,255,0.03)'">
                             Leaderboard
                         </button>
-                        <button onclick="openHistory()"
-                            style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-main); padding: 1rem; border-radius: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;"
-                            onmouseover="this.style.background='rgba(255,255,255,0.06)'"
-                            onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                            History
-                        </button>
+                        
                     </div>
 
                     <div
@@ -533,41 +523,6 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     </div>
 
     <!-- Competition Overlays (Now Viewport Root) -->
-    <!-- History Overlay -->
-    <div id="lab-history-overlay" class="test-hub-overlay">
-        <div class="hub-content-box">
-            <div
-                style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 4rem; position: relative;">
-                <h2 style="font-size: 2.5rem; font-weight: 900; letter-spacing: -1.5px; color: #fff; margin: 0;">Game
-                    History</h2>
-                <button onclick="closeCompetitionOverlays()"
-                    style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.05); border: none; color: #444; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
-                    onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.1)'"
-                    onmouseout="this.style.color='#444'; this.style.background='rgba(255,255,255,0.05)'">
-                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
-                </button>
-            </div>
-
-            <div id="history-list-root">
-                <!-- History Table generated here -->
-            </div>
-
-            <div
-                style="margin-top: 4rem; display: flex; justify-content: center; gap: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">
-                <button onclick="wipeHistory()"
-                    style="background: rgba(255,255,255,0.02); color: #444; border: 1px solid #222; padding: 1rem 3rem; border-radius: 50px; font-size: 0.8rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;"
-                    onmouseover="this.style.background='rgba(255,100,100,0.05)'; this.style.color='var(--accent-color)'"
-                    onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.color='#444'">
-                    Wipe All Records
-                </button>
-                <button onclick="closeCompetitionOverlays()"
-                    style="background: var(--accent-gradient); color: #fff; border: none; padding: 1rem 3rem; border-radius: 50px; font-size: 0.85rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">
-                    Close Dashboard
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Global Leaderboard Overlay -->
     <div id="lab-global-rank-overlay" class="test-hub-overlay">
         <div class="hub-content-box">
@@ -922,7 +877,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
             summary.innerHTML = '<p style="color: #ff4444;"><strong>Impaired.</strong> Significant loss of contrast detected. Consider an eye exam.</p>';
         }
 
-        saveLocalResult();
+        
 
         submitResult().then(async () => {
             // Populate initial global percentile feedback on result screen
@@ -943,68 +898,6 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 
             // showRankInput(); // Disabled auto-popup per user request
         });
-    }
-
-    function saveLocalResult() {
-        let history = JSON.parse(localStorage.getItem('contrast_history') || '[]');
-        history.unshift({
-            score: finalScore,
-            date: new Date().toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false }),
-            nickname: localStorage.getItem('jnd_nickname') || 'Anonymous'
-        });
-        localStorage.setItem('contrast_history', JSON.stringify(history.slice(0, 50)));
-    }
-
-    function openHistory() {
-        const overlay = document.getElementById('lab-history-overlay');
-        overlay.style.display = 'block';
-        renderHistoryTable();
-        if (window.lucide) lucide.createIcons();
-    }
-
-    function renderHistoryTable() {
-        const container = document.getElementById('history-list-root');
-        const history = JSON.parse(localStorage.getItem('contrast_history') || '[]');
-
-        if (history.length === 0) {
-            container.innerHTML = '<div style="color: #444; text-align: center; padding: 2rem; font-weight: 700;">No diagnostic history found.</div>';
-            return;
-        }
-
-        const escapeHTML = (str) => str.replace(/[&<>"']/g, m => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        })[m]);
-
-        let html = `
-            <table style="width: 100%; border-collapse: collapse; color: #fff; font-family: 'Roboto Mono', monospace; font-size: 0.9rem;">
-                <thead>
-                    <tr style="color: var(--accent-color); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;">
-                        <th style="padding: 1rem; text-align: left;">LOG CS</th>
-                        <th style="padding: 1rem; text-align: left;">NICKNAME</th>
-                        <th style="padding: 1rem; text-align: right;">DATE</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-
-        history.forEach(entry => {
-            const nick = escapeHTML(entry.nickname || 'Anonymous');
-            html += `
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
-                    <td style="padding: 1.2rem 1rem; font-weight: 900; font-size: 1.1rem;">${parseFloat(entry.score).toFixed(2)}</td>
-                    <td style="padding: 1.2rem 1rem; color: #666; font-size: 0.8rem;">${nick}</td>
-                    <td style="padding: 1.2rem 1rem; text-align: right; color: #444; font-size: 0.75rem;">${entry.date}</td>
-                </tr>`;
-        });
-
-        html += `</tbody></table>`;
-        container.innerHTML = html;
-    }
-
-    function wipeHistory() {
-        if (confirm("Erase all diagnostic records?")) {
-            localStorage.removeItem('contrast_history');
-            renderHistoryTable();
-        }
     }
 
     let globalChart = null;
@@ -1086,7 +979,7 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     }
 
     function closeCompetitionOverlays() {
-        document.getElementById('lab-history-overlay').style.display = 'none';
+        
         document.getElementById('lab-global-rank-overlay').style.display = 'none';
         document.documentElement.classList.remove('modal-open');
     }
