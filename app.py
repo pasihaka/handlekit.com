@@ -187,6 +187,11 @@ def contact():
 def robots_txt():
     return app.send_static_file('robots.txt')
 
+
+@app.route('/social-media-safe-zones')
+def safe_zones():
+    return render_template('safe_zones.html')
+
 @app.route('/sitemap.xml')
 def sitemap_xml():
     return app.send_static_file('sitemap.xml')
