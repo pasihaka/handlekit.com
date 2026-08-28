@@ -1464,6 +1464,51 @@
             alert("Challenge link copied to clipboard! Paste it to your friends.");
         }
     };
+
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+    
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            if (window.lucide) lucide.createIcons();
+        }, 2000);
+    }
+    
+    // Check if running in embed mode
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embed') === 'true') {
+            const navbar = document.querySelector('.navbar');
+            if(navbar) navbar.style.display = 'none';
+            const footer = document.querySelector('footer');
+            if(footer) footer.style.display = 'none';
+            document.body.style.background = 'transparent';
+            
+            document.querySelectorAll('.embed-card, .test-header').forEach(el => {
+                if(el) el.style.display = 'none';
+            });
+            const mainHeader = document.querySelector('h1').parentElement;
+            if (mainHeader) mainHeader.style.display = 'none';
+            
+            const exploreSec = document.getElementById('explore-section');
+            if(exploreSec) exploreSec.style.display = 'none';
+            
+            // Hide the ad banners and related links
+            const colorPickerBanner = document.querySelector('.embed-card').previousElementSibling;
+            if (colorPickerBanner) colorPickerBanner.style.display = 'none';
+        }
+    });
+
 </script>
 
 <style>
