@@ -1506,6 +1506,9 @@
             // Hide the ad banners and related links
             const colorPickerBanner = document.querySelector('.embed-card').previousElementSibling;
             if (colorPickerBanner) colorPickerBanner.style.display = 'none';
+            
+            const scienceMagnet = document.querySelector('.science-magnet');
+            if(scienceMagnet && scienceMagnet.parentElement) scienceMagnet.parentElement.style.display = 'none';
         }
     });
 
