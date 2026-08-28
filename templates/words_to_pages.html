@@ -66,6 +66,42 @@
     }
   ]
 }
+
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+    
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            if (window.lucide) lucide.createIcons();
+        }, 2000);
+    }
+    
+    // Check if running in embed mode
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embed') === 'true') {
+            const navbar = document.querySelector('.navbar');
+            if(navbar) navbar.style.display = 'none';
+            const footer = document.querySelector('footer');
+            if(footer) footer.style.display = 'none';
+            document.body.style.background = 'transparent';
+            
+            document.querySelectorAll('.info-sections, .embed-card, .tool-header').forEach(el => el.style.display = 'none');
+            const linkBack = document.querySelector('.embed-card').previousElementSibling;
+            if(linkBack) linkBack.style.display = 'none';
+        }
+    });
+
 </script>
 {% endblock %}
 
@@ -190,6 +226,30 @@
                     href="/word-counter" style="color: var(--accent-color); text-decoration: underline;">Text Analyzer &
                     Word Counter</a> tool.
             </div>
+        </div>
+    </div>
+    <div class="embed-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <i data-lucide="code" style="color: var(--text-sub); width: 24px; height: 24px;"></i>
+            <div style="color: var(--text-sub);">
+                <strong style="color: var(--text-main);">Want this calculator on your blog?</strong> Embed it directly on your site for free.
+            </div>
+        </div>
+        <button onclick="openEmbedModal()" style="background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 800; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='var(--input-bg)'">
+            Get Embed Code
+        </button>
+    </div>
+
+        <!-- Embed Modal -->
+    <div id="embed-modal" class="test-hub-overlay" style="display: none; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;">
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; width: 90%; max-width: 500px; position: relative;">
+            <button onclick="document.getElementById('embed-modal').style.display='none'" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: var(--text-sub); cursor: pointer;"><i data-lucide="x"></i></button>
+            <h2 style="color: var(--text-main); margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem;">Embed on Your Site</h2>
+            <p style="color: var(--text-sub); margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5;">Copy the code below to embed this calculator on your own website or blog.</p>
+            <textarea id="embed-code" readonly style="width: 100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; color: var(--accent-color); padding: 1rem; font-family: monospace; font-size: 0.85rem; margin-bottom: 1rem; resize: none;"><div><iframe src="https://handlekit.com/words-to-pages?embed=true" width="100%" height="600" style="border:none; border-radius:12px;"></iframe><div style="font-family:sans-serif; text-align:center; font-size:12px; margin-top:8px; color:#888;">Powered by the free <a href="https://handlekit.com/words-to-pages" style="color:#888; text-decoration:underline;">Words to Pages Calculator</a></div></div></textarea>
+            <button onclick="copyEmbedCode()" id="copy-embed-btn" style="width: 100%; background: var(--accent-gradient); color: #fff; border: none; padding: 1rem; border-radius: 12px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Code
+            </button>
         </div>
     </div>
 
@@ -447,5 +507,41 @@
 
     // Initialize with a placeholder value for aesthetics if desired
     // Or just leave at 0
+
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+    
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            if (window.lucide) lucide.createIcons();
+        }, 2000);
+    }
+    
+    // Check if running in embed mode
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embed') === 'true') {
+            const navbar = document.querySelector('.navbar');
+            if(navbar) navbar.style.display = 'none';
+            const footer = document.querySelector('footer');
+            if(footer) footer.style.display = 'none';
+            document.body.style.background = 'transparent';
+            
+            document.querySelectorAll('.info-sections, .embed-card, .tool-header').forEach(el => el.style.display = 'none');
+            const linkBack = document.querySelector('.embed-card').previousElementSibling;
+            if(linkBack) linkBack.style.display = 'none';
+        }
+    });
+
 </script>
 {% endblock %}
