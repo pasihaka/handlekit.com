@@ -1,6 +1,7 @@
 {% set title = "Tinnitus Frequency Matcher & Tone Generator | Find Your Pitch (Free)" %}
 {% set description = "Pinpoint your tinnitus frequency (250 Hz - 16 kHz) with our free tone generator and pitch matcher. Test notched sound masking and export an audiology report." %}
 {% extends "layout.html" %}
+{% from "components/recommendations.html" import render_recommendations %}
 
 {% block head_extra %}
 <!-- Schema.org JSON-LD -->
@@ -1050,6 +1051,9 @@
             ✓ Thank you for your feedback!
         </div>
     </div>
+
+    <!-- Specialist Recommendations -->
+    {{ render_recommendations('tinnitus', title='Tinnitus Relief & Sleep Masking Gear', subtitle='Audiologist-curated devices to soothe nighttime ear ringing, protect auditory hair cells, and improve sleep quality.') }}
 
     <!-- Embed Magnet Card -->
     <div class="embed-card">

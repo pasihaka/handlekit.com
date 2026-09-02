@@ -24,6 +24,14 @@ app.url_map.strict_slashes = False
 CORS(app)
 Compress(app)
 
+import affiliate_config
+
+app.jinja_env.globals['get_recommendations'] = affiliate_config.get_recommendations
+
+@app.context_processor
+def inject_affiliates():
+    return dict(get_recommendations=affiliate_config.get_recommendations)
+
 DATABASE = 'data/handlekit.db'
 
 class MockCursor:

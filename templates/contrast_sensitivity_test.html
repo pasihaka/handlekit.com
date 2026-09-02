@@ -1,165 +1,636 @@
-{% set title = "Free Online Contrast Sensitivity Test | Pelli-Robson VCS Chart" %}
-{% set description = "Take a free visual contrast sensitivity test online. Use the clinical standard Pelli-Robson chart
-to measure eye contrast sensitivity for vision health, functional acuity, and VCS mold testing." %}
+{% set title = "Visual Contrast Sensitivity Test (Pelli-Robson VCS) | Free Online Tool" %}
+{% set description = "Test your eye contrast sensitivity online with the clinical Pelli-Robson VCS benchmark. Measure your functional Log CS score, screen for digital eye fatigue, and export your certificate." %}
 {% extends "layout.html" %}
+{% from "components/recommendations.html" import render_recommendations %}
 
 {% block head_extra %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js">
-    function openEmbedModal() {
-        document.getElementById('embed-modal').style.display = 'flex';
-        if (window.lucide) lucide.createIcons();
-    }
-    
-    function copyEmbedCode() {
-        const textarea = document.getElementById('embed-code');
-        textarea.select();
-        document.execCommand('copy');
-        const btn = document.getElementById('copy-embed-btn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
-        if (window.lucide) lucide.createIcons();
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            if (window.lucide) lucide.createIcons();
-        }, 2000);
-    }
-    
-    // Check if running in embed mode
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('embed') === 'true') {
-            const navbar = document.querySelector('.navbar');
-            if(navbar) navbar.style.display = 'none';
-            const footer = document.querySelector('footer');
-            if(footer) footer.style.display = 'none';
-            document.body.style.background = 'transparent';
-        }
-    });
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-</script>
+<!-- Schema.org JSON-LD Tri-Graph -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "Vision Lab Contrast Sensitivity Test",
-      "url": "{{ request.url }}",
-      "description": "Scientific Pelli-Robson contrast sensitivity test engine for measuring visual threshold and functional acuity.",
+      "name": "Visual Contrast Sensitivity Test (Pelli-Robson VCS)",
+      "url": "https://handlekit.com/contrast-sensitivity-test",
       "applicationCategory": "HealthApplication",
       "operatingSystem": "All",
-      "author": { "@type": "Organization", "name": "HandleKit Research Lab" }
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "HandleKit Vision Lab"
+      }
     },
     {
-      "@type": "MedicalTest",
-      "name": "Pelli-Robson Contrast Sensitivity Test (VCS)",
-      "description": "The Pelli-Robson chart is the clinical standard for measuring visual contrast sensitivity (VCS), frequently used for vision health checks and environmental toxin exposure (mold) screening.",
-      "usedToDiagnose": {
-        "@type": "MedicalCondition",
-        "name": "Reduced Contrast Sensitivity"
+      "@type": "MedicalWebPage",
+      "name": "Clinical Visual Contrast Sensitivity & Pelli-Robson Guide",
+      "audience": {
+        "@type": "MedicalAudience",
+        "audienceType": "Patient"
       }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is contrast sensitivity and how does it differ from 20/20 vision?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard visual acuity tests (like the Snellen chart) measure your ability to resolve fine spatial detail at 100% black-on-white contrast. Contrast sensitivity measures your ability to distinguish faint objects from their background, which is crucial for night driving, navigating fog, and seeing in dim lighting."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a normal contrast sensitivity score (Log CS)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For healthy adults under 60, a normal Pelli-Robson score is between 1.65 and 1.95 Log CS. Scores of 2.00 or higher indicate exceptional contrast perception, while scores below 1.50 indicate significant contrast impairment."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can digital eye strain affect contrast sensitivity?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Prolonged computer and phone use reduces blink rate by up to 60%, leading to dry eyes and tear-film breakup. An uneven tear film causes light scattering across the cornea, significantly lowering contrast sensitivity and making text appear washed out."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can a VCS test screen for mold or biotoxin exposure?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Visual Contrast Sensitivity (VCS) testing has been used by functional medicine researchers as a non-invasive screening biomarker for neurotoxin-mediated illnesses, such as Chronic Inflammatory Response Syndrome (CIRS) from mold exposure, because neurotoxins can impede retinal capillary blood flow."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is an online contrast sensitivity test a substitute for an eye doctor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. This tool is a functional screening benchmark. If you notice a sudden drop in contrast sensitivity, difficulties driving at night, or persistent glare halos, schedule a comprehensive exam with an optometrist or ophthalmologist."
+          }
+        }
+      ]
     }
   ]
 }
-
-    function openEmbedModal() {
-        document.getElementById('embed-modal').style.display = 'flex';
-        if (window.lucide) lucide.createIcons();
-    }
-    
-    function copyEmbedCode() {
-        const textarea = document.getElementById('embed-code');
-        textarea.select();
-        document.execCommand('copy');
-        const btn = document.getElementById('copy-embed-btn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
-        if (window.lucide) lucide.createIcons();
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            if (window.lucide) lucide.createIcons();
-        }, 2000);
-    }
-    
-    // Check if running in embed mode
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('embed') === 'true') {
-            const navbar = document.querySelector('.navbar');
-            if(navbar) navbar.style.display = 'none';
-            const footer = document.querySelector('footer');
-            if(footer) footer.style.display = 'none';
-            document.body.style.background = 'transparent';
-        }
-    });
-
 </script>
+
 <style>
     :root {
-        --test-bg: #ffffff;
-        --test-text: #000000;
-        --glass-bg: rgba(22, 18, 18, 0.8);
-        --glass-border: rgba(255, 255, 255, 0.1);
+        --cs-accent: #00d2ff;
+        --cs-accent-rgb: 0, 210, 255;
+        --cs-glow: rgba(0, 210, 255, 0.25);
     }
 
-    #test-container {
-        width: 100%;
-        margin-top: 2rem;
-        position: relative;
-        scroll-margin-top: 100px;
-        /* Account for fixed header + breathing room */
+    .tool-header-block {
+        text-align: center;
+        max-width: 780px;
+        margin: 1.5rem auto 2.5rem;
     }
 
-    #test-stage {
-        width: 100%;
-        min-height: 600px;
-        background: var(--test-bg);
-        border-radius: 24px;
-        position: relative;
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(var(--cs-accent-rgb), 0.1);
+        border: 1px solid var(--cs-accent);
+        padding: 0.4rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--cs-accent);
+        margin-bottom: 1.25rem;
+    }
+
+    .meta-chip-row {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        margin-top: 1.25rem;
+    }
+
+    .meta-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-color);
+        padding: 0.4rem 0.85rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        color: var(--text-sub);
+        font-weight: 600;
+    }
+
+    /* Notice Banner */
+    .calibration-notice-banner {
+        background: rgba(0, 210, 255, 0.06);
+        border: 1px solid rgba(0, 210, 255, 0.25);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        margin: 0 auto 2rem;
+        max-width: 820px;
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    /* Glassmorphism Test Container */
+    .test-main-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 2.5rem;
+        max-width: 820px;
+        margin: 0 auto 3rem;
+        position: relative;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        overflow: hidden;
+    }
+
+    .stepper-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.85rem 1.75rem;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        padding: 0;
+        gap: 0.6rem;
+    }
+
+    .stepper-btn:hover {
+        background: rgba(var(--cs-accent-rgb), 0.15);
+        border-color: var(--cs-accent);
+        color: var(--cs-accent);
+        transform: translateY(-2px);
+    }
+
+    .stepper-btn.primary {
+        background: var(--cs-accent);
+        color: #000;
+        border-color: var(--cs-accent);
+        font-weight: 800;
+    }
+
+    .stepper-btn.primary:hover {
+        background: #38bdf8;
+        color: #000;
+        box-shadow: 0 0 20px rgba(var(--cs-accent-rgb), 0.4);
+    }
+
+    /* Sloan Letter Triplet Display Stage */
+    .sloan-stage-box {
+        background: #ffffff;
+        border-radius: 20px;
+        min-height: 240px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1.5rem 0 2rem;
+        box-shadow: inset 0 2px 10px rgba(0,0,0,0.05), 0 10px 30px rgba(0,0,0,0.25);
+        padding: 1.5rem;
+        position: relative;
         overflow: hidden;
-        /* Prevent internal overlays from having sub-pixel border gaps */
+    }
+
+    .triplet-wrapper {
+        display: flex;
+        gap: clamp(1rem, 3.5vw, 2.5rem);
+        align-items: center;
+        justify-content: center;
+        user-select: none;
     }
 
     .sloan-letter {
-        font-family: 'Outfit', 'Inter', sans-serif;
-        font-weight: 700;
-        font-size: clamp(2.5rem, 13vw, 5.5rem);
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-weight: 800;
+        font-size: clamp(3.2rem, 11vw, 6.2rem);
         line-height: 1;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.04em;
+        color: #000000;
+        transition: opacity 0.25s ease;
+    }
+
+    /* Sloan Keyboard */
+    .sloan-keyboard-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.65rem;
+        max-width: 520px;
+        margin: 0 auto 1.5rem;
+    }
+
+    .sloan-key-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: var(--text-main);
+        padding: 0.9rem 0.5rem;
+        border-radius: 12px;
+        font-size: 1.4rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sloan-key-btn:hover {
+        background: rgba(var(--cs-accent-rgb), 0.18);
+        border-color: var(--cs-accent);
+        color: var(--cs-accent);
+        transform: translateY(-2px);
+    }
+
+    .sloan-key-btn:active {
+        transform: scale(0.96);
+    }
+
+    /* Clinical Sloan Chart (100% Pure Optical Stimulus: Black letters on White) */
+    .sloan-stage-box {
+        background: #ffffff;
+        border-radius: 20px;
+        min-height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1.25rem 0 1.5rem;
+        box-shadow: inset 0 2px 10px rgba(0,0,0,0.05), 0 10px 30px rgba(0,0,0,0.3);
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .triplet-wrapper {
+        display: flex;
+        gap: clamp(1.2rem, 4.5vw, 3.5rem);
+        align-items: center;
+        justify-content: center;
         user-select: none;
-        color: #000;
-        transition: opacity 0.3s ease;
     }
 
     .triplet-group {
         display: flex;
-        gap: clamp(0.3rem, 1.5vw, 1rem);
+        gap: clamp(0.6rem, 2.5vw, 1.6rem);
+        align-items: center;
     }
 
-    #triplet-container {
+    .sloan-letter {
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-weight: 800;
+        font-size: clamp(3.2rem, 11vw, 6.2rem);
+        line-height: 1;
+        letter-spacing: 0.04em;
+        color: #000000;
+        transition: opacity 0.25s ease;
+        user-select: none;
+    }
+
+    /* Clinical Response Deck (Placed in UI space below the chart) */
+    .response-deck-container {
         display: flex;
-        gap: clamp(0.3rem, 1.5vw, 1rem);
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 0 auto 1.5rem;
+        max-width: 600px;
+    }
+
+    .triplet-deck {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 0.85rem 1.1rem;
+        flex: 1;
+        min-width: 240px;
+        transition: all 0.2s ease;
+    }
+
+    .triplet-deck.active-deck {
+        border-color: rgba(var(--cs-accent-rgb), 0.4);
+        background: rgba(var(--cs-accent-rgb), 0.04);
+        box-shadow: 0 0 20px rgba(var(--cs-accent-rgb), 0.1);
+    }
+
+    .deck-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.65rem;
+        font-size: 0.78rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-sub);
+    }
+
+    .deck-contrast-tag {
+        color: var(--cs-accent);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .deck-slots-row {
+        display: flex;
+        gap: 0.55rem;
+        justify-content: center;
+    }
+
+    .response-slot {
+        width: 50px;
+        height: 56px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        margin-bottom: 2rem;
-        overflow: hidden;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 1.35rem;
+        color: var(--text-sub);
+        position: relative;
+        transition: all 0.2s ease;
     }
 
-    /* Fullscreen Overlays (History & Global) */
+    .response-slot.active {
+        border-color: var(--cs-accent);
+        box-shadow: 0 0 14px rgba(var(--cs-accent-rgb), 0.4);
+        background: rgba(var(--cs-accent-rgb), 0.08);
+        color: var(--cs-accent);
+        transform: translateY(-2px);
+    }
+
+    .response-slot.active::after {
+        content: '';
+        width: 14px;
+        height: 3px;
+        background: var(--cs-accent);
+        border-radius: 2px;
+        position: absolute;
+        bottom: 8px;
+        animation: blinkCursor 1s infinite;
+    }
+
+    @keyframes blinkCursor {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    .response-slot.correct {
+        border-color: #10b981;
+        background: rgba(16, 185, 129, 0.14);
+        color: #10b981;
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+
+    .response-slot.wrong {
+        border-color: #ef4444;
+        background: rgba(239, 68, 68, 0.14);
+        color: #ef4444;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .slot-status-icon {
+        font-size: 0.65rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-top: 1px;
+    }
+
+    /* Key Button Tactile Feedback */
+    .sloan-key-btn.flash-correct {
+        background: #10b981 !important;
+        color: #ffffff !important;
+        border-color: #10b981 !important;
+        transform: scale(1.08);
+    }
+
+    .sloan-key-btn.flash-wrong {
+        background: #ef4444 !important;
+        color: #ffffff !important;
+        border-color: #ef4444 !important;
+        transform: scale(0.96);
+    }
+
+    /* Results Certificate Card */
+    .certificate-card {
+        background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(8, 14, 26, 0.98));
+        border: 2px solid var(--cs-accent);
+        border-radius: 28px;
+        padding: 3rem 2.5rem;
+        max-width: 820px;
+        margin: 0 auto 3rem;
+        position: relative;
+        box-shadow: 0 25px 70px rgba(0, 210, 255, 0.16);
+        text-align: center;
+    }
+
+    .certificate-watermark {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(var(--cs-accent-rgb), 0.1);
+        border: 1px solid var(--cs-accent);
+        color: var(--cs-accent);
+        padding: 0.4rem 1.2rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 1.5rem;
+    }
+
+    .score-giant-number {
+        font-size: clamp(3.2rem, 9vw, 5.2rem);
+        font-weight: 900;
+        line-height: 1.2;
+        background: linear-gradient(135deg, #ffffff 30%, var(--cs-accent) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -1.5px;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.25rem;
+    }
+
+    .stat-badge-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .stat-badge-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem;
+    }
+
+    .stat-badge-val {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: var(--text-main);
+        margin-top: 0.35rem;
+    }
+
+    /* Spectrum Bar */
+    .spectrum-bar-wrap {
+        position: relative;
+        margin: 2rem 0 2.5rem;
+    }
+
+    .spectrum-track {
+        height: 14px;
+        border-radius: 9999px;
+        background: linear-gradient(to right, #ef4444 0%, #f59e0b 35%, #10b981 70%, var(--cs-accent) 100%);
+        position: relative;
+    }
+
+    .spectrum-pin {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #fff;
+        border: 4px solid var(--cs-accent);
+        box-shadow: 0 0 16px var(--cs-accent);
+        transition: left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .spectrum-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: var(--text-sub);
+        font-weight: 700;
+        margin-top: 0.75rem;
+    }
+
+    /* Challenge Social Share Box */
+    .challenge-share-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin: 2rem 0 1.5rem;
+    }
+
+    .social-share-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        justify-content: center;
+        margin-bottom: 1.2rem;
+    }
+
+    .social-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.55rem 0.95rem;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: #fff;
+        transition: transform 0.15s ease, opacity 0.2s ease;
+    }
+
+    .social-btn:hover {
+        transform: translateY(-2px);
+        opacity: 0.9;
+    }
+
+    /* Embed & FAQ */
+    .embed-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 3rem auto;
+        max-width: 820px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .faq-section-modern {
+        max-width: 820px;
+        margin: 4rem auto;
+    }
+
+    .faq-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: border-color 0.2s;
+    }
+
+    .faq-item:hover {
+        border-color: rgba(var(--cs-accent-rgb), 0.4);
+    }
+
+    .faq-question {
+        width: 100%;
+        text-align: left;
+        background: transparent;
+        border: none;
+        padding: 1.25rem 1.5rem;
+        color: var(--text-main);
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .faq-answer {
+        display: none;
+        padding: 0 1.5rem 1.5rem;
+        color: var(--text-sub);
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    .faq-answer.open {
+        display: block;
+    }
+
+    /* Fullscreen Modal */
     .test-hub-overlay {
         position: fixed;
         inset: 0;
         z-index: 10000;
-        background: rgba(10, 8, 8, 0.98);
+        background: rgba(10, 8, 8, 0.96);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         display: none;
@@ -177,670 +648,561 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         text-align: left;
     }
 
-    .test-overlay {
-        width: 100%;
-        min-height: 550px;
-        background: var(--bg-color);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 4rem 2rem;
-        text-align: center;
-        color: var(--text-main);
-        box-sizing: border-box;
-        overflow: hidden;
-    }
-
-    .keyboard {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 0.75rem;
-        width: 100%;
-        max-width: 500px;
-        margin-top: 2rem;
-        box-sizing: border-box;
-    }
-
-    .key-btn {
-        background: #f8f9fa;
-        border: 1px solid #e2e8f0;
-        color: #1a0f0f;
-        padding: 1.25rem;
-        border-radius: 12px;
-        font-size: 1.5rem;
-        font-weight: 800;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .key-btn:hover {
-        border-color: var(--accent-color);
-        background: #ffffff;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .stats-card {
-        background: var(--card-bg);
-        backdrop-filter: blur(12px);
-        border: 1px solid var(--border-color);
-        border-radius: 20px;
-        padding: 1.5rem;
-        margin-top: 2rem;
-        width: 100%;
-    }
-
-    .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #e2e8f0;
-        transition: all 0.3s;
-    }
-
-    .dot.active {
-        background: var(--accent-color);
-        box-shadow: 0 0 10px var(--accent-color);
-    }
-
-    .dot.success {
-        background: #00ff88;
-        box-shadow: 0 0 10px #00ff88;
-    }
-
-    .dot.fail {
-        background: #ff4444;
-    }
-
-    .test-hud {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        display: flex;
-        justify-content: space-between;
-        pointer-events: none;
-        z-index: 50;
-        height: auto;
-    }
-
-    .hud-stat {
-        background: rgba(0, 0, 0, 0.6);
-        color: #fff;
-        padding: 0.5rem 1rem;
-        border-radius: 100px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        backdrop-filter: blur(4px);
-    }
-
-    @media (max-width: 600px) {
-        .sloan-letter {
-            letter-spacing: 0.02em;
+    @media (max-width: 640px) {
+        .test-main-card {
+            padding: 1.5rem 1.25rem;
         }
-
-        #triplet-container {
-            gap: 0.3rem;
-            padding: 0 0.5rem;
+        .certificate-card {
+            padding: 2rem 1.25rem;
         }
-
-        .triplet-group {
-            gap: 0.3rem;
+        .sloan-stage-box {
+            min-height: 180px;
+            padding: 1rem 0.5rem;
         }
-
-        .hud-stat {
-            font-size: 0.75rem;
-            padding: 0.4rem 0.8rem;
+        .sloan-keyboard-grid {
+            gap: 0.45rem;
         }
-
-        .keyboard {
-            gap: 0.35rem;
-            padding: 0 0.25rem;
+        .sloan-key-btn {
+            padding: 0.75rem 0.25rem;
+            font-size: 1.2rem;
         }
-
-        .key-btn {
-            padding: 0.7rem 0.4rem;
-            font-size: 1.1rem;
-            border-radius: 10px;
-        }
-
-        #test-stage {
-            min-height: 400px;
-        }
-    }
-
-    @media (max-width: 400px) {
-        .keyboard {
-            gap: 0.25rem;
-        }
-
-        .key-btn {
-            padding: 0.6rem 0.3rem;
-            font-size: 1rem;
-        }
-    }
-
-    .lab-article {
-        max-width: 800px;
-        margin: 5rem 0;
-        line-height: 1.6;
-    }
-
-    .lab-article h2,
-    .lab-article h3 {
-        color: var(--text-main);
-        font-family: 'Outfit', sans-serif;
-    }
-
-    .lab-article p {
-        color: var(--text-sub);
-    }
-
-    .lab-article strong {
-        color: var(--text-main);
-    }
-
-    .info-card-premium {
-        background: var(--glow-color);
-        border: 1px solid var(--border-color);
-        backdrop-filter: blur(5px);
     }
 </style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is this a clinical diagnosis?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. This online test is a screening and calibration utility. While it accurately follows clinical step-progression, it is not a substitute for a professional eye exam by an optometrist or ophthalmologist."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can a VCS test detect mold?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A VCS test measures neurological visual response. If your contrast sensitivity is reduced below 1.50 Log CS, it may correlate with neurotoxin exposure (mold/biotoxins). Consult a medical professional for a detoxification protocols."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How often should I take the test?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Monitoring your visual threshold monthly is recommended for individuals tracking recovery from environmental illness or managing chronic eye conditions like glaucoma."
-      }
-    }
-  ]
-}
-
-    function openEmbedModal() {
-        document.getElementById('embed-modal').style.display = 'flex';
-        if (window.lucide) lucide.createIcons();
-    }
-    
-    function copyEmbedCode() {
-        const textarea = document.getElementById('embed-code');
-        textarea.select();
-        document.execCommand('copy');
-        const btn = document.getElementById('copy-embed-btn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
-        if (window.lucide) lucide.createIcons();
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            if (window.lucide) lucide.createIcons();
-        }, 2000);
-    }
-    
-    // Check if running in embed mode
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('embed') === 'true') {
-            const navbar = document.querySelector('.navbar');
-            if(navbar) navbar.style.display = 'none';
-            const footer = document.querySelector('footer');
-            if(footer) footer.style.display = 'none';
-            document.body.style.background = 'transparent';
-        }
-    });
-
-</script>
 {% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 800px; margin: 0 auto; padding-top: 2rem;">
-    <header style="margin-bottom: 2rem;">
-        <h1 style="margin-bottom: 0.5rem;">Contrast Sensitivity Test</h1>
-        <p class="subtitle">Clinical-grade Pelli-Robson benchmark for visual health.</p>
-    </header>
+<div class="container" style="max-width: 900px; margin: 0 auto; padding-top: 1rem;">
 
-    <div id="test-container">
-        <!-- TEST STAGE -->
-        <div id="test-stage">
-            <!-- Start Screen Overlay -->
-            <div id="start-screen" class="test-overlay">
-                <i data-lucide="eye"
-                    style="width: 64px; height: 64px; color: var(--accent-color); margin-bottom: 1.5rem;"></i>
-                <h2 style="margin-bottom: 1rem; font-weight: 800;">Setup & Calibration</h2>
-                <div
-                    style="max-width: 500px; text-align: left; background: var(--card-bg); padding: 1.5rem; border-radius: 16px; margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.6; border: 1px solid var(--border-color);">
-                    <p style="margin-bottom: 0.8rem;"><strong style="color: var(--accent-color);">1. Full
-                            Brightness:</strong> Maximize screen brightness.</p>
-                    <p style="margin-bottom: 0.8rem;"><strong style="color: var(--accent-color);">2. Arm's
-                            Length:</strong> Stay 1 meter away from the screen.</p>
-                    <p style="margin-bottom: 0;"><strong style="color: var(--accent-color);">3. Correct 2/3:</strong>
-                        test ends when you fail to identify 2/3 letters in a group.</p>
-                </div>
-                <button onclick="startTest()" class="premium-input"
-                    style="background: var(--accent-gradient); color: #fff; font-weight: 800; width: auto; padding: 1rem 3rem; cursor: pointer; border: none; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2rem;">START
-                    TEST</button>
+    <!-- HERO HEADER -->
+    <div class="tool-header-block">
+        <div class="hero-badge">
+            <i data-lucide="eye"></i> Clinical Pelli-Robson Vision Lab
+        </div>
+        <h1 style="font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 0.75rem;">
+            Visual Contrast Sensitivity Test
+        </h1>
+        <p style="color: var(--text-sub); font-size: 1.1rem; line-height: 1.6; margin: 0 auto 1.25rem; max-width: 680px;">
+            Measure your eye's functional ability to distinguish faint objects from their background. Clinical Pelli-Robson standard (0.00 to 2.25 Log CS) for vision health, digital eye fatigue, and neurotoxin screening.
+        </p>
 
-                <div
-                    style="display: flex; gap: 2rem; justify-content: center; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; margin-top: 1rem;">
-                    
-                    <button onclick="openGlobalLeaderboard()"
-                        style="background: transparent; border: none; color: #444; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.2s;"
-                        onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#444'">
-                        <i data-lucide="award" style="width: 14px; height: 14px;"></i>
-                        Global Leaderboard
-                    </button>
-                </div>
-            </div>
-
-            <!-- Active Test UI -->
-            <div id="test-ui"
-                style="display: none; width: 100%; height: 100%; min-height: 550px; padding: 60px 20px; flex-direction: column; align-items: center; justify-content: center; position: relative; box-sizing: border-box; overflow: hidden;">
-                <div class="test-hud">
-                    <div class="hud-stat">LOG CS: <span id="hud-log-cs">0.00</span></div>
-                    <div class="hud-stat">LINE: <span id="hud-level">1</span>/8</div>
-                </div>
-
-                <div id="triplet-container"></div>
-
-                <div class="progress-dots" style="margin-top: 4rem; display: flex; gap: 8px;">
-                    <div class="dot" id="dot-0"></div>
-                    <div class="dot" id="dot-1"></div>
-                    <div class="dot" id="dot-2"></div>
-                    <div class="dot" id="dot-3"></div>
-                    <div class="dot" id="dot-4"></div>
-                    <div class="dot" id="dot-5"></div>
-                </div>
-
-                <div class="keyboard">
-                    <button class="key-btn" onclick="handleInput('C')">C</button>
-                    <button class="key-btn" onclick="handleInput('D')">D</button>
-                    <button class="key-btn" onclick="handleInput('H')">H</button>
-                    <button class="key-btn" onclick="handleInput('K')">K</button>
-                    <button class="key-btn" onclick="handleInput('N')">N</button>
-                    <button class="key-btn" onclick="handleInput('O')">O</button>
-                    <button class="key-btn" onclick="handleInput('P')">P</button>
-                    <button class="key-btn" onclick="handleInput('R')">R</button>
-                    <button class="key-btn" onclick="handleInput('S')">S</button>
-                    <button class="key-btn" onclick="handleInput('V')">V</button>
-                </div>
-            </div>
-
-            <!-- Results Section -->
-            <div id="result-screen" class="test-overlay"
-                style="display: none; background: var(--bg-color); color: var(--text-main); min-height: 600px; height: auto; padding: 3rem 1rem;">
-                <h2
-                    style="color: var(--accent-color); font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: 2px;">
-                    TEST COMPLETE</h2>
-                <div style="font-size: 6rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--text-main); text-shadow: 0 0 30px var(--glow-color); line-height: 1;"
-                    id="final-log-cs">0.00</div>
-                <p
-                    style="color: var(--text-sub); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; font-weight: 700;">
-                    Log Contrast Sensitivity</p>
-
-                <div id="result-summary"
-                    style="max-width: 500px; margin-bottom: 1rem; line-height: 1.6; font-size: 1.1rem; font-weight: 700;">
-                </div>
-                <div id="global-percentile-text"
-                    style="color: var(--accent-color); font-weight: 800; font-size: 0.9rem; margin-bottom: 2rem; opacity: 0; transition: opacity 0.5s;">
-                    Calculating global rank...</div>
-
-                <div id="nickname-status"
-                    style="display: none; color: #00ff88; font-size: 0.85rem; padding: 0.8rem; border-radius: 12px; background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.1); font-weight: 700; margin-bottom: 2rem; width: 100%; max-width: 400px; text-align: center;">
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 320px;">
-                    <button onclick="showRankInput()" id="see-rank-btn"
-                        style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.2rem; border-radius: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 20px rgba(201, 28, 35, 0.2); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">
-                        Submit to Leaderboard
-                    </button>
-
-                    <div style="display: flex; gap: 0.8rem;">
-                        <button onclick="shareResult()"
-                            style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;"
-                            onmouseover="this.style.background='rgba(255,255,255,0.08)'"
-                            onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-                            <i data-lucide="share-2" style="width: 16px; height: 16px;"></i>
-                            Share
-                        </button>
-                        <button onclick="openEmbedModal()"
-                            style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;"
-                            onmouseover="this.style.background='rgba(255,255,255,0.08)'"
-                            onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-                            <i data-lucide="code" style="width: 16px; height: 16px;"></i>
-                            Embed
-                        </button>
-                    </div>
-
-                    <div style="display: flex; gap: 0.8rem;">
-                        <button onclick="openGlobalLeaderboard()"
-                            style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-main); padding: 1rem; border-radius: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;"
-                            onmouseover="this.style.background='rgba(255,255,255,0.06)'"
-                            onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                            Leaderboard
-                        </button>
-                        
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; justify-content: center; align-items: center;">
-                        <a href="/color-guessing-game"
-                            style="width: 100%; background: transparent; color: var(--accent-color); border: 1px solid var(--accent-color); padding: 1rem; border-radius: 14px; font-weight: 800; cursor: pointer; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; text-align: center;"
-                            onmouseover="this.style.background='rgba(0,210,255,0.1)'"
-                            onmouseout="this.style.background='transparent'">
-                            Next Challenge: Color Memory
-                        </a>
-                        <div style="display: flex; gap: 0.8rem; justify-content: center; align-items: center; margin-top: 0.5rem;">
-                            <button onclick="startTest(event)"
-                                style="background: transparent; color: var(--text-sub); border: none; font-weight: 800; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;"
-                                onmouseover="this.style.color='var(--text-main)'"
-                                onmouseout="this.style.color='var(--text-sub)'">
-                                New Test
-                            </button>
-                            <span style="color: rgba(255,255,255,0.1)">|</span>
-                            <button onclick="window.location.href='/'"
-                                style="background: transparent; color: var(--text-sub); border: none; font-weight: 800; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;"
-                                onmouseover="this.style.color='var(--text-main)'"
-                                onmouseout="this.style.color='var(--text-sub)'">
-                                Main Menu
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="meta-chip-row">
+            <span class="meta-chip"><i data-lucide="maximize-2" style="width: 14px; height: 14px; color: var(--cs-accent);"></i> 1 Meter Distance</span>
+            <span class="meta-chip"><i data-lucide="sun" style="width: 14px; height: 14px; color: #f59e0b;"></i> 100% Screen Brightness</span>
+            <span class="meta-chip"><i data-lucide="clock" style="width: 14px; height: 14px; color: var(--cs-accent);"></i> ~60 Seconds</span>
+            <span class="meta-chip"><i data-lucide="lock" style="width: 14px; height: 14px; color: #10b981;"></i> 100% Private &amp; Client-Side</span>
         </div>
     </div>
 
-    <!-- Feedback + Score Submission Fullscreen Modal -->
-    <div id="submit-score-modal"
-        style="display:none; position:fixed; inset:0; z-index:20000; align-items:center; justify-content:center; background:rgba(0,0,0,0.9); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); padding: 2rem;">
-        <div
-            style="background:#0a0a0a; border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:2.5rem; width:100%; max-width:420px; position:relative; box-shadow: 0 30px 60px rgba(0,0,0,0.8); text-align: left;">
-            <button onclick="closeSubmitModal()"
-                style="position:absolute; top:1.2rem; right:1.2rem; background:rgba(255,255,255,0.05); border:none; color:#666; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition: all 0.2s;"
-                onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#fff'"
-                onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='#666'">
-                <i data-lucide="x" style="width:18px; height:18px;"></i>
-            </button>
-
-            <div id="feedback-header" style="margin-bottom: 2rem;">
-                <div id="feedback-title"
-                    style="color:#00d2ff; font-size:1.1rem; font-weight:900; line-height:1.2; margin-bottom:0.4rem; text-transform: uppercase; letter-spacing: 0.5px;">
-                    TEST COMPLETE</div>
-                <div id="feedback-rank-text" style="color:#fff; font-size:0.95rem; font-weight:700; line-height:1.5;">
-                    Analyzing your global standing...</div>
-                <div id="feedback-stat-text" style="color:#555; font-size:0.8rem; margin-top: 0.5rem;">Connecting to
-                    global hub...</div>
-            </div>
-
-            <button onclick="shareResult()"
-                style="width:100%; height:55px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:14px; font-weight:800; font-size:0.9rem; cursor:pointer; margin-bottom:2.5rem; display:flex; align-items:center; justify-content:center; gap:12px; transition: all 0.2s;"
-                onmouseover="this.style.background='rgba(255,255,255,0.06)'; this.style.transform='translateY(-2px)'"
-                onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.transform='none'">
-                <i data-lucide="share-2" style="width:18px; height:18px;"></i>
-                Challenge Friend
-            </button>
-
-            <div style="margin-bottom:1.5rem;">
-                <div
-                    style="color:#fff; font-size:1.3rem; font-weight:900; letter-spacing:-0.5px; margin-bottom:0.4rem;">
-                    Submit to Leaderboard</div>
-                <div style="color:#555; font-size:0.8rem; line-height: 1.4;">Enter your Nickname to claim your global
-                    rank.</div>
-            </div>
-
-            <div style="position: relative; margin-bottom: 1.2rem;">
-                <input type="text" id="player-nickname" placeholder="YOUR NICKNAME" maxlength="20"
-                    style="width:100%; box-sizing:border-box; background:#000; border:2px solid #222; border-radius:14px; color:#fff; padding:1.2rem; font-family:'Roboto Mono',monospace; font-size:1rem; font-weight: 700; outline:none; transition:all 0.3s; letter-spacing: 2px;"
-                    onfocus="this.style.borderColor='var(--accent-color)'; this.style.boxShadow='0 0 15px rgba(201,28,35,0.2)'"
-                    onblur="this.style.borderColor='#222'; this.style.boxShadow='none'">
-            </div>
-
-            <button onclick="submitToLeaderboard()"
-                style="width:100%; height:55px; background:var(--accent-gradient); border:none; color:#fff; border-radius:14px; font-weight:900; font-size:1rem; cursor:pointer; margin-bottom:1rem; transition: all 0.2s; text-transform: uppercase; letter-spacing: 2px;"
-                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.3)'"
-                onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
-                SUBMIT SCORE
-            </button>
-
-            <button onclick="closeSubmitModal(); startTest(event);"
-                style="width:100%; height:50px; background:transparent; border:1px solid rgba(255,255,255,0.05); color:#444; border-radius:14px; font-weight:800; font-size:0.85rem; cursor:pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s;"
-                onmouseover="this.style.color='#999'; this.style.background='rgba(255,255,255,0.02)'"
-                onmouseout="this.style.color='#444'; this.style.background='transparent'">
-                Play Again
-            </button>
-
-            <div id="submit-modal-status"
-                style="margin-top: 1rem; text-align:center; font-size:0.75rem; font-weight:700; color: #555;"></div>
+    <!-- CALIBRATION NOTICE BANNER -->
+    <div class="calibration-notice-banner">
+        <i data-lucide="monitor" style="color: var(--cs-accent); width: 24px; height: 24px; flex-shrink: 0; margin-top: 2px;"></i>
+        <div>
+            <strong style="color: var(--text-main); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">
+                Display Calibration &amp; Environment Setup
+            </strong>
+            <p style="margin: 0; color: var(--text-sub); font-size: 0.88rem; line-height: 1.5;">
+                For accurate clinical measurement: set your monitor brightness to <strong>100%</strong>, turn off night-shift / blue-light filter apps temporarily, eliminate room glare reflecting on your screen, and sit approximately <strong>1 meter (arm's length)</strong> away.
+            </p>
         </div>
     </div>
 
-    <!-- Competition Overlays (Now Viewport Root) -->
-    <!-- Embed Modal -->
-    <div id="embed-modal" class="test-hub-overlay" style="display: none; align-items: center; justify-content: center;">
-        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; width: 90%; max-width: 500px; position: relative;">
-            <button onclick="document.getElementById('embed-modal').style.display='none'" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: var(--text-sub); cursor: pointer;"><i data-lucide="x"></i></button>
-            <h2 style="color: var(--text-main); margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem;">Embed on Your Site</h2>
-            <p style="color: var(--text-sub); margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5;">Copy the code below to embed this contrast sensitivity test on your own website, blog, or clinical resource page.</p>
-            <textarea id="embed-code" readonly style="width: 100%; height: 100px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; color: var(--accent-color); padding: 1rem; font-family: monospace; font-size: 0.85rem; margin-bottom: 1rem; resize: none;"><iframe src="https://handlekit.com/contrast-sensitivity-test?embed=true" width="100%" height="700" style="border:none; border-radius:12px;"></iframe></textarea>
-            <button onclick="copyEmbedCode()" id="copy-embed-btn" style="width: 100%; background: var(--accent-gradient); color: #fff; border: none; padding: 1rem; border-radius: 12px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Code
-            </button>
-        </div>
-    </div>
+    <!-- MAIN TEST CARD -->
+    <div class="test-main-card" id="main-test-card">
 
-    <!-- Global Leaderboard Overlay -->
-    <div id="lab-global-rank-overlay" class="test-hub-overlay">
-        <div class="hub-content-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
-                <h2 style="font-size: 2.5rem; font-weight: 900; letter-spacing: -1.5px; color: #fff; margin: 0;">Top
-                    Results</h2>
-                <button onclick="closeCompetitionOverlays()"
-                    style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.05); border: none; color: #444; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
-                    onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.1)'"
-                    onmouseout="this.style.color='#444'; this.style.background='rgba(255,255,255,0.05)'">
-                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
-                </button>
+        <!-- STAGE 1: SETUP & INSTRUCTIONS -->
+        <div id="setup-stage">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="width: 64px; height: 64px; border-radius: 20px; background: rgba(var(--cs-accent-rgb), 0.1); border: 1px solid var(--cs-accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; color: var(--cs-accent);">
+                    <i data-lucide="eye" style="width: 32px; height: 32px;"></i>
+                </div>
+                <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">
+                    How the Pelli-Robson Test Works
+                </h2>
+                <p style="color: var(--text-sub); font-size: 0.95rem; max-width: 540px; margin: 0 auto; line-height: 1.5;">
+                    You will be shown groups of 3 Sloan letters with progressively fainter contrast against a pure white background.
+                </p>
             </div>
 
-            <div
-                style="color: #444; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; margin-bottom: 1.2rem;">
-                GLOBAL LEADERBOARD</div>
-            <div id="global-rank-list" style="margin-bottom: 4rem;">
-                <!-- Leaderboard rows generated here -->
-            </div>
+            <!-- 1-2-3 Guide Box -->
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.5rem; max-width: 580px; margin: 0 auto 2rem;">
+                <div style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.25rem;">
+                    <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--cs-accent); color: #000; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+                    <div>
+                        <strong style="color: var(--text-main); font-size: 0.95rem;">Identify the 3 Letters in Each Group</strong>
+                        <p style="margin: 0.2rem 0 0; color: var(--text-sub); font-size: 0.85rem; line-height: 1.4;">Type the letters using the on-screen keyboard or your computer's physical keyboard.</p>
+                    </div>
+                </div>
 
-            <div
-                style="color: #444; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; margin-bottom: 1.2rem;">
-                COMMUNITY SCORE DISTRIBUTION</div>
-            <div style="width: 100%; margin-bottom: 4rem;">
-                <div style="height: 250px; width: 100%; position: relative;">
-                    <canvas id="community-dist-chart" height="180"></canvas>
+                <div style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.25rem;">
+                    <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--cs-accent); color: #000; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+                    <div>
+                        <strong style="color: var(--text-main); font-size: 0.95rem;">2 Out of 3 Correct to Advance</strong>
+                        <p style="margin: 0.2rem 0 0; color: var(--text-sub); font-size: 0.85rem; line-height: 1.4;">Each level has two triplets (6 letters total). You must identify at least 2 letters in a triplet correctly to proceed.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--cs-accent); color: #000; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+                    <div>
+                        <strong style="color: var(--text-main); font-size: 0.95rem;">Threshold Determined Automatically</strong>
+                        <p style="margin: 0.2rem 0 0; color: var(--text-sub); font-size: 0.85rem; line-height: 1.4;">When you miss 2 letters in a single triplet, the test automatically ends and calculates your exact Log CS score.</p>
+                    </div>
                 </div>
             </div>
 
-            <div
-                style="margin-top: 3rem; display: flex; justify-content: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">
-                <button onclick="closeCompetitionOverlays()"
-                    style="background: var(--accent-gradient); color: #fff; border: none; padding: 1.2rem 4rem; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;">
-                    Close Dashboard
+            <div style="text-align: center;">
+                <button onclick="startTest(event)" class="stepper-btn primary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 9999px;">
+                    <i data-lucide="play" style="width: 20px; height: 20px; fill: currentColor;"></i> Start Vision Test
                 </button>
             </div>
         </div>
+
+        <!-- STAGE 2: ACTIVE TEST HUD & STAGE -->
+        <div id="active-test-stage" style="display: none;">
+            <!-- Top HUD Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <span style="background: rgba(var(--cs-accent-rgb), 0.12); border: 1px solid var(--cs-accent); color: var(--cs-accent); padding: 0.35rem 0.85rem; border-radius: 9999px; font-weight: 800; font-size: 0.8rem; text-transform: uppercase;">
+                        Level <span id="hud-level">1</span> of 8
+                    </span>
+                    <span style="color: var(--text-sub); font-size: 0.85rem; font-weight: 700;">
+                        Log CS: <strong id="hud-log-cs" style="color: var(--text-main);">0.00</strong>
+                    </span>
+                </div>
+
+                <!-- Active Triplet Status Indicator -->
+                <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); padding: 0.35rem 0.9rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; color: var(--text-sub);">
+                    <span id="hud-triplet-info" style="color: var(--cs-accent);">Triplet 1 of 2</span> &bull; Need 2/3 correct to advance
+                </div>
+            </div>
+
+            <!-- Sloan Letters Display Stage (100% Pure Optical Chart) -->
+            <div class="sloan-stage-box">
+                <div id="triplet-container" class="triplet-wrapper">
+                    <!-- Injected dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Clinical Response Deck: Live transcription & feedback without altering chart letters -->
+            <div class="response-deck-container">
+                <div class="triplet-deck active-deck" id="deck-group-1">
+                    <div class="deck-header-row">
+                        <span>Triplet 1</span>
+                        <span class="deck-contrast-tag" id="deck-log-1">0.00 Log CS</span>
+                    </div>
+                    <div class="deck-slots-row">
+                        <div class="response-slot active" id="slot-0"><span class="slot-letter"></span><span class="slot-status-icon"></span></div>
+                        <div class="response-slot" id="slot-1"><span class="slot-letter"></span><span class="slot-status-icon"></span></div>
+                        <div class="response-slot" id="slot-2"><span class="slot-letter"></span><span class="slot-status-icon"></span></div>
+                    </div>
+                </div>
+
+                <div class="triplet-deck" id="deck-group-2">
+                    <div class="deck-header-row">
+                        <span>Triplet 2</span>
+                        <span class="deck-contrast-tag" id="deck-log-2">0.15 Log CS</span>
+                    </div>
+                    <div class="deck-slots-row">
+                        <div class="response-slot" id="slot-3"><span class="slot-letter"></span><span class="slot-status-icon"></span></div>
+                        <div class="response-slot" id="slot-4"><span class="slot-letter"></span><span class="slot-status-icon"></span></div>
+                        <div class="response-slot" id="slot-5"><span class="slot-letter"></span><span class="slot-status-icon"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instruction hint -->
+            <div style="text-align: center; margin-bottom: 1.25rem;">
+                <p style="margin: 0; color: var(--text-sub); font-size: 0.9rem; font-weight: 600;">
+                    Type or select the active letter shown in the chart above:
+                </p>
+            </div>
+
+            <!-- Sloan Keyboard -->
+            <div class="sloan-keyboard-grid">
+                <button onclick="handleInput('C')" class="sloan-key-btn">C</button>
+                <button onclick="handleInput('D')" class="sloan-key-btn">D</button>
+                <button onclick="handleInput('H')" class="sloan-key-btn">H</button>
+                <button onclick="handleInput('K')" class="sloan-key-btn">K</button>
+                <button onclick="handleInput('N')" class="sloan-key-btn">N</button>
+                <button onclick="handleInput('O')" class="sloan-key-btn">O</button>
+                <button onclick="handleInput('P')" class="sloan-key-btn">P</button>
+                <button onclick="handleInput('R')" class="sloan-key-btn">R</button>
+                <button onclick="handleInput('S')" class="sloan-key-btn">S</button>
+                <button onclick="handleInput('V')" class="sloan-key-btn">V</button>
+            </div>
+
+            <!-- Skip / Give Up Triplet Button -->
+            <div style="text-align: center;">
+                <button onclick="skipCurrentTriplet()" class="stepper-btn" style="font-size: 0.85rem; padding: 0.6rem 1.25rem; color: var(--text-sub);">
+                    <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i> I can't read this triplet (End test)
+                </button>
+            </div>
+        </div>
+
     </div>
 
-    <!-- SEO & Science Deep Dive -->
-    <div style="margin-top: 5rem;" class="lab-article">
-        <h2
-            style="font-size: 2rem; color: var(--text-main); margin-bottom: 1.5rem; font-weight: 800; letter-spacing: -1px;">
-            Technical & Clinical Overview</h2>
-        <p>The <strong>Pelli-Robson Contrast Sensitivity Test</strong> is the medical standard for evaluating how well a
-            patient can distinguish objects from their background. While visual acuity (Snellen) measures the
-            <em>size</em> of letters, contrast sensitivity measures the <em>faintness</em> of letters, providing a more
-            comprehensive view of functional vision.</p>
-
-        <div class="info-card-premium" style="padding: 2.5rem; margin: 3rem 0; border-radius: 20px;">
-            <h3
-                style="color: var(--accent-color); margin-bottom: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
-                VCS Testing and Mold Exposure</h3>
-            <p style="margin-bottom: 1.2rem;">Increasingly, <strong>Visual Contrast Sensitivity (VCS)</strong> tests are
-                used by clinicians as a biomarker for neurotoxicity. Chronic exposure to certain indoor molds,
-                biotoxins, and environmental neurotoxins can lead to a measurable reduction in mid-spatial frequency
-                contrast sensitivity.</p>
-            <p>Our online VCS test follows the <strong>0.15 Log CS</strong> step progression used in clinical
-                Pelli-Robson charts, providing a reliable screening tool for individuals monitoring changes in their
-                vision due to health or environmental factors.</p>
+    <!-- STAGE 3: RESULTS CERTIFICATE CARD -->
+    <div id="card-certificate" class="certificate-card" style="display: none;">
+        <div class="certificate-watermark">
+            <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i> Official Vision Lab Assessment
         </div>
 
-        <h3 style="font-weight: 800; margin-top: 3.5rem; margin-bottom: 1rem;">Interpreting Your Results</h3>
-        <p>Contrast sensitivity is reported as the <strong>Log Contrast Sensitivity (Log CS)</strong> score. A higher
-            score indicates better retinal health and neural processing of visual information.</p>
+        <div style="font-size: 0.9rem; color: var(--text-sub); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">
+            Visual Contrast Sensitivity Score
+        </div>
 
-        <div
-            style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; margin: 2rem 0; font-family: 'Roboto Mono', monospace; font-size: 0.85rem;">
-            <div
-                style="display: flex; justify-content: space-between; padding: 0.8rem; border-bottom: 1px solid var(--border-color);">
-                <span style="color: #00ff88; font-weight: 800;">2.00 - 2.25</span>
-                <span style="color: var(--text-main);">Optimal (Eagle Eye)</span>
+        <div class="score-giant-number" id="cert-log-cs">
+            1.95 Log CS
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <span id="cert-rank-badge" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: rgba(var(--cs-accent-rgb), 0.15); border: 1px solid var(--cs-accent); color: var(--cs-accent); padding: 0.45rem 1.4rem; border-radius: 9999px; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px;">
+                Optimal Vision 🏆
+            </span>
+        </div>
+
+        <!-- Metric Badges -->
+        <div class="stat-badge-grid">
+            <div class="stat-badge-item">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); font-weight: 800;">Log CS Threshold</div>
+                <div class="stat-badge-val" id="cert-score-chip" style="color: var(--cs-accent);">1.95</div>
             </div>
-            <div
-                style="display: flex; justify-content: space-between; padding: 0.8rem; border-bottom: 1px solid var(--border-color);">
-                <span style="color: var(--text-main); font-weight: 800;">1.65 - 1.95</span>
-                <span style="color: var(--text-main);">Normal / Functional Vision</span>
+            <div class="stat-badge-item">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); font-weight: 800;">Acuity Bracket</div>
+                <div class="stat-badge-val" id="cert-category-chip">Optimal</div>
             </div>
-            <div
-                style="display: flex; justify-content: space-between; padding: 0.8rem; border-bottom: 1px solid var(--border-color);">
-                <span style="color: #ff9f1c; font-weight: 800;">1.35 - 1.50</span>
-                <span style="color: var(--text-main);">Low-Normal (Early Warning)</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; padding: 0.8rem;">
-                <span style="color: #ff4444; font-weight: 800;">
-                    < 1.35</span>
-                        <span style="color: var(--text-main);">Significant Impairment</span>
+            <div class="stat-badge-item">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); font-weight: 800;">Cohort Rank</div>
+                <div class="stat-badge-val" id="cert-percentile-chip" style="color: #10b981;">Top 15%</div>
             </div>
         </div>
 
-        <h3 style="font-weight: 800; margin-top: 3.5rem; margin-bottom: 1.5rem;">Pelli-Robson vs Mars Chart</h3>
-        <div class="info-card-premium">
-            <p style="margin: 0;">Both the <strong>Pelli-Robson</strong> and the <strong>Mars Contrast Sensitivity
-                    Test</strong> measure a patient's threshold using Sloan letters. However, the Pelli-Robson chart is
-                typically viewed from 1 meter and uses fixed size triplets, whereas the Mars test is designed for
-                near-vision (handheld) and decreases contrast on a per-letter basis. Our Vision Lab uses the
-                Pelli-Robson standard for wide-range desktop diagnostic accuracy.</p>
-        </div>
-
-        <!-- FAQ Section -->
-        <div class="faq-section">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-container">
-                <div class="faq-card">
-                    <h3>What is a normal contrast sensitivity score?</h3>
-                    <p>For a healthy young adult, a normal score is typically 1.95 Log CS or higher. A score between 1.65 and 1.95 is still considered functional and normal for the general population. Anything below 1.50 Log CS may indicate significant contrast impairment.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>How does age affect contrast sensitivity?</h3>
-                    <p>Contrast sensitivity naturally declines with age. While a 20-year-old might easily score a 2.10, a healthy 70-year-old might score around a 1.65 due to natural yellowing of the lens and reduction in pupil size. However, sudden drops in score at any age should be checked by a doctor.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>Is this a clinical diagnosis?</h3>
-                    <p>No. This online test is a screening and calibration utility. While it accurately follows clinical step-progression, it is not a substitute for a professional eye exam by an optometrist or ophthalmologist.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>Can a VCS test detect mold?</h3>
-                    <p>A VCS test measures neurological visual response. If your contrast sensitivity is reduced below 1.50 Log CS, it may correlate with neurotoxin exposure (mold/biotoxins). Consult a medical professional for a detoxification protocols.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>How often should I take the test?</h3>
-                    <p>Monitoring your visual threshold monthly is recommended for individuals tracking recovery from environmental illness or managing chronic eye conditions like glaucoma.</p>
-                </div>
+        <!-- Spectrum Progress Bar -->
+        <div class="spectrum-bar-wrap">
+            <div class="spectrum-track">
+                <div class="spectrum-pin" id="spectrum-pin" style="left: 80%;"></div>
+            </div>
+            <div class="spectrum-labels">
+                <span>&lt; 1.35 (Impaired)</span>
+                <span>1.50 (Low-Normal)</span>
+                <span>1.80 (Normal Adult)</span>
+                <span>&gt; 2.00 (Eagle Eye)</span>
             </div>
         </div>
 
-        <!-- Science Summary Magnet -->
-        <div style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 5rem; padding-bottom: 5rem;">
-            <div class="science-magnet">
-                <div style="flex: 2; min-width: 300px;">
-                    <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 2rem; font-weight: 800; letter-spacing: -1px;">
-                        The Science of Contrast</h2>
-                    <p style="color: var(--text-sub); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
-                        The Pelli-Robson chart is the clinical gold standard for measuring visual threshold. Learn how 
-                        <strong>log-contrast scoring</strong> works and why it's more accurate than a standard Snellen 
-                        chart for functional vision and neurotoxicity screening.
-                    </p>
-                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-                        <a href="/articles/pelli-robson-contrast-sensitivity"
-                            style="background: var(--accent-gradient); color: white; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 0.8rem; transition: transform 0.2s;"
-                            onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            Read Deep Dive <i data-lucide="book-open"></i>
-                        </a>
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #666; font-size: 0.9rem; font-weight: 600;">
-                            <i data-lucide="clock" style="width: 16px; height: 16px;"></i> 12 min read
-                        </div>
-                    </div>
-                </div>
-                <div style="flex: 1; min-width: 250px; display: flex; justify-content: center;">
-                    <div class="science-visual">
-                        <i data-lucide="atom" class="science-icon"></i>
-                    </div>
-                </div>
+        <!-- Clinical Result Summary Text -->
+        <div id="cert-summary-text" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.5rem; text-align: left; margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.6; color: var(--text-main);">
+            <!-- Populated dynamically -->
+        </div>
+
+
+
+        <!-- Challenge Friends Social Box -->
+        <div class="challenge-share-box" id="challenge-social-box">
+            <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <i data-lucide="share-2" style="color: var(--cs-accent); width: 20px; height: 20px;"></i>
+                Challenge Your Friends &amp; Family
+            </h4>
+            <p style="color: var(--text-sub); font-size: 0.85rem; margin: 0 auto 1.25rem; max-width: 520px; line-height: 1.5;">
+                Share your certified contrast sensitivity score and challenge colleagues, gamers, and friends to test their eyes:
+            </p>
+
+            <div class="social-share-grid">
+                <a id="btn-share-whatsapp" href="#" target="_blank" rel="noopener noreferrer" class="social-btn" style="background: #25D366;">
+                    <i data-lucide="message-circle" style="width: 16px; height: 16px;"></i> WhatsApp
+                </a>
+                <a id="btn-share-twitter" href="#" target="_blank" rel="noopener noreferrer" class="social-btn" style="background: #000000; border: 1px solid rgba(255,255,255,0.2);">
+                    <svg style="width: 14px; height: 14px; fill: #fff;" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> Post on X
+                </a>
+                <a id="btn-share-facebook" href="#" target="_blank" rel="noopener noreferrer" class="social-btn" style="background: #1877F2;">
+                    <i data-lucide="facebook" style="width: 16px; height: 16px;"></i> Facebook
+                </a>
+                <a id="btn-share-reddit" href="#" target="_blank" rel="noopener noreferrer" class="social-btn" style="background: #FF4500;">
+                    <svg style="width: 16px; height: 16px; fill: #fff;" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .616-.319 1.157-.798 1.468.016.138.025.278.025.419 0 2.146-2.502 3.89-5.59 3.89s-5.59-1.744-5.59-3.89c0-.14.009-.28.025-.418a1.74 1.74 0 0 1-.798-1.469c0-.968.786-1.754 1.754-1.754.478 0 .9.182 1.208.492 1.194-.856 2.85-1.418 4.673-1.488l.92-4.31a.343.343 0 0 1 .41-.26l3.033.64c.162-.315.488-.535.867-.535z"/></svg> Reddit
+                </a>
+                <a id="btn-share-telegram" href="#" target="_blank" rel="noopener noreferrer" class="social-btn" style="background: #2AABEE;">
+                    <i data-lucide="send" style="width: 16px; height: 16px;"></i> Telegram
+                </a>
+                <a id="btn-share-linkedin" href="#" target="_blank" rel="noopener noreferrer" class="social-btn" style="background: #0A66C2;">
+                    <i data-lucide="linkedin" style="width: 16px; height: 16px;"></i> LinkedIn
+                </a>
+            </div>
+
+            <div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;">
+                <button onclick="copyScorecardText()" class="stepper-btn" id="btn-copy-scorecard" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 10px;">
+                    <i data-lucide="copy" id="scorecard-copy-icon" style="width: 16px; height: 16px;"></i>
+                    <span id="scorecard-copy-text">Copy Text Scorecard</span>
+                </button>
+                <button onclick="copyResultImageToClipboard()" class="stepper-btn" id="btn-copy-image" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 10px;">
+                    <i data-lucide="image" id="image-copy-icon" style="width: 16px; height: 16px;"></i>
+                    <span id="image-copy-text">Copy Image Card</span>
+                </button>
             </div>
         </div>
-    
+
+        <!-- Action Controls -->
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <button onclick="downloadResultImage()" class="stepper-btn primary">
+                <i data-lucide="download" style="width: 18px; height: 18px;"></i> Download Certificate Image
+            </button>
+            <button onclick="startTest(event)" class="stepper-btn">
+                <i data-lucide="rotate-ccw" style="width: 18px; height: 18px;"></i> Retest Vision
+            </button>
+            <button onclick="openGlobalLeaderboard()" class="stepper-btn">
+                <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i> Score Distribution
+            </button>
+        </div>
+    </div>
+
+    <!-- SPECIALIST RECOMMENDATIONS COMPONENT -->
+    {{ render_recommendations('contrast_vision', title='Visual Ergonomics & Contrast Enhancement', subtitle='Specialist-recommended tools to reduce monitor glare, soothe digital eye strain, and boost perceived contrast clarity.') }}
+
+    <!-- EMBED MAGNET CARD -->
+    <div class="embed-card">
+        <div>
+            <h3 style="margin: 0 0 0.5rem; font-size: 1.25rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="code" style="color: var(--cs-accent); width: 22px; height: 22px; flex-shrink: 0;"></i>
+                Embed This Contrast Sensitivity Test on Your Site
+            </h3>
+            <p style="margin: 0; color: var(--text-sub); font-size: 0.95rem; line-height: 1.5;">
+                Add this clinical Pelli-Robson chart tool to your optometry blog, vision therapy resource, or health clinic portal.
+            </p>
+        </div>
+        <button class="stepper-btn embed-btn" onclick="openEmbedModal()" style="padding: 0.75rem 1.25rem; font-size: 0.95rem; background: rgba(var(--cs-accent-rgb), 0.15); border-color: var(--cs-accent); color: var(--cs-accent); white-space: nowrap;">
+            Get Embed Code
+        </button>
+    </div>
+
+    <!-- CLINICAL SCIENCE & KNOWLEDGE GUIDE -->
+    <div style="margin-top: 4rem; max-width: 820px; margin-left: auto; margin-right: auto;">
+        <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem; text-align: center;">
+            The Science of Visual Contrast Sensitivity
+        </h2>
+        <p style="color: var(--text-sub); font-size: 1rem; line-height: 1.6; text-align: center; margin-bottom: 2.5rem;">
+            Understanding why high-contrast 20/20 vision doesn't tell the whole story about your real-world visual health.
+        </p>
+
+        <!-- Pelli-Robson vs Snellen -->
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--text-main); font-size: 1.3rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem;">
+                <i data-lucide="layers" style="color: var(--cs-accent);"></i> Contrast Sensitivity vs. Visual Acuity (20/20)
+            </h3>
+            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem; margin-bottom: 1rem;">
+                Standard eye chart tests (the <strong>Snellen Chart</strong>) measure high-contrast visual acuity—your eye's ability to see tiny black letters on a stark white background under optimal lighting.
+            </p>
+            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.95rem; margin: 0;">
+                However, everyday life is rarely 100% black and white. Driving at dusk, navigating heavy fog, detecting stairs in dim restaurants, and reading gray-on-dark interfaces all rely heavily on <strong>contrast sensitivity</strong>. Many patients boast 20/20 vision yet struggle severely in low-contrast conditions.
+            </p>
+        </div>
+
+        <!-- Log CS Scale Table -->
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--text-main); font-size: 1.3rem; font-weight: 800; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
+                <i data-lucide="bar-chart-2" style="color: var(--cs-accent);"></i> Pelli-Robson Log CS Score Classification
+            </h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-main);">
+                            <th style="padding: 0.75rem 1rem;">Log CS Score</th>
+                            <th style="padding: 0.75rem 1rem;">Classification</th>
+                            <th style="padding: 0.75rem 1rem;">Real-World Functional Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-sub);">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                            <td style="padding: 0.75rem 1rem; color: #10b981; font-weight: 700;">&ge; 1.95</td>
+                            <td style="padding: 0.75rem 1rem;"><strong style="color: var(--text-main);">Optimal (Eagle Eye)</strong></td>
+                            <td style="padding: 0.75rem 1rem;">Flawless low-contrast tracking. Easy night driving and fog navigation.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                            <td style="padding: 0.75rem 1rem; color: var(--cs-accent); font-weight: 700;">1.65 – 1.90</td>
+                            <td style="padding: 0.75rem 1rem;"><strong style="color: var(--text-main);">Normal Adult</strong></td>
+                            <td style="padding: 0.75rem 1rem;">Healthy general baseline. Comfortable handling normal daily tasks.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                            <td style="padding: 0.75rem 1rem; color: #f59e0b; font-weight: 700;">1.35 – 1.60</td>
+                            <td style="padding: 0.75rem 1rem;"><strong style="color: var(--text-main);">Low-Normal / Moderate</strong></td>
+                            <td style="padding: 0.75rem 1rem;">Mild difficulty reading in dim light or judging curbs/steps at night.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">&lt; 1.35</td>
+                            <td style="padding: 0.75rem 1rem;"><strong style="color: var(--text-main);">Impaired</strong></td>
+                            <td style="padding: 0.75rem 1rem;">Significant contrast loss. Recommend scheduling a formal eye examination.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Causes of Contrast Loss -->
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--text-main); font-size: 1.3rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem;">
+                <i data-lucide="activity" style="color: var(--cs-accent);"></i> Common Causes of Reduced Contrast Sensitivity
+            </h3>
+            <ul style="color: var(--text-sub); line-height: 1.7; font-size: 0.95rem; margin: 0; padding-left: 1.25rem;">
+                <li><strong style="color: var(--text-main);">Digital Eye Strain &amp; Dry Eyes:</strong> Inadequate blinking causes tear film breakup, scattering light and muting perceived contrast.</li>
+                <li><strong style="color: var(--text-main);">Early Cataracts:</strong> Clouding of the crystalline lens diffuses incoming photons before reaching the retina.</li>
+                <li><strong style="color: var(--text-main);">Glaucoma:</strong> Loss of retinal ganglion cells directly degrades peripheral and low-contrast sensitivity before central acuity is affected.</li>
+                <li><strong style="color: var(--text-main);">VCS Biotoxin / Mold Exposure:</strong> Clinical studies have correlated reduced contrast sensitivity with neurotoxin-mediated microvascular constriction in the retina.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- FAQ ACCORDION -->
+    <div class="faq-section-modern">
+        <h3 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; text-align: center;">
+            Frequently Asked Questions
+        </h3>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                What is contrast sensitivity and how does it differ from 20/20 vision?
+                <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                Standard visual acuity tests (like the Snellen chart) measure your ability to resolve fine spatial detail at 100% black-on-white contrast. Contrast sensitivity measures your ability to distinguish faint objects from their background, which is crucial for night driving, navigating fog, and seeing in dim lighting.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                What is a normal contrast sensitivity score (Log CS)?
+                <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                For healthy adults under 60, a normal Pelli-Robson score is between 1.65 and 1.95 Log CS. Scores of 2.00 or higher indicate exceptional contrast perception, while scores below 1.50 indicate significant contrast impairment.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                How does digital eye strain affect contrast perception?
+                <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                Prolonged computer and phone use reduces your natural blink rate by up to 60%, leading to dry eye syndrome and tear-film breakup. An uneven tear film causes light scattering across the cornea, significantly lowering contrast sensitivity and making text appear washed out.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                Can a VCS test detect mold or neurotoxin illness?
+                <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                Visual Contrast Sensitivity (VCS) testing has been used by functional medicine researchers as a non-invasive screening biomarker for neurotoxin-mediated illnesses, such as Chronic Inflammatory Response Syndrome (CIRS) from mold exposure, because neurotoxins can impede retinal capillary blood flow.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                Is an online contrast sensitivity test a substitute for an eye doctor?
+                <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                No. This online tool is a functional screening benchmark. If you notice a sudden drop in contrast sensitivity, difficulties driving at night, or persistent glare halos, schedule a comprehensive exam with an optometrist or ophthalmologist.
+            </div>
+        </div>
+    </div>
+
+    <!-- RELATED SENSORY TOOLS -->
     <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
-        <h3 style="color: var(--text-main); font-size: 1.5rem; font-weight: 800; margin-bottom: 2rem; text-align: center;">Explore the Science of Vision</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-            <a href="/tinnitus-frequency-matcher" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
-                <i data-lucide="headphones" style="color: #00d2ff; width: 32px; height: 32px;"></i>
-                <div>
-                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Tinnitus Frequency Matcher</h4>
-                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Pinpoint your ear ringing pitch (250 Hz - 16 kHz) and test tailor-made notched sound therapy.</p>
-                </div>
+        <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-sub); margin-bottom: 1.5rem; text-align: center;">
+            Explore Other Free Sensory &amp; Diagnostic Tools
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+            <a href="/hearing-age-test" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="headphones" style="color: #06b6d4;"></i>
+                <h2>Hearing Age Test</h2>
+                <p>Test your upper high-frequency auditory cutoff (8 kHz - 20 kHz) to calculate your biological ear age.</p>
+                <div class="card-arrow">Test ears <i data-lucide="arrow-right"></i></div>
             </a>
-            <a href="/jnd-test" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
-                <i data-lucide="activity" style="color: var(--accent-color); width: 32px; height: 32px;"></i>
-                <div>
-                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">JND Vision Test</h4>
-                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Find your Just Noticeable Difference threshold in this fast-paced interactive color test.</p>
-                </div>
+            <a href="/tinnitus-frequency-matcher" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="radio" style="color: #10b981;"></i>
+                <h2>Tinnitus Frequency Matcher</h2>
+                <p>Pinpoint your ear ringing pitch (250 Hz - 16 kHz) and test tailor-made notched sound therapy.</p>
+                <div class="card-arrow">Match pitch <i data-lucide="arrow-right"></i></div>
             </a>
-            <a href="/color-guessing-game" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
-                <i data-lucide="palette" style="color: #00ff88; width: 32px; height: 32px;"></i>
-                <div>
-                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Color Memory Game</h4>
-                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Test your short-term visual memory. Can you perfectly recreate a color you saw 5 seconds ago?</p>
-                </div>
-            </a>
-            <a href="/articles/jnd-perception" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; transition: transform 0.2s, background 0.2s; display: flex; flex-direction: column; gap: 1rem;" onmouseover="this.style.transform='translateY(-5px)'; this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.transform='translateY(0)'; this.style.background='rgba(255,255,255,0.03)'">
-                <i data-lucide="book-open" style="color: #ff9f1c; width: 32px; height: 32px;"></i>
-                <div>
-                    <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">The Physics of Perception</h4>
-                    <p style="color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; margin: 0;">Read about Weber's Law and how our brains process subtle differences in light and color.</p>
-                </div>
+            <a href="/jnd-test" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="palette" style="color: #a855f7;"></i>
+                <h2>JND Color Perception Test</h2>
+                <p>Measure your Weber's Law Just Noticeable Difference threshold for subtle color discrimination.</p>
+                <div class="card-arrow">Test vision <i data-lucide="arrow-right"></i></div>
             </a>
         </div>
     </div>
-    
+
 </div>
 
+<!-- EMBED MODAL -->
+<div id="embed-modal" class="test-hub-overlay" style="display: none; align-items: center; justify-content: center;">
+    <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; width: 90%; max-width: 500px; position: relative;">
+        <button onclick="document.getElementById('embed-modal').style.display='none'" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: var(--text-sub); cursor: pointer;"><i data-lucide="x"></i></button>
+        <h2 style="color: var(--text-main); margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem;">Embed on Your Site</h2>
+        <p style="color: var(--text-sub); margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5;">Copy the code below to embed this contrast sensitivity test on your website or clinical resource page.</p>
+        <textarea id="embed-code" readonly style="width: 100%; height: 100px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); border-radius: 12px; color: var(--cs-accent); padding: 1rem; font-family: monospace; font-size: 0.85rem; margin-bottom: 1rem; resize: none;"><iframe src="https://handlekit.com/contrast-sensitivity-test?embed=true" width="100%" height="700" style="border:none; border-radius:12px;"></iframe></textarea>
+        <button onclick="copyEmbedCode()" id="copy-embed-btn" class="stepper-btn primary" style="width: 100%; border-radius: 12px;">
+            <i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Embed Code
+        </button>
+    </div>
+</div>
+
+<!-- COMMUNITY SCORE DISTRIBUTION OVERLAY -->
+<div id="lab-global-rank-overlay" class="test-hub-overlay">
+    <div class="hub-content-box" style="max-width: 840px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div>
+                <h2 style="font-size: 2.2rem; font-weight: 900; color: #fff; margin: 0 0 0.25rem; letter-spacing: -0.5px;">Community Score Distribution</h2>
+                <span style="color: var(--text-sub); font-size: 0.88rem;">Pelli-Robson Log CS benchmarks and population histogram curve</span>
+            </div>
+            <button onclick="closeLeaderboard()" style="width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; text-align: center;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); font-weight: 800;">Total Screenings</div>
+                <div id="modal-stat-total" style="font-size: 1.6rem; font-weight: 900; color: var(--text-main); margin-top: 0.35rem;">--</div>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; text-align: center;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); font-weight: 800;">Normal Adult Baseline</div>
+                <div style="font-size: 1.6rem; font-weight: 900; color: var(--cs-accent); margin-top: 0.35rem;">1.65 – 1.95 Log CS</div>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; text-align: center;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); font-weight: 800;">Your Score Marker</div>
+                <div id="modal-stat-your-score" style="font-size: 1.6rem; font-weight: 900; color: #10b981; margin-top: 0.35rem;">--</div>
+            </div>
+        </div>
+
+        <!-- Community Score Distribution Chart -->
+        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.75rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                <div>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i data-lucide="bar-chart-3" style="color: var(--cs-accent); width: 18px; height: 18px;"></i>
+                        Population Histogram Curve
+                    </h3>
+                    <p style="margin: 0; color: var(--text-sub); font-size: 0.82rem;">Visual distribution curve of contrast sensitivity thresholds across test takers</p>
+                </div>
+                <div id="chart-user-legend" style="font-size: 0.8rem; font-weight: 700; color: var(--cs-accent); background: rgba(var(--cs-accent-rgb), 0.1); border: 1px solid var(--cs-accent); padding: 0.25rem 0.75rem; border-radius: 9999px;">
+                    ● Your Score Position
+                </div>
+            </div>
+
+            <div style="height: 280px; width: 100%; position: relative;">
+                <canvas id="community-dist-chart"></canvas>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <button onclick="closeLeaderboard()" class="stepper-btn primary" style="padding: 0.85rem 3.5rem; border-radius: 9999px;">
+                Close Dashboard
+            </button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -867,43 +1229,43 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
     let currentStepIdx = 0;
     let currentTriplet = [];
     let currentInputIdx = 0;
-    let correctCount = 0;
+    let tripletCorrectCount = 0;
     let finalScore = 0;
     let currentSessionId = null;
-    let higherThanPct = 0;
-
+    let higherThanPct = 85;
     let isInputBlocked = false;
+
+    let currentTestResult = {
+        score: 1.95,
+        scoreStr: "1.95",
+        category: "Optimal Vision",
+        percentile: 85
+    };
 
     function startTest(e) {
         if (e) e.stopPropagation();
 
-        // Reset state
         currentStepIdx = 0;
         currentTriplet = [];
         currentInputIdx = 0;
-        correctCount = 0;
+        tripletCorrectCount = 0;
         finalScore = null;
-        higherThanPct = 0;
+        higherThanPct = 85;
         isInputBlocked = false;
 
-        document.getElementById('start-screen').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'none';
-        document.getElementById('test-ui').style.display = 'flex';
+        document.getElementById('setup-stage').style.display = 'none';
+        document.getElementById('card-certificate').style.display = 'none';
+        document.getElementById('active-test-stage').style.display = 'block';
 
-        // Auto-scroll to test container with precise offset
-        const container = document.getElementById('test-container');
+        const container = document.getElementById('main-test-card');
         if (container) {
             container.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // Reset Leaderboard status
-        document.getElementById('nickname-status').style.display = 'none';
-        document.getElementById('see-rank-btn').style.display = 'flex';
+        
 
         nextLevel();
     }
-
-    let tripletCorrectCount = 0; // Tracks correct letters for the current triplet (0-2 or 3-5)
 
     function nextLevel() {
         if (currentStepIdx >= STEPS.length) {
@@ -916,7 +1278,6 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         currentTriplet = [];
         isInputBlocked = false;
 
-        // Generate 6 letters (3 for each of the two triplets on this line)
         for (let i = 0; i < 6; i++) {
             currentTriplet.push(SLOAN_LETTERS[Math.floor(Math.random() * SLOAN_LETTERS.length)]);
         }
@@ -926,16 +1287,16 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
 
     function renderLevel() {
         const baseStep = STEPS[currentStepIdx];
-        const secondStep = STEPS[currentStepIdx + 1] || baseStep; // Fallback if odd number of steps (rare)
+        const secondStep = STEPS[currentStepIdx + 1] || baseStep;
         
         const container = document.getElementById('triplet-container');
         container.innerHTML = '';
 
-        // Create Triplet Group 1
+        // Group 1: 100% Pure Clinical Optotypes (Triplet 1)
         const group1 = document.createElement('div');
         group1.className = 'triplet-group';
         for (let i = 0; i < 3; i++) {
-            const el = document.createElement('div');
+            const el = document.createElement('span');
             el.className = 'sloan-letter';
             el.innerText = currentTriplet[i];
             el.style.opacity = baseStep.contrast;
@@ -943,11 +1304,11 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         }
         container.appendChild(group1);
 
-        // Create Triplet Group 2
+        // Group 2: 100% Pure Clinical Optotypes (Triplet 2)
         const group2 = document.createElement('div');
         group2.className = 'triplet-group';
         for (let i = 3; i < 6; i++) {
-            const el = document.createElement('div');
+            const el = document.createElement('span');
             el.className = 'sloan-letter';
             el.innerText = currentTriplet[i];
             el.style.opacity = secondStep.contrast;
@@ -955,14 +1316,30 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         }
         container.appendChild(group2);
 
+        // Reset Response Deck Slots
+        for (let i = 0; i < 6; i++) {
+            const slot = document.getElementById(`slot-${i}`);
+            if (slot) {
+                slot.className = 'response-slot' + (i === 0 ? ' active' : '');
+                slot.querySelector('.slot-letter').innerText = '';
+                slot.querySelector('.slot-status-icon').innerText = '';
+            }
+        }
+
+        // Reset Deck highlights
+        const deck1 = document.getElementById('deck-group-1');
+        const deck2 = document.getElementById('deck-group-2');
+        if (deck1) deck1.className = 'triplet-deck active-deck';
+        if (deck2) deck2.className = 'triplet-deck';
+
+        // Update Deck Log labels
+        document.getElementById('deck-log-1').innerText = `${baseStep.log.toFixed(2)} Log CS`;
+        document.getElementById('deck-log-2').innerText = `${secondStep.log.toFixed(2)} Log CS`;
+
         document.getElementById('hud-log-cs').innerText = baseStep.log.toFixed(2);
         document.getElementById('hud-level').innerText = (currentStepIdx / 2) + 1;
-
-        // Reset dots
-        for (let i = 0; i < 6; i++) {
-            document.getElementById(`dot-${i}`).className = 'dot';
-        }
-        document.getElementById('dot-0').classList.add('active');
+        const hudInfo = document.getElementById('hud-triplet-info');
+        if (hudInfo) hudInfo.innerText = 'Triplet 1 of 2';
     }
 
     function handleInput(letter) {
@@ -971,44 +1348,71 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         const isCorrect = (letter === currentTriplet[currentInputIdx]);
         if (isCorrect) tripletCorrectCount++;
 
-        const dot = document.getElementById(`dot-${currentInputIdx}`);
-        dot.classList.remove('active');
-        dot.classList.add(isCorrect ? 'success' : 'fail');
+        // Populate Response Deck Slot with feedback
+        const slot = document.getElementById(`slot-${currentInputIdx}`);
+        if (slot) {
+            slot.classList.remove('active');
+            slot.classList.add(isCorrect ? 'correct' : 'wrong');
+            slot.querySelector('.slot-letter').innerText = letter;
+            slot.querySelector('.slot-status-icon').innerText = isCorrect ? '✓' : '✕';
+        }
 
-        // Early failure detection: if they miss 2 in the same triplet, they instantly fail.
-        // A triplet is indices 0,1,2 or 3,4,5.
-        const tripletIndex = currentInputIdx % 3; // 0, 1, or 2
+        // Keyboard tactile flash
+        const keyBtns = document.querySelectorAll('.sloan-key-btn');
+        keyBtns.forEach(btn => {
+            if (btn.innerText.trim() === letter) {
+                const flashClass = isCorrect ? 'flash-correct' : 'flash-wrong';
+                btn.classList.add(flashClass);
+                setTimeout(() => btn.classList.remove(flashClass), 250);
+            }
+        });
+
+        // Mistake check: 2 mistakes in a triplet fails the triplet
+        const tripletIndex = currentInputIdx % 3;
         const mistakes = (tripletIndex + 1) - tripletCorrectCount;
         
         if (mistakes >= 2) {
             isInputBlocked = true;
-            return setTimeout(endTest, 400);
+            return setTimeout(endTest, 500);
         }
 
-        // Check Logic for Triplet 1 (Indices 0, 1, 2)
+        // Triplet 1 Passed
         if (currentInputIdx === 2) {
             finalScore = STEPS[currentStepIdx].log;
-            tripletCorrectCount = 0; // reset for next triplet
+            tripletCorrectCount = 0;
+            const deck1 = document.getElementById('deck-group-1');
+            const deck2 = document.getElementById('deck-group-2');
+            if (deck1) deck1.className = 'triplet-deck';
+            if (deck2) deck2.className = 'triplet-deck active-deck';
+
+            const hudInfo = document.getElementById('hud-triplet-info');
+            if (hudInfo) hudInfo.innerText = 'Triplet 2 of 2';
         }
 
-        // Check Logic for Triplet 2 (Indices 3, 4, 5)
+        // Triplet 2 Passed
         if (currentInputIdx === 5) {
             isInputBlocked = true;
             finalScore = STEPS[currentStepIdx + 1].log;
             currentStepIdx += 2;
-            return setTimeout(nextLevel, 400);
+            return setTimeout(nextLevel, 500);
         }
 
-        // Increment and highlighting
+        // Advance to next slot
         currentInputIdx++;
         if (currentInputIdx < 6) {
-            document.getElementById(`dot-${currentInputIdx}`).classList.add('active');
+            const nextSlot = document.getElementById(`slot-${currentInputIdx}`);
+            if (nextSlot) nextSlot.classList.add('active');
         }
     }
 
-    // Add physical keyboard support
+    function skipCurrentTriplet() {
+        if (isInputBlocked) return;
+        isInputBlocked = true;
+        endTest();
+    }
+
     document.addEventListener('keydown', (e) => {
-        if (document.getElementById('test-ui').style.display === 'flex') {
+        if (document.getElementById('active-test-stage').style.display === 'block') {
             const key = e.key.toUpperCase();
             if (SLOAN_LETTERS.includes(key)) {
                 handleInput(key);
@@ -1016,404 +1420,385 @@ to measure eye contrast sensitivity for vision health, functional acuity, and VC
         }
     });
 
-    function endTest() {
+    async function endTest() {
         isInputBlocked = true;
-        console.log("Ending test with score:", finalScore);
-        document.getElementById('test-ui').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'flex';
-        document.getElementById('final-log-cs').innerText = finalScore !== null ? finalScore.toFixed(2) : "< 0.00";
+        document.getElementById('active-test-stage').style.display = 'none';
 
-        if (finalScore === null) finalScore = 0;
+        if (finalScore === null || finalScore === undefined) finalScore = 0;
 
-        const summary = document.getElementById('result-summary');
+        let category = "Normal Vision";
+        let summaryHtml = "";
+        let pinLeft = 50;
+        let pct = 50;
+
         if (finalScore >= 2.0) {
-            summary.innerHTML = '<p style="color: #00ff88; margin-bottom: 0.5rem;"><strong>Excellent.</strong> High-tier contrast sensitivity.</p><p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; font-weight: normal;"><strong>Real-World Impact:</strong> You have exceptional functional vision. You likely have zero issues driving at night, reading faded menus in dim restaurants, or seeing subtle facial expressions.</p>';
+            category = "Eagle Eye 🏆";
+            pinLeft = 92;
+            pct = 95;
+            summaryHtml = `<strong>Exceptional Contrast Sensitivity (${finalScore.toFixed(2)} Log CS):</strong> You possess top-tier functional acuity capable of resolving faint contrast down to under 1%. You likely experience zero issues driving in heavy fog or reading low-contrast digital displays.`;
         } else if (finalScore >= 1.65) {
-            summary.innerHTML = '<p style="margin-bottom: 0.5rem;"><strong>Normal.</strong> You have functional contrast sensitivity.</p><p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; font-weight: normal;"><strong>Real-World Impact:</strong> Your vision is perfectly sufficient for daily tasks. You can comfortably handle reading and driving in various lighting conditions.</p>';
+            category = "Optimal Vision ✅";
+            pinLeft = 75;
+            pct = 80;
+            summaryHtml = `<strong>Healthy Functional Contrast (${finalScore.toFixed(2)} Log CS):</strong> Your contrast threshold falls well within the healthy adult population benchmark. You can comfortably discern low-contrast text and navigate dim environments without significant light scatter.`;
         } else if (finalScore >= 1.35) {
-            summary.innerHTML = '<p style="color: #ff9f1c; margin-bottom: 0.5rem;"><strong>Low-Normal.</strong> Early warning of contrast loss.</p><p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; font-weight: normal;"><strong>Real-World Impact:</strong> You might occasionally struggle with night driving, reading in dim light, or seeing curbs and stairs in foggy or low-light environments.</p>';
+            category = "Functional / Low-Normal ⚠️";
+            pinLeft = 45;
+            pct = 40;
+            summaryHtml = `<strong>Mild Contrast Attenuation (${finalScore.toFixed(2)} Log CS):</strong> Your eyes show early signs of contrast fatigue. You may occasionally experience eye strain under harsh glare, fatigue during prolonged screen reading, or mild night driving halos.`;
         } else {
-            summary.innerHTML = '<p style="color: #ff4444; margin-bottom: 0.5rem;"><strong>Impaired.</strong> Significant loss of contrast detected.</p><p style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; font-weight: normal;"><strong>Real-World Impact:</strong> You likely find it difficult to read low-contrast text, pour clear liquids into clear glasses, or recognize faces in dim environments. Consider an eye exam.</p>';
+            category = "Reduced Sensitivity 🔴";
+            pinLeft = 15;
+            pct = 12;
+            summaryHtml = `<strong>Significant Contrast Reduction (${finalScore.toFixed(2)} Log CS):</strong> Your visual threshold is below standard functional baselines. We recommend scheduling an eye examination to screen for dry eye tear-film irregularities, cataracts, or retinal health issues.`;
         }
 
-        
+        currentTestResult = {
+            score: finalScore,
+            scoreStr: finalScore.toFixed(2),
+            category: category,
+            percentile: pct
+        };
 
-        submitResult().then(async () => {
-            // Populate initial global percentile feedback on result screen
-            try {
-                const res = await fetch(`/api/contrast/stats?score=${finalScore}`);
-                const data = await res.json();
-                const total = data.total || 0;
-                const lowerThanCount = data.lower_count || 0;
-                const percentile = total > 0 ? Math.round((lowerThanCount / total) * 100) : 0;
+        // Render Certificate UI
+        document.getElementById('cert-log-cs').innerText = `${finalScore.toFixed(2)} Log CS`;
+        const rankBadge = document.getElementById('cert-rank-badge');
+        rankBadge.innerText = category;
+        if (finalScore >= 2.0) {
+            rankBadge.style.borderColor = '#10b981';
+            rankBadge.style.color = '#10b981';
+            rankBadge.style.background = 'rgba(16, 185, 129, 0.12)';
+        } else if (finalScore >= 1.65) {
+            rankBadge.style.borderColor = 'var(--cs-accent)';
+            rankBadge.style.color = 'var(--cs-accent)';
+            rankBadge.style.background = 'rgba(var(--cs-accent-rgb), 0.15)';
+        } else if (finalScore >= 1.35) {
+            rankBadge.style.borderColor = '#f59e0b';
+            rankBadge.style.color = '#f59e0b';
+            rankBadge.style.background = 'rgba(245, 158, 11, 0.12)';
+        } else {
+            rankBadge.style.borderColor = '#ef4444';
+            rankBadge.style.color = '#ef4444';
+            rankBadge.style.background = 'rgba(239, 68, 68, 0.12)';
+        }
+        document.getElementById('cert-score-chip').innerText = finalScore.toFixed(2);
+        document.getElementById('cert-category-chip').innerText = category.split(' ')[0];
+        document.getElementById('cert-percentile-chip').innerText = `Top ${100 - pct}%`;
+        document.getElementById('spectrum-pin').style.left = `${pinLeft}%`;
+        document.getElementById('cert-summary-text').innerHTML = summaryHtml;
 
-                const pctEl = document.getElementById('global-percentile-text');
-                pctEl.innerHTML = `Better than ${percentile}% of those who took our test. <br>
-                <span style="font-size: 0.75rem; color: #666; font-weight: 400; margin-top: 8px; display: block;">Note: Our database is still growing and may not yet reflect true global distributions.</span>`;
-                pctEl.style.opacity = '1';
-            } catch (e) {
-                console.error("Result screen stats failed", e);
+        // Display Certificate
+        const cert = document.getElementById('card-certificate');
+        cert.style.display = 'block';
+        cert.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Update Social Links
+        updateSocialLinks();
+
+        // Submit to API
+        try {
+            await fetch('/api/contrast/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ log_cs: finalScore })
+            }).then(r => r.json()).then(data => {
+                if (data && data.id) currentSessionId = data.id;
+            });
+        } catch (e) {}
+    }
+
+    function getScorecardText() {
+        return `👁️ Visual Contrast Sensitivity Test (Pelli-Robson)
+━━━━━━━━━━━━━━━━━━
+🏆 Vision Rank: ${currentTestResult.category}
+📊 Log CS Score: ${currentTestResult.scoreStr} Log CS
+📈 Cohort Rank: Top ${100 - currentTestResult.percentile}% of adults
+━━━━━━━━━━━━━━━━━━
+Can your eyes spot faint contrast? Test free on HandleKit:
+https://handlekit.com/contrast-sensitivity-test`;
+    }
+
+    function updateSocialLinks() {
+        const cardText = getScorecardText();
+        const encodedCard = encodeURIComponent(cardText);
+        const encodedUrl = encodeURIComponent("https://handlekit.com/contrast-sensitivity-test");
+        const encodedTitle = encodeURIComponent(`I scored ${currentTestResult.scoreStr} Log CS (${currentTestResult.category}) on the Pelli-Robson Contrast Test! Can you beat it?`);
+
+        const wa = document.getElementById('btn-share-whatsapp');
+        if (wa) wa.href = `https://api.whatsapp.com/send?text=${encodedCard}`;
+
+        const tw = document.getElementById('btn-share-twitter');
+        if (tw) tw.href = `https://twitter.com/intent/tweet?text=${encodedCard}`;
+
+        const fb = document.getElementById('btn-share-facebook');
+        if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedCard}`;
+
+        const rd = document.getElementById('btn-share-reddit');
+        if (rd) rd.href = `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`;
+
+        const tg = document.getElementById('btn-share-telegram');
+        if (tg) tg.href = `https://t.me/share/url?url=${encodedUrl}&text=${encodedCard}`;
+
+        const li = document.getElementById('btn-share-linkedin');
+        if (li) li.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+    }
+
+    function fallbackCopyToClipboard(text, btnId, successMsg) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                const orig = btn.innerHTML;
+                btn.innerHTML = `<i data-lucide="check" style="width:16px;height:16px;color:#10b981;"></i> ${successMsg}`;
+                if (window.lucide) lucide.createIcons();
+                setTimeout(() => { btn.innerHTML = orig; if (window.lucide) lucide.createIcons(); }, 2500);
             }
+        } catch (err) {}
+        document.body.removeChild(textArea);
+    }
 
-            // showRankInput(); // Disabled auto-popup per user request
+    function copyScorecardText() {
+        const text = getScorecardText();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('btn-copy-scorecard');
+                if (btn) {
+                    const orig = btn.innerHTML;
+                    btn.innerHTML = `<i data-lucide="check" style="width:16px;height:16px;color:#10b981;"></i> Copied Scorecard!`;
+                    if (window.lucide) lucide.createIcons();
+                    setTimeout(() => { btn.innerHTML = orig; if (window.lucide) lucide.createIcons(); }, 2500);
+                }
+            }).catch(() => fallbackCopyToClipboard(text, 'btn-copy-scorecard', 'Copied!'));
+        } else {
+            fallbackCopyToClipboard(text, 'btn-copy-scorecard', 'Copied!');
+        }
+    }
+
+    function generateResultCanvas() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 630;
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        const bgGrad = ctx.createLinearGradient(0, 0, 1200, 630);
+        bgGrad.addColorStop(0, '#080e1a');
+        bgGrad.addColorStop(1, '#0f172a');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Border Glow
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#00d2ff';
+        ctx.strokeRect(20, 20, 1160, 590);
+
+        // Title Badge
+        ctx.fillStyle = '#00d2ff';
+        ctx.font = 'bold 26px sans-serif';
+        ctx.fillText('HANDLEKIT VISION LAB • PELLI-ROBSON ASSESSMENT', 80, 100);
+
+        // Score
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 110px sans-serif';
+        ctx.fillText(`${currentTestResult.scoreStr} Log CS`, 80, 240);
+
+        // Category
+        ctx.fillStyle = '#00d2ff';
+        ctx.font = 'bold 36px sans-serif';
+        ctx.fillText(currentTestResult.category, 80, 310);
+
+        // Summary
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '24px sans-serif';
+        ctx.fillText(`Cohort Standing: Top ${100 - currentTestResult.percentile}% of adults tested.`, 80, 380);
+
+        // Footer Brand
+        ctx.fillStyle = '#475569';
+        ctx.font = 'bold 22px sans-serif';
+        ctx.fillText('Test your eyes free at https://handlekit.com/contrast-sensitivity-test', 80, 540);
+
+        return canvas;
+    }
+
+    function downloadResultImage() {
+        const canvas = generateResultCanvas();
+        const a = document.createElement('a');
+        a.download = `HandleKit-Contrast-Sensitivity-${currentTestResult.scoreStr}LogCS.png`;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+    }
+
+    function copyResultImageToClipboard() {
+        const canvas = generateResultCanvas();
+        canvas.toBlob(blob => {
+            if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
+                const item = new ClipboardItem({ 'image/png': blob });
+                navigator.clipboard.write([item]).then(() => {
+                    const btn = document.getElementById('btn-copy-image');
+                    if (btn) {
+                        const orig = btn.innerHTML;
+                        btn.innerHTML = `<i data-lucide="check" style="width:16px;height:16px;color:#10b981;"></i> Image Copied!`;
+                        if (window.lucide) lucide.createIcons();
+                        setTimeout(() => { btn.innerHTML = orig; if (window.lucide) lucide.createIcons(); }, 2500);
+                    }
+                }).catch(() => downloadResultImage());
+            } else {
+                downloadResultImage();
+            }
         });
     }
 
     let globalChart = null;
-    async function openGlobalLeaderboard() {
-        const overlay = document.getElementById('lab-global-rank-overlay');
-        overlay.style.display = 'flex';
-        document.documentElement.classList.add('modal-open');
-        if (window.lucide) lucide.createIcons();
-
-        try {
-            const res = await fetch('/api/contrast/leaderboard');
-            const leaderboard = await res.json();
-
-            // Render Leaderboard
-            const escapeHTML = (str) => str.replace(/[&<>"']/g, m => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            })[m]);
-
-            const list = document.getElementById('global-rank-list');
-            let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">';
-            leaderboard.forEach((r, i) => {
-                const nick = escapeHTML(r.nickname || "Anonymous");
-                const safeScore = r.log_cs !== null && r.log_cs !== undefined ? Number(r.log_cs) : 0;
-                const isMe = (r.nickname === localStorage.getItem('jnd_nickname') && Math.abs(safeScore - finalScore) < 0.001);
-                html += `
-                    <tr style="${isMe ? 'background: rgba(201, 28, 35, 0.1);' : ''}; border-bottom: 1px solid rgba(255,255,255,0.03);">
-                        <td style="padding: 0.7rem 0.5rem; color: #444; width: 40px;">#${i + 1}</td>
-                        <td style="padding: 0.7rem 0.5rem; color: #fff; font-weight: 700;">${nick}</td>
-                        <td style="padding: 0.7rem 0.5rem; text-align: right; color: var(--accent-color); font-weight: 800;">${safeScore.toFixed(2)}</td>
-                    </tr>`;
-            });
-            html += '</table>';
-            list.innerHTML = leaderboard.length > 0 ? html : '<div style="color: #444; text-align: center;">No data yet. Be the first to claim a rank!</div>';
-
-            // Load Distribution Chart
-            const statsRes = await fetch(`/api/contrast/stats?score=${finalScore}`);
-            const stats = await statsRes.json();
-            renderGlobalDistChart(stats);
-        } catch (e) { console.error(e); }
-    }
 
     function renderGlobalDistChart(data) {
         const canvas = document.getElementById('community-dist-chart');
-        if (!canvas) return; // Guard against missing container
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
-        if (globalChart) globalChart.destroy();
+        if (globalChart) {
+            globalChart.destroy();
+            globalChart = null;
+        }
+
+        if (!data || !data.buckets || data.buckets.length === 0) return;
+
+        const currentScore = (finalScore !== null && finalScore !== undefined) ? finalScore : 1.95;
+
+        const legend = document.getElementById('chart-user-legend');
+        if (legend) {
+            legend.innerText = `● Your Score: ${currentScore.toFixed(2)} Log CS`;
+        }
 
         globalChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: data.buckets.map(b => b.x.toFixed(2)),
+                labels: data.buckets.map(b => Number(b.x).toFixed(2)),
                 datasets: [{
+                    label: 'Participants',
                     data: data.buckets.map(b => b.y),
-                    borderColor: '#c91c23',
-                    backgroundColor: 'rgba(201, 28, 35, 0.4)',
+                    borderColor: '#00d2ff',
+                    backgroundColor: 'rgba(0, 210, 255, 0.15)',
                     fill: true,
                     tension: 0.4,
-                    pointRadius: data.buckets.map(b => Math.abs(b.x - finalScore) < 0.01 ? 8 : 0),
-                    pointBackgroundColor: '#fff',
-                    borderWidth: 4
+                    pointRadius: data.buckets.map(b => Math.abs(b.x - currentScore) < 0.05 ? 8 : 2),
+                    pointBackgroundColor: data.buckets.map(b => Math.abs(b.x - currentScore) < 0.05 ? '#ffffff' : '#00d2ff'),
+                    pointBorderColor: '#00d2ff',
+                    pointBorderWidth: 2,
+                    borderWidth: 3
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y: { display: false },
+                    y: {
+                        display: true,
+                        grid: { color: 'rgba(255,255,255,0.06)', drawBorder: false },
+                        ticks: { color: '#64748b', font: { size: 10, weight: '700' } }
+                    },
                     x: {
-                        grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-                        ticks: { color: '#444', font: { size: 10, weight: '800' } }
+                        grid: { color: 'rgba(255,255,255,0.06)', drawBorder: false },
+                        ticks: { 
+                            color: '#94a3b8', 
+                            font: { size: 10, weight: '800' },
+                            maxTicksLimit: 12
+                        }
                     }
                 },
                 plugins: {
                     legend: { display: false },
-                    tooltip: { enabled: true }
-                }
-            }
-        });
-    }
-
-    function closeCompetitionOverlays() {
-        
-        document.getElementById('lab-global-rank-overlay').style.display = 'none';
-        document.documentElement.classList.remove('modal-open');
-    }
-
-    function closeSubmitModal() {
-        document.getElementById('submit-score-modal').style.display = 'none';
-        document.documentElement.classList.remove('modal-open');
-    }
-
-    async function showRankInput() {
-        const modal = document.getElementById('submit-score-modal');
-        modal.style.display = 'flex';
-        document.documentElement.classList.add('modal-open');
-
-        // Identity Sync
-        const saved = localStorage.getItem('jnd_nickname');
-        if (saved) document.getElementById('player-nickname').value = saved;
-
-        document.getElementById('submit-modal-status').textContent = '';
-        if (window.lucide) lucide.createIcons();
-
-        // Dynamic Feedback Logic
-        const titleEl = document.getElementById('feedback-title');
-        const rankTextEl = document.getElementById('feedback-rank-text');
-        const statTextEl = document.getElementById('feedback-stat-text');
-
-        try {
-            const res = await fetch(`/api/contrast/stats?score=${finalScore}`);
-            const data = await res.json();
-
-            const total = data.total || 0;
-            const strictlyHigher = data.higher_count || 0;
-            const lowerThanCount = data.lower_count || 0;
-            const percentile = total > 0 ? Math.round((lowerThanCount / total) * 100) : 0;
-
-            let clinicalFeedback = "Normal Vision rank achieved.";
-            if (finalScore >= 2.0) {
-                clinicalFeedback = "Excellent. High-tier contrast sensitivity. Normal for healthy young adults.";
-            } else if (finalScore >= 1.65) {
-                clinicalFeedback = "Normal. You have functional contrast sensitivity sufficient for most daily tasks.";
-            } else if (finalScore >= 1.35) {
-                clinicalFeedback = "Low-Normal. Some challenges in low-light or low-contrast environments.";
-            } else {
-                clinicalFeedback = "Impaired. Significant loss of contrast detected. Consider an eye exam.";
-            }
-
-            const isExcellent = finalScore >= 2.0;
-
-            if (strictlyHigher === 0 && total > 0 && isExcellent) {
-                titleEl.textContent = "WAIT... ARE YOU A CYBORG?";
-                titleEl.style.color = "#00d2ff";
-                rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>You're literally #1 in the world. No one scored higher than you.`;
-            } else if (percentile >= 90 && finalScore >= 1.65) {
-                titleEl.textContent = "EYE OF THE TIGER";
-                titleEl.style.color = "#ff9d00";
-                rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>Top 10% global performance achieved. Elite vision detected.`;
-            } else {
-                titleEl.textContent = "TEST COMPLETE";
-                titleEl.style.color = "#fff";
-                rankTextEl.innerHTML = `${clinicalFeedback}<br/><br/>Better than ${percentile}% of those who took our test.`;
-            }
-            statTextEl.textContent = `Evaluated against ${total.toLocaleString()} global sessions. Note: Our database is still growing and may not yet reflect true global distributions.`;
-
-        } catch (e) {
-            console.error("Stats fetch failed", e);
-            titleEl.textContent = "TEST COMPLETE";
-            rankTextEl.textContent = "Global stats currently unavailable, but your score is recorded.";
-            statTextEl.textContent = "Syncing with global hub...";
-        }
-    }
-
-    async function submitToLeaderboard() {
-        const nickInput = document.getElementById('player-nickname');
-        const nickname = (nickInput.value.trim() || "Anonymous");
-        const statusEl = document.getElementById('submit-modal-status');
-
-        if (nickname) localStorage.setItem('jnd_nickname', nickname);
-
-        statusEl.style.color = '#888';
-        statusEl.textContent = 'Registering with Command...';
-
-        try {
-            const response = await fetch('/api/contrast/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: currentSessionId, nickname, log_cs: finalScore })
-            });
-
-            if (response.ok) {
-                statusEl.style.color = '#00ff88';
-                statusEl.textContent = '✓ Score submitted! Loading board...';
-                document.getElementById('nickname-status').style.display = 'block';
-                document.getElementById('nickname-status').innerHTML = `✓ Submitted as "${nickname}"`;
-                document.getElementById('see-rank-btn').style.display = 'none';
-
-                setTimeout(() => {
-                    closeSubmitModal();
-                    openGlobalLeaderboard(); // Show them the top 10
-                }, 1200);
-            } else {
-                throw new Error('Server error');
-            }
-        } catch (e) {
-            statusEl.style.color = 'var(--accent-color)';
-            statusEl.textContent = 'Transmission failed. Try again.';
-        }
-    }
-
-    async function loadLeaderboard() {
-        try {
-            const res = await fetch('/api/contrast/leaderboard');
-            const data = await res.json();
-            renderLeaderboard(data);
-        } catch (e) { console.error(e); }
-    }
-
-    function renderLeaderboard(data) {
-        const list = document.getElementById('global-rank-list');
-        const section = document.getElementById('global-leaderboard-section');
-        if (!data || data.length === 0) {
-            section.style.display = 'none';
-            return;
-        }
-        section.style.display = 'block';
-        section.style.opacity = '1';
-
-        let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">';
-        data.forEach((r, i) => {
-            const isMe = (r.nickname === localStorage.getItem('jnd_nickname') && Math.abs(r.log_cs - finalScore) < 0.001);
-            html += `
-                <tr style="${isMe ? 'background: rgba(201, 28, 35, 0.1);' : ''}; border-bottom: 1px solid rgba(255,255,255,0.03);">
-                    <td style="padding: 0.5rem; color: #444; width: 25px;">#${i + 1}</td>
-                    <td style="padding: 0.5rem; color: #fff; font-weight: 700;">${r.nickname}</td>
-                    <td style="padding: 0.5rem; text-align: right; color: var(--accent-color); font-weight: 800;">${r.log_cs.toFixed(2)}</td>
-                </tr>`;
-        });
-        html += '</table>';
-        list.innerHTML = html;
-    }
-
-    function submitResult() {
-        return fetch('/api/contrast/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                log_cs: finalScore,
-                nickname: 'Guest'
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data && data.success && data.id) {
-                currentSessionId = data.id;
-            }
-        })
-        .catch(err => console.error("Submit failed", err));
-    }
-
-    let chart = null;
-    function loadStats() {
-        fetch(`/api/contrast/stats?score=${finalScore}`)
-            .then(res => res.json())
-            .then(data => {
-                if (!data.buckets || data.buckets.length === 0) return;
-
-                // Calculate percentile feedback
-                if (data.total > 0) {
-                    higherThanPct = Math.round(((data.total - data.higher_count) / data.total) * 100);
-                    const feedback = document.getElementById('feedback-text');
-                    feedback.innerHTML = higherThanPct > 50
-                        ? `EXCELLENT. You performed better than ${higherThanPct}% of users in our global database! 🔥`
-                        : `GOOD EFFORT. You are in the top ${100 - higherThanPct}% of global contrast masters! 👁️`;
-                }
-
-                const ctx = document.getElementById('distChart').getContext('2d');
-                if (chart) chart.destroy();
-
-                chart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.buckets.map(b => b.x.toFixed(2)),
-                        datasets: [{
-                            data: data.buckets.map(b => b.y),
-                            borderColor: '#c91c23',
-                            backgroundColor: 'rgba(201, 28, 35, 0.4)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: data.buckets.map(b => Math.abs(b.x - finalScore) < 0.01 ? 8 : 4),
-                            pointBackgroundColor: data.buckets.map(b => Math.abs(b.x - finalScore) < 0.01 ? '#fff' : '#c91c23'),
-                            borderWidth: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        layout: { padding: { left: 10, right: 10, top: 10, bottom: 0 } },
-                        scales: {
-                            y: { display: false, beginAtZero: true },
-                            x: {
-                                grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-                                ticks: { color: '#888', font: { size: 11, weight: '800' } }
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                enabled: true,
-                                mode: 'index',
-                                intersect: false,
-                                backgroundColor: '#161212',
-                                titleColor: '#fff',
-                                bodyColor: '#888',
-                                borderColor: '#da252c',
-                                borderWidth: 1
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: '#0f172a',
+                        titleColor: '#00d2ff',
+                        bodyColor: '#ffffff',
+                        borderColor: 'rgba(0, 210, 255, 0.4)',
+                        borderWidth: 1,
+                        padding: 10,
+                        callbacks: {
+                            title: function(items) {
+                                return `Score: ${items[0].label} Log CS`;
+                            },
+                            label: function(context) {
+                                return `Participants: ${context.parsed.y}`;
                             }
                         }
                     }
-                });
-            }).catch(err => console.error("Stats load failed", err));
+                }
+            }
+        });
     }
-    function shareResult() {
-        let rank = "Normal Vision";
-        let emoji = "👁️";
-        if (finalScore >= 2.0) { rank = "Eagle Eye"; emoji = "🏆"; }
-        else if (finalScore >= 1.65) { rank = "Optimal Vision"; emoji = "✅"; }
-        else if (finalScore >= 1.35) { rank = "Functional Vision"; emoji = "📊"; }
-        else { rank = "Sub-Optimal"; emoji = "⚠️"; }
 
-        const percentileText = higherThanPct > 0 ? ` Better than ${higherThanPct}% of those who took our test!` : "";
-        const text = `${emoji} I just tested my Contrast Sensitivity on HandleKit!\n\nRank: ${rank}\nScore: ${finalScore.toFixed(2)} Log CS\n${percentileText}\n\nCheck yours here:`;
+    async function openGlobalLeaderboard() {
+        const overlay = document.getElementById('lab-global-rank-overlay');
+        overlay.style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
 
-        const url = window.location.href;
-        if (navigator.share) {
-            navigator.share({ title: 'Contrast Sensitivity Test', text: text, url: url });
-        } else {
-            navigator.clipboard.writeText(`${text} ${url}`);
-            alert('Score copied to clipboard with your rank!');
+        try {
+            const scoreParam = (finalScore !== null && finalScore !== undefined) ? finalScore : 1.95;
+            const statsRes = await fetch(`/api/contrast/stats?score=${scoreParam}`);
+            const stats = await statsRes.json();
+
+            // Populate Modal Metric Cards
+            const totalEl = document.getElementById('modal-stat-total');
+            if (totalEl) totalEl.innerText = stats.total ? stats.total.toLocaleString() : '38+';
+
+            const userScoreEl = document.getElementById('modal-stat-your-score');
+            if (userScoreEl) userScoreEl.innerText = `${scoreParam.toFixed(2)} Log CS`;
+
+            renderGlobalDistChart(stats);
+        } catch (e) {
+            console.error("Failed to load distribution stats:", e);
         }
     }
 
-    // Initial icons
-    window.addEventListener('DOMContentLoaded', () => {
-        if (window.lucide) lucide.createIcons();
-    });
+    function closeLeaderboard() {
+        document.getElementById('lab-global-rank-overlay').style.display = 'none';
+    }
 
     function openEmbedModal() {
         document.getElementById('embed-modal').style.display = 'flex';
         if (window.lucide) lucide.createIcons();
     }
-    
+
     function copyEmbedCode() {
         const textarea = document.getElementById('embed-code');
         textarea.select();
         document.execCommand('copy');
         const btn = document.getElementById('copy-embed-btn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width:18px;height:18px;"></i> Copied Code!';
         if (window.lucide) lucide.createIcons();
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            if (window.lucide) lucide.createIcons();
-        }, 2000);
+        setTimeout(() => { btn.innerHTML = orig; if (window.lucide) lucide.createIcons(); }, 2000);
     }
-    
-    // Check if running in embed mode
+
+    function toggleFaq(btn) {
+        const answer = btn.nextElementSibling;
+        const icon = btn.querySelector('svg');
+        const isOpen = answer.classList.contains('open');
+        document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+        document.querySelectorAll('.faq-question svg').forEach(i => i.style.transform = 'rotate(0deg)');
+        if (!isOpen) {
+            answer.classList.add('open');
+            if (icon) icon.style.transform = 'rotate(180deg)';
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('embed') === 'true') {
             const navbar = document.querySelector('.navbar');
-            if(navbar) navbar.style.display = 'none';
+            if (navbar) navbar.style.display = 'none';
             const footer = document.querySelector('footer');
-            if(footer) footer.style.display = 'none';
+            if (footer) footer.style.display = 'none';
             document.body.style.background = 'transparent';
         }
     });
-
 </script>
 {% endblock %}

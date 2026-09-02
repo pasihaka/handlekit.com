@@ -1,6 +1,7 @@
 {% set title = "Hearing Age Test | How Old Are Your Ears? (Free Online Tool)" %}
 {% set description = "Find out your hearing age with our free high-frequency ear test (8 kHz - 20 kHz). Test your upper hearing limit, check the mosquito tone, and get your result." %}
 {% extends "layout.html" %}
+{% from "components/recommendations.html" import render_recommendations %}
 
 {% block head_extra %}
 <!-- Schema.org JSON-LD -->
@@ -1003,6 +1004,9 @@
             ✓ Thank you for your rating!
         </div>
     </div>
+
+    <!-- Specialist Recommendations -->
+    {{ render_recommendations('hearing_age', title='Hearing Preservation & Audiology Gear', subtitle='Scientifically tested tools to protect remaining high-frequency stereocilia hair cells, prevent acoustic trauma, and verify audio equipment fidelity.') }}
 
     <!-- Embed Magnet Card -->
     <div class="embed-card">
