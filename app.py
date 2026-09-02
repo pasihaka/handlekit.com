@@ -120,6 +120,16 @@ def db_init():
         ip_hash TEXT,
         timestamp REAL
     )''')
+    # Hearing Test Results (Anonymous Background Database)
+    db.execute('''CREATE TABLE IF NOT EXISTS hearing_test_results (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        max_hz INTEGER NOT NULL,
+        hearing_age INTEGER,
+        test_mode TEXT,
+        device_type TEXT,
+        ip_hash TEXT,
+        timestamp REAL NOT NULL
+    )''')
     db.commit()
     db.close()
 
@@ -651,6 +661,22 @@ def tinnitus_frequency_matcher():
 def tinnitus_tone_generator():
     return redirect(url_for('tinnitus_frequency_matcher'), code=301)
 
+@app.route('/hearing-age-test')
+def hearing_age_test():
+    return render_template('hearing_age_test.html')
+
+@app.route('/ear-age-test')
+def ear_age_test():
+    return redirect(url_for('hearing_age_test'), code=301)
+
+@app.route('/how-old-are-your-ears')
+def how_old_are_your_ears():
+    return redirect(url_for('hearing_age_test'), code=301)
+
+@app.route('/high-frequency-hearing-test')
+def high_frequency_hearing_test():
+    return redirect(url_for('hearing_age_test'), code=301)
+
 
 
 @app.route('/articles')
@@ -1096,6 +1122,85 @@ def api_rate_tool():
         return jsonify({"success": True})
     except Exception:
         return jsonify({"success": False, "error": "Server error"}), 500
+
+# Background Hearing Age Database Endpoints
+@app.route('/api/hearing/record', methods=['POST'])
+def api_hearing_record():
+    ip = request.remote_addr or 'unknown'
+    if is_rate_limited(ip, limit=30, period=60):
+        return jsonify({"success": False, "error": "Too many requests"}), 429
+
+    data = request.get_json(silent=True)
+    if not data or 'max_hz' not in data:
+        return jsonify({"success": False, "error": "Invalid data"}), 400
+
+    try:
+        max_hz = int(data['max_hz'])
+        if not (2000 <= max_hz <= 24000):
+            return jsonify({"success": False, "error": "Frequency out of range"}), 400
+
+        hearing_age = int(data.get('hearing_age', 0))
+        test_mode = str(data.get('test_mode', 'step'))[:20]
+        
+        user_agent = request.headers.get('User-Agent', '')
+        device_type = 'mobile' if any(m in user_agent.lower() for m in ['mobile', 'android', 'iphone', 'ipad']) else 'desktop'
+        
+        # Privacy-safe salted hash of IP
+        ip_hash = hashlib.sha256(f"{ip}-hearing-salt-2026".encode()).hexdigest()[:16]
+
+        db = get_db()
+        db.execute('''INSERT INTO hearing_test_results (max_hz, hearing_age, test_mode, device_type, ip_hash, timestamp)
+                      VALUES (?, ?, ?, ?, ?, ?)''',
+                   (max_hz, hearing_age, test_mode, device_type, ip_hash, time.time()))
+        db.commit()
+
+        # Query total count and percentile calculation
+        cursor = db.execute('SELECT COUNT(*) as total FROM hearing_test_results')
+        row1 = cursor.fetchone()
+        total = row1['total'] if row1 and 'total' in row1 else 1
+
+        # Count how many recorded participants had max_hz <= user's max_hz
+        cursor2 = db.execute('SELECT COUNT(*) as lower_count FROM hearing_test_results WHERE max_hz <= ?', (max_hz,))
+        row2 = cursor2.fetchone()
+        lower_count = row2['lower_count'] if row2 and 'lower_count' in row2 else 1
+        
+        db.close()
+
+        # Calculated live percentile among HandleKit test takers
+        live_percentile = round((lower_count / total) * 100) if total > 0 else 50
+
+        return jsonify({
+            "success": True,
+            "total_records": total,
+            "live_percentile": live_percentile
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": "Server error"}), 500
+
+@app.route('/api/hearing/stats', methods=['GET'])
+def api_hearing_stats():
+    try:
+        db = get_db()
+        cursor = db.execute('SELECT COUNT(*) as total, AVG(hearing_age) as avg_age, AVG(max_hz) as avg_hz FROM hearing_test_results')
+        row = cursor.fetchone()
+        summary = dict(row) if row else {}
+
+        cursor2 = db.execute('SELECT max_hz, COUNT(*) as count FROM hearing_test_results GROUP BY max_hz ORDER BY max_hz ASC')
+        freq_dist = [dict(r) for r in cursor2.fetchall()]
+        
+        cursor3 = db.execute('SELECT device_type, COUNT(*) as count FROM hearing_test_results GROUP BY device_type')
+        devices = [dict(r) for r in cursor3.fetchall()]
+
+        db.close()
+        return jsonify({
+            "total_tests": summary.get('total', 0),
+            "average_hearing_age": round(summary.get('avg_age') or 0, 1),
+            "average_max_hz": round(summary.get('avg_hz') or 0, 1),
+            "frequency_distribution": freq_dist,
+            "device_breakdown": devices
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
 

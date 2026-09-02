@@ -29,6 +29,7 @@ zuck_404.html
 failover_debug.txt
 
 # Database and Data
+*.db
 data/*.db
 data/*.json
 !data/.gitkeep

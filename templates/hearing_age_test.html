@@ -1,0 +1,2036 @@
+{% set title = "Hearing Age Test | How Old Are Your Ears? (Free Online Tool)" %}
+{% set description = "Find out your hearing age with our free high-frequency ear test (8 kHz - 20 kHz). Test your upper hearing limit, check the mosquito tone, and get your result." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Hearing Age Test & High-Frequency Assessor",
+      "url": "https://handlekit.com/hearing-age-test",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires Web Audio API support",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Interactive Web Audio tool to test your upper high-frequency hearing limit from 8,000 Hz to 20,000 Hz, calculate your biological ear age, and check the mosquito tone.",
+      "keywords": "hearing age test, ear age test, how old are your ears, high frequency hearing test, mosquito tone test, mosquito ringtone test, presbycusis test, hearing frequency test"
+    },
+    {
+      "@type": "MedicalWebPage",
+      "name": "High-Frequency Hearing Loss & Presbycusis Guide",
+      "url": "https://handlekit.com/hearing-age-test",
+      "description": "Clinical explanation of age-related high-frequency hearing loss (presbycusis), cochlear hair cell degeneration, and extended high-frequency audiometry.",
+      "aspect": ["Diagnosis", "Education"],
+      "audience": {
+        "@type": "MedicalAudience",
+        "audienceType": "Patient"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does an online hearing age test work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The test plays pure sine waves at progressively higher audio frequencies (from 8,000 Hz up to 20,000 Hz). Because humans naturally lose the ability to detect higher acoustic frequencies as they age due to wear on the cochlea's hair cells, your highest audible frequency correlates to an estimated biological hearing age."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the mosquito tone test (17.4 kHz)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The 'mosquito tone' is an ultra-high frequency sound around 17,400 Hz. Because age-related hearing decline typically reduces perception above 17 kHz by the early-to-mid twenties, this frequency is usually audible to teenagers and young adults, but completely silent to older individuals."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do humans lose high audio frequencies first as they age?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In the human inner ear, high-frequency sounds are processed at the very base of the snail-shaped cochlea. Because all incoming sound vibrations enter through this base, the stereocilia hair cells in this region endure the greatest mechanical and metabolic stress over a lifetime, wearing down before the low-frequency hair cells located deeper inside."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can headphones affect my hearing age test result?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Built-in laptop or phone speakers frequently struggle to cleanly reproduce frequencies above 14,000 Hz or 15,000 Hz. For an accurate test, use good-quality wired over-ear headphones or in-ear monitors in a quiet room."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is an online ear age test a substitute for an audiologist?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Online hearing age tests are educational and screening assessments. A clinical evaluation by an audiologist or ENT specialist uses calibrated sound booths to test both pure-tone air/bone conduction and speech discrimination across critical communication frequencies."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if my hearing age is higher than my actual chronological age?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A higher hearing age usually means you have experienced some high-frequency hair cell degradation, which is common if you have attended concerts, used power tools, or frequently listened to loud headphones without hearing protection. It does not automatically mean you have conversational speech impairment."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+    :root {
+        --ha-accent: #06b6d4;
+        --ha-accent-rgb: 6, 182, 212;
+        --ha-young: #10b981;
+        --ha-mature: #f59e0b;
+        --ha-senior: #ef4444;
+    }
+
+    .ha-container {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 2rem 1rem 4rem;
+    }
+
+    .tool-header-block {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .tool-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(var(--ha-accent-rgb), 0.12);
+        color: var(--ha-accent);
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(var(--ha-accent-rgb), 0.25);
+    }
+
+    /* Safety Alert */
+    .safety-alert-banner {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.35);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+        color: var(--text-main);
+        line-height: 1.5;
+    }
+
+    /* Calibration Screen */
+    .calib-card {
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Main Test Card */
+    .ha-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 2.5rem 2rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        margin-bottom: 3rem;
+        position: relative;
+    }
+
+    /* Mode Switcher Tabs */
+    .mode-tab-group {
+        display: flex;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 4px;
+        margin-bottom: 2rem;
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mode-tab-btn {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: none;
+        background: transparent;
+        color: var(--text-sub);
+        font-weight: 700;
+        font-size: 0.95rem;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .mode-tab-btn.active {
+        background: var(--ha-accent);
+        color: #000;
+        box-shadow: 0 4px 12px rgba(var(--ha-accent-rgb), 0.35);
+    }
+
+    /* Step Test Layout */
+    .step-progress-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        font-size: 0.85rem;
+        color: var(--text-sub);
+        font-weight: 700;
+    }
+
+    .progress-bar-track {
+        height: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--ha-accent), #3b82f6);
+        width: 11%;
+        border-radius: 999px;
+        transition: width 0.3s ease;
+    }
+
+    /* Big Frequency Display */
+    .freq-hero {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .freq-number {
+        font-size: 4.25rem;
+        font-weight: 900;
+        letter-spacing: -2px;
+        color: var(--text-main);
+        line-height: 1;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    .freq-hz-label {
+        font-size: 1.5rem;
+        color: var(--ha-accent);
+        font-weight: 700;
+        margin-left: 0.25rem;
+    }
+
+    .freq-age-hint {
+        font-size: 1rem;
+        color: var(--text-sub);
+        margin-top: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* Sound Wave Animation Box */
+    .soundwave-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        height: 36px;
+        margin-top: 1rem;
+    }
+
+    .soundwave-bar {
+        width: 4px;
+        height: 8px;
+        background: var(--ha-accent);
+        border-radius: 2px;
+        transition: height 0.15s ease;
+    }
+
+    .playing .soundwave-bar:nth-child(1) { animation: wave 0.8s infinite ease-in-out; }
+    .playing .soundwave-bar:nth-child(2) { animation: wave 0.8s infinite 0.15s ease-in-out; }
+    .playing .soundwave-bar:nth-child(3) { animation: wave 0.8s infinite 0.3s ease-in-out; }
+    .playing .soundwave-bar:nth-child(4) { animation: wave 0.8s infinite 0.45s ease-in-out; }
+    .playing .soundwave-bar:nth-child(5) { animation: wave 0.8s infinite 0.2s ease-in-out; }
+    .playing .soundwave-bar:nth-child(6) { animation: wave 0.8s infinite 0.35s ease-in-out; }
+    .playing .soundwave-bar:nth-child(7) { animation: wave 0.8s infinite 0.1s ease-in-out; }
+
+    @keyframes wave {
+        0%, 100% { height: 8px; }
+        50% { height: 32px; }
+    }
+
+    /* Interactive Test Action Buttons */
+    .step-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-step-hear {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: #fff;
+        border: none;
+        border-radius: 16px;
+        padding: 1.25rem 1rem;
+        font-size: 1.2rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-step-hear:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-step-nohear {
+        background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem 1rem;
+        font-size: 1.2rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-step-nohear:hover {
+        transform: translateY(-2px);
+        border-color: #ef4444;
+        color: #f87171;
+    }
+
+    .btn-subtitle {
+        font-size: 0.8rem;
+        font-weight: 500;
+        opacity: 0.85;
+    }
+
+    /* Sweep Slider Controls */
+    .slider-box {
+        margin: 1.5rem 0;
+    }
+
+    input[type=range] {
+        -webkit-appearance: none;
+        width: 100%;
+        background: transparent;
+    }
+
+    input[type=range]:focus {
+        outline: none;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 10px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        border: 1px solid var(--border-color);
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        height: 26px;
+        width: 26px;
+        border-radius: 50%;
+        background: var(--ha-accent);
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -8px;
+        box-shadow: 0 0 12px rgba(var(--ha-accent-rgb), 0.6);
+        transition: transform 0.1s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+    }
+
+    .stepper-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.5rem 0.9rem;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .stepper-btn:hover {
+        background: rgba(var(--ha-accent-rgb), 0.15);
+        border-color: var(--ha-accent);
+        color: var(--ha-accent);
+    }
+
+    /* Results Certificate Card */
+    .certificate-card {
+        display: none;
+        background: linear-gradient(145deg, rgba(6, 182, 212, 0.08) 0%, rgba(15, 23, 42, 0.9) 100%);
+        border: 2px solid var(--ha-accent);
+        border-radius: 24px;
+        padding: 3rem 2rem;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(var(--ha-accent-rgb), 0.2);
+        margin-bottom: 3rem;
+        position: relative;
+    }
+
+    .cert-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--ha-accent);
+        color: #000;
+        padding: 0.35rem 1rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1.5rem;
+    }
+
+    .cert-age-value {
+        font-size: 5rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -2px;
+        color: #fff;
+        margin-bottom: 0.5rem;
+    }
+
+    .cert-summary {
+        font-size: 1.25rem;
+        color: var(--text-sub);
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        line-height: 1.5;
+    }
+
+    .spectrum-track {
+        height: 16px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #ef4444 0%, #f59e0b 35%, #10b981 70%, #06b6d4 100%);
+        position: relative;
+        margin: 2rem 0 1rem;
+    }
+
+    .spectrum-marker {
+        position: absolute;
+        top: -6px;
+        width: 28px;
+        height: 28px;
+        background: #fff;
+        border: 4px solid #000;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        transition: left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .spectrum-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--text-sub);
+        font-family: monospace;
+        font-weight: 700;
+    }
+
+    .cert-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-cert-primary {
+        background: var(--ha-accent);
+        color: #000;
+        border: none;
+        border-radius: 12px;
+        padding: 0.85rem 1.75rem;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-cert-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(var(--ha-accent-rgb), 0.4);
+    }
+
+    .btn-cert-secondary {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.85rem 1.5rem;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.15s ease;
+    }
+
+    .btn-cert-secondary:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: #fff;
+    }
+
+    /* Embed Card (Responsive) */
+    .embed-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.75rem;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .embed-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+    }
+
+    .embed-modal-content {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2rem;
+        max-width: 550px;
+        width: 100%;
+        position: relative;
+    }
+
+    /* Educational Section */
+    .edu-section {
+        margin-top: 4rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 3rem;
+    }
+
+    .edu-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .edu-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.75rem;
+    }
+
+    .edu-card h3 {
+        font-size: 1.25rem;
+        color: var(--text-main);
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .edu-card p {
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0 0 0.75rem;
+    }
+
+    .freq-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .freq-table th, .freq-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .freq-table th {
+        color: var(--text-sub);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .freq-table td {
+        color: var(--text-main);
+    }
+
+    /* FAQ Accordion */
+    .faq-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        margin-bottom: 0.75rem;
+        overflow: hidden;
+    }
+
+    .faq-question {
+        width: 100%;
+        padding: 1.25rem 1.5rem;
+        text-align: left;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .faq-question i {
+        color: var(--ha-accent);
+        transition: transform 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-question i {
+        transform: rotate(180deg);
+    }
+
+    .faq-answer {
+        display: none;
+        padding: 0 1.5rem 1.25rem;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .faq-item.open .faq-answer {
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .edu-grid {
+            grid-template-columns: 1fr;
+        }
+        .step-actions {
+            grid-template-columns: 1fr;
+        }
+        .freq-number {
+            font-size: 3.25rem;
+        }
+        .cert-age-value {
+            font-size: 3.75rem;
+        }
+        .embed-card {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1.25rem;
+            padding: 1.5rem;
+            text-align: left;
+        }
+        .embed-card .embed-btn {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+            padding: 0.9rem;
+            font-size: 1rem;
+            display: flex;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container ha-container">
+    
+    <!-- Top Header -->
+    <div class="tool-header-block">
+        <div class="tool-badge">
+            <i data-lucide="headphones" style="width: 16px; height: 16px;"></i> High-Frequency Auditory Assessor
+        </div>
+        <h1 style="font-size: 2.75rem; font-weight: 800; color: var(--text-main); line-height: 1.15; margin-bottom: 1rem; letter-spacing: -1px;">
+            Hearing Age Test &amp; Ear Age Calculator
+        </h1>
+        <p style="color: var(--text-sub); font-size: 1.15rem; max-width: 720px; margin: 0 auto; line-height: 1.6;">
+            Discover your true biological <strong>hearing age</strong> by testing the highest audio frequencies your ears can perceive (8 kHz – 20 kHz). Test the famous 17.4 kHz <strong>mosquito tone</strong> and download your hearing certificate.
+        </p>
+    </div>
+
+    <!-- Safety Warning Banner -->
+    <div class="safety-alert-banner">
+        <i data-lucide="shield-alert" style="width: 24px; height: 24px; color: #f59e0b; flex-shrink: 0; margin-top: 2px;"></i>
+        <div>
+            <strong style="color: #f59e0b;">Safety Protocol &amp; Equipment Warning:</strong>
+            High-frequency sound waves carry high acoustic energy even when they seem quiet. For accurate results and to protect your hearing, please use <strong>headphones</strong> rather than phone or laptop speakers, and keep your computer volume around <strong>15% – 25%</strong>.
+        </div>
+    </div>
+
+    <!-- STAGE 0: Calibration Step -->
+    <div class="calib-card" id="card-calibration">
+        <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.06); padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; color: var(--text-sub); margin-bottom: 1rem;">
+            Step 1 of 2: Safe Volume Baseline
+        </div>
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem;">
+            Calibrate Your Listening Volume
+        </h2>
+        <p style="color: var(--text-sub); font-size: 0.95rem; max-width: 580px; margin: 0 auto 1.75rem; line-height: 1.5;">
+            Click the button below to play a standard <strong>1,000 Hz reference tone</strong>. Adjust your device or headphone volume until this tone is clearly audible, comfortable, and not unpleasantly loud.
+        </p>
+
+        <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.75rem; flex-wrap: wrap;">
+            <button id="btn-play-calib" onclick="toggleCalibTone()" style="background: rgba(var(--ha-accent-rgb), 0.15); border: 1px solid var(--ha-accent); color: var(--ha-accent); padding: 0.85rem 1.5rem; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s;">
+                <i data-lucide="play" id="calib-icon" style="width: 18px; height: 18px;"></i>
+                <span id="calib-text">Play 1,000 Hz Calibration Tone</span>
+            </button>
+        </div>
+
+        <button onclick="finishCalibration()" style="background: linear-gradient(135deg, var(--ha-accent) 0%, #0284c7 100%); color: #000; border: none; padding: 1rem 2.25rem; border-radius: 14px; font-weight: 800; font-size: 1.05rem; cursor: pointer; box-shadow: 0 8px 24px rgba(var(--ha-accent-rgb), 0.35); transition: transform 0.15s ease;">
+            My Volume is Calibrated — Start Hearing Test →
+        </button>
+    </div>
+
+    <!-- STAGE 1: Main Interactive Hearing Test Card -->
+    <div class="ha-card" id="card-test" style="display: none;">
+        
+        <!-- Mode Tabs -->
+        <div class="mode-tab-group">
+            <button class="mode-tab-btn active" id="tab-step" onclick="switchTestMode('step')">
+                <i data-lucide="list-ordered" style="width: 18px; height: 18px;"></i>
+                Guided Step Test
+            </button>
+            <button class="mode-tab-btn" id="tab-sweep" onclick="switchTestMode('sweep')">
+                <i data-lucide="sliders" style="width: 18px; height: 18px;"></i>
+                Continuous Pitch Sweep
+            </button>
+        </div>
+
+        <!-- PANEL A: Guided Step Test -->
+        <div id="panel-step">
+            
+            <div class="step-progress-row">
+                <span id="step-indicator">Testing Frequency 1 of 9</span>
+                <span id="step-age-tag">Standard Baseline Check</span>
+            </div>
+            
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="step-progress-fill"></div>
+            </div>
+
+            <!-- Big Frequency Box -->
+            <div class="freq-hero" id="hero-step">
+                <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ha-accent); font-weight: 700; margin-bottom: 0.5rem;">
+                    Tone Frequency
+                </div>
+                <div class="freq-number">
+                    <span id="step-freq-num">8,000</span><span class="freq-hz-label">Hz</span>
+                </div>
+                <div class="freq-age-hint" id="step-freq-desc">
+                    Expected threshold for adults age 65 and over.
+                </div>
+
+                <!-- Animated Sound Wave Indicator -->
+                <div class="soundwave-box" id="soundwave-container">
+                    <div class="soundwave-bar"></div>
+                    <div class="soundwave-bar"></div>
+                    <div class="soundwave-bar"></div>
+                    <div class="soundwave-bar"></div>
+                    <div class="soundwave-bar"></div>
+                    <div class="soundwave-bar"></div>
+                    <div class="soundwave-bar"></div>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <button class="stepper-btn" onclick="replayStepTone()" style="display: inline-flex; align-items: center; gap: 0.4rem;">
+                        <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i> Replay Tone
+                    </button>
+                </div>
+            </div>
+
+            <!-- Response Decision Buttons -->
+            <div class="step-actions">
+                <button class="btn-step-hear" onclick="answerStep(true)">
+                    <span><i data-lucide="check-circle" style="width: 22px; height: 22px; vertical-align: middle;"></i> I Hear It</span>
+                    <span class="btn-subtitle">Audible tone or high-pitched squeal</span>
+                </button>
+                <button class="btn-step-nohear" onclick="answerStep(false)">
+                    <span><i data-lucide="volume-x" style="width: 22px; height: 22px; vertical-align: middle;"></i> I Can't Hear It</span>
+                    <span class="btn-subtitle">Total silence or cannot detect sound</span>
+                </button>
+            </div>
+
+            <div style="text-align: center; font-size: 0.85rem; color: var(--text-sub);">
+                Tip: If you hear a faint buzzing or clicking artifact at the beginning, ignore the click and only confirm if you hear the continuous high tone.
+            </div>
+
+        </div>
+
+        <!-- PANEL B: Continuous Pitch Sweep Mode -->
+        <div id="panel-sweep" style="display: none;">
+            
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.35rem; color: var(--text-main); margin: 0 0 0.5rem;">
+                    Continuous High-Frequency Sweep
+                </h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem; margin: 0;">
+                    Drag the slider slowly upward from 8,000 Hz until the tone fades into silence.
+                </p>
+            </div>
+
+            <!-- Sweep Frequency Box -->
+            <div class="freq-hero" id="hero-sweep">
+                <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ha-accent); font-weight: 700; margin-bottom: 0.5rem;">
+                    Live Pitch Frequency
+                </div>
+                <div class="freq-number">
+                    <span id="sweep-freq-num">12,000</span><span class="freq-hz-label">Hz</span>
+                </div>
+                <div class="freq-age-hint" id="sweep-age-estimate">
+                    Approximate Ear Age: Under 50 Years Old
+                </div>
+
+                <div class="slider-box" style="max-width: 600px; margin: 1.5rem auto 0.5rem;">
+                    <input type="range" id="sweep-slider" min="8000" max="20000" step="100" value="12000" oninput="updateSweepFreq(this.value)">
+                </div>
+
+                <div style="display: flex; justify-content: space-between; max-width: 600px; margin: 0 auto; font-size: 0.75rem; color: var(--text-sub); font-family: monospace;">
+                    <span>8,000 Hz (65+ yrs)</span>
+                    <span>14,000 Hz (40 yrs)</span>
+                    <span>17,400 Hz (Mosquito)</span>
+                    <span>20,000 Hz (&lt;18)</span>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.25rem; flex-wrap: wrap;">
+                    <button class="stepper-btn" onclick="adjustSweep(-500)">-500 Hz</button>
+                    <button class="stepper-btn" onclick="adjustSweep(-100)">-100 Hz</button>
+                    <button class="stepper-btn" onclick="adjustSweep(100)">+100 Hz</button>
+                    <button class="stepper-btn" onclick="adjustSweep(500)">+500 Hz</button>
+                </div>
+            </div>
+
+            <!-- Sweep Play/Stop and Finish -->
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                <button id="btn-sweep-toggle" onclick="toggleSweepTone()" style="background: rgba(var(--ha-accent-rgb), 0.15); border: 1px solid var(--ha-accent); color: var(--ha-accent); padding: 0.9rem 1.75rem; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="play" id="sweep-play-icon" style="width: 18px; height: 18px;"></i>
+                    <span id="sweep-play-text">Start Tone Sweep</span>
+                </button>
+                <button onclick="calculateSweepResult()" style="background: linear-gradient(135deg, var(--ha-accent) 0%, #0284c7 100%); color: #000; border: none; padding: 0.9rem 1.75rem; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="award" style="width: 18px; height: 18px;"></i>
+                    Set as My Upper Limit &amp; Calculate Age
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STAGE 2: Results Certificate Card -->
+    <div class="certificate-card" id="card-certificate">
+        <div class="cert-badge">
+            <i data-lucide="award" style="width: 14px; height: 14px;"></i> Verified Hearing Assessment
+        </div>
+        
+        <div style="font-size: 1rem; color: var(--ha-accent); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem;">
+            Your Estimated Hearing Age
+        </div>
+        
+        <div class="cert-age-value" id="res-hearing-age">
+            24
+        </div>
+        <div style="font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 1.25rem;">
+            Years Old
+        </div>
+
+        <p class="cert-summary" id="res-summary-text">
+            Your upper hearing cutoff is <strong style="color: var(--ha-accent);" id="res-max-freq">16,000 Hz</strong>. You retain excellent high-frequency auditory perception, placing your ears in the top <strong>25%</strong> of adults.
+        </p>
+
+        <!-- Spectrum Visualizer -->
+        <div style="max-width: 650px; margin: 0 auto;">
+            <div class="spectrum-track">
+                <div class="spectrum-marker" id="spectrum-pin" style="left: 65%;"></div>
+            </div>
+            <div class="spectrum-labels">
+                <span>Age 65+ (&le;8 kHz)</span>
+                <span>Age 50 (12 kHz)</span>
+                <span>Age 30 (15 kHz)</span>
+                <span>Age &lt;20 (17.4 kHz+)</span>
+            </div>
+        </div>
+
+        <!-- Certificate Action Buttons -->
+        <div class="cert-actions">
+            <button class="btn-cert-primary" id="btn-share-result" onclick="shareOrCopyResult()">
+                <i data-lucide="share-2" id="share-btn-icon" style="width: 18px; height: 18px;"></i>
+                <span id="btn-share-text">Share &amp; Challenge Friends</span>
+            </button>
+            <button class="btn-cert-secondary" id="btn-download-badge" onclick="downloadResultImage()">
+                <i data-lucide="download" style="width: 18px; height: 18px;"></i>
+                Download Image Card
+            </button>
+            <button class="btn-cert-secondary" onclick="window.print()">
+                <i data-lucide="printer" style="width: 18px; height: 18px;"></i>
+                Print Certificate
+            </button>
+            <button class="btn-cert-secondary" onclick="restartTest()">
+                <i data-lucide="rotate-ccw" style="width: 18px; height: 18px;"></i>
+                Retest Ears
+            </button>
+        </div>
+
+        <!-- Quick Social & Challenge Box -->
+        <div id="challenge-social-box" style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.5rem; margin-top: 2rem; max-width: 680px; margin-left: auto; margin-right: auto; scroll-margin-top: 20px;">
+            <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ha-accent); font-weight: 800; margin-bottom: 0.35rem;">
+                Challenge Your Friends &amp; Family
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-sub); margin: 0 0 1.25rem; line-height: 1.5;">
+                Most adults lose frequencies above 14 kHz. See if your friends, family, or colleagues can hear the 17.4 kHz Mosquito Tone!
+            </p>
+            <div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;">
+                <a id="btn-share-whatsapp" href="#" target="_blank" rel="noopener" class="stepper-btn" style="background: rgba(37, 211, 102, 0.15); border-color: #25D366; color: #25D366; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.55rem 1rem; font-weight: 700; border-radius: 10px;">
+                    <i data-lucide="message-circle" style="width: 16px; height: 16px;"></i> WhatsApp
+                </a>
+                <a id="btn-share-twitter" href="#" target="_blank" rel="noopener" class="stepper-btn" style="background: rgba(29, 155, 240, 0.15); border-color: #1d9bf0; color: #1d9bf0; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.55rem 1rem; font-weight: 700; border-radius: 10px;">
+                    <i data-lucide="twitter" style="width: 16px; height: 16px;"></i> Post on X
+                </a>
+                <a id="btn-share-facebook" href="#" target="_blank" rel="noopener" class="stepper-btn" style="background: rgba(24, 119, 242, 0.15); border-color: #1877f2; color: #1877f2; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.55rem 1rem; font-weight: 700; border-radius: 10px;">
+                    <i data-lucide="facebook" style="width: 16px; height: 16px;"></i> Facebook
+                </a>
+                <a id="btn-share-reddit" href="#" target="_blank" rel="noopener" class="stepper-btn" style="background: rgba(255, 69, 0, 0.15); border-color: #ff4500; color: #ff4500; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.55rem 1rem; font-weight: 700; border-radius: 10px;">
+                    <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.56 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.703zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.688-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg> Reddit
+                </a>
+                <a id="btn-share-telegram" href="#" target="_blank" rel="noopener" class="stepper-btn" style="background: rgba(34, 158, 217, 0.15); border-color: #229ed9; color: #229ed9; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.55rem 1rem; font-weight: 700; border-radius: 10px;">
+                    <i data-lucide="send" style="width: 16px; height: 16px;"></i> Telegram
+                </a>
+                <a id="btn-share-linkedin" href="#" target="_blank" rel="noopener" class="stepper-btn" style="background: rgba(10, 102, 194, 0.15); border-color: #0a66c2; color: #0a66c2; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.55rem 1rem; font-weight: 700; border-radius: 10px;">
+                    <i data-lucide="linkedin" style="width: 16px; height: 16px;"></i> LinkedIn
+                </a>
+            </div>
+            <div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;">
+                <button onclick="copyScorecardText()" class="stepper-btn" id="btn-copy-scorecard" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 10px;">
+                    <i data-lucide="copy" id="scorecard-copy-icon" style="width: 16px; height: 16px;"></i>
+                    <span id="scorecard-copy-text">Copy Text Scorecard</span>
+                </button>
+                <button onclick="copyResultImageToClipboard()" class="stepper-btn" id="btn-copy-image" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 10px;">
+                    <i data-lucide="image" id="image-copy-icon" style="width: 16px; height: 16px;"></i>
+                    <span id="image-copy-text">Copy Image Card</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating / Feedback Box -->
+    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem 2rem; margin-bottom: 3rem;">
+        <div>
+            <h4 style="margin: 0 0 0.25rem; font-size: 1.05rem; color: var(--text-main);">Rate this Hearing Age Calculator</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-sub);">Did this test match your expected ear age?</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;" id="star-rating-box">
+            <button onclick="rateTool(1)" class="stepper-btn">★ 1</button>
+            <button onclick="rateTool(2)" class="stepper-btn">★ 2</button>
+            <button onclick="rateTool(3)" class="stepper-btn">★ 3</button>
+            <button onclick="rateTool(4)" class="stepper-btn">★ 4</button>
+            <button onclick="rateTool(5)" class="stepper-btn" style="background: rgba(var(--ha-accent-rgb), 0.15); border-color: var(--ha-accent); color: var(--ha-accent);">★ 5 (Accurate)</button>
+        </div>
+        <div id="rate-thanks" style="display: none; color: #10b981; font-weight: 700; font-size: 0.9rem;">
+            ✓ Thank you for your rating!
+        </div>
+    </div>
+
+    <!-- Embed Magnet Card -->
+    <div class="embed-card">
+        <div>
+            <h3 style="margin: 0 0 0.5rem; font-size: 1.25rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="code" style="color: var(--ha-accent); width: 22px; height: 22px; flex-shrink: 0;"></i>
+                Embed This Hearing Age Test on Your Website
+            </h3>
+            <p style="margin: 0; color: var(--text-sub); font-size: 0.95rem; line-height: 1.5;">
+                Add this interactive, high-frequency hearing age tool to your science classroom, audiology blog, or health portal.
+            </p>
+        </div>
+        <button class="stepper-btn embed-btn" onclick="openEmbedModal()" style="padding: 0.75rem 1.25rem; font-size: 0.95rem; background: rgba(var(--ha-accent-rgb), 0.15); border-color: var(--ha-accent); color: var(--ha-accent); white-space: nowrap;">
+            Get Embed Code
+        </button>
+    </div>
+
+    <!-- Educational Deep-Dive & Clinical Science Magnet -->
+    <div class="edu-section">
+        
+        <div style="text-align: center; max-width: 720px; margin: 0 auto 3rem;">
+            <h2 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; margin-bottom: 1rem;">
+                The Science of High-Frequency Hearing &amp; Ear Age
+            </h2>
+            <p style="color: var(--text-sub); font-size: 1.05rem; line-height: 1.6;">
+                Why high-pitched sounds vanish first as we get older, how the cochlea processes audio frequencies, and the physics of the 17.4 kHz mosquito ringtone.
+            </p>
+        </div>
+
+        <div class="edu-grid">
+            
+            <div class="edu-card">
+                <h3><i data-lucide="activity" style="color: var(--ha-accent);"></i> What is Presbycusis?</h3>
+                <p>
+                    <strong>Presbycusis</strong> is the gradual, natural loss of hearing that occurs in most individuals as they grow older. It typically affects both ears equally and begins with the highest frequencies long before speech comprehension is noticeably impaired.
+                </p>
+                <p>
+                    Because human conversational speech primarily occupies the <strong>500 Hz to 4,000 Hz</strong> spectrum (often referred to as the <em>"speech banana"</em>), an individual can easily lose the ability to detect 14,000 Hz or 16,000 Hz without realizing they have experienced any functional hearing decline in daily social situations.
+                </p>
+            </div>
+
+            <div class="edu-card">
+                <h3><i data-lucide="zap" style="color: #f59e0b;"></i> The 17.4 kHz "Mosquito Tone" Phenomenon</h3>
+                <p>
+                    In 2005, a Welsh security inventor developed the <strong>"Mosquito"</strong> device: an acoustic deterrent that emitted an ultra-high 17.4 kHz tone to discourage teenagers from loitering outside storefronts. Because stereocilia hair cells sensitive to 17 kHz deteriorate naturally by the early 20s, adults could walk by without hearing a sound, while teenagers found the high-pitched buzzing unbearable.
+                </p>
+                <p>
+                    Students soon adopted the sound as the <em>"Teen Buzz" ringtone</em>, allowing them to receive text messages and alerts on their mobile phones in class without their teachers ever noticing!
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Frequency-to-Age Reference Table -->
+        <div class="edu-card" style="margin-bottom: 2rem;">
+            <h3><i data-lucide="table" style="color: var(--ha-accent);"></i> Frequency vs. Biological Hearing Age Norms</h3>
+            <p>Clinical psychoacoustic studies show a direct correlation between age cohorts and upper audible frequency limits:</p>
+            
+            <div style="overflow-x: auto;">
+                <table class="freq-table">
+                    <thead>
+                        <tr>
+                            <th>Highest Audible Frequency</th>
+                            <th>Estimated Hearing Age</th>
+                            <th>Real-World Perception &amp; Common Sounds</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>19,000 Hz – 20,000 Hz</strong></td>
+                            <td><strong>Under 18 Years Old</strong></td>
+                            <td>Near the theoretical limit of human hearing. Pristine, undamaged basilar membrane.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>17,000 Hz – 18,000 Hz</strong></td>
+                            <td><strong>Under 24 Years Old</strong></td>
+                            <td>The famous 17.4 kHz "Mosquito Tone" threshold. Audible to most high school and college students.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>15,000 Hz – 16,000 Hz</strong></td>
+                            <td><strong>Under 30 Years Old</strong></td>
+                            <td>Typical young adult threshold. Subtle high-end roll-off from lifestyle headphone use.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>14,000 Hz</strong></td>
+                            <td><strong>Under 40 Years Old</strong></td>
+                            <td>Earliest onset of standard adult presbycusis. High-pitched cicadas begin to sound faint.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>12,000 Hz</strong></td>
+                            <td><strong>Under 50 Years Old</strong></td>
+                            <td>Mid-life average. Old CRT television flyback transformer whine (15.7 kHz) is completely inaudible.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>10,000 Hz</strong></td>
+                            <td><strong>Under 60 Years Old</strong></td>
+                            <td>Mature adult threshold. Upper overtones of cymbals and flute harmonics are muted.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>8,000 Hz or Below</strong></td>
+                            <td><strong>65+ Years Old</strong></td>
+                            <td>Standard senior threshold. Conversational vowels and low consonants remain fully intelligible.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Hardware Limitations Callout -->
+        <div class="edu-card" style="margin-bottom: 3rem; background: rgba(var(--ha-accent-rgb), 0.04); border-color: rgba(var(--ha-accent-rgb), 0.25);">
+            <h3><i data-lucide="cpu" style="color: var(--ha-accent);"></i> Soundcards, DACs, and Nyquist Limits</h3>
+            <p>
+                To generate an analog tone of <strong>20,000 Hz</strong>, your digital audio converter (DAC) must operate at a minimum sample rate of <strong>40,000 Hz</strong> (the Nyquist theorem). Virtually all modern smartphones and computers operate at 44.1 kHz or 48 kHz, meaning your computer hardware is physically capable of producing these tones.
+            </p>
+            <p style="margin-bottom: 0;">
+                However, cheap plastic smartphone speakers and laptop micro-drivers often introduce low-pass acoustic damping above 14 kHz. If you are struggling to hear high frequencies, plug in wired earbuds or over-ear studio headphones for the truest representation of your hearing!
+            </p>
+        </div>
+
+        <!-- FAQ Section -->
+        <div>
+            <h3 style="font-size: 1.75rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; text-align: center;">
+                Frequently Asked Questions
+            </h3>
+
+            <div class="faq-item open">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How does an online hearing age test work?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    The test plays pure sine waves at progressively higher audio frequencies (from 8,000 Hz up to 20,000 Hz). Because humans naturally lose the ability to detect higher acoustic frequencies as they age due to wear on the cochlea's hair cells, your highest audible frequency correlates to an estimated biological hearing age.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What is the mosquito tone test (17.4 kHz)?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    The 'mosquito tone' is an ultra-high frequency sound around 17,400 Hz. Because age-related hearing decline typically reduces perception above 17 kHz by the early-to-mid twenties, this frequency is usually audible to teenagers and young adults, but completely silent to older individuals.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Why do humans lose high audio frequencies first as they age?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    In the human inner ear, high-frequency sounds are processed at the very base of the snail-shaped cochlea. Because all incoming sound vibrations enter through this base, the stereocilia hair cells in this region endure the greatest mechanical and metabolic stress over a lifetime, wearing down before the low-frequency hair cells located deeper inside.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Can headphones affect my hearing age test result?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Yes. Built-in laptop or phone speakers frequently struggle to cleanly reproduce frequencies above 14,000 Hz or 15,000 Hz. For an accurate test, use good-quality wired over-ear headphones or in-ear monitors in a quiet room.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Is an online ear age test a substitute for an audiologist?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    No. Online hearing age tests are educational and screening assessments. A clinical evaluation by an audiologist or ENT specialist uses calibrated sound booths to test both pure-tone air/bone conduction and speech discrimination across critical communication frequencies.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What if my hearing age is higher than my actual chronological age?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    A higher hearing age usually means you have experienced some high-frequency hair cell degradation, which is common if you have attended concerts, used power tools, or frequently listened to loud headphones without hearing protection. It does not automatically mean you have conversational speech impairment.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Related Sensory Tools -->
+    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-sub); margin-bottom: 1.5rem; text-align: center;">
+            Explore Other Free Sensory &amp; Diagnostic Tools
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+            
+            <a href="/contrast-sensitivity-test" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="eye" style="color: #00d2ff;"></i>
+                <h2>Contrast Sensitivity Test</h2>
+                <p>Clinical-style Pelli-Robson chart simulator to test your functional visual contrast threshold.</p>
+                <div class="card-arrow">Take test <i data-lucide="arrow-right"></i></div>
+            </a>
+
+            <a href="/tinnitus-frequency-matcher" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="ear" style="color: #10b981;"></i>
+                <h2>Tinnitus Frequency Matcher</h2>
+                <p>Pinpoint your ear ringing pitch (250 Hz - 16 kHz) and test tailor-made notched sound therapy.</p>
+                <div class="card-arrow">Match pitch <i data-lucide="arrow-right"></i></div>
+            </a>
+
+            <a href="/jnd-test" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="palette" style="color: #a855f7;"></i>
+                <h2>JND Color Perception Test</h2>
+                <p>Measure your Weber's Law Just Noticeable Difference (JND) threshold for subtle color discrimination.</p>
+                <div class="card-arrow">Test vision <i data-lucide="arrow-right"></i></div>
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Embed Modal -->
+<div class="embed-modal" id="embed-modal" onclick="closeEmbedModal(event)">
+    <div class="embed-modal-content">
+        <button onclick="closeEmbedModal()" style="position: absolute; top: 1.25rem; right: 1.25rem; background: transparent; border: none; color: var(--text-sub); cursor: pointer;">
+            <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+        <h3 style="font-size: 1.35rem; color: var(--text-main); margin-top: 0; margin-bottom: 0.5rem;">
+            Embed Hearing Age Test
+        </h3>
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 1rem;">
+            Copy and paste this HTML snippet into your website, blog, or school science page:
+        </p>
+        <textarea id="embed-code" readonly style="width: 100%; height: 130px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: monospace; font-size: 0.85rem; padding: 0.75rem; box-sizing: border-box; resize: none; margin-bottom: 1rem;"><iframe src="https://handlekit.com/hearing-age-test?embed=true" width="100%" height="780" frameborder="0" style="border: 1px solid #334155; border-radius: 12px;" allow="autoplay"></iframe>
+<p style="font-size: 0.8rem; color: #64748b; text-align: center; margin-top: 0.5rem;">Powered by the free <a href="https://handlekit.com/hearing-age-test" target="_blank" rel="noopener" style="color: #06b6d4; text-decoration: underline;">HandleKit Hearing Age Test</a></p></textarea>
+        <button id="copy-embed-btn" class="stepper-btn embed-btn" onclick="copyEmbedCode()" style="width: 100%; padding: 0.85rem; font-size: 0.95rem; background: var(--ha-accent); color: #000; border: none; font-weight: 800;">
+            <i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Embed Code
+        </button>
+    </div>
+</div>
+
+<script>
+    // Audio Context & State
+    let audioCtx = null;
+    let oscNode = null;
+    let gainNode = null;
+    let isCalibPlaying = false;
+    let isStepPlaying = false;
+    let isSweepPlaying = false;
+
+    // Step Test Steps Data
+    const STEP_FREQS = [
+        { hz: 8000, age: "65+", desc: "Baseline senior threshold. Audible to nearly everyone." },
+        { hz: 10000, age: "60", desc: "Mature adult threshold. Common for ages 55–60." },
+        { hz: 12000, age: "50", desc: "Mid-life threshold. Common for adults age 50." },
+        { hz: 14000, age: "40", desc: "Early adult presbycusis begins. Common for age 40." },
+        { hz: 15000, age: "30", desc: "Typical young adult threshold (age ~30)." },
+        { hz: 16000, age: "24", desc: "College / early twenties threshold (age ~24)." },
+        { hz: 17400, age: "20", desc: "The famous 17.4 kHz 'Mosquito Tone' (Teen Buzz threshold)." },
+        { hz: 19000, age: "18", desc: "High school / teenage threshold (age ~18)." },
+        { hz: 20000, age: "<16", desc: "Pristine inner ear hair cells (children / teens under 16)." }
+    ];
+
+    let currentStepIndex = 0;
+    let highestStepHeard = null;
+    let stepTimer = null;
+    let stepFadeTimeout = null;
+    let calibStopTimeout = null;
+    let currentSweepFreq = 12000;
+
+    function initAudio() {
+        if (!audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    // Calibration Phase
+    function toggleCalibTone() {
+        initAudio();
+        if (isCalibPlaying) {
+            stopCalibTone();
+        } else {
+            startCalibTone();
+        }
+    }
+
+    function startCalibTone() {
+        if (!audioCtx) return;
+        stopAnySound();
+
+        oscNode = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+
+        oscNode.type = 'sine';
+        oscNode.frequency.setValueAtTime(1000, audioCtx.currentTime);
+
+        oscNode.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        // Safe soft gain ramp to 12%
+        gainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 0.15);
+
+        oscNode.start();
+        isCalibPlaying = true;
+
+        document.getElementById('calib-text').innerText = "Stop Calibration Tone";
+        document.getElementById('calib-icon').setAttribute('data-lucide', 'square');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function stopCalibTone(immediate = false) {
+        if (calibStopTimeout) {
+            clearTimeout(calibStopTimeout);
+            calibStopTimeout = null;
+        }
+        if (gainNode && audioCtx) {
+            try {
+                gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+                if (immediate) {
+                    gainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+                } else {
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
+                }
+            } catch(e) {}
+        }
+
+        const cleanup = () => {
+            if (oscNode && isCalibPlaying) {
+                try { oscNode.stop(); oscNode.disconnect(); } catch(e) {}
+                oscNode = null;
+            }
+            isCalibPlaying = false;
+        };
+
+        if (immediate) {
+            cleanup();
+        } else {
+            calibStopTimeout = setTimeout(cleanup, 90);
+        }
+
+        const calibText = document.getElementById('calib-text');
+        if (calibText) calibText.innerText = "Play 1,000 Hz Calibration Tone";
+        const calibIcon = document.getElementById('calib-icon');
+        if (calibIcon) calibIcon.setAttribute('data-lucide', 'play');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function finishCalibration() {
+        stopAnySound();
+        document.getElementById('card-calibration').style.display = 'none';
+        document.getElementById('card-test').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('card-test').offsetTop - 30, behavior: 'smooth' });
+        setTimeout(() => {
+            loadStep(0);
+        }, 120);
+    }
+
+    // Test Mode Switching
+    function switchTestMode(mode) {
+        stopAnySound();
+        const tabStep = document.getElementById('tab-step');
+        const tabSweep = document.getElementById('tab-sweep');
+        const panelStep = document.getElementById('panel-step');
+        const panelSweep = document.getElementById('panel-sweep');
+
+        if (mode === 'step') {
+            tabStep.classList.add('active');
+            tabSweep.classList.remove('active');
+            panelStep.style.display = 'block';
+            panelSweep.style.display = 'none';
+            loadStep(currentStepIndex);
+        } else {
+            tabStep.classList.remove('active');
+            tabSweep.classList.add('active');
+            panelStep.style.display = 'none';
+            panelSweep.style.display = 'block';
+            updateSweepFreq(currentSweepFreq);
+        }
+    }
+
+    function stopAnySound() {
+        if (calibStopTimeout) {
+            clearTimeout(calibStopTimeout);
+            calibStopTimeout = null;
+        }
+        if (stepTimer) {
+            clearTimeout(stepTimer);
+            stepTimer = null;
+        }
+        if (stepFadeTimeout) {
+            clearTimeout(stepFadeTimeout);
+            stepFadeTimeout = null;
+        }
+        if (gainNode && audioCtx) {
+            try {
+                gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+            } catch(e) {}
+        }
+        if (oscNode) {
+            try { oscNode.stop(); oscNode.disconnect(); } catch(e) {}
+            oscNode = null;
+        }
+        isCalibPlaying = false;
+        isStepPlaying = false;
+        isSweepPlaying = false;
+        
+        const waveBox = document.getElementById('soundwave-container');
+        if (waveBox) waveBox.classList.remove('playing');
+
+        const sweepBtnText = document.getElementById('sweep-play-text');
+        if (sweepBtnText) sweepBtnText.innerText = "Start Tone Sweep";
+        const sweepIcon = document.getElementById('sweep-play-icon');
+        if (sweepIcon) sweepIcon.setAttribute('data-lucide', 'play');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    // Mode 1: Step Test Logic
+    function loadStep(idx) {
+        currentStepIndex = idx;
+        const data = STEP_FREQS[idx];
+
+        document.getElementById('step-indicator').innerText = `Testing Frequency ${idx + 1} of ${STEP_FREQS.length}`;
+        document.getElementById('step-age-tag').innerText = `Expected Age: ~${data.age} yrs`;
+        document.getElementById('step-progress-fill').style.width = `${((idx + 1) / STEP_FREQS.length) * 100}%`;
+
+        document.getElementById('step-freq-num').innerText = data.hz.toLocaleString();
+        document.getElementById('step-freq-desc').innerText = data.desc;
+
+        playStepTone(data.hz);
+    }
+
+    function playStepTone(hz) {
+        initAudio();
+        stopAnySound();
+
+        oscNode = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+
+        oscNode.type = 'sine';
+        oscNode.frequency.setValueAtTime(hz, audioCtx.currentTime);
+
+        oscNode.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        // Safe soft fade-in to 20%
+        gainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.20, audioCtx.currentTime + 0.15);
+
+        oscNode.start();
+        isStepPlaying = true;
+
+        document.getElementById('soundwave-container').classList.add('playing');
+
+        // Automatically fade out after 4 seconds
+        stepTimer = setTimeout(() => {
+            if (gainNode && audioCtx) {
+                try {
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
+                } catch(e) {}
+            }
+            stepFadeTimeout = setTimeout(() => {
+                if (oscNode && isStepPlaying) {
+                    try { oscNode.stop(); oscNode.disconnect(); } catch(e) {}
+                    oscNode = null;
+                }
+                isStepPlaying = false;
+                document.getElementById('soundwave-container').classList.remove('playing');
+            }, 220);
+        }, 3800);
+    }
+
+    function replayStepTone() {
+        playStepTone(STEP_FREQS[currentStepIndex].hz);
+    }
+
+    function answerStep(heard) {
+        stopAnySound();
+
+        if (heard) {
+            highestStepHeard = STEP_FREQS[currentStepIndex];
+            if (currentStepIndex + 1 < STEP_FREQS.length) {
+                loadStep(currentStepIndex + 1);
+            } else {
+                // Completed all steps successfully!
+                displayResult(20000, "<16", 5);
+            }
+        } else {
+            // First frequency the user could not hear
+            if (highestStepHeard) {
+                const ageEst = estimateAgeFromFreq(highestStepHeard.hz);
+                displayResult(highestStepHeard.hz, ageEst.age, ageEst.pct);
+            } else {
+                // Could not hear 8,000 Hz
+                displayResult(7500, "70+", 90);
+            }
+        }
+    }
+
+    function estimateAgeFromFreq(hz) {
+        if (hz >= 19500) return { age: "<16", pct: 5 };
+        if (hz >= 18500) return { age: "18", pct: 10 };
+        if (hz >= 17000) return { age: "22", pct: 18 };
+        if (hz >= 15500) return { age: "27", pct: 28 };
+        if (hz >= 14500) return { age: "35", pct: 40 };
+        if (hz >= 13500) return { age: "42", pct: 52 };
+        if (hz >= 11500) return { age: "50", pct: 64 };
+        if (hz >= 9500)  return { age: "60", pct: 75 };
+        return { age: "68+", pct: 90 };
+    }
+
+    // Mode 2: Continuous Sweep Logic
+    function updateSweepFreq(val) {
+        currentSweepFreq = parseInt(val);
+        document.getElementById('sweep-freq-num').innerText = currentSweepFreq.toLocaleString();
+
+        let ageDesc = "";
+        if (currentSweepFreq >= 19000) ageDesc = "Approximate Ear Age: Under 18 Years Old (Teenage Limit)";
+        else if (currentSweepFreq >= 17000) ageDesc = "Approximate Ear Age: Under 24 Years Old (Mosquito Tone)";
+        else if (currentSweepFreq >= 15000) ageDesc = "Approximate Ear Age: Under 30 Years Old";
+        else if (currentSweepFreq >= 13500) ageDesc = "Approximate Ear Age: Under 40 Years Old";
+        else if (currentSweepFreq >= 11500) ageDesc = "Approximate Ear Age: Under 50 Years Old";
+        else if (currentSweepFreq >= 9500)  ageDesc = "Approximate Ear Age: Under 60 Years Old";
+        else ageDesc = "Approximate Ear Age: 65+ Years Old (Senior Baseline)";
+
+        document.getElementById('sweep-age-estimate').innerText = ageDesc;
+
+        if (oscNode && audioCtx && isSweepPlaying) {
+            oscNode.frequency.cancelScheduledValues(audioCtx.currentTime);
+            oscNode.frequency.setValueAtTime(currentSweepFreq, audioCtx.currentTime);
+        }
+    }
+
+    function adjustSweep(delta) {
+        const slider = document.getElementById('sweep-slider');
+        let newVal = Math.max(8000, Math.min(20000, currentSweepFreq + delta));
+        slider.value = newVal;
+        updateSweepFreq(newVal);
+    }
+
+    function toggleSweepTone() {
+        initAudio();
+        if (isSweepPlaying) {
+            stopSweepTone();
+        } else {
+            startSweepTone();
+        }
+    }
+
+    function startSweepTone() {
+        if (!audioCtx) return;
+        stopAnySound();
+
+        oscNode = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+
+        oscNode.type = 'sine';
+        oscNode.frequency.setValueAtTime(currentSweepFreq, audioCtx.currentTime);
+
+        oscNode.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        gainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.20, audioCtx.currentTime + 0.15);
+
+        oscNode.start();
+        isSweepPlaying = true;
+
+        document.getElementById('sweep-play-text').innerText = "Stop Tone Sweep";
+        document.getElementById('sweep-play-icon').setAttribute('data-lucide', 'square');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function stopSweepTone() {
+        if (gainNode && audioCtx) {
+            gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
+        }
+        setTimeout(() => {
+            if (oscNode) {
+                try { oscNode.stop(); oscNode.disconnect(); } catch(e) {}
+                oscNode = null;
+            }
+            isSweepPlaying = false;
+        }, 120);
+
+        document.getElementById('sweep-play-text').innerText = "Start Tone Sweep";
+        document.getElementById('sweep-play-icon').setAttribute('data-lucide', 'play');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function calculateSweepResult() {
+        stopAnySound();
+        const est = estimateAgeFromFreq(currentSweepFreq);
+        displayResult(currentSweepFreq, est.age, est.pct);
+    }
+
+    // Display Results Certificate
+    let currentTestResult = { maxHz: 16000, ageStr: "24", percentile: 25 };
+
+    function getScorecardText() {
+        const age = currentTestResult.ageStr;
+        const hz = currentTestResult.maxHz.toLocaleString();
+        const mosquito = currentTestResult.maxHz >= 17000 ? "Audible! 🟢" : "Inaudible 🔴";
+        const rank = currentTestResult.percentile ? `Top ${currentTestResult.percentile}%` : "Normal";
+
+        return `👂 How Old Are Your Ears?
+━━━━━━━━━━━━━━━━━━
+🎂 Estimated Ear Age: ${age} Years Old
+🔊 Upper Hearing Limit: ${hz} Hz
+🦟 17.4 kHz Mosquito Tone: ${mosquito}
+📊 Population Rank: ${rank} of adults
+━━━━━━━━━━━━━━━━━━
+Can your ears beat mine? Test free on HandleKit:
+https://handlekit.com/hearing-age-test`;
+    }
+
+    function displayResult(maxHz, ageStr, percentile) {
+        stopAnySound();
+        currentTestResult = { maxHz, ageStr, percentile };
+
+        document.getElementById('card-test').style.display = 'none';
+        const cert = document.getElementById('card-certificate');
+        cert.style.display = 'block';
+
+        document.getElementById('res-hearing-age').innerText = ageStr;
+
+        let summary = "";
+        let pinLeft = 50;
+
+        if (maxHz >= 18000) {
+            summary = `Incredible! Your upper auditory cutoff is <strong style="color: var(--ha-accent);">${maxHz.toLocaleString()} Hz</strong>. You can hear pristine high-frequencies that are inaudible to over 90% of adults. Your ears perform like those of a teenager.`;
+            pinLeft = 92;
+        } else if (maxHz >= 17000) {
+            summary = `Superb hearing! Your upper cutoff is <strong style="color: var(--ha-accent);">${maxHz.toLocaleString()} Hz</strong> (you can hear the famous 17.4 kHz Mosquito Tone). Your high-frequency stereocilia hair cells are exceptionally well-preserved.`;
+            pinLeft = 82;
+        } else if (maxHz >= 15000) {
+            summary = `Healthy young adult hearing! Your upper cutoff is <strong style="color: var(--ha-accent);">${maxHz.toLocaleString()} Hz</strong>. You have solid high-frequency sensitivity well above the normal conversational spectrum.`;
+            pinLeft = 65;
+        } else if (maxHz >= 13000) {
+            summary = `Normal adult hearing. Your upper limit is <strong style="color: var(--ha-accent);">${maxHz.toLocaleString()} Hz</strong>. You have typical age-related presbycusis roll-off, but all speech and environmental sounds remain crisp.`;
+            pinLeft = 45;
+        } else if (maxHz >= 10000) {
+            summary = `Mature ear profile. Your upper cutoff is <strong style="color: var(--ha-accent);">${maxHz.toLocaleString()} Hz</strong>. While ultra-high squeals have faded, your conversational hearing frequencies (up to 4 kHz) remain fully functional.`;
+            pinLeft = 28;
+        } else {
+            summary = `Senior auditory baseline. Your upper limit is <strong style="color: var(--ha-accent);">${maxHz.toLocaleString()} Hz</strong>. High-frequency loss is standard past age 60. Consider an annual evaluation with an audiologist to monitor speech clarity.`;
+            pinLeft = 12;
+        }
+
+        document.getElementById('res-summary-text').innerHTML = summary;
+        document.getElementById('spectrum-pin').style.left = `${pinLeft}%`;
+
+        // Update Social Share Links
+        const cardText = getScorecardText();
+        const encodedCard = encodeURIComponent(cardText);
+        const encodedUrl = encodeURIComponent("https://handlekit.com/hearing-age-test");
+        const encodedTitle = encodeURIComponent(`I just tested my hearing age: ${currentTestResult.ageStr} Years Old (${currentTestResult.maxHz.toLocaleString()} Hz). How old are your ears?`);
+
+        // WhatsApp
+        const waBtn = document.getElementById('btn-share-whatsapp');
+        if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${encodedCard}`;
+
+        // X / Twitter
+        const twBtn = document.getElementById('btn-share-twitter');
+        if (twBtn) twBtn.href = `https://twitter.com/intent/tweet?text=${encodedCard}`;
+
+        // Facebook
+        const fbBtn = document.getElementById('btn-share-facebook');
+        if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedCard}`;
+
+        // Reddit
+        const rdBtn = document.getElementById('btn-share-reddit');
+        if (rdBtn) rdBtn.href = `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`;
+
+        // Telegram
+        const tgBtn = document.getElementById('btn-share-telegram');
+        if (tgBtn) tgBtn.href = `https://t.me/share/url?url=${encodedUrl}&text=${encodedCard}`;
+
+        // LinkedIn
+        const liBtn = document.getElementById('btn-share-linkedin');
+        if (liBtn) liBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+
+        // Silently record result in background database
+        try {
+            fetch('/api/hearing/record', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    max_hz: maxHz,
+                    hearing_age: parseInt(ageStr) || 0,
+                    test_mode: 'step'
+                })
+            }).then(r => r.json()).then(data => {
+                if (data && data.success && data.total_records >= 100 && data.live_percentile) {
+                    const cohortPct = 100 - data.live_percentile;
+                    currentTestResult.percentile = cohortPct > 0 ? cohortPct : 5;
+                }
+            }).catch(() => {});
+        } catch(e) {}
+
+        window.scrollTo({ top: cert.offsetTop - 30, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+        stopAnySound();
+        document.getElementById('card-certificate').style.display = 'none';
+        document.getElementById('card-test').style.display = 'block';
+        highestStepHeard = null;
+        loadStep(0);
+    }
+
+    function shareOrCopyResult() {
+        const fullShareText = getScorecardText();
+        const shareTitle = "Hearing Age Test - HandleKit";
+
+        const btnText = document.getElementById('btn-share-text');
+        const btnIcon = document.getElementById('share-btn-icon');
+
+        function showSuccess(msg) {
+            if (btnText) btnText.innerText = msg;
+            if (btnIcon) btnIcon.setAttribute('data-lucide', 'check');
+            if (window.lucide) lucide.createIcons();
+            setTimeout(() => {
+                if (btnText) btnText.innerText = "Share & Challenge Friends";
+                if (btnIcon) btnIcon.setAttribute('data-lucide', 'share-2');
+                if (window.lucide) lucide.createIcons();
+            }, 2500);
+        }
+
+        // Detect genuine mobile/tablet touch devices (phones, tablets)
+        // Desktop Windows/Mac should NEVER open the awkward OS share charm
+        const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                         (navigator.maxTouchPoints > 1 && !/Windows NT/i.test(navigator.userAgent));
+
+        // 1. If mobile device with Web Share API, invoke native mobile share sheet
+        if (isMobile && navigator.share) {
+            navigator.share({
+                title: shareTitle,
+                text: fullShareText
+            }).then(() => {
+                showSuccess("Shared!");
+            }).catch(() => {
+                // If user cancelled or aborted on mobile, also copy to clipboard so they have it
+                fallbackCopyToClipboard(fullShareText, () => showSuccess("Scorecard Copied!"));
+            });
+            return;
+        }
+
+        // 2. On Desktop (Windows, Mac, Linux): ALWAYS copy directly to clipboard
+        // and scroll down smoothly to present the 1-click social media buttons!
+        fallbackCopyToClipboard(fullShareText, () => {
+            showSuccess("Scorecard Copied to Clipboard!");
+            const challengeBox = document.getElementById('challenge-social-box');
+            if (challengeBox) {
+                challengeBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    }
+
+    function copyScorecardText() {
+        const text = getScorecardText();
+        const btnText = document.getElementById('scorecard-copy-text');
+        const btnIcon = document.getElementById('scorecard-copy-icon');
+
+        fallbackCopyToClipboard(text, (msg) => {
+            if (btnText) btnText.innerText = "Scorecard Copied!";
+            if (btnIcon) btnIcon.setAttribute('data-lucide', 'check');
+            if (window.lucide) lucide.createIcons();
+            setTimeout(() => {
+                if (btnText) btnText.innerText = "Copy Text Scorecard";
+                if (btnIcon) btnIcon.setAttribute('data-lucide', 'copy');
+                if (window.lucide) lucide.createIcons();
+            }, 2500);
+        });
+    }
+
+    function generateResultCanvas() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 630;
+        const ctx = canvas.getContext('2d');
+
+        // Background dark gradient
+        const bgGrad = ctx.createLinearGradient(0, 0, 1200, 630);
+        bgGrad.addColorStop(0, '#0f172a');
+        bgGrad.addColorStop(0.5, '#090d16');
+        bgGrad.addColorStop(1, '#020617');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Border glow
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(35, 35, 1130, 560);
+
+        // Header Brand
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#06b6d4';
+        ctx.font = 'bold 26px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('HANDLEKIT.COM', 70, 95);
+
+        // Verified Badge
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.15)';
+        ctx.fillRect(840, 68, 290, 42);
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(840, 68, 290, 42);
+        ctx.fillStyle = '#06b6d4';
+        ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillText('VERIFIED HEARING TEST', 880, 95);
+
+        // Title
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillText('ESTIMATED BIOLOGICAL HEARING AGE', 600, 180);
+
+        // Big Age Number
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 120px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillText(currentTestResult.ageStr, 600, 295);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillText('YEARS OLD', 600, 340);
+
+        // 3 Stat Badges
+        const stats = [
+            { label: 'Upper Frequency', val: currentTestResult.maxHz.toLocaleString() + ' Hz' },
+            { label: '17.4 kHz Mosquito Tone', val: currentTestResult.maxHz >= 17000 ? 'Audible' : 'Inaudible' },
+            { label: 'Adult Cohort Rank', val: `Top ${currentTestResult.percentile}%` }
+        ];
+
+        stats.forEach((stat, i) => {
+            const x = 165 + i * 295;
+            const y = 375;
+            const w = 275;
+            const h = 75;
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.fillRect(x, y, w, h);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, w, h);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '14px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText(stat.label, x + w / 2, y + 28);
+
+            ctx.fillStyle = '#06b6d4';
+            ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText(stat.val, x + w / 2, y + 58);
+        });
+
+        // Spectrum Bar
+        const barX = 180;
+        const barY = 490;
+        const barW = 840;
+        const barH = 14;
+
+        const specGrad = ctx.createLinearGradient(barX, barY, barX + barW, barY);
+        specGrad.addColorStop(0, '#ef4444');
+        specGrad.addColorStop(0.35, '#f59e0b');
+        specGrad.addColorStop(0.7, '#10b981');
+        specGrad.addColorStop(1, '#06b6d4');
+        ctx.fillStyle = specGrad;
+        ctx.fillRect(barX, barY, barW, barH);
+
+        // Spectrum Labels
+        ctx.fillStyle = '#64748b';
+        ctx.font = 'bold 14px monospace';
+        ctx.fillText('Age 65+ (≤8 kHz)', barX + 60, barY + 34);
+        ctx.fillText('Age 50 (12 kHz)', barX + 280, barY + 34);
+        ctx.fillText('Age 30 (15 kHz)', barX + 540, barY + 34);
+        ctx.fillText('Age <20 (17.4 kHz+)', barX + 760, barY + 34);
+
+        // Spectrum Pin Marker
+        let pct = 0.5;
+        if (currentTestResult.maxHz >= 18000) pct = 0.92;
+        else if (currentTestResult.maxHz >= 17000) pct = 0.82;
+        else if (currentTestResult.maxHz >= 15000) pct = 0.65;
+        else if (currentTestResult.maxHz >= 13000) pct = 0.45;
+        else if (currentTestResult.maxHz >= 10000) pct = 0.28;
+        else pct = 0.12;
+
+        const pinX = barX + barW * pct;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(pinX, barY + barH / 2, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Footer CTA
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '18px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillText('How old are your ears? Test free at handlekit.com/hearing-age-test', 600, 565);
+
+        return canvas;
+    }
+
+    function downloadResultImage() {
+        const canvas = generateResultCanvas();
+        canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Hearing_Age_${currentTestResult.ageStr}_Years.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    }
+
+    function copyResultImageToClipboard() {
+        const canvas = generateResultCanvas();
+        const btnText = document.getElementById('image-copy-text');
+        const btnIcon = document.getElementById('image-copy-icon');
+
+        canvas.toBlob((blob) => {
+            if (navigator.clipboard && window.ClipboardItem) {
+                navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => {
+                    if (btnText) btnText.innerText = "Image Copied to Clipboard!";
+                    if (btnIcon) btnIcon.setAttribute('data-lucide', 'check');
+                    if (window.lucide) lucide.createIcons();
+                    setTimeout(() => {
+                        if (btnText) btnText.innerText = "Copy Image Card";
+                        if (btnIcon) btnIcon.setAttribute('data-lucide', 'image');
+                        if (window.lucide) lucide.createIcons();
+                    }, 2500);
+                }).catch(() => {
+                    downloadResultImage();
+                });
+            } else {
+                downloadResultImage();
+            }
+        });
+    }
+
+    function fallbackCopyToClipboard(text, onSuccess) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (typeof onSuccess === 'function') onSuccess("Copied to Clipboard!");
+            }).catch(() => {
+                execCommandCopy(text, onSuccess);
+            });
+        } else {
+            execCommandCopy(text, onSuccess);
+        }
+    }
+
+    function execCommandCopy(text, onSuccess) {
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            const successful = document.execCommand('copy');
+            document.body.removeChild(ta);
+            if (successful) {
+                if (typeof onSuccess === 'function') onSuccess("Copied to Clipboard!");
+                return;
+            }
+        } catch(e) {}
+        prompt("Copy your hearing result:", text);
+    }
+
+    // Embed Modal
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+    }
+
+    function closeEmbedModal(e) {
+        if (!e || e.target.id === 'embed-modal' || e.target.closest('button')) {
+            document.getElementById('embed-modal').style.display = 'none';
+        }
+    }
+
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied to Clipboard!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = '<i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Embed Code';
+            if (window.lucide) lucide.createIcons();
+        }, 2500);
+    }
+
+    function rateTool(stars) {
+        document.getElementById('star-rating-box').style.display = 'none';
+        document.getElementById('rate-thanks').style.display = 'block';
+    }
+
+    function toggleFaq(btn) {
+        const item = btn.closest('.faq-item');
+        item.classList.toggle('open');
+    }
+
+    // Detect ?embed=true
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('embed') === 'true') {
+            document.body.classList.add('embed-mode');
+            const nav = document.querySelector('nav');
+            const footer = document.querySelector('footer');
+            const edu = document.querySelector('.edu-section');
+            const embedCard = document.querySelector('.embed-card');
+            if (nav) nav.style.display = 'none';
+            if (footer) footer.style.display = 'none';
+            if (edu) edu.style.display = 'none';
+            if (embedCard) embedCard.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
