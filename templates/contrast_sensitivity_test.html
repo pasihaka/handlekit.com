@@ -1574,80 +1574,6 @@ https://handlekit.com/contrast-sensitivity-test`;
         }
     }
 
-    function generateResultCanvas() {
-        const canvas = document.createElement('canvas');
-        canvas.width = 1200;
-        canvas.height = 630;
-        const ctx = canvas.getContext('2d');
-
-        // Background
-        const bgGrad = ctx.createLinearGradient(0, 0, 1200, 630);
-        bgGrad.addColorStop(0, '#080e1a');
-        bgGrad.addColorStop(1, '#0f172a');
-        ctx.fillStyle = bgGrad;
-        ctx.fillRect(0, 0, 1200, 630);
-
-        // Border Glow
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = '#00d2ff';
-        ctx.strokeRect(20, 20, 1160, 590);
-
-        // Title Badge
-        ctx.fillStyle = '#00d2ff';
-        ctx.font = 'bold 26px sans-serif';
-        ctx.fillText('HANDLEKIT VISION LAB • PELLI-ROBSON ASSESSMENT', 80, 100);
-
-        // Score
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '900 110px sans-serif';
-        ctx.fillText(`${currentTestResult.scoreStr} Log CS`, 80, 240);
-
-        // Category
-        ctx.fillStyle = '#00d2ff';
-        ctx.font = 'bold 36px sans-serif';
-        ctx.fillText(currentTestResult.category, 80, 310);
-
-        // Summary
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '24px sans-serif';
-        ctx.fillText(`Cohort Standing: Top ${100 - currentTestResult.percentile}% of adults tested.`, 80, 380);
-
-        // Footer Brand
-        ctx.fillStyle = '#475569';
-        ctx.font = 'bold 22px sans-serif';
-        ctx.fillText('Test your eyes free at https://handlekit.com/contrast-sensitivity-test', 80, 540);
-
-        return canvas;
-    }
-
-    function downloadResultImage() {
-        const canvas = generateResultCanvas();
-        const a = document.createElement('a');
-        a.download = `HandleKit-Contrast-Sensitivity-${currentTestResult.scoreStr}LogCS.png`;
-        a.href = canvas.toDataURL('image/png');
-        a.click();
-    }
-
-    function copyResultImageToClipboard() {
-        const canvas = generateResultCanvas();
-        canvas.toBlob(blob => {
-            if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
-                const item = new ClipboardItem({ 'image/png': blob });
-                navigator.clipboard.write([item]).then(() => {
-                    const btn = document.getElementById('btn-copy-image');
-                    if (btn) {
-                        const orig = btn.innerHTML;
-                        btn.innerHTML = `<i data-lucide="check" style="width:16px;height:16px;color:#10b981;"></i> Image Copied!`;
-                        if (window.lucide) lucide.createIcons();
-                        setTimeout(() => { btn.innerHTML = orig; if (window.lucide) lucide.createIcons(); }, 2500);
-                    }
-                }).catch(() => downloadResultImage());
-            } else {
-                downloadResultImage();
-            }
-        });
-    }
-
     let globalChart = null;
 
     function renderGlobalDistChart(data) {
@@ -1668,6 +1594,17 @@ https://handlekit.com/contrast-sensitivity-test`;
             legend.innerText = `● Your Score: ${currentScore.toFixed(2)} Log CS`;
         }
 
+        // Identify EXACTLY ONE bucket that is closest to the user's score
+        let bestIdx = -1;
+        let minDiff = Infinity;
+        data.buckets.forEach((b, idx) => {
+            const diff = Math.abs(b.x - currentScore);
+            if (diff < minDiff) {
+                minDiff = diff;
+                bestIdx = idx;
+            }
+        });
+
         globalChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -1679,8 +1616,8 @@ https://handlekit.com/contrast-sensitivity-test`;
                     backgroundColor: 'rgba(0, 210, 255, 0.15)',
                     fill: true,
                     tension: 0.4,
-                    pointRadius: data.buckets.map(b => Math.abs(b.x - currentScore) < 0.05 ? 8 : 2),
-                    pointBackgroundColor: data.buckets.map(b => Math.abs(b.x - currentScore) < 0.05 ? '#ffffff' : '#00d2ff'),
+                    pointRadius: data.buckets.map((b, idx) => idx === bestIdx ? 8 : 2),
+                    pointBackgroundColor: data.buckets.map((b, idx) => idx === bestIdx ? '#ffffff' : '#00d2ff'),
                     pointBorderColor: '#00d2ff',
                     pointBorderWidth: 2,
                     borderWidth: 3
