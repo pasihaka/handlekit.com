@@ -1,5 +1,5 @@
 {% set title = "Tinnitus Frequency Matcher & Tone Generator | Find Your Pitch (Free)" %}
-{% set description = "Pinpoint the exact frequency of your tinnitus with our free online pitch matcher and tone generator (250 Hz - 16 kHz). Find your ear ringing pitch, test notched masking sounds, and export an audiology report." %}
+{% set description = "Pinpoint your tinnitus frequency (250 Hz - 16 kHz) with our free tone generator and pitch matcher. Test notched sound masking and export an audiology report." %}
 {% extends "layout.html" %}
 
 {% block head_extra %}
@@ -29,7 +29,8 @@
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": "Interactive Web Audio tool to match your subjective tinnitus frequency from 250 Hz to 16,000 Hz, generate custom notched masking noise, and export an audiology summary."
+      "description": "Interactive Web Audio tool to match your subjective tinnitus frequency from 250 Hz to 16,000 Hz, generate custom notched masking noise, and export an audiology summary.",
+      "keywords": "tinnitus frequency matcher, tinnitus tone generator, tinnitus test, tinnitus frequency, tinnitus pitch, ear ringing frequency, tinnitus masker, notched sound therapy, audiology pitch matching"
     },
     {
       "@type": "MedicalWebPage",
@@ -51,6 +52,22 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "A tinnitus frequency matcher is an audiological diagnostic technique where external pure tones are played at varying frequencies until the patient identifies the pitch that closest matches the internal ringing, buzzing, or hissing sound in their ears."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does this tinnitus tone generator work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our free browser-based tinnitus tone generator produces continuous pure sine, triangle, and square waveforms from 250 Hz up to 16,000 Hz. By adjusting the frequency slider and fine-tuning steppers, you can locate the exact acoustic pitch of your ear ringing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this page as an online tinnitus test?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. This online tinnitus test measures pitch matching, loudness balance, and ear laterality (left, right, or both ears), generating an audiology report that you can bring to an ENT physician or audiologist."
           }
         },
         {
@@ -740,13 +757,13 @@
     <!-- Top Header -->
     <div class="tool-header-block">
         <div class="tool-badge">
-            <i data-lucide="activity" style="width: 16px; height: 16px;"></i> Audiology Diagnostic Utility
+            <i data-lucide="activity" style="width: 16px; height: 16px;"></i> Free Online Tinnitus Test &amp; Tone Generator
         </div>
         <h1 style="font-size: 2.75rem; font-weight: 800; color: var(--text-main); line-height: 1.15; margin-bottom: 1rem; letter-spacing: -1px;">
             Tinnitus Frequency Matcher &amp; Tone Generator
         </h1>
-        <p style="color: var(--text-sub); font-size: 1.15rem; max-width: 700px; margin: 0 auto; line-height: 1.6;">
-            Safely test and pinpoint the exact pitch of your ear ringing from 250 Hz to 16,000 Hz. Generate personalized notched masking sounds and export an audiology report.
+        <p style="color: var(--text-sub); font-size: 1.15rem; max-width: 730px; margin: 0 auto; line-height: 1.6;">
+            Use this free interactive <strong>tinnitus tone generator</strong> and <strong>pitch matcher</strong> to safely test and pinpoint your exact <strong>ear ringing frequency</strong> (250 Hz – 16,000 Hz). Create a customized <strong>tinnitus masker</strong> with notched sound therapy and export an audiology report.
         </p>
     </div>
 
@@ -1147,6 +1164,36 @@
             </h3>
 
             <div class="faq-item open">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How do I use this page as a tinnitus tone generator?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Our free browser-based <strong>tinnitus tone generator</strong> produces continuous pure sine, triangle, and square sound waves from 250 Hz up to 16,000 Hz. Adjust the logarithmic slider or use the fine-tuning buttons until the generated sound matches your ear ringing frequency. You can also adjust stereo pan to isolate your left ear, right ear, or both.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Can I use this tool as a free online tinnitus test?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Yes. This online <strong>tinnitus test</strong> provides objective measurements for pitch matching, loudness balance, and ear laterality (left, right, or bilateral ringing). Once you identify your frequency, you can print or copy an audiology report card to share with your ENT doctor or hearing specialist.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How does an acoustic tinnitus masker provide relief?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    An acoustic <strong>tinnitus masker</strong> uses customized ambient noise (such as Notched Pink Noise, Notched White Noise, or Narrowband Noise) designed to cover or blend with internal ringing. In tailor-made notched sound therapy (TMNST), filtering out your exact ringing pitch helps inhibit hyperactive auditory cortex neurons without irritating your hearing.
+                </div>
+            </div>
+
+            <div class="faq-item">
                 <button class="faq-question" onclick="toggleFaq(this)">
                     Why does my tinnitus sound like it has multiple frequencies?
                     <i data-lucide="chevron-down"></i>
