@@ -928,28 +928,21 @@
                 </a>
             </div>
 
-            <div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;">
-                <button onclick="copyScorecardText()" class="stepper-btn" id="btn-copy-scorecard" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 10px;">
+            <div style="display: flex; justify-content: center;">
+                <button onclick="copyScorecardText()" class="stepper-btn" id="btn-copy-scorecard" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.4rem; border-radius: 12px; font-weight: 700;">
                     <i data-lucide="copy" id="scorecard-copy-icon" style="width: 16px; height: 16px;"></i>
                     <span id="scorecard-copy-text">Copy Text Scorecard</span>
-                </button>
-                <button onclick="copyResultImageToClipboard()" class="stepper-btn" id="btn-copy-image" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 10px;">
-                    <i data-lucide="image" id="image-copy-icon" style="width: 16px; height: 16px;"></i>
-                    <span id="image-copy-text">Copy Image Card</span>
                 </button>
             </div>
         </div>
 
         <!-- Action Controls -->
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <button onclick="downloadResultImage()" class="stepper-btn primary">
-                <i data-lucide="download" style="width: 18px; height: 18px;"></i> Download Certificate Image
+        <div style="display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+            <button onclick="openGlobalLeaderboard()" class="stepper-btn primary" style="padding: 0.95rem 2.25rem; font-size: 1.05rem; border-radius: 14px; box-shadow: 0 0 25px rgba(var(--cs-accent-rgb), 0.4);">
+                <i data-lucide="bar-chart-3" style="width: 20px; height: 20px;"></i> View Score Distribution
             </button>
-            <button onclick="startTest(event)" class="stepper-btn">
+            <button onclick="startTest(event)" class="stepper-btn" style="padding: 0.95rem 2rem; font-size: 1rem; border-radius: 14px;">
                 <i data-lucide="rotate-ccw" style="width: 18px; height: 18px;"></i> Retest Vision
-            </button>
-            <button onclick="openGlobalLeaderboard()" class="stepper-btn">
-                <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i> Score Distribution
             </button>
         </div>
     </div>
