@@ -192,6 +192,42 @@ def robots_txt():
 def safe_zones():
     return render_template('safe_zones.html')
 
+
+@app.route('/test-embed')
+def test_embed():
+    return '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Mock Blog Post</title>
+        <style>
+            body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 4rem 2rem; background: #f8fafc; color: #334155; }
+            h1 { color: #0f172a; font-size: 2.5rem; }
+            .post-content { line-height: 1.8; font-size: 1.1rem; }
+            .mock-header { display: flex; gap: 1rem; color: #64748b; font-size: 0.9rem; margin-bottom: 2rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem; }
+        </style>
+    </head>
+    <body>
+        <h1>How to Optimize Your Videos for TikTok and Reels</h1>
+        <div class="mock-header">
+            <span>By Jane Doe</span>
+            <span>Published August 28, 2026</span>
+        </div>
+        <div class="post-content">
+            <p>Are you tired of your hard work getting covered up by the TikTok UI? It's a common problem for creators who don't preview their text placement.</p>
+            <p>To fix this, you can use the interactive Safe Zone tool below to preview exactly where your text will land before you render your final video!</p>
+            
+            <div style="margin: 3rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 12px; background: #1a1a2e;">
+                <!-- Embedded Iframe -->
+                <iframe src="http://127.0.0.1:5000/social-media-safe-zones?embed=true" width="100%" height="800" style="border:none; border-radius:12px;"></iframe>
+            </div>
+            
+            <p>As you can see above, keeping your text in the central safe area ensures that no matter what platform you upload to, your audience can read your captions.</p>
+        </div>
+    </body>
+    </html>
+    '''
+
 @app.route('/sitemap.xml')
 def sitemap_xml():
     return app.send_static_file('sitemap.xml')
@@ -606,6 +642,14 @@ def jnd_test():
 @app.route('/contrast-sensitivity-test')
 def contrast_sensitivity_test():
     return render_template('contrast_sensitivity_test.html')
+
+@app.route('/tinnitus-frequency-matcher')
+def tinnitus_frequency_matcher():
+    return render_template('tinnitus_frequency_matcher.html')
+
+@app.route('/tinnitus-tone-generator')
+def tinnitus_tone_generator():
+    return redirect(url_for('tinnitus_frequency_matcher'), code=301)
 
 
 

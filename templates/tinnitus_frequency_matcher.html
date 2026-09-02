@@ -1,0 +1,1876 @@
+{% set title = "Tinnitus Frequency Matcher & Tone Generator | Find Your Pitch (Free)" %}
+{% set description = "Pinpoint the exact frequency of your tinnitus with our free online pitch matcher and tone generator (250 Hz - 16 kHz). Find your ear ringing pitch, test notched masking sounds, and export an audiology report." %}
+{% extends "layout.html" %}
+
+{% block head_extra %}
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://handlekit.com/tinnitus-frequency-matcher">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ title }}">
+<meta name="twitter:description" content="{{ description }}">
+<link rel="canonical" href="https://handlekit.com/tinnitus-frequency-matcher">
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Tinnitus Frequency Matcher & Tone Generator",
+      "url": "https://handlekit.com/tinnitus-frequency-matcher",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires Web Audio API support",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Interactive Web Audio tool to match your subjective tinnitus frequency from 250 Hz to 16,000 Hz, generate custom notched masking noise, and export an audiology summary."
+    },
+    {
+      "@type": "MedicalWebPage",
+      "name": "Tinnitus Pitch Matching Guide & Sound Therapy",
+      "url": "https://handlekit.com/tinnitus-frequency-matcher",
+      "description": "Clinical guidelines on matching subjective tinnitus pitch, common acoustic frequencies, and acoustic notched sound masking therapy.",
+      "aspect": ["Diagnosis", "Treatment"],
+      "audience": {
+        "@type": "MedicalAudience",
+        "audienceType": "Patient"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a tinnitus frequency matcher?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A tinnitus frequency matcher is an audiological diagnostic technique where external pure tones are played at varying frequencies until the patient identifies the pitch that closest matches the internal ringing, buzzing, or hissing sound in their ears."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the most common tinnitus frequency?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most subjective tonal tinnitus occurs in the high-frequency spectrum between 4,000 Hz and 8,000 Hz, often corresponding to mild high-frequency hearing loss or acoustic noise trauma. However, frequencies can range from low hums (125-500 Hz) up to ultra-high squeals exceeding 14,000 Hz."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is notched sound therapy for tinnitus?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tailor-Made Notched Sound Therapy (TMNST) involves listening to broad-spectrum noise (like white or pink noise) from which a narrow frequency band surrounding the patient's specific tinnitus pitch has been filtered out. Studies suggest this helps inhibit hyperactive auditory cortex neurons corresponding to the ringing pitch."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it safe to test high audio frequencies at home?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, provided system volume is kept low (under 20-30%). High-frequency tones can carry significant acoustic energy even if they do not sound excessively loud. Always start at the lowest audible volume and avoid long continuous exposure to loud tones."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+    :root {
+        --tf-accent: #00d2ff;
+        --tf-accent-rgb: 0, 210, 255;
+        --tf-relief: #10b981;
+        --tf-relief-rgb: 16, 185, 129;
+        --tf-warning: #f59e0b;
+    }
+
+    .tinnitus-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .tool-header-block {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .tool-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(var(--tf-accent-rgb), 0.12);
+        color: var(--tf-accent);
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(var(--tf-accent-rgb), 0.3);
+    }
+
+    .safety-alert-banner {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.35);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.85rem;
+        color: var(--text-main);
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .safety-alert-banner i {
+        color: var(--tf-warning);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .matcher-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2.25rem;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Tabs for Matcher vs Relief Masker */
+    .mode-tabs {
+        display: flex;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 0.35rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .mode-tab-btn {
+        flex: 1;
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        border: none;
+        background: transparent;
+        color: var(--text-sub);
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .mode-tab-btn.active {
+        background: var(--accent-gradient);
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(var(--tf-accent-rgb), 0.3);
+    }
+
+    .mode-tab-btn.active.relief-active {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 4px 15px rgba(var(--tf-relief-rgb), 0.3);
+    }
+
+    /* Frequency Display Hero */
+    .freq-hero-box {
+        text-align: center;
+        padding: 1.75rem 1rem;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .freq-numeric {
+        font-size: 4rem;
+        font-weight: 900;
+        letter-spacing: -2px;
+        color: var(--text-main);
+        line-height: 1;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.35rem;
+        font-family: monospace, sans-serif;
+    }
+
+    .freq-unit {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--tf-accent);
+        letter-spacing: 0;
+    }
+
+    .freq-musical-note {
+        font-size: 0.95rem;
+        color: var(--text-sub);
+        font-weight: 600;
+        margin-top: 0.5rem;
+    }
+
+    /* Live Visualizer Canvas */
+    .oscilloscope-canvas {
+        width: 100%;
+        height: 60px;
+        display: block;
+        margin-top: 1rem;
+        border-radius: 8px;
+        opacity: 0.85;
+    }
+
+    /* Sliders and Steppers */
+    .control-group {
+        margin-bottom: 2rem;
+    }
+
+    .control-label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    .slider-container {
+        position: relative;
+        margin-bottom: 1.25rem;
+    }
+
+    input[type=range] {
+        width: 100%;
+        height: 10px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        outline: none;
+        appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--tf-accent);
+        box-shadow: 0 0 12px rgba(var(--tf-accent-rgb), 0.75);
+        cursor: pointer;
+        transition: transform 0.1s ease;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+    }
+
+    /* Preset Frequency Badges */
+    .preset-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .preset-btn {
+        flex: 1 1 calc(25% - 0.5rem);
+        min-width: 90px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-color);
+        color: var(--text-sub);
+        padding: 0.6rem 0.5rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+    }
+
+    .preset-btn:hover {
+        background: rgba(var(--tf-accent-rgb), 0.15);
+        color: var(--tf-accent);
+        border-color: rgba(var(--tf-accent-rgb), 0.4);
+    }
+
+    .preset-btn.active {
+        background: rgba(var(--tf-accent-rgb), 0.25);
+        color: var(--tf-accent);
+        border-color: var(--tf-accent);
+    }
+
+    /* Fine Tuning Steppers */
+    .stepper-row {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+    }
+
+    .step-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.45rem 0.8rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: monospace;
+        transition: all 0.15s;
+    }
+
+    .step-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--text-sub);
+    }
+
+    /* Main Play / Action Bar */
+    .action-bar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn-play-toggle {
+        padding: 1.15rem 1.5rem;
+        border-radius: 14px;
+        font-size: 1.1rem;
+        font-weight: 800;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        background: var(--accent-gradient);
+        color: #fff;
+        box-shadow: 0 8px 24px rgba(var(--tf-accent-rgb), 0.35);
+        transition: all 0.2s ease;
+    }
+
+    .btn-play-toggle.playing {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
+    }
+
+    .btn-play-toggle:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-save-match {
+        padding: 1.15rem 1.5rem;
+        border-radius: 14px;
+        font-size: 1.05rem;
+        font-weight: 800;
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+        transition: all 0.2s;
+    }
+
+    .btn-save-match:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: var(--text-sub);
+    }
+
+    /* Secondary Controls: Waveform, Ear, Volume */
+    .secondary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .segmented-control {
+        display: flex;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 3px;
+        gap: 2px;
+    }
+
+    .seg-btn {
+        flex: 1;
+        padding: 0.5rem 0.25rem;
+        border: none;
+        background: transparent;
+        color: var(--text-sub);
+        font-size: 0.8rem;
+        font-weight: 700;
+        border-radius: 7px;
+        cursor: pointer;
+        transition: all 0.15s;
+        text-align: center;
+    }
+
+    .seg-btn.active {
+        background: var(--card-bg);
+        color: var(--text-main);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+    }
+
+    /* Report Card / Match Result */
+    .report-card {
+        display: none;
+        background: linear-gradient(145deg, rgba(var(--tf-accent-rgb), 0.08) 0%, rgba(0, 0, 0, 0.3) 100%);
+        border: 1px solid rgba(var(--tf-accent-rgb), 0.35);
+        border-radius: 16px;
+        padding: 1.75rem;
+        margin-top: 2rem;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid rgba(var(--tf-accent-rgb), 0.2);
+        padding-bottom: 0.75rem;
+    }
+
+    .report-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .report-stat-box {
+        background: rgba(0, 0, 0, 0.25);
+        padding: 0.9rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+    }
+
+    .report-stat-label {
+        font-size: 0.75rem;
+        color: var(--text-sub);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+
+    .report-stat-val {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: var(--tf-accent);
+        margin-top: 0.25rem;
+        font-family: monospace, sans-serif;
+    }
+
+    .report-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-report-action {
+        flex: 1;
+        min-width: 140px;
+        padding: 0.7rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        border: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+    }
+
+    .btn-report-action:hover {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Relief Masker Mode Styles */
+    .relief-box {
+        display: none;
+    }
+
+    .relief-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .noise-option-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.25rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+    }
+
+    .noise-option-card:hover {
+        border-color: var(--tf-relief);
+        background: rgba(var(--tf-relief-rgb), 0.05);
+    }
+
+    .noise-option-card.active {
+        border-color: var(--tf-relief);
+        background: rgba(var(--tf-relief-rgb), 0.15);
+    }
+
+    .noise-option-card h4 {
+        margin: 0 0 0.5rem;
+        color: var(--text-main);
+        font-size: 1rem;
+    }
+
+    .noise-option-card p {
+        margin: 0;
+        color: var(--text-sub);
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    /* Educational Section */
+    .edu-section {
+        margin-top: 4rem;
+    }
+
+    .edu-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .edu-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.75rem;
+    }
+
+    .edu-card h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: var(--text-main);
+    }
+
+    .edu-card p, .edu-card li {
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Frequency Spectrum Reference Table */
+    .freq-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        font-size: 0.88rem;
+    }
+
+    .freq-table th, .freq-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .freq-table th {
+        color: var(--text-main);
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .freq-table td {
+        color: var(--text-sub);
+    }
+
+    .freq-table td strong {
+        color: var(--tf-accent);
+        font-family: monospace;
+    }
+
+    /* FAQ Accordion */
+    .faq-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+    }
+
+    .faq-question {
+        width: 100%;
+        padding: 1.25rem 1.5rem;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        font-size: 1.05rem;
+        font-weight: 700;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .faq-answer {
+        padding: 0 1.5rem 1.25rem;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        display: none;
+    }
+
+    .faq-item.open .faq-answer {
+        display: block;
+    }
+
+    /* Embed Modal */
+    .embed-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.75rem;
+        margin-top: 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .embed-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+    }
+
+    .embed-modal-content {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2rem;
+        max-width: 550px;
+        width: 100%;
+        position: relative;
+    }
+
+    @media (max-width: 768px) {
+        .edu-grid {
+            grid-template-columns: 1fr;
+        }
+        .action-bar {
+            grid-template-columns: 1fr;
+        }
+        .freq-numeric {
+            font-size: 3rem;
+        }
+        .preset-btn {
+            flex: 1 1 calc(50% - 0.5rem);
+        }
+        .embed-card {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1.25rem;
+            padding: 1.5rem;
+            text-align: left;
+        }
+        .embed-card .embed-btn {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+            padding: 0.9rem;
+            font-size: 1rem;
+            display: flex;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container tinnitus-container">
+    
+    <!-- Top Header -->
+    <div class="tool-header-block">
+        <div class="tool-badge">
+            <i data-lucide="activity" style="width: 16px; height: 16px;"></i> Audiology Diagnostic Utility
+        </div>
+        <h1 style="font-size: 2.75rem; font-weight: 800; color: var(--text-main); line-height: 1.15; margin-bottom: 1rem; letter-spacing: -1px;">
+            Tinnitus Frequency Matcher &amp; Tone Generator
+        </h1>
+        <p style="color: var(--text-sub); font-size: 1.15rem; max-width: 700px; margin: 0 auto; line-height: 1.6;">
+            Safely test and pinpoint the exact pitch of your ear ringing from 250 Hz to 16,000 Hz. Generate personalized notched masking sounds and export an audiology report.
+        </p>
+    </div>
+
+    <!-- Safety Warning Banner -->
+    <div class="safety-alert-banner">
+        <i data-lucide="alert-triangle" style="width: 22px; height: 22px;"></i>
+        <div>
+            <strong style="color: var(--tf-warning);">Hearing Safety Protocol:</strong>
+            High-frequency audio tones carry concentrated acoustic energy. Before clicking <strong>Start Tone</strong>, please lower your computer or phone volume to <strong>10% – 20%</strong>. This tool starts at a soft volume to protect your ears.
+        </div>
+    </div>
+
+    <!-- Main Tool Workspace -->
+    <div class="matcher-card">
+        
+        <!-- Mode Tabs -->
+        <div class="mode-tabs">
+            <button class="mode-tab-btn active" id="tab-matcher" onclick="switchMode('matcher')">
+                <i data-lucide="radio" style="width: 18px; height: 18px;"></i> Pitch Matcher &amp; Tone Generator
+            </button>
+            <button class="mode-tab-btn" id="tab-relief" onclick="switchMode('relief')">
+                <i data-lucide="waves" style="width: 18px; height: 18px;"></i> Sound Therapy &amp; Masker
+            </button>
+        </div>
+
+        <!-- ================= MODE 1: PITCH MATCHER ================= -->
+        <div id="panel-matcher">
+            
+            <!-- Hero Frequency Box -->
+            <div class="freq-hero-box">
+                <div class="freq-numeric">
+                    <span id="display-hz">8,000</span>
+                    <span class="freq-unit">Hz</span>
+                </div>
+                <div class="freq-musical-note" id="display-note">Approx. Musical Pitch: B8 (Very High Squeal)</div>
+                <canvas id="oscilloscope" class="oscilloscope-canvas"></canvas>
+            </div>
+
+            <!-- Frequency Slider (Logarithmic) -->
+            <div class="control-group">
+                <div class="control-label-row">
+                    <span>Frequency Adjustment (Logarithmic Scale)</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 0.8rem; color: var(--text-sub);">Direct Hz Input:</span>
+                        <input type="number" id="input-direct-hz" value="8000" min="250" max="16000" 
+                            style="width: 85px; padding: 0.25rem 0.5rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; font-weight: 700; text-align: center;">
+                    </div>
+                </div>
+                <div class="slider-container">
+                    <input type="range" id="slider-freq" min="0" max="1000" value="700">
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-sub); font-family: monospace;">
+                    <span>250 Hz (Low Hum)</span>
+                    <span>1,000 Hz</span>
+                    <span>4,000 Hz (Noise Notch)</span>
+                    <span>8,000 Hz</span>
+                    <span>16,000 Hz (Ultra High)</span>
+                </div>
+            </div>
+
+            <!-- Fine-Tuning Stepper Row -->
+            <div class="control-label-row" style="margin-bottom: 0.5rem;">
+                <span>Fine-Tune Frequency (Zero In on Your Pitch)</span>
+            </div>
+            <div class="stepper-row">
+                <button class="step-btn" onclick="adjustFreq(-100)">-100 Hz</button>
+                <button class="step-btn" onclick="adjustFreq(-10)">-10 Hz</button>
+                <button class="step-btn" onclick="adjustFreq(-1)">-1 Hz</button>
+                <button class="step-btn" onclick="adjustFreq(1)">+1 Hz</button>
+                <button class="step-btn" onclick="adjustFreq(10)">+10 Hz</button>
+                <button class="step-btn" onclick="adjustFreq(100)">+100 Hz</button>
+            </div>
+
+            <!-- Common Tinnitus Frequency Presets -->
+            <div class="control-label-row" style="margin-bottom: 0.5rem;">
+                <span>Common Tinnitus Frequency Presets</span>
+            </div>
+            <div class="preset-row">
+                <button class="preset-btn" onclick="setPreset(250)">250 Hz<br><small style="font-weight: normal; opacity: 0.8;">Venous Hum</small></button>
+                <button class="preset-btn" onclick="setPreset(1000)">1,000 Hz<br><small style="font-weight: normal; opacity: 0.8;">Midtone Buzz</small></button>
+                <button class="preset-btn" onclick="setPreset(4000)">4,000 Hz<br><small style="font-weight: normal; opacity: 0.8;">Acoustic Notch</small></button>
+                <button class="preset-btn" onclick="setPreset(6000)">6,000 Hz<br><small style="font-weight: normal; opacity: 0.8;">High Whistle</small></button>
+                <button class="preset-btn active" onclick="setPreset(8000)">8,000 Hz<br><small style="font-weight: normal; opacity: 0.8;">Standard Ring</small></button>
+                <button class="preset-btn" onclick="setPreset(10000)">10,000 Hz<br><small style="font-weight: normal; opacity: 0.8;">High Squeal</small></button>
+                <button class="preset-btn" onclick="setPreset(12000)">12,000 Hz<br><small style="font-weight: normal; opacity: 0.8;">Ultra High</small></button>
+                <button class="preset-btn" onclick="setPreset(14000)">14,000 Hz<br><small style="font-weight: normal; opacity: 0.8;">Mosquito Tone</small></button>
+            </div>
+
+            <!-- Secondary Controls: Waveform, Ear Laterality, Volume -->
+            <div class="secondary-grid">
+                
+                <!-- Ear Laterality -->
+                <div>
+                    <div class="control-label-row">
+                        <span>Affected Ear (Pan)</span>
+                    </div>
+                    <div class="segmented-control">
+                        <button class="seg-btn" id="pan-left" onclick="setPan(-1)">Left Ear</button>
+                        <button class="seg-btn active" id="pan-both" onclick="setPan(0)">Both Ears</button>
+                        <button class="seg-btn" id="pan-right" onclick="setPan(1)">Right Ear</button>
+                    </div>
+                </div>
+
+                <!-- Waveform Type -->
+                <div>
+                    <div class="control-label-row">
+                        <span>Tone Timbre (Waveform)</span>
+                    </div>
+                    <div class="segmented-control">
+                        <button class="seg-btn active" id="wave-sine" onclick="setWaveform('sine')">Pure Sine</button>
+                        <button class="seg-btn" id="wave-triangle" onclick="setWaveform('triangle')">Triangle</button>
+                        <button class="seg-btn" id="wave-square" onclick="setWaveform('square')">Buzz / Square</button>
+                    </div>
+                </div>
+
+                <!-- Safe Volume Slider -->
+                <div>
+                    <div class="control-label-row">
+                        <span>Generator Volume</span>
+                        <span id="display-vol" style="color: var(--tf-accent); font-family: monospace;">15%</span>
+                    </div>
+                    <input type="range" id="slider-vol" min="1" max="40" value="15" oninput="updateVolume(this.value)">
+                </div>
+
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-bar">
+                <button class="btn-play-toggle" id="btn-toggle-tone" onclick="toggleTone()">
+                    <i data-lucide="play" id="play-icon" style="width: 22px; height: 22px;"></i>
+                    <span id="play-text">Start Tone</span>
+                </button>
+                <button class="btn-save-match" onclick="saveMatchReport()">
+                    <i data-lucide="bookmark-check" style="width: 20px; height: 20px; color: var(--tf-accent);"></i>
+                    <span>Save My Frequency Match</span>
+                </button>
+            </div>
+
+            <!-- Generated Audiology Summary Card -->
+            <div class="report-card" id="match-report">
+                <div class="report-header">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.1rem; color: var(--text-main);">
+                        <i data-lucide="clipboard-list" style="color: var(--tf-accent); width: 20px; height: 20px;"></i>
+                        Your Tinnitus Pitch Report
+                    </div>
+                    <span style="font-size: 0.8rem; color: var(--text-sub);" id="report-date"></span>
+                </div>
+                
+                <div class="report-grid">
+                    <div class="report-stat-box">
+                        <div class="report-stat-label">Matched Pitch</div>
+                        <div class="report-stat-val" id="rep-freq">8,000 Hz</div>
+                    </div>
+                    <div class="report-stat-box">
+                        <div class="report-stat-label">Musical Note</div>
+                        <div class="report-stat-val" id="rep-note">B8</div>
+                    </div>
+                    <div class="report-stat-box">
+                        <div class="report-stat-label">Laterality</div>
+                        <div class="report-stat-val" id="rep-ear">Both Ears</div>
+                    </div>
+                    <div class="report-stat-box">
+                        <div class="report-stat-label">Waveform</div>
+                        <div class="report-stat-val" id="rep-wave">Pure Sine</div>
+                    </div>
+                </div>
+
+                <div class="report-actions">
+                    <button class="btn-report-action" onclick="copyReportText()">
+                        <i data-lucide="copy" style="width: 16px; height: 16px;"></i> Copy Report
+                    </button>
+                    <button class="btn-report-action" onclick="window.print()">
+                        <i data-lucide="printer" style="width: 16px; height: 16px;"></i> Print for Doctor
+                    </button>
+                    <button class="btn-report-action" onclick="switchMode('relief')">
+                        <i data-lucide="sparkles" style="width: 16px; height: 16px; color: var(--tf-relief);"></i> Create Masking Sound
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ================= MODE 2: SOUND THERAPY & MASKER ================= -->
+        <div id="panel-relief" class="relief-box">
+            
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(var(--tf-relief-rgb), 0.15); color: var(--tf-relief); padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.75rem;">
+                    <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i> Acoustic Sound Masking &amp; Notch Therapy
+                </div>
+                <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">
+                    Customized Tinnitus Sound Therapy
+                </h2>
+                <p style="color: var(--text-sub); font-size: 0.95rem; max-width: 600px; margin: 0 auto;">
+                    Tailored specifically to your matched pitch (<strong id="relief-target-hz" style="color: var(--tf-accent); font-family: monospace;">8,000 Hz</strong>) to suppress auditory hyperactivity and soothe perceived ringing.
+                </p>
+            </div>
+
+            <!-- Active Frequency Live Adjuster in Therapy Mode -->
+            <div class="freq-hero-box" style="padding: 1.5rem 1.25rem; margin-bottom: 1.75rem; background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.25);">
+                <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--tf-relief); font-weight: 700; margin-bottom: 0.25rem;">
+                    Active Therapy Frequency (Adjust in Real-Time)
+                </div>
+                <div class="freq-numeric" style="font-size: 2.75rem;">
+                    <span id="relief-display-hz">8,000</span>
+                    <span class="freq-unit" style="color: var(--tf-relief);">Hz</span>
+                </div>
+
+                <!-- Frequency Slider in Therapy Mode -->
+                <div class="slider-container" style="max-width: 600px; margin: 1rem auto 0.4rem;">
+                    <input type="range" id="slider-freq-relief" min="0" max="1000" value="700">
+                </div>
+                <div style="display: flex; justify-content: space-between; max-width: 600px; margin: 0 auto 0.75rem; font-size: 0.75rem; color: var(--text-sub); font-family: monospace;">
+                    <span>250 Hz</span>
+                    <span>1,000 Hz</span>
+                    <span>4,000 Hz</span>
+                    <span>8,000 Hz</span>
+                    <span>16,000 Hz</span>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+                    <button class="step-btn" onclick="adjustFreq(-100)">-100 Hz</button>
+                    <button class="step-btn" onclick="adjustFreq(-10)">-10 Hz</button>
+                    <button class="step-btn" onclick="adjustFreq(10)">+10 Hz</button>
+                    <button class="step-btn" onclick="adjustFreq(100)">+100 Hz</button>
+                    <button class="step-btn" onclick="switchMode('matcher')" style="background: rgba(var(--tf-accent-rgb), 0.15); border-color: var(--tf-accent); color: var(--tf-accent);">
+                        <i data-lucide="sliders" style="width: 14px; height: 14px; vertical-align: middle;"></i> Return to Pitch Matcher
+                    </button>
+                </div>
+            </div>
+
+            <!-- Therapy Type Selector -->
+            <div class="relief-controls">
+                <div class="noise-option-card active" id="opt-pink" onclick="selectTherapyType('pink')">
+                    <h4><i data-lucide="wind" style="width: 18px; height: 18px; vertical-align: middle; color: var(--tf-relief);"></i> Notched Pink Noise</h4>
+                    <p>Clinical gold standard. Soothing pink noise with <strong class="sync-target-hz">8,000 Hz</strong> filtered out for comfortable, long-term listening.</p>
+                </div>
+                <div class="noise-option-card" id="opt-notched" onclick="selectTherapyType('notched')">
+                    <h4><i data-lucide="filter" style="width: 18px; height: 18px; vertical-align: middle; color: var(--tf-relief);"></i> Notched White Noise</h4>
+                    <p>Full-spectrum white noise with a deep notch carved at <strong class="sync-target-hz">8,000 Hz</strong> to induce lateral neural inhibition.</p>
+                </div>
+                <div class="noise-option-card" id="opt-narrow" onclick="selectTherapyType('narrow')">
+                    <h4><i data-lucide="volume-2" style="width: 18px; height: 18px; vertical-align: middle; color: var(--tf-relief);"></i> Narrowband Masker</h4>
+                    <p>Ambient noise focused directly around <strong class="sync-target-hz">8,000 Hz</strong> to gently blend and mask the internal ringing.</p>
+                </div>
+            </div>
+
+            <!-- Volume & Masker Play Button -->
+            <div style="max-width: 420px; margin: 0 auto 2rem;">
+                <div style="margin-bottom: 1.25rem;">
+                    <div class="control-label-row">
+                        <span>Therapy Volume</span>
+                        <span id="relief-display-vol" style="color: var(--tf-relief); font-family: monospace;">15%</span>
+                    </div>
+                    <input type="range" id="slider-vol-relief" min="1" max="40" value="15" oninput="updateVolume(this.value)">
+                </div>
+
+                <button class="btn-play-toggle" id="btn-toggle-relief" onclick="toggleRelief()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 24px rgba(var(--tf-relief-rgb), 0.35); width: 100%;">
+                    <i data-lucide="play" id="relief-play-icon" style="width: 22px; height: 22px;"></i>
+                    <span id="relief-play-text">Start Sound Therapy</span>
+                </button>
+            </div>
+
+            <!-- Timer selection -->
+            <div style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <span style="font-size: 0.85rem; color: var(--text-sub); font-weight: 700; margin-right: 0.75rem;">Therapy Timer:</span>
+                <div style="display: inline-flex; gap: 0.5rem;">
+                    <button class="step-btn active" id="timer-off" onclick="setTherapyTimer(0)">Continuous</button>
+                    <button class="step-btn" id="timer-5" onclick="setTherapyTimer(5)">5 Min</button>
+                    <button class="step-btn" id="timer-15" onclick="setTherapyTimer(15)">15 Min</button>
+                    <button class="step-btn" id="timer-30" onclick="setTherapyTimer(30)">30 Min</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Rating and Cross-Promotion Section -->
+    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem 2rem; margin-bottom: 3rem;">
+        <div>
+            <h4 style="margin: 0 0 0.25rem; font-size: 1.05rem; color: var(--text-main);">Rate this Tinnitus Frequency Tool</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-sub);">Did this help pinpoint your ringing frequency?</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;" id="star-rating-box">
+            <button onclick="rateTool(1)" class="step-btn" style="padding: 0.4rem 0.6rem;">★ 1</button>
+            <button onclick="rateTool(2)" class="step-btn" style="padding: 0.4rem 0.6rem;">★ 2</button>
+            <button onclick="rateTool(3)" class="step-btn" style="padding: 0.4rem 0.6rem;">★ 3</button>
+            <button onclick="rateTool(4)" class="step-btn" style="padding: 0.4rem 0.6rem;">★ 4</button>
+            <button onclick="rateTool(5)" class="step-btn" style="padding: 0.4rem 0.6rem; background: rgba(var(--tf-accent-rgb), 0.15); border-color: var(--tf-accent); color: var(--tf-accent);">★ 5 (Helpful)</button>
+        </div>
+        <div id="rate-thanks" style="display: none; color: #10b981; font-weight: 700; font-size: 0.9rem;">
+            ✓ Thank you for your feedback!
+        </div>
+    </div>
+
+    <!-- Embed Magnet Card -->
+    <div class="embed-card">
+        <div>
+            <h3 style="margin: 0 0 0.5rem; font-size: 1.25rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="code" style="color: var(--tf-accent); width: 22px; height: 22px; flex-shrink: 0;"></i>
+                Embed This Tool on Your Website
+            </h3>
+            <p style="margin: 0; color: var(--text-sub); font-size: 0.95rem; line-height: 1.5;">
+                Add this free, interactive Tinnitus Frequency Matcher to your audiology clinic website, health blog, or patient resource portal.
+            </p>
+        </div>
+        <button class="step-btn embed-btn" onclick="openEmbedModal()" style="padding: 0.75rem 1.25rem; font-size: 0.95rem; background: rgba(var(--tf-accent-rgb), 0.15); border-color: var(--tf-accent); color: var(--tf-accent); white-space: nowrap;">
+            Get Embed Code
+        </button>
+    </div>
+
+    <!-- Educational Deep-Dive & Clinical Science Magnet -->
+    <div class="edu-section">
+        
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+            <h2 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; margin-bottom: 1rem;">
+                The Science of Tinnitus Pitch Matching
+            </h2>
+            <p style="color: var(--text-sub); font-size: 1.05rem; line-height: 1.6;">
+                Understanding how audiologists measure subjective tinnitus frequency, how acoustic noise trauma damages hair cells, and how tailor-made sound masking works.
+            </p>
+        </div>
+
+        <div class="edu-grid">
+            
+            <div class="edu-card">
+                <h3><i data-lucide="ear" style="color: var(--tf-accent);"></i> What is Pitch Matching?</h3>
+                <p>
+                    Because tinnitus is almost always <strong>subjective</strong> (meaning it can only be heard by the person experiencing it), medical professionals cannot record it with a microphone. 
+                </p>
+                <p>
+                    Instead, audiologists use a psychoacoustic protocol known as <strong>pitch matching</strong>. By presenting synthesized pure tones and narrowband noise at known frequencies (measured in Hertz, or Hz), the patient compares the external tone to their internal perception until a precise acoustic match is established.
+                </p>
+            </div>
+
+            <div class="edu-card">
+                <h3><i data-lucide="headphones" style="color: var(--tf-relief);"></i> How Notched Noise Therapy Works</h3>
+                <p>
+                    In 2010, neuroscientists discovered that when the auditory cortex loses input from damaged cochlear hair cells, neighboring neurons become hyperactive and out-of-sync, producing phantom sound.
+                </p>
+                <p>
+                    <strong>Tailor-Made Notched Sound Therapy (TMNST)</strong> takes white or pink noise and removes a frequency notch (half an octave wide) directly around the patient's tinnitus pitch. Listening to this notched sound stimulates surrounding healthy frequencies while depriving the tinnitus frequency of excitation, promoting natural lateral inhibition.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Frequency Spectrum Reference Table -->
+        <div class="edu-card" style="margin-bottom: 2rem;">
+            <h3><i data-lucide="sliders" style="color: var(--tf-accent);"></i> Common Tinnitus Frequencies &amp; Potential Causes</h3>
+            <p>Tinnitus pitch frequently correlates with specific anatomical regions along the cochlea:</p>
+            
+            <div style="overflow-x: auto;">
+                <table class="freq-table">
+                    <thead>
+                        <tr>
+                            <th>Frequency Range</th>
+                            <th>Acoustic Character</th>
+                            <th>Common Clinical Associations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>125 Hz – 500 Hz</strong></td>
+                            <td>Low drone, electrical hum, rumbling engine</td>
+                            <td>Ménière's disease, Eustachian tube dysfunction, venous hum, palatal myoclonus.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1,000 Hz – 3,000 Hz</strong></td>
+                            <td>Mid-range buzzing, fluorescent light hum</td>
+                            <td>Conductive hearing loss, otosclerosis, middle ear effusion.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4,000 Hz – 6,000 Hz</strong></td>
+                            <td>Sharp piercing whistle, steam valve hiss</td>
+                            <td><strong>Acoustic trauma notch:</strong> Damage from loud concerts, firearms, power tools, or explosive noise exposure.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>7,000 Hz – 9,000 Hz</strong></td>
+                            <td>High static, old CRT television buzz, tea kettle</td>
+                            <td><strong>Most common zone:</strong> Age-related sensorineural hearing loss (presbycusis), ototoxic medications (NSAIDs, antibiotics).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>10,000 Hz – 16,000+ Hz</strong></td>
+                            <td>Ultra-high squeal, cicadas, electrical whine</td>
+                            <td>Extended high-frequency hidden hearing loss, extreme acoustic trauma, auditory fatigue.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div style="margin-top: 3rem;">
+            <h3 style="font-size: 1.75rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; text-align: center;">
+                Frequently Asked Questions
+            </h3>
+
+            <div class="faq-item open">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Why does my tinnitus sound like it has multiple frequencies?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Many individuals experience "polyphonic" tinnitus, which consists of multiple tones simultaneously (such as a high 8,000 Hz whistle layered over a steady 4,000 Hz hiss or white noise). If you have polyphonic tinnitus, use our tool to match the loudest, most dominant tone first.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Can matching my frequency cure my tinnitus?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    Pitch matching itself is a diagnostic measurement, not a direct cure. However, knowing your exact frequency is the essential first step required to configure custom sound masking apps, notched sound therapy, or to provide objective data to your audiologist for hearing aid calibration.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Why does my tinnitus seem louder right after I stop the tone?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    This is a well-known phenomenon called the "contrast effect." When you listen to an external tone, your brain temporarily accommodates to the sound. Turning it off suddenly highlights the contrast between quiet room noise and your internal ringing. In some cases, people experience the opposite: <em>residual inhibition</em>, where the tinnitus temporarily quiets down for 30–60 seconds after exposure.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    When should I see an audiologist or ENT doctor?
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    You should always consult a physician if your tinnitus is unilateral (only in one ear), pulsatile (pulses in sync with your heartbeat), accompanied by sudden hearing loss, dizziness, or vertigo. These symptoms warrant a clinical medical evaluation to rule out underlying vascular or structural conditions.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Related Sensory Tools -->
+    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-sub); margin-bottom: 1.5rem; text-align: center;">
+            Explore Other Free Sensory &amp; Diagnostic Tools
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+            
+            <a href="/contrast-sensitivity-test" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="eye" style="color: #00d2ff;"></i>
+                <h2>Contrast Sensitivity Test</h2>
+                <p>Clinical-style Pelli-Robson chart simulator to test your functional visual contrast threshold.</p>
+                <div class="card-arrow">Take test <i data-lucide="arrow-right"></i></div>
+            </a>
+
+            <a href="/jnd-test" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="palette" style="color: #a855f7;"></i>
+                <h2>JND Color Perception Test</h2>
+                <p>Measure your Weber's Law Just Noticeable Difference (JND) threshold for subtle color discrimination.</p>
+                <div class="card-arrow">Test vision <i data-lucide="arrow-right"></i></div>
+            </a>
+
+            <a href="/social-media-safe-zones" class="tool-card" style="margin-bottom: 0;">
+                <i data-lucide="smartphone" style="color: #ff0050;"></i>
+                <h2>Safe Zone Visualizer</h2>
+                <p>Check 9:16 video boundaries and button overlays for TikTok, Instagram Reels, and YouTube Shorts.</p>
+                <div class="card-arrow">Preview safe zones <i data-lucide="arrow-right"></i></div>
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Embed Modal Dialog -->
+<div class="embed-modal" id="embed-modal" onclick="if(event.target === this) this.style.display='none'">
+    <div class="embed-modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h3 style="margin: 0; font-size: 1.25rem; color: var(--text-main);">Embed Tinnitus Frequency Matcher</h3>
+            <button onclick="document.getElementById('embed-modal').style.display='none'" style="background: none; border: none; color: var(--text-sub); cursor: pointer; font-size: 1.5rem; line-height: 1;">&times;</button>
+        </div>
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 1rem;">
+            Copy and paste this HTML snippet into your website or blog to embed this interactive generator:
+        </p>
+        <textarea id="embed-code" readonly style="width: 100%; height: 130px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: monospace; font-size: 0.85rem; padding: 0.75rem; box-sizing: border-box; resize: none; margin-bottom: 1rem;"><iframe src="https://handlekit.com/tinnitus-frequency-matcher?embed=true" width="100%" height="780" frameborder="0" style="border: 1px solid #334155; border-radius: 12px;" allow="autoplay"></iframe>
+<p style="font-size: 0.8rem; color: #64748b; text-align: center; margin-top: 0.5rem;">Powered by the free <a href="https://handlekit.com/tinnitus-frequency-matcher" target="_blank" rel="noopener" style="color: #00d2ff; text-decoration: underline;">HandleKit Tinnitus Frequency Matcher</a></p></textarea>
+        <button id="copy-embed-btn" class="btn-play-toggle" onclick="copyEmbedCode()" style="width: 100%; padding: 0.85rem; font-size: 0.95rem;">
+            <i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Embed Code
+        </button>
+    </div>
+</div>
+
+<script>
+    // Musical note frequency mapping
+    const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    function freqToNote(freq) {
+        if (freq < 20) return "";
+        const semitones = 12 * (Math.log(freq / 440) / Math.log(2));
+        const midi = Math.round(semitones) + 69;
+        const noteIndex = (midi % 12 + 12) % 12;
+        const octave = Math.floor(midi / 12) - 1;
+        return `${NOTE_NAMES[noteIndex]}${octave}`;
+    }
+
+    // Audio Context and Nodes
+    let audioCtx = null;
+    let oscNode = null;
+    let gainNode = null;
+    let pannerNode = null;
+    let analyserNode = null;
+    let isTonePlaying = false;
+
+    // Relief Noise Nodes
+    let noiseSourceNode = null;
+    let noiseFilterNode1 = null;
+    let noiseFilterNode2 = null;
+    let noiseGainNode = null;
+    let isReliefPlaying = false;
+    let reliefType = 'pink';
+    let reliefTimerId = null;
+    let stopReliefTimeoutId = null;
+
+    // State
+    let currentFreq = 8000;
+    let currentVol = 0.15; // 15% safe initial
+    let currentWaveform = 'sine';
+    let currentPan = 0; // Center
+    const MIN_FREQ = 250;
+    const MAX_FREQ = 16000;
+
+    function initAudio() {
+        if (!audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    // Slider Logarithmic conversion
+    const sliderEl = document.getElementById('slider-freq');
+    const displayHzEl = document.getElementById('display-hz');
+    const displayNoteEl = document.getElementById('display-note');
+    const directHzInput = document.getElementById('input-direct-hz');
+
+    function freqToSlider(f) {
+        const minLog = Math.log(MIN_FREQ);
+        const maxLog = Math.log(MAX_FREQ);
+        return Math.round(((Math.log(f) - minLog) / (maxLog - minLog)) * 1000);
+    }
+
+    function sliderToFreq(s) {
+        const minLog = Math.log(MIN_FREQ);
+        const maxLog = Math.log(MAX_FREQ);
+        const f = Math.exp(minLog + (s / 1000) * (maxLog - minLog));
+        return Math.round(f);
+    }
+
+    function updateFrequency(hz, updateSlider = true) {
+        currentFreq = Math.max(MIN_FREQ, Math.min(MAX_FREQ, Math.round(hz)));
+        displayHzEl.innerText = currentFreq.toLocaleString();
+        directHzInput.value = currentFreq;
+        
+        const note = freqToNote(currentFreq);
+        let noteDesc = "";
+        if (currentFreq >= 12000) noteDesc = " (Ultra-High Mosquito Tone)";
+        else if (currentFreq >= 7000) noteDesc = " (Very High Pitch / Squeal)";
+        else if (currentFreq >= 3500) noteDesc = " (Acoustic Trauma Notch Zone)";
+        else if (currentFreq >= 1000) noteDesc = " (Mid-Range Buzz)";
+        else noteDesc = " (Low Drone / Hum)";
+
+        displayNoteEl.innerText = `Musical Pitch: ${note}${noteDesc}`;
+
+        // Sync Relief target displays
+        const reliefTargetEl = document.getElementById('relief-target-hz');
+        if (reliefTargetEl) reliefTargetEl.innerText = `${currentFreq.toLocaleString()} Hz`;
+
+        const reliefDisplayHz = document.getElementById('relief-display-hz');
+        if (reliefDisplayHz) reliefDisplayHz.innerText = currentFreq.toLocaleString();
+
+        document.querySelectorAll('.sync-target-hz').forEach(el => {
+            el.innerText = `${currentFreq.toLocaleString()} Hz`;
+        });
+
+        if (updateSlider) {
+            sliderEl.value = freqToSlider(currentFreq);
+            const sliderReliefEl = document.getElementById('slider-freq-relief');
+            if (sliderReliefEl) sliderReliefEl.value = freqToSlider(currentFreq);
+        }
+
+        // Live update active tone if playing
+        if (oscNode && audioCtx && isTonePlaying) {
+            oscNode.frequency.cancelScheduledValues(audioCtx.currentTime);
+            oscNode.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+        }
+
+        // Live update relief filters if playing
+        if (audioCtx && isReliefPlaying) {
+            if (noiseFilterNode1) {
+                noiseFilterNode1.frequency.cancelScheduledValues(audioCtx.currentTime);
+                noiseFilterNode1.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+            }
+            if (noiseFilterNode2) {
+                noiseFilterNode2.frequency.cancelScheduledValues(audioCtx.currentTime);
+                noiseFilterNode2.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+            }
+        }
+
+        // Highlight preset if exact match
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            const val = parseInt(btn.getAttribute('onclick').match(/\d+/)[0]);
+            btn.classList.toggle('active', val === currentFreq);
+        });
+    }
+
+    const sliderReliefEl = document.getElementById('slider-freq-relief');
+
+    sliderEl.addEventListener('input', (e) => {
+        const hz = sliderToFreq(parseInt(e.target.value));
+        updateFrequency(hz, false);
+        if (sliderReliefEl) sliderReliefEl.value = e.target.value;
+    });
+
+    if (sliderReliefEl) {
+        sliderReliefEl.addEventListener('input', (e) => {
+            const hz = sliderToFreq(parseInt(e.target.value));
+            updateFrequency(hz, false);
+            sliderEl.value = e.target.value;
+        });
+    }
+
+    directHzInput.addEventListener('change', (e) => {
+        let val = parseInt(e.target.value);
+        if (isNaN(val)) val = 8000;
+        updateFrequency(val, true);
+    });
+
+    function adjustFreq(delta) {
+        updateFrequency(currentFreq + delta, true);
+    }
+
+    function setPreset(hz) {
+        updateFrequency(hz, true);
+    }
+
+    function setPan(panVal) {
+        currentPan = panVal;
+        document.getElementById('pan-left').classList.toggle('active', panVal === -1);
+        document.getElementById('pan-both').classList.toggle('active', panVal === 0);
+        document.getElementById('pan-right').classList.toggle('active', panVal === 1);
+
+        if (pannerNode && audioCtx) {
+            pannerNode.pan.setValueAtTime(panVal, audioCtx.currentTime);
+        }
+    }
+
+    function setWaveform(type) {
+        currentWaveform = type;
+        document.getElementById('wave-sine').classList.toggle('active', type === 'sine');
+        document.getElementById('wave-triangle').classList.toggle('active', type === 'triangle');
+        document.getElementById('wave-square').classList.toggle('active', type === 'square');
+
+        if (oscNode && audioCtx) {
+            oscNode.type = type;
+        }
+    }
+
+    function updateVolume(val) {
+        currentVol = val / 100;
+        document.getElementById('display-vol').innerText = `${val}%`;
+        const reliefVolEl = document.getElementById('relief-display-vol');
+        if (reliefVolEl) reliefVolEl.innerText = `${val}%`;
+
+        const slider1 = document.getElementById('slider-vol');
+        if (slider1 && slider1.value != val) slider1.value = val;
+        const slider2 = document.getElementById('slider-vol-relief');
+        if (slider2 && slider2.value != val) slider2.value = val;
+
+        if (gainNode && audioCtx && isTonePlaying) {
+            gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(currentVol * 0.4, audioCtx.currentTime + 0.05);
+        }
+
+        if (noiseGainNode && audioCtx && isReliefPlaying) {
+            noiseGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+            noiseGainNode.gain.linearRampToValueAtTime(currentVol * 0.4, audioCtx.currentTime + 0.05);
+        }
+    }
+
+    // Toggle Pure Tone Generator
+    function toggleTone() {
+        initAudio();
+
+        if (isTonePlaying) {
+            stopTone();
+        } else {
+            // Stop relief if running
+            if (isReliefPlaying) stopRelief();
+            startTone();
+        }
+    }
+
+    function startTone() {
+        if (!audioCtx) return;
+
+        // Build audio graph
+        oscNode = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+        analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 256;
+
+        // Stereo pan node (fallback for older browser)
+        if (audioCtx.createStereoPanner) {
+            pannerNode = audioCtx.createStereoPanner();
+            pannerNode.pan.value = currentPan;
+            oscNode.connect(gainNode);
+            gainNode.connect(pannerNode);
+            pannerNode.connect(analyserNode);
+        } else {
+            oscNode.connect(gainNode);
+            gainNode.connect(analyserNode);
+        }
+
+        analyserNode.connect(audioCtx.destination);
+
+        oscNode.type = currentWaveform;
+        oscNode.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+
+        // Soft exponential attack ramp to prevent speaker click
+        gainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(currentVol * 0.4, audioCtx.currentTime + 0.1);
+
+        oscNode.start();
+        isTonePlaying = true;
+
+        // UI update
+        const btn = document.getElementById('btn-toggle-tone');
+        btn.classList.add('playing');
+        document.getElementById('play-text').innerText = "Stop Tone";
+        document.getElementById('play-icon').setAttribute('data-lucide', 'square');
+        if (window.lucide) lucide.createIcons();
+
+        startVisualizer();
+    }
+
+    function stopTone() {
+        if (!oscNode || !gainNode || !audioCtx) return;
+
+        // Soft release ramp to prevent pop
+        gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
+
+        setTimeout(() => {
+            if (oscNode) {
+                try { oscNode.stop(); oscNode.disconnect(); } catch(e) {}
+                oscNode = null;
+            }
+            isTonePlaying = false;
+        }, 100);
+
+        // UI update
+        const btn = document.getElementById('btn-toggle-tone');
+        btn.classList.remove('playing');
+        document.getElementById('play-text').innerText = "Start Tone";
+        document.getElementById('play-icon').setAttribute('data-lucide', 'play');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    // Save and Report Matching
+    function saveMatchReport() {
+        const report = document.getElementById('match-report');
+        report.style.display = 'block';
+
+        document.getElementById('rep-freq').innerText = `${currentFreq.toLocaleString()} Hz`;
+        document.getElementById('rep-note').innerText = freqToNote(currentFreq);
+        
+        let earText = "Both Ears";
+        if (currentPan === -1) earText = "Left Ear Only";
+        if (currentPan === 1) earText = "Right Ear Only";
+        document.getElementById('rep-ear').innerText = earText;
+
+        let waveName = "Pure Sine";
+        if (currentWaveform === 'triangle') waveName = "Triangle";
+        if (currentWaveform === 'square') waveName = "Square / Buzz";
+        document.getElementById('rep-wave').innerText = waveName;
+
+        const dateStr = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        document.getElementById('report-date').innerText = `Recorded on ${dateStr}`;
+
+        report.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function copyReportText() {
+        const text = `HandleKit Tinnitus Pitch Report:\n- Matched Frequency: ${currentFreq.toLocaleString()} Hz (${freqToNote(currentFreq)})\n- Laterality: ${currentPan === -1 ? 'Left Ear' : (currentPan === 1 ? 'Right Ear' : 'Both Ears')}\n- Waveform: ${currentWaveform}\n- Recorded at: https://handlekit.com/tinnitus-frequency-matcher`;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("✓ Tinnitus Report copied to clipboard! You can paste this into notes or an email for your audiologist.");
+        });
+    }
+
+    // ================= SOUND THERAPY / RELIEF MASKER ENGINE =================
+    function switchMode(mode) {
+        const tabMatcher = document.getElementById('tab-matcher');
+        const tabRelief = document.getElementById('tab-relief');
+        const panelMatcher = document.getElementById('panel-matcher');
+        const panelRelief = document.getElementById('panel-relief');
+
+        if (mode === 'matcher') {
+            tabMatcher.classList.add('active');
+            tabRelief.classList.remove('active', 'relief-active');
+            panelMatcher.style.display = 'block';
+            panelRelief.style.display = 'none';
+        } else {
+            tabMatcher.classList.remove('active');
+            tabRelief.classList.add('active', 'relief-active');
+            panelMatcher.style.display = 'none';
+            panelRelief.style.display = 'block';
+            if (isTonePlaying) stopTone();
+        }
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function selectTherapyType(type) {
+        if (reliefType === type && isReliefPlaying) return;
+        reliefType = type;
+        document.getElementById('opt-pink').classList.toggle('active', type === 'pink');
+        document.getElementById('opt-notched').classList.toggle('active', type === 'notched');
+        document.getElementById('opt-narrow').classList.toggle('active', type === 'narrow');
+
+        if (isReliefPlaying) {
+            // Cancel any pending stop timeout so it doesn't kill the new sound
+            if (stopReliefTimeoutId) {
+                clearTimeout(stopReliefTimeoutId);
+                stopReliefTimeoutId = null;
+            }
+
+            // Immediately disconnect old nodes cleanly without toggling UI buttons
+            if (noiseSourceNode) {
+                try { noiseSourceNode.stop(); noiseSourceNode.disconnect(); } catch(e) {}
+                noiseSourceNode = null;
+            }
+            if (noiseFilterNode1) {
+                try { noiseFilterNode1.disconnect(); } catch(e) {}
+                noiseFilterNode1 = null;
+            }
+            if (noiseFilterNode2) {
+                try { noiseFilterNode2.disconnect(); } catch(e) {}
+                noiseFilterNode2 = null;
+            }
+
+            // Instantly start the newly selected therapy mode
+            startRelief();
+        }
+    }
+
+    function createNoiseBuffer() {
+        const bufferSize = audioCtx.sampleRate * 3; // 3 seconds loop
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        
+        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0; // For pink noise filter
+        
+        for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            if (reliefType === 'pink') {
+                // Paul Kellet's filtered pink noise algorithm
+                b0 = 0.99886 * b0 + white * 0.0555179;
+                b1 = 0.99332 * b1 + white * 0.0750759;
+                b2 = 0.96900 * b2 + white * 0.1538520;
+                b3 = 0.86650 * b3 + white * 0.3104856;
+                b4 = 0.55000 * b4 + white * 0.5329522;
+                b5 = -0.7616 * b5 - white * 0.0168980;
+                data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11;
+                b6 = white * 0.115926;
+            } else {
+                data[i] = white * 0.2;
+            }
+        }
+        return buffer;
+    }
+
+    function toggleRelief() {
+        initAudio();
+        if (isReliefPlaying) {
+            stopRelief();
+        } else {
+            if (isTonePlaying) stopTone();
+            startRelief();
+        }
+    }
+
+    function startRelief() {
+        if (!audioCtx) return;
+
+        noiseSourceNode = audioCtx.createBufferSource();
+        noiseSourceNode.buffer = createNoiseBuffer();
+        noiseSourceNode.loop = true;
+
+        noiseFilterNode1 = audioCtx.createBiquadFilter();
+        noiseFilterNode2 = audioCtx.createBiquadFilter();
+        noiseGainNode = audioCtx.createGain();
+
+        if (reliefType === 'pink') {
+            // Notched Pink Noise: Pink noise + dual cascaded notch filters centered at currentFreq
+            noiseFilterNode1.type = 'notch';
+            noiseFilterNode1.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+            noiseFilterNode1.Q.setValueAtTime(3.5, audioCtx.currentTime);
+
+            noiseFilterNode2.type = 'notch';
+            noiseFilterNode2.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+            noiseFilterNode2.Q.setValueAtTime(3.5, audioCtx.currentTime);
+
+            noiseSourceNode.connect(noiseFilterNode1);
+            noiseFilterNode1.connect(noiseFilterNode2);
+            noiseFilterNode2.connect(noiseGainNode);
+        } else if (reliefType === 'notched') {
+            // Notched White Noise: White noise + dual cascaded notch filters centered at currentFreq
+            noiseFilterNode1.type = 'notch';
+            noiseFilterNode1.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+            noiseFilterNode1.Q.setValueAtTime(4.0, audioCtx.currentTime);
+
+            noiseFilterNode2.type = 'notch';
+            noiseFilterNode2.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+            noiseFilterNode2.Q.setValueAtTime(4.0, audioCtx.currentTime);
+
+            noiseSourceNode.connect(noiseFilterNode1);
+            noiseFilterNode1.connect(noiseFilterNode2);
+            noiseFilterNode2.connect(noiseGainNode);
+        } else if (reliefType === 'narrow') {
+            // Narrowband Masker: Bandpass focused directly around currentFreq
+            noiseFilterNode1.type = 'bandpass';
+            noiseFilterNode1.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+            noiseFilterNode1.Q.setValueAtTime(2.8, audioCtx.currentTime);
+
+            noiseSourceNode.connect(noiseFilterNode1);
+            noiseFilterNode1.connect(noiseGainNode);
+        }
+
+        noiseGainNode.connect(audioCtx.destination);
+
+        // Safe soft fade-in respecting current volume
+        noiseGainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        noiseGainNode.gain.exponentialRampToValueAtTime(Math.max(0.001, currentVol * 0.4), audioCtx.currentTime + 0.35);
+
+        noiseSourceNode.start();
+        isReliefPlaying = true;
+
+        // UI
+        const btn = document.getElementById('btn-toggle-relief');
+        btn.classList.add('playing');
+        document.getElementById('relief-play-text').innerText = "Stop Sound Therapy";
+        document.getElementById('relief-play-icon').setAttribute('data-lucide', 'square');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function stopRelief() {
+        if (!noiseGainNode || !audioCtx) return;
+
+        if (stopReliefTimeoutId) {
+            clearTimeout(stopReliefTimeoutId);
+            stopReliefTimeoutId = null;
+        }
+
+        noiseGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+        noiseGainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.12);
+
+        // Immediate UI and flag update
+        isReliefPlaying = false;
+        const btn = document.getElementById('btn-toggle-relief');
+        if (btn) {
+            btn.classList.remove('playing');
+            document.getElementById('relief-play-text').innerText = "Start Sound Therapy";
+            document.getElementById('relief-play-icon').setAttribute('data-lucide', 'play');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        if (reliefTimerId) {
+            clearTimeout(reliefTimerId);
+            reliefTimerId = null;
+        }
+
+        stopReliefTimeoutId = setTimeout(() => {
+            if (noiseSourceNode) {
+                try { noiseSourceNode.stop(); noiseSourceNode.disconnect(); } catch(e) {}
+                noiseSourceNode = null;
+            }
+            if (noiseFilterNode1) {
+                try { noiseFilterNode1.disconnect(); } catch(e) {}
+                noiseFilterNode1 = null;
+            }
+            if (noiseFilterNode2) {
+                try { noiseFilterNode2.disconnect(); } catch(e) {}
+                noiseFilterNode2 = null;
+            }
+            stopReliefTimeoutId = null;
+        }, 140);
+    }
+
+    function setTherapyTimer(minutes) {
+        document.querySelectorAll('#panel-relief .step-btn').forEach(btn => btn.classList.remove('active'));
+        if (minutes === 0) document.getElementById('timer-off').classList.add('active');
+        if (minutes === 5) document.getElementById('timer-5').classList.add('active');
+        if (minutes === 15) document.getElementById('timer-15').classList.add('active');
+        if (minutes === 30) document.getElementById('timer-30').classList.add('active');
+
+        if (reliefTimerId) clearTimeout(reliefTimerId);
+
+        if (minutes > 0 && isReliefPlaying) {
+            reliefTimerId = setTimeout(() => {
+                stopRelief();
+                alert(`Sound therapy session (${minutes} minutes) completed.`);
+            }, minutes * 60 * 1000);
+        }
+    }
+
+    // Visualizer Canvas loop
+    const canvas = document.getElementById('oscilloscope');
+    const canvasCtx = canvas.getContext('2d');
+    function startVisualizer() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+
+        function draw() {
+            if (!isTonePlaying) {
+                canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+                return;
+            }
+
+            requestAnimationFrame(draw);
+            const bufferLength = analyserNode.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyserNode.getByteTimeDomainData(dataArray);
+
+            canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = '#00d2ff';
+            canvasCtx.beginPath();
+
+            const sliceWidth = canvas.width * 1.0 / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = v * canvas.height / 2;
+
+                if (i === 0) canvasCtx.moveTo(x, y);
+                else canvasCtx.lineTo(x, y);
+
+                x += sliceWidth;
+            }
+
+            canvasCtx.lineTo(canvas.width, canvas.height / 2);
+            canvasCtx.stroke();
+        }
+
+        draw();
+    }
+
+    // Rating Widget
+    function rateTool(stars) {
+        fetch('/api/rate-tool', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tool: 'tinnitus-matcher', rating: stars })
+        }).catch(() => {});
+
+        document.getElementById('star-rating-box').style.display = 'none';
+        document.getElementById('rate-thanks').style.display = 'block';
+    }
+
+    // FAQ Accordion Toggle
+    function toggleFaq(btn) {
+        const item = btn.parentElement;
+        item.classList.toggle('open');
+    }
+
+    // Embed Modal Functions
+    function openEmbedModal() {
+        document.getElementById('embed-modal').style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function copyEmbedCode() {
+        const textarea = document.getElementById('embed-code');
+        textarea.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-embed-btn');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = orig;
+            if (window.lucide) lucide.createIcons();
+        }, 2000);
+    }
+
+    // Embed Mode Detection (?embed=true)
+    document.addEventListener('DOMContentLoaded', () => {
+        updateFrequency(8000, true);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embed') === 'true') {
+            const navbar = document.querySelector('.top-bar');
+            if (navbar) navbar.style.display = 'none';
+            const footer = document.querySelector('footer');
+            if (footer) footer.style.display = 'none';
+            document.body.style.background = 'transparent';
+
+            // Hide non-tool marketing and deep dive sections
+            document.querySelectorAll('.safety-alert-banner, .edu-section, .embed-card, .tool-header-block, div[style*="border-top"]').forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+
+            const container = document.querySelector('.tinnitus-container');
+            if (container) {
+                container.style.paddingTop = '0';
+                container.style.marginTop = '0';
+            }
+        }
+    });
+</script>
+{% endblock %}
