@@ -18,11 +18,29 @@
     <style>
         html.embed-mode .top-bar,
         html.embed-mode footer,
-        html.embed-mode .breadcrumbs {
+        html.embed-mode .breadcrumbs,
+        html.embed-mode .tool-header-block,
+        html.embed-mode .calibration-notice-banner,
+        html.embed-mode .test-supplementary-content,
+        html.embed-mode .affiliate-recs-section,
+        html.embed-mode .embed-card,
+        html.embed-mode .faq-section,
+        html.embed-mode .edu-section {
             display: none !important;
+        }
+        html.embed-mode #embed-footer-bar {
+            display: flex !important;
         }
         html.embed-mode, html.embed-mode body {
             background: transparent !important;
+        }
+        html.embed-mode .container,
+        html.embed-mode .tinnitus-container {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            margin-top: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
         }
     </style>
     <link rel="canonical" href="https://handlekit.com{{ request.path }}">
