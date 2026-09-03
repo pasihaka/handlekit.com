@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensory Labs Demo | Clinical Psychophysics & Web Audio</title>
+    <style>
+        :root {
+            --bg: #09090b;
+            --card: #18181b;
+            --border: #27272a;
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --text: #f4f4f5;
+            --text-sub: #a1a1aa;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 2rem 1rem; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .wrapper { max-width: 860px; width: 100%; }
+        header { text-align: center; margin-bottom: 2rem; }
+        h1 { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--text-sub); font-size: 1rem; line-height: 1.5; }
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: none; color: var(--text-sub); font-size: 0.95rem; font-weight: 600; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .tab-btn.active { background: rgba(6, 182, 212, 0.15); color: var(--accent); border: 1px solid var(--accent); }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .tool-panel { display: none; }
+        .tool-panel.active { display: block; }
+        .btn { background: var(--accent); color: #000; border: none; padding: 0.75rem 1.5rem; font-weight: 700; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: #fff; }
+        .slider-group { margin: 1.5rem 0; }
+        .slider-group label { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-sub); }
+        input[type="range"] { width: 100%; accent-color: var(--accent); height: 6px; border-radius: 4px; }
+        
+        /* Vision Demo Canvas */
+        .chart-box { background: #ffffff; border-radius: 12px; padding: 2.5rem 1rem; text-align: center; margin: 1.5rem 0; }
+        .sloan-letter { font-size: 4.5rem; font-weight: 800; font-family: monospace; letter-spacing: 0.5rem; color: #000000; transition: color 0.15s; }
+        
+        /* Audio Demo Meter */
+        .audio-meter { height: 12px; border-radius: 6px; background: rgba(255,255,255,0.1); overflow: hidden; margin: 1.5rem 0; position: relative; }
+        .audio-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444); transition: width 0.1s; }
+        
+        /* Footer link */
+        footer { margin-top: auto; text-align: center; padding: 2rem 0; color: var(--text-sub); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+        footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <header>
+        <h1>🔬 Sensory Labs Open Source Demo</h1>
+        <p class="subtitle">Client-side Pelli-Robson Log Contrast Sensitivity & Web Audio Audiometric Synthesis.<br>Powered by <a href="https://handlekit.com" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:700;">HandleKit Sensory Labs</a>.</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('vision')">👁️ Contrast Sensitivity</button>
+        <button class="tab-btn" onclick="switchTab('hearing')">🎧 Hearing Age Screener</button>
+        <button class="tab-btn" onclick="switchTab('tinnitus')">🎵 Tinnitus Notch Masker</button>
+    </div>
+
+    <!-- Panel 1: Vision Contrast Sensitivity -->
+    <div id="panel-vision" class="tool-panel active">
+        <div class="card">
+            <h2 style="font-size: 1.3rem; margin-bottom: 0.5rem;">Pelli-Robson Log CS Simulation</h2>
+            <p style="color: var(--text-sub); font-size: 0.9rem;">Observe how standard Sloan letters fade as Weber contrast drops from 100% (Log CS 0.05) down to 0.5% (Log CS 2.30).</p>
+            
+            <div class="slider-group">
+                <label>
+                    <span>Log Contrast Sensitivity (Log CS):</span>
+                    <span id="log-cs-val" style="color: var(--accent); font-family: monospace;">0.05 (100% Contrast)</span>
+                </label>
+                <input type="range" id="contrast-slider" min="0" max="15" value="0" oninput="updateContrast(this.value)">
+            </div>
+
+            <div class="chart-box">
+                <span class="sloan-letter" id="sloan-sample">V K R</span>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <button class="btn btn-outline" onclick="randomizeSloan()">🎲 Randomize Sloan Letters</button>
+                <a href="https://handlekit.com/contrast-sensitivity-test" target="_blank" class="btn">
+                    Launch Full 16-Step Pelli-Robson Test ↗
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 2: Hearing Age Screener -->
+    <div id="panel-hearing" class="tool-panel">
+        <div class="card">
+            <h2 style="font-size: 1.3rem; margin-bottom: 0.5rem;">Pure Tone Presbycusis Synthesizer</h2>
+            <p style="color: var(--text-sub); font-size: 0.9rem;">Generates pure uncompressed sine waves via native <code>AudioContext</code> to test upper audible limits from 8,000 Hz to 20,000 Hz.</p>
+
+            <div class="slider-group">
+                <label>
+                    <span>Acoustic Frequency:</span>
+                    <span id="freq-val" style="color: var(--accent); font-family: monospace;">12,000 Hz (~Under 50 Yrs Old)</span>
+                </label>
+                <input type="range" id="freq-slider" min="8000" max="20000" step="200" value="12000" oninput="updateFreq(this.value)">
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <button class="btn btn-outline" onclick="setFreqPreset(8000, 'Senior (~65+ Yrs)')">8 kHz</button>
+                <button class="btn btn-outline" onclick="setFreqPreset(14000, 'Adult (~Under 40)')">14 kHz</button>
+                <button class="btn btn-outline" onclick="setFreqPreset(16000, 'Young Adult (~Under 30)')">16 kHz</button>
+                <button class="btn btn-outline" onclick="setFreqPreset(17400, 'Mosquito Tone (~Under 24)')" style="border-color: #f59e0b; color: #f59e0b;">17.4 kHz (Mosquito)</button>
+                <button class="btn btn-outline" onclick="setFreqPreset(19000, 'Youth (~Under 18)')">19 kHz</button>
+            </div>
+
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button id="tone-btn" class="btn" onclick="toggleTone()">▶ Play Tone</button>
+                <a href="https://handlekit.com/hearing-age-test" target="_blank" class="btn btn-outline">
+                    Launch Full Automated Ear Age Test ↗
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 3: Tinnitus Notched Sound Therapy -->
+    <div id="panel-tinnitus" class="tool-panel">
+        <div class="card">
+            <h2 style="font-size: 1.3rem; margin-bottom: 0.5rem;">Biquad Notched Sound Therapy Demo</h2>
+            <p style="color: var(--text-sub); font-size: 0.9rem;">Demonstrates an IIR biquad notch filter cutting out a 1-octave frequency band from synthesized white noise to relieve subjective ear ringing.</p>
+
+            <div class="slider-group">
+                <label>
+                    <span>Center Notch Frequency:</span>
+                    <span id="notch-val" style="color: var(--accent); font-family: monospace;">6,000 Hz</span>
+                </label>
+                <input type="range" id="notch-slider" min="1000" max="12000" step="250" value="6000" oninput="updateNotch(this.value)">
+            </div>
+
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button id="noise-btn" class="btn" onclick="toggleNotchedNoise()">▶ Play Notched White Noise</button>
+                <a href="https://handlekit.com/tinnitus-frequency-matcher" target="_blank" class="btn btn-outline">
+                    Launch Full Pitch Matcher & Sound Masker ↗
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Sensory Labs is free, open-source software released under the <a href="LICENSE">MIT License</a>.</p>
+        <p style="margin-top: 0.4rem;">Full clinical diagnostics and tools available at <a href="https://handlekit.com" target="_blank">HandleKit.com</a>.</p>
+    </footer>
+</div>
+
+<script>
+    // Tab Switching
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+        if (tab === 'vision') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('panel-vision').classList.add('active');
+        } else if (tab === 'hearing') {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('panel-hearing').classList.add('active');
+        } else if (tab === 'tinnitus') {
+            document.querySelectorAll('.tab-btn')[2].classList.add('active');
+            document.getElementById('panel-tinnitus').classList.add('active');
+        }
+    }
+
+    // Vision Contrast Simulation
+    const contrastLevels = [
+        { log: 0.05, rgb: 0 },
+        { log: 0.20, rgb: 92 },
+        { log: 0.35, rgb: 139 },
+        { log: 0.50, rgb: 173 },
+        { log: 0.65, rgb: 196 },
+        { log: 0.80, rgb: 213 },
+        { log: 0.95, rgb: 226 },
+        { log: 1.10, rgb: 235 },
+        { log: 1.25, rgb: 241 },
+        { log: 1.40, rgb: 245 },
+        { log: 1.55, rgb: 248 },
+        { log: 1.70, rgb: 250 },
+        { log: 1.85, rgb: 252 },
+        { log: 2.00, rgb: 253 },
+        { log: 2.15, rgb: 254 },
+        { log: 2.30, rgb: 254 }
+    ];
+    const sloanLetters = ['C', 'D', 'H', 'K', 'N', 'O', 'R', 'S', 'V', 'Z'];
+
+    function updateContrast(index) {
+        const item = contrastLevels[index];
+        const val = item.rgb;
+        document.getElementById('sloan-sample').style.color = `rgb(${val}, ${val}, ${val})`;
+        document.getElementById('log-cs-val').textContent = `${item.log.toFixed(2)} (RGB: ${val})`;
+    }
+
+    function randomizeSloan() {
+        const letters = [];
+        for (let i = 0; i < 3; i++) {
+            letters.push(sloanLetters[Math.floor(Math.random() * sloanLetters.length)]);
+        }
+        document.getElementById('sloan-sample').textContent = letters.join(' ');
+    }
+
+    // Web Audio Engine
+    let audioCtx = null;
+    let osc = null;
+    let gainNode = null;
+    let isPlayingTone = false;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function updateFreq(val) {
+        let ageLabel = 'Under 18';
+        if (val < 9000) ageLabel = 'Senior (~65+)';
+        else if (val < 11000) ageLabel = 'Under 60';
+        else if (val < 13000) ageLabel = 'Under 50';
+        else if (val < 15000) ageLabel = 'Under 40';
+        else if (val < 17000) ageLabel = 'Under 30';
+        else if (val <= 18000) ageLabel = 'Mosquito Tone / Under 24';
+        
+        document.getElementById('freq-val').textContent = `${parseInt(val).toLocaleString()} Hz (~${ageLabel})`;
+        if (osc) {
+            osc.frequency.setValueAtTime(val, audioCtx.currentTime);
+        }
+    }
+
+    function setFreqPreset(hz, label) {
+        document.getElementById('freq-slider').value = hz;
+        updateFreq(hz);
+    }
+
+    function toggleTone() {
+        initAudio();
+        const btn = document.getElementById('tone-btn');
+        if (!isPlayingTone) {
+            osc = audioCtx.createOscillator();
+            gainNode = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            const freq = document.getElementById('freq-slider').value;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            
+            // Anti-click soft envelope
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            
+            isPlayingTone = true;
+            btn.textContent = '⏹ Stop Tone';
+            btn.style.background = '#ef4444';
+            btn.style.color = '#fff';
+        } else {
+            gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.05);
+            setTimeout(() => {
+                if (osc) {
+                    osc.stop();
+                    osc.disconnect();
+                    osc = null;
+                }
+            }, 60);
+            isPlayingTone = false;
+            btn.textContent = '▶ Play Tone';
+            btn.style.background = 'var(--accent)';
+            btn.style.color = '#000';
+        }
+    }
+
+    // Tinnitus Notched Sound Masker
+    let noiseNode = null;
+    let notchFilter = null;
+    let isPlayingNoise = false;
+
+    function updateNotch(hz) {
+        document.getElementById('notch-val').textContent = `${parseInt(hz).toLocaleString()} Hz`;
+        if (notchFilter) {
+            notchFilter.frequency.setValueAtTime(hz, audioCtx.currentTime);
+        }
+    }
+
+    function toggleNotchedNoise() {
+        initAudio();
+        const btn = document.getElementById('noise-btn');
+        if (!isPlayingNoise) {
+            const bufferSize = 2 * audioCtx.sampleRate;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            noiseNode = audioCtx.createBufferSource();
+            noiseNode.buffer = noiseBuffer;
+            noiseNode.loop = true;
+
+            notchFilter = audioCtx.createBiquadFilter();
+            notchFilter.type = 'notch';
+            const notchFreq = document.getElementById('notch-slider').value;
+            notchFilter.frequency.setValueAtTime(notchFreq, audioCtx.currentTime);
+            notchFilter.Q.setValueAtTime(4.0, audioCtx.currentTime);
+
+            const noiseGain = audioCtx.createGain();
+            noiseGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            noiseGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.1);
+
+            noiseNode.connect(notchFilter);
+            notchFilter.connect(noiseGain);
+            noiseGain.connect(audioCtx.destination);
+            noiseNode.start();
+
+            isPlayingNoise = true;
+            btn.textContent = '⏹ Stop Notched Noise';
+            btn.style.background = '#ef4444';
+            btn.style.color = '#fff';
+        } else {
+            if (noiseNode) {
+                noiseNode.stop();
+                noiseNode.disconnect();
+                noiseNode = null;
+            }
+            isPlayingNoise = false;
+            btn.textContent = '▶ Play Notched White Noise';
+            btn.style.background = 'var(--accent)';
+            btn.style.color = '#000';
+        }
+    }
+</script>
+
+</body>
+</html>

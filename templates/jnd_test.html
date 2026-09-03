@@ -13,17 +13,36 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "HandleKit Vision Lab",
-      "url": "{{ request.url }}",
+      "@id": "https://handlekit.com/jnd-test#app",
+      "name": "JND Color Perception Test (Weber's Law Difference Threshold)",
+      "url": "https://handlekit.com/jnd-test",
       "description": "Scientific JND (Just Noticeable Difference) color perception test engine using Oklab Delta-E measurements.",
       "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "All"
+      "operatingSystem": "All",
+      "author": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://handlekit.com/#website"
+      }
     },
     {
       "@type": "Article",
+      "@id": "https://handlekit.com/jnd-test#article",
       "headline": "Just Noticeable Difference (JND): Definition, Weber's Law, and Real-World Examples",
       "description": "A clear, SEO-friendly guide to Just Noticeable Difference (JND), Weber's Law, and practical applications in perception, design, and marketing.",
-      "author": { "@type": "Organization", "name": "HandleKit Research Lab" },
+      "author": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://handlekit.com/#website"
+      },
       "keywords": ["Just Noticeable Difference", "JND", "Weber's Law", "difference threshold", "psychophysics", "sensory perception"],
       "articleSection": ["Psychology", "Neuroscience", "Perception"],
       "inLanguage": "en"

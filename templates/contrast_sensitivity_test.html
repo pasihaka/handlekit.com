@@ -13,6 +13,7 @@
   "@graph": [
     {
       "@type": "WebApplication",
+      "@id": "https://handlekit.com/contrast-sensitivity-test#app",
       "name": "Visual Contrast Sensitivity Test (Pelli-Robson VCS)",
       "url": "https://handlekit.com/contrast-sensitivity-test",
       "applicationCategory": "HealthApplication",
@@ -23,13 +24,26 @@
         "priceCurrency": "USD"
       },
       "author": {
-        "@type": "Organization",
-        "name": "HandleKit Vision Lab"
+        "@id": "https://handlekit.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://handlekit.com/#website"
       }
     },
     {
       "@type": "MedicalWebPage",
+      "@id": "https://handlekit.com/contrast-sensitivity-test#webpage",
+      "url": "https://handlekit.com/contrast-sensitivity-test",
       "name": "Clinical Visual Contrast Sensitivity & Pelli-Robson Guide",
+      "isPartOf": {
+        "@id": "https://handlekit.com/#website"
+      },
+      "publisher": {
+        "@id": "https://handlekit.com/#organization"
+      },
       "audience": {
         "@type": "MedicalAudience",
         "audienceType": "Patient"

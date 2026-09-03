@@ -11,6 +11,7 @@
   "@graph": [
     {
       "@type": "WebApplication",
+      "@id": "https://handlekit.com/tinnitus-frequency-matcher#app",
       "name": "Tinnitus Frequency Matcher & Tone Generator",
       "url": "https://handlekit.com/tinnitus-frequency-matcher",
       "applicationCategory": "HealthApplication",
@@ -21,13 +22,29 @@
         "price": "0",
         "priceCurrency": "USD"
       },
+      "author": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://handlekit.com/#website"
+      },
       "description": "Interactive Web Audio tool to match your subjective tinnitus frequency from 250 Hz to 16,000 Hz, generate custom notched masking noise, and export an audiology summary.",
       "keywords": "tinnitus frequency matcher, tinnitus tone generator, tinnitus test, tinnitus frequency, tinnitus pitch, ear ringing frequency, tinnitus masker, notched sound therapy, audiology pitch matching"
     },
     {
       "@type": "MedicalWebPage",
+      "@id": "https://handlekit.com/tinnitus-frequency-matcher#webpage",
       "name": "Tinnitus Pitch Matching Guide & Sound Therapy",
       "url": "https://handlekit.com/tinnitus-frequency-matcher",
+      "isPartOf": {
+        "@id": "https://handlekit.com/#website"
+      },
+      "publisher": {
+        "@id": "https://handlekit.com/#organization"
+      },
       "description": "Clinical guidelines on matching subjective tinnitus pitch, common acoustic frequencies, and acoustic notched sound masking therapy.",
       "aspect": ["Diagnosis", "Treatment"],
       "audience": {

@@ -109,6 +109,54 @@
 .spin-slow { animation: spin-slow 20s linear infinite; }
 </style>
 
+    <!-- Sitewide Knowledge Graph Entity Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://handlekit.com/#organization",
+          "name": "HandleKit",
+          "url": "https://handlekit.com",
+          "logo": {
+            "@type": "ImageObject",
+            "@id": "https://handlekit.com/#logo",
+            "url": "https://handlekit.com/static/img/logo_high_res_2.webp",
+            "caption": "HandleKit Logo"
+          },
+          "image": {
+            "@id": "https://handlekit.com/#logo"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support",
+            "email": "contacthandlekit@gmail.com"
+          },
+          "sameAs": [
+            "https://github.com/pasihaka",
+            "https://github.com/pasihaka/handlekit.com",
+            "https://github.com/pasihaka/sensory-labs",
+            "https://x.com/pasihaka",
+            "https://twitter.com/pasihaka",
+            "https://alternativeto.net/software/handlekit/",
+            "https://www.producthunt.com/products/handlekit"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://handlekit.com/#website",
+          "url": "https://handlekit.com",
+          "name": "HandleKit",
+          "description": "Free browser-based sensory screening laboratories and precision creator tools.",
+          "publisher": {
+            "@id": "https://handlekit.com/#organization"
+          }
+        }
+      ]
+    }
+    </script>
+
     <!-- PERF: Pinned Lucide to a specific version to avoid redirects -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js" defer id="lucide-script"></script>
     {% block head_extra %}{% endblock %}

@@ -11,6 +11,7 @@
   "@graph": [
     {
       "@type": "WebApplication",
+      "@id": "https://handlekit.com/hearing-age-test#app",
       "name": "Hearing Age Test & High-Frequency Assessor",
       "url": "https://handlekit.com/hearing-age-test",
       "applicationCategory": "HealthApplication",
@@ -21,13 +22,29 @@
         "price": "0",
         "priceCurrency": "USD"
       },
+      "author": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://handlekit.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://handlekit.com/#website"
+      },
       "description": "Interactive Web Audio tool to test your upper high-frequency hearing limit from 8,000 Hz to 20,000 Hz, calculate your biological ear age, and check the mosquito tone.",
       "keywords": "hearing age test, ear age test, how old are your ears, high frequency hearing test, mosquito tone test, mosquito ringtone test, presbycusis test, hearing frequency test"
     },
     {
       "@type": "MedicalWebPage",
+      "@id": "https://handlekit.com/hearing-age-test#webpage",
       "name": "High-Frequency Hearing Loss & Presbycusis Guide",
       "url": "https://handlekit.com/hearing-age-test",
+      "isPartOf": {
+        "@id": "https://handlekit.com/#website"
+      },
+      "publisher": {
+        "@id": "https://handlekit.com/#organization"
+      },
       "description": "Clinical explanation of age-related high-frequency hearing loss (presbycusis), cochlear hair cell degeneration, and extended high-frequency audiometry.",
       "aspect": ["Diagnosis", "Education"],
       "audience": {
