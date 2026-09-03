@@ -71,7 +71,7 @@
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: var(--glow-color); filter: blur(120px); z-index: -1; opacity: 0.5;">
     </div>
     
-    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0, 210, 255, 0.08); border: 1px solid #00d2ff; color: #00d2ff; padding: 0.4rem 1.1rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.25rem;">
+    <div class="hero-top-badge" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1.1rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.25rem;">
         <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> Precision Sensory Labs &amp; Creator Utilities
     </div>
 
@@ -91,7 +91,7 @@
 <div style="margin-bottom: 4.5rem;">
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
         <div>
-            <div style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #00d2ff; margin-bottom: 0.35rem;">
+            <div class="flagship-kicker-text" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.35rem;">
                 <i data-lucide="activity" style="width: 14px; height: 14px;"></i> Flagship Screeners
             </div>
             <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px;">
@@ -106,85 +106,85 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
         
         <!-- Contrast Sensitivity -->
-        <a href="/contrast-sensitivity-test" class="tool-card flagship-card" style="border: 2px solid rgba(0, 210, 255, 0.4); background: linear-gradient(145deg, rgba(0, 210, 255, 0.04) 0%, rgba(22, 18, 18, 0.8) 100%);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 210, 255, 0.12); border: 1px solid #00d2ff; display: flex; align-items: center; justify-content: center; color: #00d2ff;">
-                    <i data-lucide="eye" style="width: 24px; height: 24px;"></i>
+        <a href="/contrast-sensitivity-test" class="tool-card flagship-card">
+            <div class="flagship-top-row">
+                <div class="flagship-icon-box">
+                    <i data-lucide="eye"></i>
                 </div>
-                <span class="flagship-badge" style="background: rgba(0, 210, 255, 0.15); border: 1px solid #00d2ff; color: #00d2ff;">
+                <span class="flagship-badge">
                     Pelli-Robson Log CS
                 </span>
             </div>
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;">
+            <h3 class="flagship-title">
                 Visual Contrast Sensitivity Test
             </h3>
-            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.5rem;">
+            <p class="flagship-desc">
                 Screen for subtle contrast loss, night driving glare, and visual pathway fatigue using the official clinical Pelli-Robson Log CS benchmark.
             </p>
-            <div class="card-arrow" style="color: #00d2ff; font-weight: 700; margin-top: auto;">
+            <div class="card-arrow flagship-arrow">
                 Start vision screening <i data-lucide="arrow-right"></i>
             </div>
         </a>
 
         <!-- Hearing Age Test -->
-        <a href="/hearing-age-test" class="tool-card flagship-card" style="border: 2px solid rgba(0, 210, 255, 0.4); background: linear-gradient(145deg, rgba(0, 210, 255, 0.04) 0%, rgba(22, 18, 18, 0.8) 100%);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 210, 255, 0.12); border: 1px solid #00d2ff; display: flex; align-items: center; justify-content: center; color: #00d2ff;">
-                    <i data-lucide="headphones" style="width: 24px; height: 24px;"></i>
+        <a href="/hearing-age-test" class="tool-card flagship-card">
+            <div class="flagship-top-row">
+                <div class="flagship-icon-box">
+                    <i data-lucide="headphones"></i>
                 </div>
-                <span class="flagship-badge" style="background: rgba(0, 210, 255, 0.15); border: 1px solid #00d2ff; color: #00d2ff;">
+                <span class="flagship-badge">
                     Audiology Lab
                 </span>
             </div>
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;">
+            <h3 class="flagship-title">
                 Hearing Age &amp; High-Frequency Test
             </h3>
-            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.5rem;">
+            <p class="flagship-desc">
                 Determine your biological ear age by evaluating your upper auditory limit (8 kHz - 20 kHz). Test high-frequency presbycusis and mosquito tones.
             </p>
-            <div class="card-arrow" style="color: #00d2ff; font-weight: 700; margin-top: auto;">
+            <div class="card-arrow flagship-arrow">
                 Test biological ear age <i data-lucide="arrow-right"></i>
             </div>
         </a>
 
         <!-- Tinnitus Frequency Matcher -->
-        <a href="/tinnitus-frequency-matcher" class="tool-card flagship-card" style="border: 2px solid rgba(0, 210, 255, 0.4); background: linear-gradient(145deg, rgba(0, 210, 255, 0.04) 0%, rgba(22, 18, 18, 0.8) 100%);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 210, 255, 0.12); border: 1px solid #00d2ff; display: flex; align-items: center; justify-content: center; color: #00d2ff;">
-                    <i data-lucide="radio" style="width: 24px; height: 24px;"></i>
+        <a href="/tinnitus-frequency-matcher" class="tool-card flagship-card">
+            <div class="flagship-top-row">
+                <div class="flagship-icon-box">
+                    <i data-lucide="radio"></i>
                 </div>
-                <span class="flagship-badge" style="background: rgba(0, 210, 255, 0.15); border: 1px solid #00d2ff; color: #00d2ff;">
+                <span class="flagship-badge">
                     Sound Therapy
                 </span>
             </div>
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;">
+            <h3 class="flagship-title">
                 Tinnitus Pitch Matcher &amp; Masker
             </h3>
-            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.5rem;">
+            <p class="flagship-desc">
                 Pinpoint the exact pitch of your ear ringing (250 Hz - 16 kHz) and generate customized notched sound therapy maskers to soothe phantom audio perception.
             </p>
-            <div class="card-arrow" style="color: #00d2ff; font-weight: 700; margin-top: auto;">
+            <div class="card-arrow flagship-arrow">
                 Match tinnitus pitch <i data-lucide="arrow-right"></i>
             </div>
         </a>
 
         <!-- JND Color Perception -->
-        <a href="/jnd-test" class="tool-card flagship-card" style="border: 2px solid rgba(0, 210, 255, 0.4); background: linear-gradient(145deg, rgba(0, 210, 255, 0.04) 0%, rgba(22, 18, 18, 0.8) 100%);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 210, 255, 0.12); border: 1px solid #00d2ff; display: flex; align-items: center; justify-content: center; color: #00d2ff;">
-                    <i data-lucide="palette" style="width: 24px; height: 24px;"></i>
+        <a href="/jnd-test" class="tool-card flagship-card">
+            <div class="flagship-top-row">
+                <div class="flagship-icon-box">
+                    <i data-lucide="palette"></i>
                 </div>
-                <span class="flagship-badge" style="background: rgba(0, 210, 255, 0.15); border: 1px solid #00d2ff; color: #00d2ff;">
+                <span class="flagship-badge">
                     Delta-E CIELAB
                 </span>
             </div>
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;">
+            <h3 class="flagship-title">
                 JND Color Perception Test
             </h3>
-            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.5rem;">
+            <p class="flagship-desc">
                 Scientific Delta-E color perception benchmark. Measure your visual cone photoreceptor threshold and discover your exact color discrimination acuity.
             </p>
-            <div class="card-arrow" style="color: #00d2ff; font-weight: 700; margin-top: auto;">
+            <div class="card-arrow flagship-arrow">
                 Measure color vision <i data-lucide="arrow-right"></i>
             </div>
         </a>
@@ -467,15 +467,88 @@
 </div>
 
 <style>
+    /* Flagship Lab Cards — Adaptive Light & Dark Theming */
+    :root {
+        --flagship-bg: linear-gradient(145deg, rgba(0, 210, 255, 0.05) 0%, rgba(22, 18, 18, 0.85) 100%);
+        --flagship-border: rgba(0, 210, 255, 0.35);
+        --flagship-hover-border: #00d2ff;
+        --flagship-hover-shadow: 0 20px 45px rgba(0, 210, 255, 0.25);
+        --flagship-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        --flagship-accent: #00d2ff;
+        --flagship-icon-bg: rgba(0, 210, 255, 0.12);
+        --flagship-icon-border: #00d2ff;
+        --flagship-badge-bg: rgba(0, 210, 255, 0.15);
+        --flagship-badge-border: #00d2ff;
+        --flagship-badge-text: #00d2ff;
+        --flagship-title: #ffffff;
+        --flagship-desc: var(--text-sub);
+        --flagship-arrow: #00d2ff;
+        --flagship-kicker: #00d2ff;
+    }
+
+    html[data-theme='light'], html[data-theme='light'] :root {
+        --flagship-bg: linear-gradient(145deg, #ffffff 0%, #f0f9ff 100%);
+        --flagship-border: rgba(2, 132, 199, 0.3);
+        --flagship-hover-border: #0284c7;
+        --flagship-hover-shadow: 0 20px 40px rgba(2, 132, 199, 0.18);
+        --flagship-shadow: 0 10px 25px rgba(2, 132, 199, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+        --flagship-accent: #0284c7;
+        --flagship-icon-bg: rgba(2, 132, 199, 0.08);
+        --flagship-icon-border: #0284c7;
+        --flagship-badge-bg: rgba(2, 132, 199, 0.08);
+        --flagship-badge-border: rgba(2, 132, 199, 0.35);
+        --flagship-badge-text: #0369a1;
+        --flagship-title: #0f172a;
+        --flagship-desc: #475569;
+        --flagship-arrow: #0284c7;
+        --flagship-kicker: #0284c7;
+    }
+
+    .hero-top-badge {
+        background: var(--flagship-icon-bg);
+        border: 1px solid var(--flagship-icon-border);
+        color: var(--flagship-accent);
+    }
+
+    .flagship-kicker-text {
+        color: var(--flagship-kicker);
+    }
+
     .flagship-card {
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        background: var(--flagship-bg) !important;
+        border: 2px solid var(--flagship-border) !important;
+        box-shadow: var(--flagship-shadow);
         transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .flagship-card:hover {
         transform: translateY(-8px);
-        border-color: #00d2ff !important;
-        box-shadow: 0 20px 45px rgba(0, 210, 255, 0.2);
+        border-color: var(--flagship-hover-border) !important;
+        box-shadow: var(--flagship-hover-shadow) !important;
+    }
+
+    .flagship-top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.25rem;
+    }
+
+    .flagship-icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: var(--flagship-icon-bg);
+        border: 1px solid var(--flagship-icon-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .flagship-icon-box i, .flagship-icon-box svg {
+        width: 24px;
+        height: 24px;
+        color: var(--flagship-accent);
     }
 
     .flagship-badge {
@@ -483,8 +556,33 @@
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 1px;
-        padding: 0.3rem 0.75rem;
+        padding: 0.35rem 0.85rem;
         border-radius: 9999px;
+        background: var(--flagship-badge-bg);
+        border: 1px solid var(--flagship-badge-border);
+        color: var(--flagship-badge-text);
+    }
+
+    .flagship-title {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: var(--flagship-title);
+        margin-bottom: 0.6rem;
+        letter-spacing: -0.3px;
+        line-height: 1.3;
+    }
+
+    .flagship-desc {
+        color: var(--flagship-desc);
+        line-height: 1.6;
+        font-size: 0.92rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .flagship-arrow {
+        color: var(--flagship-arrow) !important;
+        font-weight: 700;
+        margin-top: auto;
     }
 
     .article-preview-card {
@@ -498,10 +596,18 @@
         transition: all 0.25s ease;
     }
 
+    html[data-theme='light'] .article-preview-card {
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
     .article-preview-card:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.2);
+        border-color: var(--flagship-hover-border);
         transform: translateY(-4px);
+    }
+
+    html[data-theme='light'] .article-preview-card:hover {
+        box-shadow: 0 10px 25px rgba(2, 132, 199, 0.12);
     }
 </style>
 {% endblock %}
