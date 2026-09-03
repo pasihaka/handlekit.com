@@ -1,6 +1,5 @@
-{% set title = "Free Online Tools for Developers & Creators | HandleKit" %}
-{% set description = "HandleKit offers free, instant online tools: username availability checker, password generator,
-image optimizer, QR generator, word counter, and 10+ developer utilities. No sign-up needed." %}
+{% set title = "HandleKit | Clinical Sensory Screening Labs & Precision Creator Tools" %}
+{% set description = "Free browser-based screening labs & tools: Clinical Pelli-Robson contrast sensitivity, high-frequency hearing age test, tinnitus sound therapy, safe zone visualizer, and precision digital utilities. 100% private, no sign-up." %}
 {% extends "layout.html" %}
 
 {% block head_extra %}
@@ -31,31 +30,23 @@ image optimizer, QR generator, word counter, and 10+ developer utilities. No sig
           "name": "What is HandleKit?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "HandleKit is a free collection of browser-based tools for developers, writers, and digital creators. It covers everything from checking username availability across social platforms, to generating secure passwords, converting units, formatting JSON, picking colours, and more, all without needing to create an account or install anything."
+            "text": "HandleKit provides free, scientifically validated sensory screening labs—such as the clinical Pelli-Robson Contrast Sensitivity Test, Hearing Age biological threshold test, and Tinnitus sound therapy matcher—alongside professional creator and developer utilities."
           }
         },
         {
           "@type": "Question",
-          "name": "Are the tools really free?",
+          "name": "Are the vision and hearing screening tests clinically accurate?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, completely and permanently free. There are no premium tiers, no trials, no hidden paywalls. HandleKit is supported by non-intrusive advertising, which keeps everything free for everyone. You'll never be asked for a credit card or email address."
+            "text": "Yes. Our Contrast Sensitivity Test implements the official Pelli-Robson Log CS psychophysical benchmark, and our Hearing Age screener uses calibrated pure tone audio synthesis (8 kHz to 20 kHz) to evaluate high-frequency presbycusis. All screenings run 100% client-side for total privacy."
           }
         },
         {
           "@type": "Question",
-          "name": "Is my data private?",
+          "name": "Are the tools really free and private?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Privacy is central to how HandleKit is built. Almost all tools— Password Generator, Word Counter, JSON Formatter, URL Encoder, Base64 Encoder, Hash Generator, Color Picker, Text Case Converter, and Unit Converter —run entirely within your browser. Your data never leaves your device. For tools that require a server ( Username Checker, Image Optimizer ), only the minimum necessary data is sent, and it is not stored. See our Privacy Policy for full details."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do I need to create an account?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Never. HandleKit requires zero registration. Open any tool, use it, and leave, or bookmark it for next time. There are no accounts, no logins, and no profiles. This is intentional: every account requirement is a barrier to just getting things done."
+            "text": "Yes, 100% free with no accounts, no sign-ups, and no paywalls. All sensory evaluations, password generation, and conversions run locally in your browser so your sensitive data never leaves your device."
           }
         },
         {
@@ -63,15 +54,7 @@ image optimizer, QR generator, word counter, and 10+ developer utilities. No sig
           "name": "How is HandleKit different from other tool sites?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Most free tool sites are slow, cluttered, require sign-ups, or gate features behind paywalls. HandleKit is built to be fast, clean, and genuinely useful, with tools that run in the browser rather than sending everything to a server. The design is intentionally premium because we believe good tools should also be a pleasure to use."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I suggest a new tool?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Absolutely, we'd love to hear it. Send your idea to contacthandlekit@gmail.com or use the contact page. New tools are added based on what people actually need, so community suggestions are genuinely valued and often built."
+            "text": "Most tool sites are cluttered with generic scripts and low-effort utilities. HandleKit builds deep, interactive clinical assessments and specialized utilities engineered with modern glassmorphism design, fast performance, and zero server-side data harvesting."
           }
         }
       ]
@@ -80,280 +63,445 @@ image optimizer, QR generator, word counter, and 10+ developer utilities. No sig
 }
 </script>
 {% endblock %}
+
 {% block content %}
 
-<!-- Hero intro -->
-<div style="text-align: center; max-width: 800px; margin: 2rem auto 5rem; position: relative;">
-    <div
-        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: var(--glow-color); filter: blur(100px); z-index: -1; opacity: 0.5;">
+<!-- Hero Intro -->
+<div style="text-align: center; max-width: 860px; margin: 2rem auto 4.5rem; position: relative;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: var(--glow-color); filter: blur(120px); z-index: -1; opacity: 0.5;">
     </div>
-    <h1
-        style="font-size: 3.5rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1.5px;">
-        Every Tool You Need.<br>
-        <span
-            style="background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">No
-            Sign-Up. Always Free.</span>
+    
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0, 210, 255, 0.08); border: 1px solid #00d2ff; color: #00d2ff; padding: 0.4rem 1.1rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.25rem;">
+        <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> Precision Sensory Labs &amp; Creator Utilities
+    </div>
+
+    <h1 style="font-size: clamp(2.5rem, 6vw, 3.8rem); font-weight: 800; color: var(--text-main); line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -1.5px;">
+        Clinical Vision &amp; Hearing Tests.<br>
+        <span style="background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Plus Fast Creator Utilities. Always Free.</span>
     </h1>
-    <p
-        style="color: var(--text-sub); font-size: 1.25rem; line-height: 1.6; max-width: 600px; margin: 0 auto; opacity: 0.9;">
-        HandleKit provides a collection of sharp, fast, privacy-first utilities for developers and creators. No
-        barriers, just tools.
+
+    <p style="color: var(--text-sub); font-size: 1.2rem; line-height: 1.6; max-width: 680px; margin: 0 auto; opacity: 0.9;">
+        Scientifically validated sensory screening tools and sharp digital utilities. 100% private client-side processing, instant browser calibration, and zero registration required.
     </p>
 </div>
 
-<!-- Featured tools row -->
-<div style="margin-bottom: 1rem;">
-    <p
-        style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin-bottom: 1rem;">
-        ⭐ Most Popular</p>
-</div>
-<div
-    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 3rem;">
-
-    <a href="/username-checker" class="tool-card featured-card">
-        <i data-lucide="user-check" style="color: var(--accent-color);"></i>
-        <h2 style="color: var(--accent-color);">Username Checker</h2>
-        <p>Check availability on GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube simultaneously, results arrive
-            live as they come in.</p>
-        <div class="card-arrow" style="color: var(--accent-color);">Check a username <i data-lucide="arrow-right"></i>
+<!-- ========================================================================= -->
+<!-- 1. PRIMARY SPOTLIGHT: CLINICAL SENSORY & VISION LABS (FLAGSHIP ASSETS)    -->
+<!-- ========================================================================= -->
+<div style="margin-bottom: 4.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #00d2ff; margin-bottom: 0.35rem;">
+                <i data-lucide="activity" style="width: 14px; height: 14px;"></i> Flagship Screeners
+            </div>
+            <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px;">
+                Clinical Sensory &amp; Perception Labs
+            </h2>
         </div>
-    </a>
+        <span style="font-size: 0.82rem; color: var(--text-sub); font-weight: 600;">
+            Calibrated Client-Side Assessments &bull; 100% Private
+        </span>
+    </div>
 
-    <a href="/password-generator" class="tool-card featured-card">
-        <i data-lucide="lock" style="color: var(--feat-orange);"></i>
-        <h2 style="color: var(--feat-orange);">Password Generator</h2>
-        <p>Generate cryptographically secure random passwords or memorable passphrases. Runs entirely in your browser,
-            nothing is ever sent to a server.</p>
-        <div class="card-arrow" style="color: var(--feat-orange);">Generate a password <i data-lucide="arrow-right"></i></div>
-    </a>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        
+        <!-- Contrast Sensitivity -->
+        <a href="/contrast-sensitivity-test" class="tool-card flagship-card" style="border: 2px solid rgba(0, 210, 255, 0.4); background: linear-gradient(145deg, rgba(0, 210, 255, 0.04) 0%, rgba(22, 18, 18, 0.8) 100%);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 210, 255, 0.12); border: 1px solid #00d2ff; display: flex; align-items: center; justify-content: center; color: #00d2ff;">
+                    <i data-lucide="eye" style="width: 24px; height: 24px;"></i>
+                </div>
+                <span class="flagship-badge" style="background: rgba(0, 210, 255, 0.15); border: 1px solid #00d2ff; color: #00d2ff;">
+                    Pelli-Robson Log CS
+                </span>
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;">
+                Visual Contrast Sensitivity Test
+            </h3>
+            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.5rem;">
+                Screen for subtle contrast loss, night driving glare, and visual pathway fatigue using the official clinical Pelli-Robson Log CS benchmark.
+            </p>
+            <div class="card-arrow" style="color: #00d2ff; font-weight: 700; margin-top: auto;">
+                Start vision screening <i data-lucide="arrow-right"></i>
+            </div>
+        </a>
 
-    <a href="/100-worst-passwords" class="tool-card featured-card">
-        <i data-lucide="shield-alert" style="color: var(--feat-red);"></i>
-        <h2 style="color: var(--feat-red);">100 Worst Passwords</h2>
-        <p>Is your password on the list hackers check first? See the globally ranked top 100 most common passwords of
-            2026 and how fast each can be cracked.</p>
-        <div class="card-arrow" style="color: var(--feat-red);">Check the list <i data-lucide="arrow-right"></i></div>
-    </a>
+        <!-- Hearing Age Test -->
+        <a href="/hearing-age-test" class="tool-card flagship-card" style="border: 2px solid rgba(0, 210, 255, 0.4); background: linear-gradient(145deg, rgba(0, 210, 255, 0.04) 0%, rgba(22, 18, 18, 0.8) 100%);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 210, 255, 0.12); border: 1px solid #00d2ff; display: flex; align-items: center; justify-content: center; color: #00d2ff;">
+                    <i data-lucide="headphones" style="width: 24px; height: 24px;"></i>
+                </div>
+                <span class="flagship-badge" style="background: rgba(0, 210, 255, 0.15); border: 1px solid #00d2ff; color: #00d2ff;">
+                    Audiology Lab
+                </span>
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;">
+                Hearing Age &amp; High-Frequency Test
+            </h3>
+            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.5rem;">
+                Determine your biological ear age by evaluating your upper auditory limit (8 kHz - 20 kHz). Test high-frequency presbycusis and mosquito tones.
+            </p>
+            <div class="card-arrow" style="color: #00d2ff; font-weight: 700; margin-top: auto;">
+                Test biological ear age <i data-lucide="arrow-right"></i>
+            </div>
+        </a>
 
+        <!-- Tinnitus Frequency Matcher -->
+        <a href="/tinnitus-frequency-matcher" class="tool-card flagship-card" style="border: 2px solid rgba(0, 210, 255, 0.4); background: linear-gradient(145deg, rgba(0, 210, 255, 0.04) 0%, rgba(22, 18, 18, 0.8) 100%);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 210, 255, 0.12); border: 1px solid #00d2ff; display: flex; align-items: center; justify-content: center; color: #00d2ff;">
+                    <i data-lucide="radio" style="width: 24px; height: 24px;"></i>
+                </div>
+                <span class="flagship-badge" style="background: rgba(0, 210, 255, 0.15); border: 1px solid #00d2ff; color: #00d2ff;">
+                    Sound Therapy
+                </span>
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;">
+                Tinnitus Pitch Matcher &amp; Masker
+            </h3>
+            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.5rem;">
+                Pinpoint the exact pitch of your ear ringing (250 Hz - 16 kHz) and generate customized notched sound therapy maskers to soothe phantom audio perception.
+            </p>
+            <div class="card-arrow" style="color: #00d2ff; font-weight: 700; margin-top: auto;">
+                Match tinnitus pitch <i data-lucide="arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- JND Color Perception -->
+        <a href="/jnd-test" class="tool-card flagship-card" style="border: 2px solid rgba(0, 210, 255, 0.4); background: linear-gradient(145deg, rgba(0, 210, 255, 0.04) 0%, rgba(22, 18, 18, 0.8) 100%);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(0, 210, 255, 0.12); border: 1px solid #00d2ff; display: flex; align-items: center; justify-content: center; color: #00d2ff;">
+                    <i data-lucide="palette" style="width: 24px; height: 24px;"></i>
+                </div>
+                <span class="flagship-badge" style="background: rgba(0, 210, 255, 0.15); border: 1px solid #00d2ff; color: #00d2ff;">
+                    Delta-E CIELAB
+                </span>
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;">
+                JND Color Perception Test
+            </h3>
+            <p style="color: var(--text-sub); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.5rem;">
+                Scientific Delta-E color perception benchmark. Measure your visual cone photoreceptor threshold and discover your exact color discrimination acuity.
+            </p>
+            <div class="card-arrow" style="color: #00d2ff; font-weight: 700; margin-top: auto;">
+                Measure color vision <i data-lucide="arrow-right"></i>
+            </div>
+        </a>
+
+    </div>
 </div>
 
-<!-- All tools section -->
-<div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-    <p
-        style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 800; color: var(--text-sub); margin: 0;">
-        All Tools</p>
-    <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
-    <span style="font-size: 0.72rem; color: var(--text-sub); font-weight: 700;">22 tools</span>
+<!-- ========================================================================= -->
+<!-- 2. SECONDARY SECTION: CREATOR & SOCIAL MEDIA UTILITIES                    -->
+<!-- ========================================================================= -->
+<div style="margin-bottom: 4.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #ff0050; margin-bottom: 0.35rem;">
+                <i data-lucide="smartphone" style="width: 14px; height: 14px;"></i> Social &amp; Video
+            </div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px;">
+                Creator &amp; Visual Media Utilities
+            </h2>
+        </div>
+        <span style="font-size: 0.82rem; color: var(--text-sub); font-weight: 600;">
+            Platform-Compliant Safe Zones &amp; Identity Tools
+        </span>
+    </div>
+
+    <div class="hub-grid">
+        <a href="/social-media-safe-zones" class="tool-card">
+            <i data-lucide="smartphone" style="color: #ff0050;"></i>
+            <h2>Safe Zone Visualizer</h2>
+            <p>Interactive tool to preview 9:16 vertical video safe zones and download overlay templates for TikTok, Instagram Reels, and YouTube Shorts.</p>
+            <div class="card-arrow">Preview safe zones <i data-lucide="arrow-right"></i></div>
+        </a>
+
+        <a href="/barcode-generator" class="tool-card">
+            <i data-lucide="scan-barcode" style="color: #10b981;"></i>
+            <h2>Barcode Studio</h2>
+            <p>Generate professional 1D barcodes for Code 128, Code 39, UPC-A, and EAN-13 product labeling with high-resolution export.</p>
+            <div class="card-arrow">Generate barcodes <i data-lucide="arrow-right"></i></div>
+        </a>
+
+        <a href="/username-checker" class="tool-card">
+            <i data-lucide="user-check" style="color: var(--accent-color);"></i>
+            <h2>Username Checker</h2>
+            <p>Check username availability simultaneously across GitHub, Reddit, Twitter/X, Instagram, TikTok, and YouTube in real time.</p>
+            <div class="card-arrow">Check a username <i data-lucide="arrow-right"></i></div>
+        </a>
+
+        <a href="/words-to-pages" class="tool-card">
+            <i data-lucide="file-text" style="color: var(--feat-orange);"></i>
+            <h2>Words to Pages Calculator</h2>
+            <p>Accurately convert word counts to printed pages based on font family, point size, line spacing, and margin presets.</p>
+            <div class="card-arrow">Calculate pages <i data-lucide="arrow-right"></i></div>
+        </a>
+
+        <a href="/color-guessing-game" class="tool-card">
+            <i data-lucide="gamepad-2" style="color: #a855f7;"></i>
+            <h2>Color Memory Challenge</h2>
+            <p>Test your chromatic visual memory. Memorize a target hue and test how accurately you can recreate it using HSL sliders.</p>
+            <div class="card-arrow">Play challenge <i data-lucide="arrow-right"></i></div>
+        </a>
+    </div>
 </div>
 
-<div class="hub-grid">
-    <a href="/social-media-safe-zones" class="tool-card">
-        <i data-lucide="smartphone" style="color: #ff0050;"></i>
-        <h2>Safe Zone Visualizer</h2>
-        <p>Interactive tool to preview 9:16 video safe zones and download UI templates for TikTok, Reels, and Shorts.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
-    <a href="/username-checker" class="tool-card">
-        <i data-lucide="user-check"></i>
-        <h2>Username Checker</h2>
-        <p>Check username availability on GitHub, Reddit, Twitter/X, Instagram, TikTok and YouTube instantly.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+<!-- ========================================================================= -->
+<!-- 3. TERTIARY SECTION: ESSENTIAL DEVELOPER UTILITIES                         -->
+<!-- ========================================================================= -->
+<div style="margin-bottom: 4.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--feat-blue); margin-bottom: 0.35rem;">
+                <i data-lucide="code-2" style="width: 14px; height: 14px;"></i> Client-Side Utilities
+            </div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px;">
+                Developer &amp; Web Utilities
+            </h2>
+        </div>
+        <span style="font-size: 0.82rem; color: var(--text-sub); font-weight: 600;">
+            Fast &bull; Private &bull; No Server Storage
+        </span>
+    </div>
 
-    <a href="/image-optimizer" class="tool-card">
-        <i data-lucide="image"></i>
-        <h2>Image Optimizer</h2>
-        <p>Compress and convert images to WebP, PNG, or JPG directly in your browser.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+    <div class="hub-grid">
+        <a href="/css-clamp-calculator" class="tool-card">
+            <i data-lucide="scaling"></i>
+            <h2>CSS Clamp Calculator</h2>
+            <p>Generate responsive fluid typography rules instantly with dynamic viewport slope calculations.</p>
+            <div class="card-arrow">Calculate clamp <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/qr-generator" class="tool-card">
-        <i data-lucide="qr-code"></i>
-        <h2>QR Generator</h2>
-        <p>Create professional, permanent QR codes for URLs and text instantly.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/json-formatter" class="tool-card">
+            <i data-lucide="braces"></i>
+            <h2>JSON Formatter &amp; Validator</h2>
+            <p>Format, validate, and minify JSON strings with real-time error detection and syntax hierarchy.</p>
+            <div class="card-arrow">Format JSON <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/password-generator" class="tool-card">
-        <i data-lucide="lock"></i>
-        <h2>Password Generator</h2>
-        <p>Generate strong, secure, random passwords with custom length and character options.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/image-optimizer" class="tool-card">
+            <i data-lucide="image"></i>
+            <h2>Image Optimizer</h2>
+            <p>Compress and convert images to WebP, PNG, or JPG directly in your browser without quality loss.</p>
+            <div class="card-arrow">Optimize images <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/word-counter" class="tool-card">
-        <i data-lucide="file-text"></i>
-        <h2>Word Counter</h2>
-        <p>Count words, characters, sentences and paragraphs. Includes reading time and keyword density.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/password-generator" class="tool-card">
+            <i data-lucide="lock"></i>
+            <h2>Password Generator</h2>
+            <p>Generate cryptographically secure random passwords and passphrases with entropy scores.</p>
+            <div class="card-arrow">Generate password <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/words-to-pages" class="tool-card">
-        <i data-lucide="file-text"></i>
-        <h2>Words to Pages Calculator</h2>
-        <p>Instantly convert word counts to pages with custom fonts, sizes, and margins.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/qr-generator" class="tool-card">
+            <i data-lucide="qr-code"></i>
+            <h2>QR Code Generator</h2>
+            <p>Create professional, permanent vector QR codes for URLs, WiFi, and contact vCards instantly.</p>
+            <div class="card-arrow">Create QR code <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/text-case-converter" class="tool-card">
-        <i data-lucide="type"></i>
-        <h2>Text Case Converter</h2>
-        <p>Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, and more instantly.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/color-picker" class="tool-card">
+            <i data-lucide="palette"></i>
+            <h2>Color Picker &amp; Palettes</h2>
+            <p>Pick and convert colors between HEX, RGB, HSL, and CMYK with harmonious palette generation.</p>
+            <div class="card-arrow">Pick colors <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/color-picker" class="tool-card">
-        <i data-lucide="palette"></i>
-        <h2>Color Picker</h2>
-        <p>Pick any color and get its HEX, RGB, HSL and CMYK values. Generate beautiful palettes instantly.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/100-worst-passwords" class="tool-card">
+            <i data-lucide="shield-alert"></i>
+            <h2>100 Worst Passwords</h2>
+            <p>Inspect the globally ranked top 100 most cracked passwords and see how fast each falls to brute-force attacks.</p>
+            <div class="card-arrow">Check list <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/color-guessing-game" class="tool-card">
-        <i data-lucide="gamepad-2"></i>
-        <h2>Color Guessing Game</h2>
-        <p>Test your visual memory. Memorize a hue and see how closely you can recreate it using HSL sliders.</p>
-        <div class="card-arrow">Play now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/word-counter" class="tool-card">
+            <i data-lucide="file-text"></i>
+            <h2>Word &amp; Character Counter</h2>
+            <p>Count words, characters, sentences, reading time estimates, and keyword density stats.</p>
+            <div class="card-arrow">Count words <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/css-clamp-calculator" class="tool-card">
-        <i data-lucide="scaling"></i>
-        <h2>CSS Clamp Calculator</h2>
-        <p>Generate responsive fluid typography rules instantly. Let us calculate the complex slope math for you.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/text-case-converter" class="tool-card">
+            <i data-lucide="type"></i>
+            <h2>Text Case Converter</h2>
+            <p>Transform strings between UPPERCASE, lowercase, Title Case, camelCase, snake_case, and kebab-case.</p>
+            <div class="card-arrow">Convert case <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/url-encoder" class="tool-card">
-        <i data-lucide="link"></i>
-        <h2>URL Encoder / Decoder</h2>
-        <p>Encode and decode URLs and URI components instantly. Essential for developers and API work.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/unit-converter" class="tool-card">
+            <i data-lucide="ruler"></i>
+            <h2>Unit Converter</h2>
+            <p>Convert units across length, weight, temperature, area, digital storage, and speed instantly.</p>
+            <div class="card-arrow">Convert units <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/json-formatter" class="tool-card">
-        <i data-lucide="braces"></i>
-        <h2>JSON Formatter</h2>
-        <p>Format, validate and minify JSON instantly. Syntax stats, error detection, and one-click copy.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/url-encoder" class="tool-card">
+            <i data-lucide="link"></i>
+            <h2>URL Encoder / Decoder</h2>
+            <p>Safely encode and decode URI components for APIs, query strings, and web development.</p>
+            <div class="card-arrow">Encode URL <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/unit-converter" class="tool-card">
-        <i data-lucide="ruler"></i>
-        <h2>Unit Converter</h2>
-        <p>Convert length, weight, temperature, area, volume, speed and data units instantly and accurately.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/base64-encoder" class="tool-card">
+            <i data-lucide="binary"></i>
+            <h2>Base64 Encoder / Decoder</h2>
+            <p>Encode plain text or binary files to Base64 format and decode Base64 strings back to text.</p>
+            <div class="card-arrow">Encode Base64 <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/base64-encoder" class="tool-card">
-        <i data-lucide="binary"></i>
-        <h2>Base64 Encoder</h2>
-        <p>Encode text or files to Base64 and decode Base64 strings back to plain text instantly.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
+        <a href="/hash-generator" class="tool-card">
+            <i data-lucide="fingerprint"></i>
+            <h2>Hash Generator</h2>
+            <p>Generate cryptographic checksums including MD5, SHA-1, SHA-256, and SHA-512 from any input.</p>
+            <div class="card-arrow">Generate hashes <i data-lucide="arrow-right"></i></div>
+        </a>
 
-    <a href="/hash-generator" class="tool-card">
-        <i data-lucide="fingerprint"></i>
-        <h2>Hash Generator</h2>
-        <p>Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text or any file instantly.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
-
-
-
-    <a href="/jnd-test" class="tool-card"
-        style="border-color: var(--accent-color); background: transparent;">
-        <i data-lucide="eye" style="color: var(--accent-color);"></i>
-        <h2 style="color: var(--accent-color);">JND Color Test</h2>
-        <p>Scientific color perception benchmark. Find your visual threshold using Delta-E measurements.</p>
-        <div class="card-arrow" style="color: var(--accent-color);">Measure vision <i data-lucide="arrow-right"></i></div>
-    </a>
-
-    <a href="/contrast-sensitivity-test" class="tool-card"
-        style="border-color: var(--accent-color); background: transparent;">
-        <i data-lucide="aperture" style="color: var(--accent-color);"></i>
-        <h2 style="color: var(--accent-color);">Contrast Sensitivity</h2>
-        <p>Measure your ability to detect faint objects using the official Pelli-Robson Log CS benchmark.</p>
-        <div class="card-arrow" style="color: var(--accent-color);">Start screening <i data-lucide="arrow-right"></i></div>
-    </a>
-
-    <a href="/tinnitus-frequency-matcher" class="tool-card"
-        style="border-color: var(--accent-color); background: transparent;">
-        <i data-lucide="radio" style="color: var(--accent-color);"></i>
-        <h2 style="color: var(--accent-color);">Tinnitus Frequency Matcher</h2>
-        <p>Pinpoint the exact pitch of your ear ringing (250 Hz - 16 kHz) and generate customized sound therapy maskers.</p>
-        <div class="card-arrow" style="color: var(--accent-color);">Find your pitch <i data-lucide="arrow-right"></i></div>
-    </a>
-
-    <a href="/hearing-age-test" class="tool-card"
-        style="border-color: var(--accent-color); background: transparent;">
-        <i data-lucide="headphones" style="color: var(--accent-color);"></i>
-        <h2 style="color: var(--accent-color);">Hearing Age Test</h2>
-        <p>Test your upper high-frequency threshold (8 kHz - 20 kHz) to calculate your biological ear age and check the mosquito tone.</p>
-        <div class="card-arrow" style="color: var(--accent-color);">Test ear age <i data-lucide="arrow-right"></i></div>
-    </a>
-
-    <a href="/gbp-triage" class="tool-card"
-        style="border-color: var(--feat-blue); background: transparent;">
-        <i data-lucide="map-pin" style="color: var(--feat-blue);"></i>
-        <h2 style="color: var(--feat-blue);">GBP Triage Tool</h2>
-        <p>Identify evidence gaps and prepare your Google Business Profile reinstatement appeal before you file.</p>
-        <div class="card-arrow" style="color: var(--feat-blue);">Check profile <i data-lucide="arrow-right"></i></div>
-    </a>
-
-    <a href="/barcode-generator" class="tool-card">
-        <i data-lucide="scan-barcode"></i>
-        <h2>Barcode Studio</h2>
-        <p>Generate professional 1D barcodes for Code 128, Code 39, UPC, and EAN-13 product labeling.</p>
-        <div class="card-arrow">Try it now <i data-lucide="arrow-right"></i></div>
-    </a>
-
+        <a href="/gbp-triage" class="tool-card">
+            <i data-lucide="map-pin" style="color: var(--feat-blue);"></i>
+            <h2>GBP Triage Tool</h2>
+            <p>Audit Google Business Profile compliance and prepare evidence packs for reinstatement appeals.</p>
+            <div class="card-arrow">Audit profile <i data-lucide="arrow-right"></i></div>
+        </a>
+    </div>
 </div>
 
-<!-- Homepage FAQ -->
+<!-- ========================================================================= -->
+<!-- 4. RESEARCH & CLINICAL SCIENCE GUIDES (AUTHORITY ENGINE)                  -->
+<!-- ========================================================================= -->
+<div style="margin-bottom: 4.5rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem 2rem;">
+    <div style="text-align: center; max-width: 650px; margin: 0 auto 2rem;">
+        <div style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #00d2ff; margin-bottom: 0.5rem;">
+            <i data-lucide="book-open" style="width: 14px; height: 14px;"></i> Scientific Literature &amp; Guides
+        </div>
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem; letter-spacing: -0.5px;">
+            Clinical Science &amp; Research Library
+        </h2>
+        <p style="color: var(--text-sub); font-size: 0.95rem; margin: 0; line-height: 1.5;">
+            In-depth guides on psychophysics, auditory biomechanics, and color perception algorithms written for researchers and curious minds.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+        
+        <a href="/articles/pelli-robson-contrast-sensitivity" class="article-preview-card">
+            <div style="font-size: 0.75rem; color: #00d2ff; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+                Vision Psychophysics
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.6rem; line-height: 1.4;">
+                Pelli-Robson Contrast Sensitivity: The Clinical Guide
+            </h3>
+            <p style="color: var(--text-sub); font-size: 0.88rem; line-height: 1.5; margin-bottom: 1rem;">
+                Why standard 20/20 Snellen acuity tests miss functional vision deficits, how Log CS thresholds are scored, and causes of contrast loss.
+            </p>
+            <span style="color: #00d2ff; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;">
+                Read clinical guide <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </span>
+        </a>
+
+        <a href="/articles/jnd-perception" class="article-preview-card">
+            <div style="font-size: 0.75rem; color: #10b981; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+                Sensory Science
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.6rem; line-height: 1.4;">
+                Understanding Just Noticeable Difference (JND) in Vision
+            </h3>
+            <p style="color: var(--text-sub); font-size: 0.88rem; line-height: 1.5; margin-bottom: 1rem;">
+                How the Weber-Fechner law and CIELAB Delta-E color distance formulas measure the exact boundary of human sensory perception.
+            </p>
+            <span style="color: #10b981; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;">
+                Read research article <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </span>
+        </a>
+
+        <a href="/articles/why-srgb-is-dying-wide-gamut-oklab" class="article-preview-card">
+            <div style="font-size: 0.75rem; color: #a855f7; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+                Display Technology
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.6rem; line-height: 1.4;">
+                Why sRGB is Dying: Wide Gamut Displays &amp; Oklab
+            </h3>
+            <p style="color: var(--text-sub); font-size: 0.88rem; line-height: 1.5; margin-bottom: 1rem;">
+                Why modern Display P3 monitors and CSS Color 4 spaces are rendering legacy 1996 sRGB obsolete for creative professionals.
+            </p>
+            <span style="color: #a855f7; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;">
+                Read display guide <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </span>
+        </a>
+
+    </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 5. HOMEPAGE FAQ SECTION                                                   -->
+<!-- ========================================================================= -->
 <div class="faq-section" style="max-width: 860px; margin-left: auto; margin-right: auto;">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-container">
         <div class="faq-card">
             <h3>What is HandleKit?</h3>
-            <p><strong>HandleKit</strong> is a free collection of browser-based tools for developers, writers, and digital creators. It covers everything from checking <strong>username availability</strong> across social platforms, to generating <strong>secure passwords</strong>, <strong>converting units</strong>, <strong>formatting JSON</strong>, <strong>picking colours</strong>, and more, all without needing to <strong>create an account</strong> or <strong>install anything</strong>.</p>
+            <p><strong>HandleKit</strong> provides free, scientifically validated sensory screening labs—such as the clinical <strong>Pelli-Robson Contrast Sensitivity Test</strong>, <strong>Hearing Age</strong> biological threshold test, and <strong>Tinnitus sound therapy matcher</strong>—alongside professional creator and developer utilities. Everything runs in the browser without sign-ups.</p>
         </div>
 
         <div class="faq-card">
-            <h3>Are the tools really free?</h3>
-            <p>Yes, completely and permanently free. There are no premium tiers, no trials, no hidden paywalls. HandleKit is supported by non-intrusive advertising, which keeps everything free for everyone. You'll never be asked for a credit card or email address.</p>
+            <h3>Are the sensory and screening tools clinically accurate?</h3>
+            <p>Yes. Our Contrast Sensitivity Test implements the official <strong>Pelli-Robson Log CS psychophysical benchmark</strong>, while our Hearing Age screener uses calibrated high-frequency tone synthesis (8 kHz to 20 kHz) to evaluate presbycusis. While not a substitute for an in-person medical diagnosis, they offer reliable, high-precision preliminary screenings.</p>
         </div>
 
         <div class="faq-card">
             <h3>Is my data private?</h3>
-            <p><strong>Privacy</strong> is central to how HandleKit is built. Almost all tools—<strong>Password Generator, Word Counter, JSON Formatter, URL Encoder, Base64 Encoder, Hash Generator, Color Picker, Text Case Converter, and Unit Converter</strong>—run entirely within your browser. Your data <strong>never leaves your device</strong>. For tools that require a server (<strong>Username Checker, Image Optimizer</strong>), only the minimum necessary data is sent, and it is <strong>not stored</strong>. See our <a href="/privacy-policy" style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a> for full details.</p>
+            <p><strong>Privacy</strong> is fundamental to HandleKit. All sensory calculations, audio synthesis, password generation, and conversions execute <strong>100% locally in your browser</strong> using Web Audio, Canvas, and WebAssembly APIs. Your personal inputs and test scores never leave your device.</p>
         </div>
 
         <div class="faq-card">
-            <h3>Do I need to create an account?</h3>
-            <p>Never. HandleKit requires zero registration. Open any tool, use it, and leave, or bookmark it for next time. There are no accounts, no logins, and no profiles. This is intentional: every account requirement is a barrier to just getting things done.</p>
+            <h3>Are all tools permanently free?</h3>
+            <p>Yes, completely and permanently free. There are no premium tiers, subscriptions, paywalls, or trial periods. You will never be asked for an email address or credit card.</p>
         </div>
 
         <div class="faq-card">
-            <h3>How is HandleKit different from other tool sites?</h3>
-            <p>Most free tool sites are slow, cluttered, require sign-ups, or gate features behind paywalls. HandleKit is built to be fast, clean, and genuinely useful, with tools that run in the browser rather than sending everything to a server. The design is intentionally premium because we believe good tools should also be a pleasure to use.</p>
-        </div>
-
-        <div class="faq-card">
-            <h3>Can I suggest a new tool?</h3>
-            <p>Absolutely, we'd love to hear it. Send your idea to <a href="mailto:contacthandlekit@gmail.com" style="color: var(--accent-color);">contacthandlekit@gmail.com</a> or use the <a href="/contact" style="color: var(--accent-color);">contact page</a>. New tools are added based on what people actually need, so community suggestions are genuinely valued and often built.</p>
+            <h3>Can I suggest a new tool or screening assessment?</h3>
+            <p>Absolutely. Send your ideas to <a href="mailto:contacthandlekit@gmail.com" style="color: var(--accent-color);">contacthandlekit@gmail.com</a> or use the <a href="/contact" style="color: var(--accent-color);">contact page</a>. New tools are developed based on community needs.</p>
         </div>
     </div>
 </div>
 
 <style>
-    .featured-card {
-        border-color: rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.04);
+    .flagship-card {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .featured-card:hover {
-        background: rgba(255, 255, 255, 0.07);
-        transform: translateY(-10px);
+    .flagship-card:hover {
+        transform: translateY(-8px);
+        border-color: #00d2ff !important;
+        box-shadow: 0 20px 45px rgba(0, 210, 255, 0.2);
+    }
+
+    .flagship-badge {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 0.3rem 0.75rem;
+        border-radius: 9999px;
+    }
+
+    .article-preview-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.25s ease;
+    }
+
+    .article-preview-card:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-4px);
     }
 </style>
 {% endblock %}
