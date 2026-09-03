@@ -1005,6 +1005,14 @@
         </div>
     </div>
 
+    <!-- Embed Footer Attribution (Visible Only in Embed Mode) -->
+    <div id="embed-footer-bar" style="display: none; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; margin-top: 1.25rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; font-size: 0.85rem; color: var(--text-sub);">
+        <span>🎧 <strong>Biological Hearing Age Screener</strong></span>
+        <a href="https://handlekit.com/hearing-age-test" target="_blank" rel="noopener" style="color: var(--ha-accent); text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+            Open Full Screener on HandleKit <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+        </a>
+    </div>
+
     <!-- Specialist Recommendations -->
     {{ render_recommendations('hearing_age', title='Hearing Preservation & Audiology Gear', subtitle='Scientifically tested tools to protect remaining high-frequency stereocilia hair cells, prevent acoustic trauma, and verify audio equipment fidelity.') }}
 
@@ -1241,8 +1249,12 @@
         <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 1rem;">
             Copy and paste this HTML snippet into your website, blog, or school science page:
         </p>
-        <textarea id="embed-code" readonly style="width: 100%; height: 130px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: monospace; font-size: 0.85rem; padding: 0.75rem; box-sizing: border-box; resize: none; margin-bottom: 1rem;"><iframe src="https://handlekit.com/hearing-age-test?embed=true" width="100%" height="780" frameborder="0" style="border: 1px solid #334155; border-radius: 12px;" allow="autoplay"></iframe>
-<p style="font-size: 0.8rem; color: #64748b; text-align: center; margin-top: 0.5rem;">Powered by the free <a href="https://handlekit.com/hearing-age-test" target="_blank" rel="noopener" style="color: #06b6d4; text-decoration: underline;">HandleKit Hearing Age Test</a></p></textarea>
+        <textarea id="embed-code" readonly style="width: 100%; height: 130px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: monospace; font-size: 0.82rem; padding: 0.75rem; box-sizing: border-box; resize: none; margin-bottom: 1rem;">&lt;div style="max-width:100%;margin:0 auto;text-align:center;"&gt;
+  &lt;iframe src="https://handlekit.com/hearing-age-test?embed=true" width="100%" height="780" style="border:1px solid rgba(6,182,212,0.3);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.25);" allow="autoplay" title="Biological Hearing Age Screener"&gt;&lt;/iframe&gt;
+  &lt;div style="font-size:12px;color:#64748b;margin-top:8px;font-family:system-ui,-apple-system,sans-serif;"&gt;
+    Auditory age screener powered by &lt;a href="https://handlekit.com/hearing-age-test" target="_blank" rel="noopener" style="color:#0284c7;text-decoration:underline;font-weight:600;"&gt;HandleKit Sensory Labs&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
         <button id="copy-embed-btn" class="stepper-btn embed-btn" onclick="copyEmbedCode()" style="width: 100%; padding: 0.85rem; font-size: 0.95rem; background: var(--ha-accent); color: #000; border: none; font-weight: 800;">
             <i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Embed Code
         </button>
@@ -2026,14 +2038,29 @@ https://handlekit.com/hearing-age-test`;
         const params = new URLSearchParams(window.location.search);
         if (params.get('embed') === 'true') {
             document.body.classList.add('embed-mode');
-            const nav = document.querySelector('nav');
+            const nav = document.querySelector('.navbar, nav');
             const footer = document.querySelector('footer');
+            const header = document.querySelector('.ha-header');
             const edu = document.querySelector('.edu-section');
+            const recMod = document.querySelector('.recommendations-module');
             const embedCard = document.querySelector('.embed-card');
+            const faqSec = document.querySelector('.faq-section');
             if (nav) nav.style.display = 'none';
             if (footer) footer.style.display = 'none';
+            if (header) header.style.display = 'none';
             if (edu) edu.style.display = 'none';
+            if (recMod) recMod.style.display = 'none';
             if (embedCard) embedCard.style.display = 'none';
+            if (faqSec) faqSec.style.display = 'none';
+            const embedFooter = document.getElementById('embed-footer-bar');
+            if (embedFooter) embedFooter.style.display = 'flex';
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.paddingTop = '0.5rem';
+                container.style.paddingBottom = '0.5rem';
+                container.style.maxWidth = '100%';
+            }
+            document.body.style.background = 'transparent';
         }
     });
 </script>

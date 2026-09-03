@@ -165,6 +165,13 @@ def is_rate_limited(ip, limit=10, period=60):
     rate_limit_store[ip].append(now)
     return False
 
+@app.after_request
+def handle_embed_headers(response):
+    if request.args.get('embed') == 'true':
+        response.headers['X-Frame-Options'] = 'ALLOWALL'
+        response.headers['Content-Security-Policy'] = "frame-ancestors *"
+    return response
+
 @app.route('/')
 def index():
     return render_template('index.html')

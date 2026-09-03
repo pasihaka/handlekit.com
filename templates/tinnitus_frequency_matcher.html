@@ -1052,6 +1052,14 @@
         </div>
     </div>
 
+    <!-- Embed Footer Attribution (Visible Only in Embed Mode) -->
+    <div id="embed-footer-bar" style="display: none; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; margin-top: 1.25rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; font-size: 0.85rem; color: var(--text-sub);">
+        <span>🎵 <strong>Tinnitus Frequency Pitch Matcher &amp; Sound Masker</strong></span>
+        <a href="https://handlekit.com/tinnitus-frequency-matcher" target="_blank" rel="noopener" style="color: var(--tf-accent); text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+            Open Full Tool on HandleKit <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+        </a>
+    </div>
+
     <!-- Specialist Recommendations -->
     {{ render_recommendations('tinnitus', title='Tinnitus Relief & Sleep Masking Gear', subtitle='Audiologist-curated devices to soothe nighttime ear ringing, protect auditory hair cells, and improve sleep quality.') }}
 
@@ -1282,8 +1290,12 @@
         <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 1rem;">
             Copy and paste this HTML snippet into your website or blog to embed this interactive generator:
         </p>
-        <textarea id="embed-code" readonly style="width: 100%; height: 130px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: monospace; font-size: 0.85rem; padding: 0.75rem; box-sizing: border-box; resize: none; margin-bottom: 1rem;"><iframe src="https://handlekit.com/tinnitus-frequency-matcher?embed=true" width="100%" height="780" frameborder="0" style="border: 1px solid #334155; border-radius: 12px;" allow="autoplay"></iframe>
-<p style="font-size: 0.8rem; color: #64748b; text-align: center; margin-top: 0.5rem;">Powered by the free <a href="https://handlekit.com/tinnitus-frequency-matcher" target="_blank" rel="noopener" style="color: #00d2ff; text-decoration: underline;">HandleKit Tinnitus Frequency Matcher</a></p></textarea>
+        <textarea id="embed-code" readonly style="width: 100%; height: 130px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: monospace; font-size: 0.82rem; padding: 0.75rem; box-sizing: border-box; resize: none; margin-bottom: 1rem;">&lt;div style="max-width:100%;margin:0 auto;text-align:center;"&gt;
+  &lt;iframe src="https://handlekit.com/tinnitus-frequency-matcher?embed=true" width="100%" height="780" style="border:1px solid rgba(0,210,255,0.3);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.25);" allow="autoplay" title="Tinnitus Frequency Matcher &amp; Sound Masker"&gt;&lt;/iframe&gt;
+  &lt;div style="font-size:12px;color:#64748b;margin-top:8px;font-family:system-ui,-apple-system,sans-serif;"&gt;
+    Tinnitus sound therapy generator powered by &lt;a href="https://handlekit.com/tinnitus-frequency-matcher" target="_blank" rel="noopener" style="color:#0284c7;text-decoration:underline;font-weight:600;"&gt;HandleKit Sensory Labs&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
         <button id="copy-embed-btn" class="btn-play-toggle" onclick="copyEmbedCode()" style="width: 100%; padding: 0.85rem; font-size: 0.95rem;">
             <i data-lucide="copy" style="width: 18px; height: 18px;"></i> Copy Embed Code
         </button>
@@ -1903,21 +1915,26 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('embed') === 'true') {
-            const navbar = document.querySelector('.top-bar');
+            document.body.classList.add('embed-mode');
+            const navbar = document.querySelector('.navbar, nav, .top-bar');
             if (navbar) navbar.style.display = 'none';
             const footer = document.querySelector('footer');
             if (footer) footer.style.display = 'none';
             document.body.style.background = 'transparent';
 
-            // Hide non-tool marketing and deep dive sections
-            document.querySelectorAll('.safety-alert-banner, .edu-section, .embed-card, .tool-header-block, div[style*="border-top"]').forEach(el => {
+            // Hide non-tool marketing, recommendations, FAQs, and deep dive sections
+            document.querySelectorAll('.safety-alert-banner, .edu-section, .embed-card, .tool-header-block, .recommendations-module, .faq-section, div[style*="border-top"]').forEach(el => {
                 if (el) el.style.display = 'none';
             });
 
+            const embedFooter = document.getElementById('embed-footer-bar');
+            if (embedFooter) embedFooter.style.display = 'flex';
+
             const container = document.querySelector('.tinnitus-container');
             if (container) {
-                container.style.paddingTop = '0';
+                container.style.paddingTop = '0.5rem';
                 container.style.marginTop = '0';
+                container.style.maxWidth = '100%';
             }
         }
     });
